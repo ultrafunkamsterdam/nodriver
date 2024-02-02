@@ -1,0 +1,883 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Storage" href="storage.html" /><link rel="prev" title="Security" href="security.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>ServiceWorker - nodriver documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/./custom.css?v=3934642d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">nodriver  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">nodriver  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#components-and-interaction">Components and interaction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver object reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../classes/browser.html">Browser class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/element.html">Element class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/others_and_helpers.html">Other classes and Helper classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/page.html">Page class</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="accessibility.html">Accessibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audits.html">Audits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autofill.html">Autofill</a></li>
+<li class="toctree-l1"><a class="reference internal" href="background_service.html">BackgroundService</a></li>
+<li class="toctree-l1"><a class="reference internal" href="browser.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cache_storage.html">CacheStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cast.html">Cast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="console.html">Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="css.html">CSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugger.html">Debugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device_access.html">DeviceAccess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device_orientation.html">DeviceOrientation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom.html">DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_debugger.html">DOMDebugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_snapshot.html">DOMSnapshot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_storage.html">DOMStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="emulation.html">Emulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fed_cm.html">FedCm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fetch.html">Fetch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="headless_experimental.html">HeadlessExperimental</a></li>
+<li class="toctree-l1"><a class="reference internal" href="heap_profiler.html">HeapProfiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexed_db.html">IndexedDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_.html">Input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inspector.html">Inspector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io.html">IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layer_tree.html">LayerTree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="media.html">Media</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">Memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overlay.html">Overlay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page.html">Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance_timeline.html">PerformanceTimeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preload.html">Preload</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiler.html">Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtime.html">Runtime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">ServiceWorker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="system_info.html">SystemInfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="target.html">Target</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tethering.html">Tethering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_audio.html">WebAudio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_authn.html">WebAuthn</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="serviceworker">
+<h1>ServiceWorker<a class="headerlink" href="#serviceworker" title="Link to this heading">#</a></h1>
+<p><em>This CDP domain is experimental.</em></p>
+<ul class="simple" id="module-nodriver.cdp.service_worker">
+<li><p><a class="reference internal" href="#types">Types</a></p></li>
+<li><p><a class="reference internal" href="#commands">Commands</a></p></li>
+<li><p><a class="reference internal" href="#events">Events</a></p></li>
+</ul>
+<section id="types">
+<h2>Types<a class="headerlink" href="#types" title="Link to this heading">#</a></h2>
+<p>Generally, you do not need to instantiate CDP types
+yourself. Instead, the API creates objects for you as return
+values from commands, and then you can use those objects as
+arguments to other commands.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.RegistrationID">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RegistrationID</span></span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#RegistrationID"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.RegistrationID" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerRegistration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ServiceWorkerRegistration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">registration_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_deleted</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#ServiceWorkerRegistration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerRegistration" title="Link to this definition">#</a></dt>
+<dd><p>ServiceWorker registration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>registration_id</strong> (<a class="reference internal" href="#nodriver.cdp.service_worker.RegistrationID" title="nodriver.cdp.service_worker.RegistrationID"><em>RegistrationID</em></a>) – </p></li>
+<li><p><strong>scope_url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>is_deleted</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerRegistration.is_deleted">
+<span class="sig-name descname"><span class="pre">is_deleted</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerRegistration.is_deleted" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerRegistration.registration_id">
+<span class="sig-name descname"><span class="pre">registration_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.service_worker.RegistrationID" title="nodriver.cdp.service_worker.RegistrationID"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegistrationID</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerRegistration.registration_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerRegistration.scope_url">
+<span class="sig-name descname"><span class="pre">scope_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerRegistration.scope_url" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ServiceWorkerVersionRunningStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#ServiceWorkerVersionRunningStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus.RUNNING">
+<span class="sig-name descname"><span class="pre">RUNNING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'running'</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus.RUNNING" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus.STARTING">
+<span class="sig-name descname"><span class="pre">STARTING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'starting'</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus.STARTING" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus.STOPPED">
+<span class="sig-name descname"><span class="pre">STOPPED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'stopped'</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus.STOPPED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus.STOPPING">
+<span class="sig-name descname"><span class="pre">STOPPING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'stopping'</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus.STOPPING" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersionStatus">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ServiceWorkerVersionStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#ServiceWorkerVersionStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersionStatus.ACTIVATED">
+<span class="sig-name descname"><span class="pre">ACTIVATED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'activated'</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus.ACTIVATED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersionStatus.ACTIVATING">
+<span class="sig-name descname"><span class="pre">ACTIVATING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'activating'</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus.ACTIVATING" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersionStatus.INSTALLED">
+<span class="sig-name descname"><span class="pre">INSTALLED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'installed'</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus.INSTALLED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersionStatus.INSTALLING">
+<span class="sig-name descname"><span class="pre">INSTALLING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'installing'</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus.INSTALLING" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersionStatus.NEW">
+<span class="sig-name descname"><span class="pre">NEW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'new'</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus.NEW" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersionStatus.REDUNDANT">
+<span class="sig-name descname"><span class="pre">REDUNDANT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'redundant'</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus.REDUNDANT" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ServiceWorkerVersion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">registration_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">script_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">running_status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">script_last_modified</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">script_response_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">controlled_clients</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">router_rules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#ServiceWorkerVersion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersion" title="Link to this definition">#</a></dt>
+<dd><p>ServiceWorker version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>version_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>registration_id</strong> (<a class="reference internal" href="#nodriver.cdp.service_worker.RegistrationID" title="nodriver.cdp.service_worker.RegistrationID"><em>RegistrationID</em></a>) – </p></li>
+<li><p><strong>script_url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>running_status</strong> (<a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus" title="nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus"><em>ServiceWorkerVersionRunningStatus</em></a>) – </p></li>
+<li><p><strong>status</strong> (<a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus" title="nodriver.cdp.service_worker.ServiceWorkerVersionStatus"><em>ServiceWorkerVersionStatus</em></a>) – </p></li>
+<li><p><strong>script_last_modified</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>script_response_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>controlled_clients</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference internal" href="target.html#nodriver.cdp.target.TargetID" title="nodriver.cdp.target.TargetID"><em>TargetID</em></a><em>] </em><em>| </em><em>None</em>) – </p></li>
+<li><p><strong>target_id</strong> (<a class="reference internal" href="target.html#nodriver.cdp.target.TargetID" title="nodriver.cdp.target.TargetID"><em>TargetID</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>router_rules</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersion.controlled_clients">
+<span class="sig-name descname"><span class="pre">controlled_clients</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="target.html#nodriver.cdp.target.TargetID" title="nodriver.cdp.target.TargetID"><code class="xref py py-class docutils literal notranslate"><span class="pre">TargetID</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.controlled_clients" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersion.registration_id">
+<span class="sig-name descname"><span class="pre">registration_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.service_worker.RegistrationID" title="nodriver.cdp.service_worker.RegistrationID"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegistrationID</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.registration_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersion.router_rules">
+<span class="sig-name descname"><span class="pre">router_rules</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.router_rules" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersion.running_status">
+<span class="sig-name descname"><span class="pre">running_status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus" title="nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceWorkerVersionRunningStatus</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.running_status" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersion.script_last_modified">
+<span class="sig-name descname"><span class="pre">script_last_modified</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.script_last_modified" title="Link to this definition">#</a></dt>
+<dd><p>The Last-Modified header value of the main script.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersion.script_response_time">
+<span class="sig-name descname"><span class="pre">script_response_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.script_response_time" title="Link to this definition">#</a></dt>
+<dd><p>The time at which the response headers of the main script were received from the server.
+For cached script it is the last time the cache entry was validated.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersion.script_url">
+<span class="sig-name descname"><span class="pre">script_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.script_url" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersion.status">
+<span class="sig-name descname"><span class="pre">status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus" title="nodriver.cdp.service_worker.ServiceWorkerVersionStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceWorkerVersionStatus</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.status" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersion.target_id">
+<span class="sig-name descname"><span class="pre">target_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="target.html#nodriver.cdp.target.TargetID" title="nodriver.cdp.target.TargetID"><code class="xref py py-class docutils literal notranslate"><span class="pre">TargetID</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.target_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerVersion.version_id">
+<span class="sig-name descname"><span class="pre">version_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.version_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerErrorMessage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ServiceWorkerErrorMessage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">registration_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#ServiceWorkerErrorMessage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage" title="Link to this definition">#</a></dt>
+<dd><p>ServiceWorker error message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>error_message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>registration_id</strong> (<a class="reference internal" href="#nodriver.cdp.service_worker.RegistrationID" title="nodriver.cdp.service_worker.RegistrationID"><em>RegistrationID</em></a>) – </p></li>
+<li><p><strong>version_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>source_url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>line_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p></li>
+<li><p><strong>column_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerErrorMessage.column_number">
+<span class="sig-name descname"><span class="pre">column_number</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage.column_number" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerErrorMessage.error_message">
+<span class="sig-name descname"><span class="pre">error_message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage.error_message" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerErrorMessage.line_number">
+<span class="sig-name descname"><span class="pre">line_number</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage.line_number" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerErrorMessage.registration_id">
+<span class="sig-name descname"><span class="pre">registration_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.service_worker.RegistrationID" title="nodriver.cdp.service_worker.RegistrationID"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegistrationID</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage.registration_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerErrorMessage.source_url">
+<span class="sig-name descname"><span class="pre">source_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage.source_url" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.ServiceWorkerErrorMessage.version_id">
+<span class="sig-name descname"><span class="pre">version_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage.version_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading">#</a></h2>
+<p>Each command is a generator function. The return
+type <code class="docutils literal notranslate"><span class="pre">Generator[x,</span> <span class="pre">y,</span> <span class="pre">z]</span></code> indicates that the generator
+<em>yields</em> arguments of type <code class="docutils literal notranslate"><span class="pre">x</span></code>, it must be resumed with
+an argument of type <code class="docutils literal notranslate"><span class="pre">y</span></code>, and it returns type <code class="docutils literal notranslate"><span class="pre">z</span></code>. In
+this library, types <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are the same for all
+commands, and <code class="docutils literal notranslate"><span class="pre">z</span></code> is the return type you should pay attention
+to. For more information, see
+<a class="reference internal" href="../quickstart.html#getting-started-commands"><span class="std std-ref">Getting Started: Commands</span></a>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.deliver_push_message">
+<span class="sig-name descname"><span class="pre">deliver_push_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">registration_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#deliver_push_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.deliver_push_message" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>origin</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p></li>
+<li><p><strong>registration_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.service_worker.RegistrationID" title="nodriver.cdp.service_worker.RegistrationID"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegistrationID</span></code></a></span>) – </p></li>
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.disable">
+<span class="sig-name descname"><span class="pre">disable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#disable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.disable" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.dispatch_periodic_sync_event">
+<span class="sig-name descname"><span class="pre">dispatch_periodic_sync_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">registration_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#dispatch_periodic_sync_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.dispatch_periodic_sync_event" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>origin</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p></li>
+<li><p><strong>registration_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.service_worker.RegistrationID" title="nodriver.cdp.service_worker.RegistrationID"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegistrationID</span></code></a></span>) – </p></li>
+<li><p><strong>tag</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.dispatch_sync_event">
+<span class="sig-name descname"><span class="pre">dispatch_sync_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">registration_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_chance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#dispatch_sync_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.dispatch_sync_event" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>origin</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p></li>
+<li><p><strong>registration_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.service_worker.RegistrationID" title="nodriver.cdp.service_worker.RegistrationID"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegistrationID</span></code></a></span>) – </p></li>
+<li><p><strong>tag</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p></li>
+<li><p><strong>last_chance</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.enable">
+<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#enable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.enable" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.inspect_worker">
+<span class="sig-name descname"><span class="pre">inspect_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#inspect_worker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.inspect_worker" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>version_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.set_force_update_on_page_load">
+<span class="sig-name descname"><span class="pre">set_force_update_on_page_load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force_update_on_page_load</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#set_force_update_on_page_load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.set_force_update_on_page_load" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>force_update_on_page_load</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.skip_waiting">
+<span class="sig-name descname"><span class="pre">skip_waiting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope_url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#skip_waiting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.skip_waiting" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scope_url</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.start_worker">
+<span class="sig-name descname"><span class="pre">start_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope_url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#start_worker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.start_worker" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scope_url</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.stop_all_workers">
+<span class="sig-name descname"><span class="pre">stop_all_workers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#stop_all_workers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.stop_all_workers" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.stop_worker">
+<span class="sig-name descname"><span class="pre">stop_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#stop_worker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.stop_worker" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>version_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.unregister">
+<span class="sig-name descname"><span class="pre">unregister</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope_url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#unregister"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.unregister" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scope_url</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.update_registration">
+<span class="sig-name descname"><span class="pre">update_registration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope_url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#update_registration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.update_registration" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scope_url</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="events">
+<h2>Events<a class="headerlink" href="#events" title="Link to this heading">#</a></h2>
+<p>Generally, you do not need to instantiate CDP events
+yourself. Instead, the API creates events for you and then
+you use the event’s attributes.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.WorkerErrorReported">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WorkerErrorReported</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#WorkerErrorReported"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.WorkerErrorReported" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>error_message</strong> (<a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage" title="nodriver.cdp.service_worker.ServiceWorkerErrorMessage"><em>ServiceWorkerErrorMessage</em></a>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.WorkerErrorReported.error_message">
+<span class="sig-name descname"><span class="pre">error_message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage" title="nodriver.cdp.service_worker.ServiceWorkerErrorMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceWorkerErrorMessage</span></code></a></em><a class="headerlink" href="#nodriver.cdp.service_worker.WorkerErrorReported.error_message" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.WorkerRegistrationUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WorkerRegistrationUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">registrations</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#WorkerRegistrationUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.WorkerRegistrationUpdated" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>registrations</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerRegistration" title="nodriver.cdp.service_worker.ServiceWorkerRegistration"><em>ServiceWorkerRegistration</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.WorkerRegistrationUpdated.registrations">
+<span class="sig-name descname"><span class="pre">registrations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerRegistration" title="nodriver.cdp.service_worker.ServiceWorkerRegistration"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceWorkerRegistration</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.WorkerRegistrationUpdated.registrations" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.WorkerVersionUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WorkerVersionUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">versions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/service_worker.html#WorkerVersionUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.service_worker.WorkerVersionUpdated" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>versions</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersion" title="nodriver.cdp.service_worker.ServiceWorkerVersion"><em>ServiceWorkerVersion</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.service_worker.WorkerVersionUpdated.versions">
+<span class="sig-name descname"><span class="pre">versions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersion" title="nodriver.cdp.service_worker.ServiceWorkerVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceWorkerVersion</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.service_worker.WorkerVersionUpdated.versions" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="storage.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Storage</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="security.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Security</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Author
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">ServiceWorker</a><ul>
+<li><a class="reference internal" href="#types">Types</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.RegistrationID"><code class="docutils literal notranslate"><span class="pre">RegistrationID</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerRegistration"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerRegistration</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerRegistration.is_deleted"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerRegistration.is_deleted</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerRegistration.registration_id"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerRegistration.registration_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerRegistration.scope_url"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerRegistration.scope_url</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersionRunningStatus</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus.RUNNING"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersionRunningStatus.RUNNING</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus.STARTING"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersionRunningStatus.STARTING</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus.STOPPED"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersionRunningStatus.STOPPED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus.STOPPING"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersionRunningStatus.STOPPING</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersionStatus</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus.ACTIVATED"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersionStatus.ACTIVATED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus.ACTIVATING"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersionStatus.ACTIVATING</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus.INSTALLED"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersionStatus.INSTALLED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus.INSTALLING"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersionStatus.INSTALLING</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus.NEW"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersionStatus.NEW</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersionStatus.REDUNDANT"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersionStatus.REDUNDANT</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersion"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersion</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.controlled_clients"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersion.controlled_clients</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.registration_id"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersion.registration_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.router_rules"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersion.router_rules</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.running_status"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersion.running_status</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.script_last_modified"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersion.script_last_modified</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.script_response_time"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersion.script_response_time</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.script_url"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersion.script_url</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.status"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersion.status</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.target_id"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersion.target_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerVersion.version_id"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerVersion.version_id</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerErrorMessage</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage.column_number"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerErrorMessage.column_number</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage.error_message"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerErrorMessage.error_message</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage.line_number"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerErrorMessage.line_number</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage.registration_id"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerErrorMessage.registration_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage.source_url"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerErrorMessage.source_url</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.ServiceWorkerErrorMessage.version_id"><code class="docutils literal notranslate"><span class="pre">ServiceWorkerErrorMessage.version_id</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#commands">Commands</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.deliver_push_message"><code class="docutils literal notranslate"><span class="pre">deliver_push_message()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.disable"><code class="docutils literal notranslate"><span class="pre">disable()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.dispatch_periodic_sync_event"><code class="docutils literal notranslate"><span class="pre">dispatch_periodic_sync_event()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.dispatch_sync_event"><code class="docutils literal notranslate"><span class="pre">dispatch_sync_event()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.enable"><code class="docutils literal notranslate"><span class="pre">enable()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.inspect_worker"><code class="docutils literal notranslate"><span class="pre">inspect_worker()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.set_force_update_on_page_load"><code class="docutils literal notranslate"><span class="pre">set_force_update_on_page_load()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.skip_waiting"><code class="docutils literal notranslate"><span class="pre">skip_waiting()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.start_worker"><code class="docutils literal notranslate"><span class="pre">start_worker()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.stop_all_workers"><code class="docutils literal notranslate"><span class="pre">stop_all_workers()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.stop_worker"><code class="docutils literal notranslate"><span class="pre">stop_worker()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.unregister"><code class="docutils literal notranslate"><span class="pre">unregister()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.update_registration"><code class="docutils literal notranslate"><span class="pre">update_registration()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#events">Events</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.WorkerErrorReported"><code class="docutils literal notranslate"><span class="pre">WorkerErrorReported</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.WorkerErrorReported.error_message"><code class="docutils literal notranslate"><span class="pre">WorkerErrorReported.error_message</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.WorkerRegistrationUpdated"><code class="docutils literal notranslate"><span class="pre">WorkerRegistrationUpdated</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.WorkerRegistrationUpdated.registrations"><code class="docutils literal notranslate"><span class="pre">WorkerRegistrationUpdated.registrations</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.WorkerVersionUpdated"><code class="docutils literal notranslate"><span class="pre">WorkerVersionUpdated</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.service_worker.WorkerVersionUpdated.versions"><code class="docutils literal notranslate"><span class="pre">WorkerVersionUpdated.versions</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

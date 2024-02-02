@@ -1,0 +1,1068 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="ServiceWorker" href="service_worker.html" /><link rel="prev" title="Schema" href="schema.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>Security - nodriver documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/./custom.css?v=3934642d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">nodriver  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">nodriver  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#components-and-interaction">Components and interaction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver object reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../classes/browser.html">Browser class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/element.html">Element class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/others_and_helpers.html">Other classes and Helper classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/page.html">Page class</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="accessibility.html">Accessibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audits.html">Audits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autofill.html">Autofill</a></li>
+<li class="toctree-l1"><a class="reference internal" href="background_service.html">BackgroundService</a></li>
+<li class="toctree-l1"><a class="reference internal" href="browser.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cache_storage.html">CacheStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cast.html">Cast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="console.html">Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="css.html">CSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugger.html">Debugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device_access.html">DeviceAccess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device_orientation.html">DeviceOrientation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom.html">DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_debugger.html">DOMDebugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_snapshot.html">DOMSnapshot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_storage.html">DOMStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="emulation.html">Emulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fed_cm.html">FedCm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fetch.html">Fetch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="headless_experimental.html">HeadlessExperimental</a></li>
+<li class="toctree-l1"><a class="reference internal" href="heap_profiler.html">HeapProfiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexed_db.html">IndexedDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_.html">Input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inspector.html">Inspector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io.html">IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layer_tree.html">LayerTree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="media.html">Media</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">Memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overlay.html">Overlay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page.html">Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance_timeline.html">PerformanceTimeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preload.html">Preload</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiler.html">Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtime.html">Runtime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Schema</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="service_worker.html">ServiceWorker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="system_info.html">SystemInfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="target.html">Target</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tethering.html">Tethering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_audio.html">WebAudio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_authn.html">WebAuthn</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="security">
+<h1>Security<a class="headerlink" href="#security" title="Link to this heading">#</a></h1>
+<p>Security</p>
+<ul class="simple" id="module-nodriver.cdp.security">
+<li><p><a class="reference internal" href="#types">Types</a></p></li>
+<li><p><a class="reference internal" href="#commands">Commands</a></p></li>
+<li><p><a class="reference internal" href="#events">Events</a></p></li>
+</ul>
+<section id="types">
+<h2>Types<a class="headerlink" href="#types" title="Link to this heading">#</a></h2>
+<p>Generally, you do not need to instantiate CDP types
+yourself. Instead, the API creates objects for you as return
+values from commands, and then you can use those objects as
+arguments to other commands.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateId">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CertificateId</span></span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#CertificateId"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.CertificateId" title="Link to this definition">#</a></dt>
+<dd><p>An internal certificate ID value.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.security.MixedContentType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MixedContentType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#MixedContentType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.MixedContentType" title="Link to this definition">#</a></dt>
+<dd><p>A description of mixed content (HTTP resources on HTTPS pages), as defined by
+<a class="reference external" href="https://www.w3.org/TR/mixed-content/#categories">https://www.w3.org/TR/mixed-content/#categories</a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.MixedContentType.BLOCKABLE">
+<span class="sig-name descname"><span class="pre">BLOCKABLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'blockable'</span></em><a class="headerlink" href="#nodriver.cdp.security.MixedContentType.BLOCKABLE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.MixedContentType.NONE">
+<span class="sig-name descname"><span class="pre">NONE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'none'</span></em><a class="headerlink" href="#nodriver.cdp.security.MixedContentType.NONE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.MixedContentType.OPTIONALLY_BLOCKABLE">
+<span class="sig-name descname"><span class="pre">OPTIONALLY_BLOCKABLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'optionally-blockable'</span></em><a class="headerlink" href="#nodriver.cdp.security.MixedContentType.OPTIONALLY_BLOCKABLE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityState">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SecurityState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#SecurityState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.SecurityState" title="Link to this definition">#</a></dt>
+<dd><p>The security level of a page or resource.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityState.INFO">
+<span class="sig-name descname"><span class="pre">INFO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'info'</span></em><a class="headerlink" href="#nodriver.cdp.security.SecurityState.INFO" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityState.INSECURE">
+<span class="sig-name descname"><span class="pre">INSECURE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'insecure'</span></em><a class="headerlink" href="#nodriver.cdp.security.SecurityState.INSECURE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityState.INSECURE_BROKEN">
+<span class="sig-name descname"><span class="pre">INSECURE_BROKEN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'insecure-broken'</span></em><a class="headerlink" href="#nodriver.cdp.security.SecurityState.INSECURE_BROKEN" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityState.NEUTRAL">
+<span class="sig-name descname"><span class="pre">NEUTRAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'neutral'</span></em><a class="headerlink" href="#nodriver.cdp.security.SecurityState.NEUTRAL" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityState.SECURE">
+<span class="sig-name descname"><span class="pre">SECURE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'secure'</span></em><a class="headerlink" href="#nodriver.cdp.security.SecurityState.SECURE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityState.UNKNOWN">
+<span class="sig-name descname"><span class="pre">UNKNOWN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'unknown'</span></em><a class="headerlink" href="#nodriver.cdp.security.SecurityState.UNKNOWN" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CertificateSecurityState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">protocol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_exchange</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cipher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">certificate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">issuer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_from</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_to</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">certificate_has_weak_signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">certificate_has_sha1_signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modern_ssl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obsolete_ssl_protocol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obsolete_ssl_key_exchange</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obsolete_ssl_cipher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obsolete_ssl_signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_exchange_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">certificate_network_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#CertificateSecurityState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState" title="Link to this definition">#</a></dt>
+<dd><p>Details about the security state of the page certificate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>protocol</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>key_exchange</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>cipher</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>certificate</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>subject_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>issuer</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>valid_from</strong> (<a class="reference internal" href="network.html#nodriver.cdp.network.TimeSinceEpoch" title="nodriver.cdp.network.TimeSinceEpoch"><em>TimeSinceEpoch</em></a>) – </p></li>
+<li><p><strong>valid_to</strong> (<a class="reference internal" href="network.html#nodriver.cdp.network.TimeSinceEpoch" title="nodriver.cdp.network.TimeSinceEpoch"><em>TimeSinceEpoch</em></a>) – </p></li>
+<li><p><strong>certificate_has_weak_signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>certificate_has_sha1_signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>modern_ssl</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>obsolete_ssl_protocol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>obsolete_ssl_key_exchange</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>obsolete_ssl_cipher</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>obsolete_ssl_signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>key_exchange_group</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>mac</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>certificate_network_error</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.certificate">
+<span class="sig-name descname"><span class="pre">certificate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.certificate" title="Link to this definition">#</a></dt>
+<dd><p>Page certificate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.certificate_has_sha1_signature">
+<span class="sig-name descname"><span class="pre">certificate_has_sha1_signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.certificate_has_sha1_signature" title="Link to this definition">#</a></dt>
+<dd><p>True if the certificate has a SHA1 signature in the chain.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.certificate_has_weak_signature">
+<span class="sig-name descname"><span class="pre">certificate_has_weak_signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.certificate_has_weak_signature" title="Link to this definition">#</a></dt>
+<dd><p>True if the certificate uses a weak signature aglorithm.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.certificate_network_error">
+<span class="sig-name descname"><span class="pre">certificate_network_error</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.certificate_network_error" title="Link to this definition">#</a></dt>
+<dd><p>The highest priority network error code, if the certificate has an error.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.cipher">
+<span class="sig-name descname"><span class="pre">cipher</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.cipher" title="Link to this definition">#</a></dt>
+<dd><p>Cipher name.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.issuer">
+<span class="sig-name descname"><span class="pre">issuer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.issuer" title="Link to this definition">#</a></dt>
+<dd><p>Name of the issuing CA.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.key_exchange">
+<span class="sig-name descname"><span class="pre">key_exchange</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.key_exchange" title="Link to this definition">#</a></dt>
+<dd><p>Key Exchange used by the connection, or the empty string if not applicable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.key_exchange_group">
+<span class="sig-name descname"><span class="pre">key_exchange_group</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.key_exchange_group" title="Link to this definition">#</a></dt>
+<dd><p>(EC)DH group used by the connection, if applicable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.mac">
+<span class="sig-name descname"><span class="pre">mac</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.mac" title="Link to this definition">#</a></dt>
+<dd><p>TLS MAC. Note that AEAD ciphers do not have separate MACs.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.modern_ssl">
+<span class="sig-name descname"><span class="pre">modern_ssl</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.modern_ssl" title="Link to this definition">#</a></dt>
+<dd><p>True if modern SSL</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.obsolete_ssl_cipher">
+<span class="sig-name descname"><span class="pre">obsolete_ssl_cipher</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.obsolete_ssl_cipher" title="Link to this definition">#</a></dt>
+<dd><p>True if the connection is using an obsolete SSL cipher.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.obsolete_ssl_key_exchange">
+<span class="sig-name descname"><span class="pre">obsolete_ssl_key_exchange</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.obsolete_ssl_key_exchange" title="Link to this definition">#</a></dt>
+<dd><p>True if the connection is using an obsolete SSL key exchange.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.obsolete_ssl_protocol">
+<span class="sig-name descname"><span class="pre">obsolete_ssl_protocol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.obsolete_ssl_protocol" title="Link to this definition">#</a></dt>
+<dd><p>True if the connection is using an obsolete SSL protocol.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.obsolete_ssl_signature">
+<span class="sig-name descname"><span class="pre">obsolete_ssl_signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.obsolete_ssl_signature" title="Link to this definition">#</a></dt>
+<dd><p>True if the connection is using an obsolete SSL signature.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.protocol">
+<span class="sig-name descname"><span class="pre">protocol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.protocol" title="Link to this definition">#</a></dt>
+<dd><p>Protocol name (e.g. “TLS 1.2” or “QUIC”).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.subject_name">
+<span class="sig-name descname"><span class="pre">subject_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.subject_name" title="Link to this definition">#</a></dt>
+<dd><p>Certificate subject name.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.valid_from">
+<span class="sig-name descname"><span class="pre">valid_from</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="network.html#nodriver.cdp.network.TimeSinceEpoch" title="nodriver.cdp.network.TimeSinceEpoch"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSinceEpoch</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.valid_from" title="Link to this definition">#</a></dt>
+<dd><p>Certificate valid from date.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateSecurityState.valid_to">
+<span class="sig-name descname"><span class="pre">valid_to</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="network.html#nodriver.cdp.network.TimeSinceEpoch" title="nodriver.cdp.network.TimeSinceEpoch"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSinceEpoch</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateSecurityState.valid_to" title="Link to this definition">#</a></dt>
+<dd><p>Certificate valid to (expiration) date</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SafetyTipStatus">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SafetyTipStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#SafetyTipStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.SafetyTipStatus" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SafetyTipStatus.BAD_REPUTATION">
+<span class="sig-name descname"><span class="pre">BAD_REPUTATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'badReputation'</span></em><a class="headerlink" href="#nodriver.cdp.security.SafetyTipStatus.BAD_REPUTATION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SafetyTipStatus.LOOKALIKE">
+<span class="sig-name descname"><span class="pre">LOOKALIKE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'lookalike'</span></em><a class="headerlink" href="#nodriver.cdp.security.SafetyTipStatus.LOOKALIKE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SafetyTipInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SafetyTipInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">safety_tip_status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#SafetyTipInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.SafetyTipInfo" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>safety_tip_status</strong> (<a class="reference internal" href="#nodriver.cdp.security.SafetyTipStatus" title="nodriver.cdp.security.SafetyTipStatus"><em>SafetyTipStatus</em></a>) – </p></li>
+<li><p><strong>safe_url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SafetyTipInfo.safe_url">
+<span class="sig-name descname"><span class="pre">safe_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.security.SafetyTipInfo.safe_url" title="Link to this definition">#</a></dt>
+<dd><p>The URL the safety tip suggested (“Did you mean?”). Only filled in for lookalike matches.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SafetyTipInfo.safety_tip_status">
+<span class="sig-name descname"><span class="pre">safety_tip_status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.security.SafetyTipStatus" title="nodriver.cdp.security.SafetyTipStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">SafetyTipStatus</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.SafetyTipInfo.safety_tip_status" title="Link to this definition">#</a></dt>
+<dd><p>Describes whether the page triggers any safety tips or reputation warnings. Default is unknown.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.security.VisibleSecurityState">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VisibleSecurityState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">security_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">security_state_issue_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">certificate_security_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safety_tip_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#VisibleSecurityState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.VisibleSecurityState" title="Link to this definition">#</a></dt>
+<dd><p>Security state information about the page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>security_state</strong> (<a class="reference internal" href="#nodriver.cdp.security.SecurityState" title="nodriver.cdp.security.SecurityState"><em>SecurityState</em></a>) – </p></li>
+<li><p><strong>security_state_issue_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>certificate_security_state</strong> (<a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState" title="nodriver.cdp.security.CertificateSecurityState"><em>CertificateSecurityState</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>safety_tip_info</strong> (<a class="reference internal" href="#nodriver.cdp.security.SafetyTipInfo" title="nodriver.cdp.security.SafetyTipInfo"><em>SafetyTipInfo</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.VisibleSecurityState.certificate_security_state">
+<span class="sig-name descname"><span class="pre">certificate_security_state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState" title="nodriver.cdp.security.CertificateSecurityState"><code class="xref py py-class docutils literal notranslate"><span class="pre">CertificateSecurityState</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.security.VisibleSecurityState.certificate_security_state" title="Link to this definition">#</a></dt>
+<dd><p>Security state details about the page certificate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.VisibleSecurityState.safety_tip_info">
+<span class="sig-name descname"><span class="pre">safety_tip_info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.security.SafetyTipInfo" title="nodriver.cdp.security.SafetyTipInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SafetyTipInfo</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.security.VisibleSecurityState.safety_tip_info" title="Link to this definition">#</a></dt>
+<dd><p>The type of Safety Tip triggered on the page. Note that this field will be set even if the Safety Tip UI was not actually shown.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.VisibleSecurityState.security_state">
+<span class="sig-name descname"><span class="pre">security_state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.security.SecurityState" title="nodriver.cdp.security.SecurityState"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecurityState</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.VisibleSecurityState.security_state" title="Link to this definition">#</a></dt>
+<dd><p>The security level of the page.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.VisibleSecurityState.security_state_issue_ids">
+<span class="sig-name descname"><span class="pre">security_state_issue_ids</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.security.VisibleSecurityState.security_state_issue_ids" title="Link to this definition">#</a></dt>
+<dd><p>Array of security state issues ids.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityStateExplanation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SecurityStateExplanation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">security_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">summary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mixed_content_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">certificate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recommendations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#SecurityStateExplanation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.SecurityStateExplanation" title="Link to this definition">#</a></dt>
+<dd><p>An explanation of an factor contributing to the security state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>security_state</strong> (<a class="reference internal" href="#nodriver.cdp.security.SecurityState" title="nodriver.cdp.security.SecurityState"><em>SecurityState</em></a>) – </p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>summary</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>mixed_content_type</strong> (<a class="reference internal" href="#nodriver.cdp.security.MixedContentType" title="nodriver.cdp.security.MixedContentType"><em>MixedContentType</em></a>) – </p></li>
+<li><p><strong>certificate</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>recommendations</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>] </em><em>| </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityStateExplanation.certificate">
+<span class="sig-name descname"><span class="pre">certificate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.security.SecurityStateExplanation.certificate" title="Link to this definition">#</a></dt>
+<dd><p>Page certificate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityStateExplanation.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.SecurityStateExplanation.description" title="Link to this definition">#</a></dt>
+<dd><p>Full text explanation of the factor.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityStateExplanation.mixed_content_type">
+<span class="sig-name descname"><span class="pre">mixed_content_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.security.MixedContentType" title="nodriver.cdp.security.MixedContentType"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixedContentType</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.SecurityStateExplanation.mixed_content_type" title="Link to this definition">#</a></dt>
+<dd><p>The type of mixed content described by the explanation.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityStateExplanation.recommendations">
+<span class="sig-name descname"><span class="pre">recommendations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.security.SecurityStateExplanation.recommendations" title="Link to this definition">#</a></dt>
+<dd><p>Recommendations to fix any issues.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityStateExplanation.security_state">
+<span class="sig-name descname"><span class="pre">security_state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.security.SecurityState" title="nodriver.cdp.security.SecurityState"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecurityState</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.SecurityStateExplanation.security_state" title="Link to this definition">#</a></dt>
+<dd><p>Security state representing the severity of the factor being explained.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityStateExplanation.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.SecurityStateExplanation.summary" title="Link to this definition">#</a></dt>
+<dd><p>Short phrase describing the type of factor.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityStateExplanation.title">
+<span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.SecurityStateExplanation.title" title="Link to this definition">#</a></dt>
+<dd><p>Title describing the type of factor.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.security.InsecureContentStatus">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InsecureContentStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ran_mixed_content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_mixed_content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contained_mixed_form</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ran_content_with_cert_errors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_content_with_cert_errors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ran_insecure_content_style</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_insecure_content_style</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#InsecureContentStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.InsecureContentStatus" title="Link to this definition">#</a></dt>
+<dd><p>Information about insecure content on the page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ran_mixed_content</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>displayed_mixed_content</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>contained_mixed_form</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>ran_content_with_cert_errors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>displayed_content_with_cert_errors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>ran_insecure_content_style</strong> (<a class="reference internal" href="#nodriver.cdp.security.SecurityState" title="nodriver.cdp.security.SecurityState"><em>SecurityState</em></a>) – </p></li>
+<li><p><strong>displayed_insecure_content_style</strong> (<a class="reference internal" href="#nodriver.cdp.security.SecurityState" title="nodriver.cdp.security.SecurityState"><em>SecurityState</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.InsecureContentStatus.contained_mixed_form">
+<span class="sig-name descname"><span class="pre">contained_mixed_form</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.InsecureContentStatus.contained_mixed_form" title="Link to this definition">#</a></dt>
+<dd><p>Always false.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.InsecureContentStatus.displayed_content_with_cert_errors">
+<span class="sig-name descname"><span class="pre">displayed_content_with_cert_errors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.InsecureContentStatus.displayed_content_with_cert_errors" title="Link to this definition">#</a></dt>
+<dd><p>Always false.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.InsecureContentStatus.displayed_insecure_content_style">
+<span class="sig-name descname"><span class="pre">displayed_insecure_content_style</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.security.SecurityState" title="nodriver.cdp.security.SecurityState"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecurityState</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.InsecureContentStatus.displayed_insecure_content_style" title="Link to this definition">#</a></dt>
+<dd><p>Always set to unknown.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.InsecureContentStatus.displayed_mixed_content">
+<span class="sig-name descname"><span class="pre">displayed_mixed_content</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.InsecureContentStatus.displayed_mixed_content" title="Link to this definition">#</a></dt>
+<dd><p>Always false.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.InsecureContentStatus.ran_content_with_cert_errors">
+<span class="sig-name descname"><span class="pre">ran_content_with_cert_errors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.InsecureContentStatus.ran_content_with_cert_errors" title="Link to this definition">#</a></dt>
+<dd><p>Always false.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.InsecureContentStatus.ran_insecure_content_style">
+<span class="sig-name descname"><span class="pre">ran_insecure_content_style</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.security.SecurityState" title="nodriver.cdp.security.SecurityState"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecurityState</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.InsecureContentStatus.ran_insecure_content_style" title="Link to this definition">#</a></dt>
+<dd><p>Always set to unknown.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.InsecureContentStatus.ran_mixed_content">
+<span class="sig-name descname"><span class="pre">ran_mixed_content</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.InsecureContentStatus.ran_mixed_content" title="Link to this definition">#</a></dt>
+<dd><p>Always false.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateErrorAction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CertificateErrorAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#CertificateErrorAction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.CertificateErrorAction" title="Link to this definition">#</a></dt>
+<dd><p>The action to take when a certificate error occurs. continue will continue processing the
+request and cancel will cancel the request.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateErrorAction.CANCEL">
+<span class="sig-name descname"><span class="pre">CANCEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cancel'</span></em><a class="headerlink" href="#nodriver.cdp.security.CertificateErrorAction.CANCEL" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateErrorAction.CONTINUE">
+<span class="sig-name descname"><span class="pre">CONTINUE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'continue'</span></em><a class="headerlink" href="#nodriver.cdp.security.CertificateErrorAction.CONTINUE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading">#</a></h2>
+<p>Each command is a generator function. The return
+type <code class="docutils literal notranslate"><span class="pre">Generator[x,</span> <span class="pre">y,</span> <span class="pre">z]</span></code> indicates that the generator
+<em>yields</em> arguments of type <code class="docutils literal notranslate"><span class="pre">x</span></code>, it must be resumed with
+an argument of type <code class="docutils literal notranslate"><span class="pre">y</span></code>, and it returns type <code class="docutils literal notranslate"><span class="pre">z</span></code>. In
+this library, types <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are the same for all
+commands, and <code class="docutils literal notranslate"><span class="pre">z</span></code> is the return type you should pay attention
+to. For more information, see
+<a class="reference internal" href="../quickstart.html#getting-started-commands"><span class="std std-ref">Getting Started: Commands</span></a>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.security.disable">
+<span class="sig-name descname"><span class="pre">disable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#disable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.disable" title="Link to this definition">#</a></dt>
+<dd><p>Disables tracking security state changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.security.enable">
+<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#enable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.enable" title="Link to this definition">#</a></dt>
+<dd><p>Enables tracking security state changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.security.handle_certificate_error">
+<span class="sig-name descname"><span class="pre">handle_certificate_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#handle_certificate_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.handle_certificate_error" title="Link to this definition">#</a></dt>
+<dd><p>Handles a certificate error that fired a certificateError event.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – The ID of the event.</p></li>
+<li><p><strong>action</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.security.CertificateErrorAction" title="nodriver.cdp.security.CertificateErrorAction"><code class="xref py py-class docutils literal notranslate"><span class="pre">CertificateErrorAction</span></code></a></span>) – The action to take on the certificate error.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.security.set_ignore_certificate_errors">
+<span class="sig-name descname"><span class="pre">set_ignore_certificate_errors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ignore</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#set_ignore_certificate_errors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.set_ignore_certificate_errors" title="Link to this definition">#</a></dt>
+<dd><p>Enable/disable whether all certificate errors should be ignored.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ignore</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – If true, all certificate errors will be ignored.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.security.set_override_certificate_errors">
+<span class="sig-name descname"><span class="pre">set_override_certificate_errors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">override</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#set_override_certificate_errors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.set_override_certificate_errors" title="Link to this definition">#</a></dt>
+<dd><p>Enable/disable overriding certificate errors. If enabled, all certificate error events need to
+be handled by the DevTools client and should be answered with <code class="docutils literal notranslate"><span class="pre">handleCertificateError</span></code> commands.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>override</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – If true, certificate errors will be overridden.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.</span></p>
+</div>
+</dd></dl>
+
+</section>
+<section id="events">
+<h2>Events<a class="headerlink" href="#events" title="Link to this heading">#</a></h2>
+<p>Generally, you do not need to instantiate CDP events
+yourself. Instead, the API creates events for you and then
+you use the event’s attributes.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateError">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CertificateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#CertificateError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.CertificateError" title="Link to this definition">#</a></dt>
+<dd><p>There is a certificate error. If overriding certificate errors is enabled, then it should be
+handled with the <code class="docutils literal notranslate"><span class="pre">handleCertificateError</span></code> command. Note: this event does not fire if the
+certificate error has been allowed internally. Only one client per target should override
+certificate errors at the same time.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.</span></p>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateError.error_type">
+<span class="sig-name descname"><span class="pre">error_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateError.error_type" title="Link to this definition">#</a></dt>
+<dd><p>The type of the error.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateError.event_id">
+<span class="sig-name descname"><span class="pre">event_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateError.event_id" title="Link to this definition">#</a></dt>
+<dd><p>The ID of the event.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.CertificateError.request_url">
+<span class="sig-name descname"><span class="pre">request_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.CertificateError.request_url" title="Link to this definition">#</a></dt>
+<dd><p>The url that was requested.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.security.VisibleSecurityStateChanged">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VisibleSecurityStateChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visible_security_state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#VisibleSecurityStateChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.VisibleSecurityStateChanged" title="Link to this definition">#</a></dt>
+<dd><p><strong>EXPERIMENTAL</strong></p>
+<p>The security state of the page changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>visible_security_state</strong> (<a class="reference internal" href="#nodriver.cdp.security.VisibleSecurityState" title="nodriver.cdp.security.VisibleSecurityState"><em>VisibleSecurityState</em></a>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.VisibleSecurityStateChanged.visible_security_state">
+<span class="sig-name descname"><span class="pre">visible_security_state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.security.VisibleSecurityState" title="nodriver.cdp.security.VisibleSecurityState"><code class="xref py py-class docutils literal notranslate"><span class="pre">VisibleSecurityState</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.VisibleSecurityStateChanged.visible_security_state" title="Link to this definition">#</a></dt>
+<dd><p>Security state information about the page.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityStateChanged">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SecurityStateChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">security_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme_is_cryptographic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explanations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insecure_content_status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">summary</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/security.html#SecurityStateChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.security.SecurityStateChanged" title="Link to this definition">#</a></dt>
+<dd><p>The security state of the page changed. No longer being sent.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.3.</span></p>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityStateChanged.explanations">
+<span class="sig-name descname"><span class="pre">explanations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.security.SecurityStateExplanation" title="nodriver.cdp.security.SecurityStateExplanation"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecurityStateExplanation</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.security.SecurityStateChanged.explanations" title="Link to this definition">#</a></dt>
+<dd><p>Previously a list of explanations for the security state. Now always
+empty.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityStateChanged.insecure_content_status">
+<span class="sig-name descname"><span class="pre">insecure_content_status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.security.InsecureContentStatus" title="nodriver.cdp.security.InsecureContentStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">InsecureContentStatus</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.SecurityStateChanged.insecure_content_status" title="Link to this definition">#</a></dt>
+<dd><p>Information about insecure content on the page.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityStateChanged.scheme_is_cryptographic">
+<span class="sig-name descname"><span class="pre">scheme_is_cryptographic</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.SecurityStateChanged.scheme_is_cryptographic" title="Link to this definition">#</a></dt>
+<dd><p>True if the page was loaded over cryptographic transport such as HTTPS.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityStateChanged.security_state">
+<span class="sig-name descname"><span class="pre">security_state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.security.SecurityState" title="nodriver.cdp.security.SecurityState"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecurityState</span></code></a></em><a class="headerlink" href="#nodriver.cdp.security.SecurityStateChanged.security_state" title="Link to this definition">#</a></dt>
+<dd><p>Security state.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.security.SecurityStateChanged.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.security.SecurityStateChanged.summary" title="Link to this definition">#</a></dt>
+<dd><p>Overrides user-visible description of the state. Always omitted.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="service_worker.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">ServiceWorker</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="schema.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Schema</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Author
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Security</a><ul>
+<li><a class="reference internal" href="#types">Types</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateId"><code class="docutils literal notranslate"><span class="pre">CertificateId</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.MixedContentType"><code class="docutils literal notranslate"><span class="pre">MixedContentType</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.MixedContentType.BLOCKABLE"><code class="docutils literal notranslate"><span class="pre">MixedContentType.BLOCKABLE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.MixedContentType.NONE"><code class="docutils literal notranslate"><span class="pre">MixedContentType.NONE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.MixedContentType.OPTIONALLY_BLOCKABLE"><code class="docutils literal notranslate"><span class="pre">MixedContentType.OPTIONALLY_BLOCKABLE</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityState"><code class="docutils literal notranslate"><span class="pre">SecurityState</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityState.INFO"><code class="docutils literal notranslate"><span class="pre">SecurityState.INFO</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityState.INSECURE"><code class="docutils literal notranslate"><span class="pre">SecurityState.INSECURE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityState.INSECURE_BROKEN"><code class="docutils literal notranslate"><span class="pre">SecurityState.INSECURE_BROKEN</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityState.NEUTRAL"><code class="docutils literal notranslate"><span class="pre">SecurityState.NEUTRAL</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityState.SECURE"><code class="docutils literal notranslate"><span class="pre">SecurityState.SECURE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityState.UNKNOWN"><code class="docutils literal notranslate"><span class="pre">SecurityState.UNKNOWN</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.certificate"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.certificate</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.certificate_has_sha1_signature"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.certificate_has_sha1_signature</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.certificate_has_weak_signature"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.certificate_has_weak_signature</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.certificate_network_error"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.certificate_network_error</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.cipher"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.cipher</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.issuer"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.issuer</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.key_exchange"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.key_exchange</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.key_exchange_group"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.key_exchange_group</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.mac"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.mac</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.modern_ssl"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.modern_ssl</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.obsolete_ssl_cipher"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.obsolete_ssl_cipher</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.obsolete_ssl_key_exchange"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.obsolete_ssl_key_exchange</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.obsolete_ssl_protocol"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.obsolete_ssl_protocol</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.obsolete_ssl_signature"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.obsolete_ssl_signature</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.protocol"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.protocol</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.subject_name"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.subject_name</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.valid_from"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.valid_from</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateSecurityState.valid_to"><code class="docutils literal notranslate"><span class="pre">CertificateSecurityState.valid_to</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SafetyTipStatus"><code class="docutils literal notranslate"><span class="pre">SafetyTipStatus</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.SafetyTipStatus.BAD_REPUTATION"><code class="docutils literal notranslate"><span class="pre">SafetyTipStatus.BAD_REPUTATION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SafetyTipStatus.LOOKALIKE"><code class="docutils literal notranslate"><span class="pre">SafetyTipStatus.LOOKALIKE</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SafetyTipInfo"><code class="docutils literal notranslate"><span class="pre">SafetyTipInfo</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.SafetyTipInfo.safe_url"><code class="docutils literal notranslate"><span class="pre">SafetyTipInfo.safe_url</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SafetyTipInfo.safety_tip_status"><code class="docutils literal notranslate"><span class="pre">SafetyTipInfo.safety_tip_status</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.security.VisibleSecurityState"><code class="docutils literal notranslate"><span class="pre">VisibleSecurityState</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.VisibleSecurityState.certificate_security_state"><code class="docutils literal notranslate"><span class="pre">VisibleSecurityState.certificate_security_state</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.VisibleSecurityState.safety_tip_info"><code class="docutils literal notranslate"><span class="pre">VisibleSecurityState.safety_tip_info</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.VisibleSecurityState.security_state"><code class="docutils literal notranslate"><span class="pre">VisibleSecurityState.security_state</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.VisibleSecurityState.security_state_issue_ids"><code class="docutils literal notranslate"><span class="pre">VisibleSecurityState.security_state_issue_ids</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityStateExplanation"><code class="docutils literal notranslate"><span class="pre">SecurityStateExplanation</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityStateExplanation.certificate"><code class="docutils literal notranslate"><span class="pre">SecurityStateExplanation.certificate</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityStateExplanation.description"><code class="docutils literal notranslate"><span class="pre">SecurityStateExplanation.description</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityStateExplanation.mixed_content_type"><code class="docutils literal notranslate"><span class="pre">SecurityStateExplanation.mixed_content_type</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityStateExplanation.recommendations"><code class="docutils literal notranslate"><span class="pre">SecurityStateExplanation.recommendations</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityStateExplanation.security_state"><code class="docutils literal notranslate"><span class="pre">SecurityStateExplanation.security_state</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityStateExplanation.summary"><code class="docutils literal notranslate"><span class="pre">SecurityStateExplanation.summary</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityStateExplanation.title"><code class="docutils literal notranslate"><span class="pre">SecurityStateExplanation.title</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.security.InsecureContentStatus"><code class="docutils literal notranslate"><span class="pre">InsecureContentStatus</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.InsecureContentStatus.contained_mixed_form"><code class="docutils literal notranslate"><span class="pre">InsecureContentStatus.contained_mixed_form</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.InsecureContentStatus.displayed_content_with_cert_errors"><code class="docutils literal notranslate"><span class="pre">InsecureContentStatus.displayed_content_with_cert_errors</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.InsecureContentStatus.displayed_insecure_content_style"><code class="docutils literal notranslate"><span class="pre">InsecureContentStatus.displayed_insecure_content_style</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.InsecureContentStatus.displayed_mixed_content"><code class="docutils literal notranslate"><span class="pre">InsecureContentStatus.displayed_mixed_content</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.InsecureContentStatus.ran_content_with_cert_errors"><code class="docutils literal notranslate"><span class="pre">InsecureContentStatus.ran_content_with_cert_errors</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.InsecureContentStatus.ran_insecure_content_style"><code class="docutils literal notranslate"><span class="pre">InsecureContentStatus.ran_insecure_content_style</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.InsecureContentStatus.ran_mixed_content"><code class="docutils literal notranslate"><span class="pre">InsecureContentStatus.ran_mixed_content</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateErrorAction"><code class="docutils literal notranslate"><span class="pre">CertificateErrorAction</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateErrorAction.CANCEL"><code class="docutils literal notranslate"><span class="pre">CertificateErrorAction.CANCEL</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateErrorAction.CONTINUE"><code class="docutils literal notranslate"><span class="pre">CertificateErrorAction.CONTINUE</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#commands">Commands</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.disable"><code class="docutils literal notranslate"><span class="pre">disable()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.enable"><code class="docutils literal notranslate"><span class="pre">enable()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.handle_certificate_error"><code class="docutils literal notranslate"><span class="pre">handle_certificate_error()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.set_ignore_certificate_errors"><code class="docutils literal notranslate"><span class="pre">set_ignore_certificate_errors()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.set_override_certificate_errors"><code class="docutils literal notranslate"><span class="pre">set_override_certificate_errors()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#events">Events</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateError"><code class="docutils literal notranslate"><span class="pre">CertificateError</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateError.error_type"><code class="docutils literal notranslate"><span class="pre">CertificateError.error_type</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateError.event_id"><code class="docutils literal notranslate"><span class="pre">CertificateError.event_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.CertificateError.request_url"><code class="docutils literal notranslate"><span class="pre">CertificateError.request_url</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.security.VisibleSecurityStateChanged"><code class="docutils literal notranslate"><span class="pre">VisibleSecurityStateChanged</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.VisibleSecurityStateChanged.visible_security_state"><code class="docutils literal notranslate"><span class="pre">VisibleSecurityStateChanged.visible_security_state</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityStateChanged"><code class="docutils literal notranslate"><span class="pre">SecurityStateChanged</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityStateChanged.explanations"><code class="docutils literal notranslate"><span class="pre">SecurityStateChanged.explanations</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityStateChanged.insecure_content_status"><code class="docutils literal notranslate"><span class="pre">SecurityStateChanged.insecure_content_status</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityStateChanged.scheme_is_cryptographic"><code class="docutils literal notranslate"><span class="pre">SecurityStateChanged.scheme_is_cryptographic</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityStateChanged.security_state"><code class="docutils literal notranslate"><span class="pre">SecurityStateChanged.security_state</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.security.SecurityStateChanged.summary"><code class="docutils literal notranslate"><span class="pre">SecurityStateChanged.summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

@@ -1,0 +1,924 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="HeadlessExperimental" href="headless_experimental.html" /><link rel="prev" title="FedCm" href="fed_cm.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>Fetch - nodriver documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/./custom.css?v=3934642d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">nodriver  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">nodriver  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#components-and-interaction">Components and interaction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver object reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../classes/browser.html">Browser class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/element.html">Element class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/others_and_helpers.html">Other classes and Helper classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/page.html">Page class</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="accessibility.html">Accessibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audits.html">Audits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autofill.html">Autofill</a></li>
+<li class="toctree-l1"><a class="reference internal" href="background_service.html">BackgroundService</a></li>
+<li class="toctree-l1"><a class="reference internal" href="browser.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cache_storage.html">CacheStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cast.html">Cast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="console.html">Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="css.html">CSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugger.html">Debugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device_access.html">DeviceAccess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device_orientation.html">DeviceOrientation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom.html">DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_debugger.html">DOMDebugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_snapshot.html">DOMSnapshot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_storage.html">DOMStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="emulation.html">Emulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fed_cm.html">FedCm</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Fetch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="headless_experimental.html">HeadlessExperimental</a></li>
+<li class="toctree-l1"><a class="reference internal" href="heap_profiler.html">HeapProfiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexed_db.html">IndexedDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_.html">Input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inspector.html">Inspector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io.html">IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layer_tree.html">LayerTree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="media.html">Media</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">Memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overlay.html">Overlay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page.html">Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance_timeline.html">PerformanceTimeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preload.html">Preload</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiler.html">Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtime.html">Runtime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="service_worker.html">ServiceWorker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="system_info.html">SystemInfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="target.html">Target</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tethering.html">Tethering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_audio.html">WebAudio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_authn.html">WebAuthn</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="fetch">
+<h1>Fetch<a class="headerlink" href="#fetch" title="Link to this heading">#</a></h1>
+<p>A domain for letting clients substitute browser’s network layer with client code.</p>
+<ul class="simple" id="module-nodriver.cdp.fetch">
+<li><p><a class="reference internal" href="#types">Types</a></p></li>
+<li><p><a class="reference internal" href="#commands">Commands</a></p></li>
+<li><p><a class="reference internal" href="#events">Events</a></p></li>
+</ul>
+<section id="types">
+<h2>Types<a class="headerlink" href="#types" title="Link to this heading">#</a></h2>
+<p>Generally, you do not need to instantiate CDP types
+yourself. Instead, the API creates objects for you as return
+values from commands, and then you can use those objects as
+arguments to other commands.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestId">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RequestId</span></span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#RequestId"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.RequestId" title="Link to this definition">#</a></dt>
+<dd><p>Unique request identifier.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestStage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RequestStage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#RequestStage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.RequestStage" title="Link to this definition">#</a></dt>
+<dd><p>Stages of the request to handle. Request will intercept before the request is
+sent. Response will intercept after the response is received (but before response
+body is received).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestStage.REQUEST">
+<span class="sig-name descname"><span class="pre">REQUEST</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Request'</span></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestStage.REQUEST" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestStage.RESPONSE">
+<span class="sig-name descname"><span class="pre">RESPONSE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Response'</span></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestStage.RESPONSE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPattern">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RequestPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url_pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_stage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#RequestPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.RequestPattern" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url_pattern</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>resource_type</strong> (<a class="reference internal" href="network.html#nodriver.cdp.network.ResourceType" title="nodriver.cdp.network.ResourceType"><em>ResourceType</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>request_stage</strong> (<a class="reference internal" href="#nodriver.cdp.fetch.RequestStage" title="nodriver.cdp.fetch.RequestStage"><em>RequestStage</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPattern.request_stage">
+<span class="sig-name descname"><span class="pre">request_stage</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.fetch.RequestStage" title="nodriver.cdp.fetch.RequestStage"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestStage</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestPattern.request_stage" title="Link to this definition">#</a></dt>
+<dd><p>Stage at which to begin intercepting requests. Default is Request.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPattern.resource_type">
+<span class="sig-name descname"><span class="pre">resource_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="network.html#nodriver.cdp.network.ResourceType" title="nodriver.cdp.network.ResourceType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResourceType</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestPattern.resource_type" title="Link to this definition">#</a></dt>
+<dd><p>If set, only requests for matching resource types will be intercepted.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPattern.url_pattern">
+<span class="sig-name descname"><span class="pre">url_pattern</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestPattern.url_pattern" title="Link to this definition">#</a></dt>
+<dd><p>Wildcards (<code class="docutils literal notranslate"><span class="pre">'*'</span></code> -&gt; zero or more, <code class="docutils literal notranslate"><span class="pre">'?'</span></code> -&gt; exactly one) are allowed. Escape character is
+backslash. Omitting is equivalent to <code class="docutils literal notranslate"><span class="pre">&quot;*&quot;</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.HeaderEntry">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HeaderEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#HeaderEntry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.HeaderEntry" title="Link to this definition">#</a></dt>
+<dd><p>Response HTTP header entry</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.HeaderEntry.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.HeaderEntry.name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.HeaderEntry.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.HeaderEntry.value" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthChallenge">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AuthChallenge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#AuthChallenge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.AuthChallenge" title="Link to this definition">#</a></dt>
+<dd><p>Authorization challenge for HTTP status code 401 or 407.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>origin</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>scheme</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>realm</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>source</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthChallenge.origin">
+<span class="sig-name descname"><span class="pre">origin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.AuthChallenge.origin" title="Link to this definition">#</a></dt>
+<dd><p>Origin of the challenger.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthChallenge.realm">
+<span class="sig-name descname"><span class="pre">realm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.AuthChallenge.realm" title="Link to this definition">#</a></dt>
+<dd><p>The realm of the challenge. May be empty.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthChallenge.scheme">
+<span class="sig-name descname"><span class="pre">scheme</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.AuthChallenge.scheme" title="Link to this definition">#</a></dt>
+<dd><p>The authentication scheme used, such as basic or digest</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthChallenge.source">
+<span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.fetch.AuthChallenge.source" title="Link to this definition">#</a></dt>
+<dd><p>Source of the authentication challenge.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthChallengeResponse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AuthChallengeResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#AuthChallengeResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.AuthChallengeResponse" title="Link to this definition">#</a></dt>
+<dd><p>Response to an AuthChallenge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthChallengeResponse.password">
+<span class="sig-name descname"><span class="pre">password</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.fetch.AuthChallengeResponse.password" title="Link to this definition">#</a></dt>
+<dd><p>The password to provide, possibly empty. Should only be set if response is
+ProvideCredentials.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthChallengeResponse.response">
+<span class="sig-name descname"><span class="pre">response</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.AuthChallengeResponse.response" title="Link to this definition">#</a></dt>
+<dd><p>The decision on what to do in response to the authorization challenge.  Default means
+deferring to the default behavior of the net stack, which will likely either the Cancel
+authentication or display a popup dialog box.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthChallengeResponse.username">
+<span class="sig-name descname"><span class="pre">username</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.fetch.AuthChallengeResponse.username" title="Link to this definition">#</a></dt>
+<dd><p>The username to provide, possibly empty. Should only be set if response is
+ProvideCredentials.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading">#</a></h2>
+<p>Each command is a generator function. The return
+type <code class="docutils literal notranslate"><span class="pre">Generator[x,</span> <span class="pre">y,</span> <span class="pre">z]</span></code> indicates that the generator
+<em>yields</em> arguments of type <code class="docutils literal notranslate"><span class="pre">x</span></code>, it must be resumed with
+an argument of type <code class="docutils literal notranslate"><span class="pre">y</span></code>, and it returns type <code class="docutils literal notranslate"><span class="pre">z</span></code>. In
+this library, types <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are the same for all
+commands, and <code class="docutils literal notranslate"><span class="pre">z</span></code> is the return type you should pay attention
+to. For more information, see
+<a class="reference internal" href="../quickstart.html#getting-started-commands"><span class="std std-ref">Getting Started: Commands</span></a>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.continue_request">
+<span class="sig-name descname"><span class="pre">continue_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intercept_response</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#continue_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.continue_request" title="Link to this definition">#</a></dt>
+<dd><p>Continues the request, optionally modifying some of its parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.fetch.RequestId" title="nodriver.cdp.fetch.RequestId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestId</span></code></a></span>) – An id the client received in requestPaused event.</p></li>
+<li><p><strong>url</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – <em>(Optional)</em> If set, the request url will be modified in a way that’s not observable by page.</p></li>
+<li><p><strong>method</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – <em>(Optional)</em> If set, the request method is overridden.</p></li>
+<li><p><strong>post_data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – <em>(Optional)</em> If set, overrides the post data in the request. (Encoded as a base64 string when passed over JSON)</p></li>
+<li><p><strong>headers</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference internal" href="#nodriver.cdp.fetch.HeaderEntry" title="nodriver.cdp.fetch.HeaderEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">HeaderEntry</span></code></a>]]</span>) – <em>(Optional)</em> If set, overrides the request headers. Note that the overrides do not extend to subsequent redirect hops, if a redirect happens. Another override may be applied to a different request produced by a redirect.</p></li>
+<li><p><strong>intercept_response</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>) – <strong>(EXPERIMENTAL)</strong> <em>(Optional)</em> If set, overrides response interception behavior for this request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.continue_response">
+<span class="sig-name descname"><span class="pre">continue_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_phrase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary_response_headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#continue_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.continue_response" title="Link to this definition">#</a></dt>
+<dd><p>Continues loading of the paused response, optionally modifying the
+response headers. If either responseCode or headers are modified, all of them
+must be present.</p>
+<p><strong>EXPERIMENTAL</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.fetch.RequestId" title="nodriver.cdp.fetch.RequestId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestId</span></code></a></span>) – An id the client received in requestPaused event.</p></li>
+<li><p><strong>response_code</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>) – <em>(Optional)</em> An HTTP response code. If absent, original response code will be used.</p></li>
+<li><p><strong>response_phrase</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – <em>(Optional)</em> A textual representation of responseCode. If absent, a standard phrase matching responseCode is used.</p></li>
+<li><p><strong>response_headers</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference internal" href="#nodriver.cdp.fetch.HeaderEntry" title="nodriver.cdp.fetch.HeaderEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">HeaderEntry</span></code></a>]]</span>) – <em>(Optional)</em> Response headers. If absent, original response headers will be used.</p></li>
+<li><p><strong>binary_response_headers</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – <em>(Optional)</em> Alternative way of specifying response headers as a 0-separated series of name: value pairs. Prefer the above method unless you need to represent some non-UTF8 values that can’t be transmitted over the protocol as text. (Encoded as a base64 string when passed over JSON)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.continue_with_auth">
+<span class="sig-name descname"><span class="pre">continue_with_auth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_challenge_response</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#continue_with_auth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.continue_with_auth" title="Link to this definition">#</a></dt>
+<dd><p>Continues a request supplying authChallengeResponse following authRequired event.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.fetch.RequestId" title="nodriver.cdp.fetch.RequestId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestId</span></code></a></span>) – An id the client received in authRequired event.</p></li>
+<li><p><strong>auth_challenge_response</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.fetch.AuthChallengeResponse" title="nodriver.cdp.fetch.AuthChallengeResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AuthChallengeResponse</span></code></a></span>) – Response to  with an authChallenge.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.disable">
+<span class="sig-name descname"><span class="pre">disable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#disable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.disable" title="Link to this definition">#</a></dt>
+<dd><p>Disables the fetch domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.enable">
+<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_auth_requests</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#enable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.enable" title="Link to this definition">#</a></dt>
+<dd><p>Enables issuing of requestPaused events. A request will be paused until client
+calls one of failRequest, fulfillRequest or continueRequest/continueWithAuth.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>patterns</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference internal" href="#nodriver.cdp.fetch.RequestPattern" title="nodriver.cdp.fetch.RequestPattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestPattern</span></code></a>]]</span>) – <em>(Optional)</em> If specified, only requests matching any of these patterns will produce fetchRequested event and will be paused until clients response. If not set, all requests will be affected.</p></li>
+<li><p><strong>handle_auth_requests</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>) – <em>(Optional)</em> If true, authRequired events will be issued and requests will be paused expecting a call to continueWithAuth.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.fail_request">
+<span class="sig-name descname"><span class="pre">fail_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_reason</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#fail_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.fail_request" title="Link to this definition">#</a></dt>
+<dd><p>Causes the request to fail with specified reason.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.fetch.RequestId" title="nodriver.cdp.fetch.RequestId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestId</span></code></a></span>) – An id the client received in requestPaused event.</p></li>
+<li><p><strong>error_reason</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="network.html#nodriver.cdp.network.ErrorReason" title="nodriver.cdp.network.ErrorReason"><code class="xref py py-class docutils literal notranslate"><span class="pre">ErrorReason</span></code></a></span>) – Causes the request to fail with the given reason.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.fulfill_request">
+<span class="sig-name descname"><span class="pre">fulfill_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary_response_headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_phrase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#fulfill_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.fulfill_request" title="Link to this definition">#</a></dt>
+<dd><p>Provides response to the request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.fetch.RequestId" title="nodriver.cdp.fetch.RequestId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestId</span></code></a></span>) – An id the client received in requestPaused event.</p></li>
+<li><p><strong>response_code</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – An HTTP response code.</p></li>
+<li><p><strong>response_headers</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference internal" href="#nodriver.cdp.fetch.HeaderEntry" title="nodriver.cdp.fetch.HeaderEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">HeaderEntry</span></code></a>]]</span>) – <em>(Optional)</em> Response headers.</p></li>
+<li><p><strong>binary_response_headers</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – <em>(Optional)</em> Alternative way of specifying response headers as a 0-separated series of name: value pairs. Prefer the above method unless you need to represent some non-UTF8 values that can’t be transmitted over the protocol as text. (Encoded as a base64 string when passed over JSON)</p></li>
+<li><p><strong>body</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – <em>(Optional)</em> A response body. If absent, original response body will be used if the request is intercepted at the response stage and empty body will be used if the request is intercepted at the request stage. (Encoded as a base64 string when passed over JSON)</p></li>
+<li><p><strong>response_phrase</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – <em>(Optional)</em> A textual representation of responseCode. If absent, a standard phrase matching responseCode is used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.get_response_body">
+<span class="sig-name descname"><span class="pre">get_response_body</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#get_response_body"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.get_response_body" title="Link to this definition">#</a></dt>
+<dd><p>Causes the body of the response to be received from the server and
+returned as a single string. May only be issued for a request that
+is paused in the Response stage and is mutually exclusive with
+takeResponseBodyForInterceptionAsStream. Calling other methods that
+affect the request or disabling fetch domain before body is received
+results in an undefined behavior.
+Note that the response body is not available for redirects. Requests
+paused in the _redirect <a href="#id1"><span class="problematic" id="id2">received_</span></a> state may be differentiated by
+<code class="docutils literal notranslate"><span class="pre">responseCode</span></code> and presence of <code class="docutils literal notranslate"><span class="pre">location</span></code> response header, see
+comments to <code class="docutils literal notranslate"><span class="pre">requestPaused</span></code> for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.fetch.RequestId" title="nodriver.cdp.fetch.RequestId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestId</span></code></a></span>) – Identifier for the intercepted request to get body for.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>A tuple with the following items:</p>
+<ol class="arabic simple" start="0">
+<li><p><strong>body</strong> - Response body.</p></li>
+<li><p><strong>base64Encoded</strong> - True, if content was sent as base64.</p></li>
+</ol>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.take_response_body_as_stream">
+<span class="sig-name descname"><span class="pre">take_response_body_as_stream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#take_response_body_as_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.take_response_body_as_stream" title="Link to this definition">#</a></dt>
+<dd><p>Returns a handle to the stream representing the response body.
+The request must be paused in the HeadersReceived stage.
+Note that after this command the request can’t be continued
+as is – client either needs to cancel it or to provide the
+response body.
+The stream only supports sequential read, IO.read will fail if the position
+is specified.
+This method is mutually exclusive with getResponseBody.
+Calling other methods that affect the request or disabling fetch
+domain before body is received results in an undefined behavior.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.fetch.RequestId" title="nodriver.cdp.fetch.RequestId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestId</span></code></a></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference internal" href="io.html#nodriver.cdp.io.StreamHandle" title="nodriver.cdp.io.StreamHandle"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamHandle</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="events">
+<h2>Events<a class="headerlink" href="#events" title="Link to this heading">#</a></h2>
+<p>Generally, you do not need to instantiate CDP events
+yourself. Instead, the API creates events for you and then
+you use the event’s attributes.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPaused">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RequestPaused</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_error_reason</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_status_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_status_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_headers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redirected_request_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#RequestPaused"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.RequestPaused" title="Link to this definition">#</a></dt>
+<dd><p>Issued when the domain is enabled and the request URL matches the
+specified filter. The request is paused until the client responds
+with one of continueRequest, failRequest or fulfillRequest.
+The stage of the request can be determined by presence of responseErrorReason
+and responseStatusCode – the request is at the response stage if either
+of these fields is present and in the request stage otherwise.
+Redirect responses and subsequent requests are reported similarly to regular
+responses and requests. Redirect responses may be distinguished by the value
+of <code class="docutils literal notranslate"><span class="pre">responseStatusCode</span></code> (which is one of 301, 302, 303, 307, 308) along with
+presence of the <code class="docutils literal notranslate"><span class="pre">location</span></code> header. Requests resulting from a redirect will
+have <code class="docutils literal notranslate"><span class="pre">redirectedRequestId</span></code> field set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request_id</strong> (<a class="reference internal" href="#nodriver.cdp.fetch.RequestId" title="nodriver.cdp.fetch.RequestId"><em>RequestId</em></a>) – </p></li>
+<li><p><strong>request</strong> (<a class="reference internal" href="network.html#nodriver.cdp.network.Request" title="nodriver.cdp.network.Request"><em>Request</em></a>) – </p></li>
+<li><p><strong>frame_id</strong> (<a class="reference internal" href="page.html#nodriver.cdp.page.FrameId" title="nodriver.cdp.page.FrameId"><em>FrameId</em></a>) – </p></li>
+<li><p><strong>resource_type</strong> (<a class="reference internal" href="network.html#nodriver.cdp.network.ResourceType" title="nodriver.cdp.network.ResourceType"><em>ResourceType</em></a>) – </p></li>
+<li><p><strong>response_error_reason</strong> (<a class="reference internal" href="network.html#nodriver.cdp.network.ErrorReason" title="nodriver.cdp.network.ErrorReason"><em>ErrorReason</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>response_status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>response_status_text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>response_headers</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference internal" href="#nodriver.cdp.fetch.HeaderEntry" title="nodriver.cdp.fetch.HeaderEntry"><em>HeaderEntry</em></a><em>] </em><em>| </em><em>None</em>) – </p></li>
+<li><p><strong>network_id</strong> (<a class="reference internal" href="network.html#nodriver.cdp.network.RequestId" title="nodriver.cdp.network.RequestId"><em>RequestId</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>redirected_request_id</strong> (<a class="reference internal" href="#nodriver.cdp.fetch.RequestId" title="nodriver.cdp.fetch.RequestId"><em>RequestId</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPaused.frame_id">
+<span class="sig-name descname"><span class="pre">frame_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="page.html#nodriver.cdp.page.FrameId" title="nodriver.cdp.page.FrameId"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrameId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestPaused.frame_id" title="Link to this definition">#</a></dt>
+<dd><p>The id of the frame that initiated the request.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPaused.network_id">
+<span class="sig-name descname"><span class="pre">network_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="network.html#nodriver.cdp.network.RequestId" title="nodriver.cdp.network.RequestId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestId</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestPaused.network_id" title="Link to this definition">#</a></dt>
+<dd><p>If the intercepted request had a corresponding Network.requestWillBeSent event fired for it,
+then this networkId will be the same as the requestId present in the requestWillBeSent event.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPaused.redirected_request_id">
+<span class="sig-name descname"><span class="pre">redirected_request_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.fetch.RequestId" title="nodriver.cdp.fetch.RequestId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestId</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestPaused.redirected_request_id" title="Link to this definition">#</a></dt>
+<dd><p>If the request is due to a redirect response from the server, the id of the request that
+has caused the redirect.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPaused.request">
+<span class="sig-name descname"><span class="pre">request</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="network.html#nodriver.cdp.network.Request" title="nodriver.cdp.network.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestPaused.request" title="Link to this definition">#</a></dt>
+<dd><p>The details of the request.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPaused.request_id">
+<span class="sig-name descname"><span class="pre">request_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.fetch.RequestId" title="nodriver.cdp.fetch.RequestId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestPaused.request_id" title="Link to this definition">#</a></dt>
+<dd><p>Each request the page makes will have a unique id.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPaused.resource_type">
+<span class="sig-name descname"><span class="pre">resource_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="network.html#nodriver.cdp.network.ResourceType" title="nodriver.cdp.network.ResourceType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResourceType</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestPaused.resource_type" title="Link to this definition">#</a></dt>
+<dd><p>How the requested resource will be used.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPaused.response_error_reason">
+<span class="sig-name descname"><span class="pre">response_error_reason</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="network.html#nodriver.cdp.network.ErrorReason" title="nodriver.cdp.network.ErrorReason"><code class="xref py py-class docutils literal notranslate"><span class="pre">ErrorReason</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestPaused.response_error_reason" title="Link to this definition">#</a></dt>
+<dd><p>Response error if intercepted at response stage.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPaused.response_headers">
+<span class="sig-name descname"><span class="pre">response_headers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.fetch.HeaderEntry" title="nodriver.cdp.fetch.HeaderEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">HeaderEntry</span></code></a><span class="pre">]]</span></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestPaused.response_headers" title="Link to this definition">#</a></dt>
+<dd><p>Response headers if intercepted at the response stage.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPaused.response_status_code">
+<span class="sig-name descname"><span class="pre">response_status_code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestPaused.response_status_code" title="Link to this definition">#</a></dt>
+<dd><p>Response code if intercepted at response stage.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.RequestPaused.response_status_text">
+<span class="sig-name descname"><span class="pre">response_status_text</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.fetch.RequestPaused.response_status_text" title="Link to this definition">#</a></dt>
+<dd><p>Response status text if intercepted at response stage.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthRequired">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AuthRequired</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_challenge</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/fetch.html#AuthRequired"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.fetch.AuthRequired" title="Link to this definition">#</a></dt>
+<dd><p>Issued when the domain is enabled with handleAuthRequests set to true.
+The request is paused until client responds with continueWithAuth.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request_id</strong> (<a class="reference internal" href="#nodriver.cdp.fetch.RequestId" title="nodriver.cdp.fetch.RequestId"><em>RequestId</em></a>) – </p></li>
+<li><p><strong>request</strong> (<a class="reference internal" href="network.html#nodriver.cdp.network.Request" title="nodriver.cdp.network.Request"><em>Request</em></a>) – </p></li>
+<li><p><strong>frame_id</strong> (<a class="reference internal" href="page.html#nodriver.cdp.page.FrameId" title="nodriver.cdp.page.FrameId"><em>FrameId</em></a>) – </p></li>
+<li><p><strong>resource_type</strong> (<a class="reference internal" href="network.html#nodriver.cdp.network.ResourceType" title="nodriver.cdp.network.ResourceType"><em>ResourceType</em></a>) – </p></li>
+<li><p><strong>auth_challenge</strong> (<a class="reference internal" href="#nodriver.cdp.fetch.AuthChallenge" title="nodriver.cdp.fetch.AuthChallenge"><em>AuthChallenge</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthRequired.auth_challenge">
+<span class="sig-name descname"><span class="pre">auth_challenge</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.fetch.AuthChallenge" title="nodriver.cdp.fetch.AuthChallenge"><code class="xref py py-class docutils literal notranslate"><span class="pre">AuthChallenge</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.AuthRequired.auth_challenge" title="Link to this definition">#</a></dt>
+<dd><p>Details of the Authorization Challenge encountered.
+If this is set, client should respond with continueRequest that
+contains AuthChallengeResponse.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthRequired.frame_id">
+<span class="sig-name descname"><span class="pre">frame_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="page.html#nodriver.cdp.page.FrameId" title="nodriver.cdp.page.FrameId"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrameId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.AuthRequired.frame_id" title="Link to this definition">#</a></dt>
+<dd><p>The id of the frame that initiated the request.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthRequired.request">
+<span class="sig-name descname"><span class="pre">request</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="network.html#nodriver.cdp.network.Request" title="nodriver.cdp.network.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.AuthRequired.request" title="Link to this definition">#</a></dt>
+<dd><p>The details of the request.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthRequired.request_id">
+<span class="sig-name descname"><span class="pre">request_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.fetch.RequestId" title="nodriver.cdp.fetch.RequestId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.AuthRequired.request_id" title="Link to this definition">#</a></dt>
+<dd><p>Each request the page makes will have a unique id.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.fetch.AuthRequired.resource_type">
+<span class="sig-name descname"><span class="pre">resource_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="network.html#nodriver.cdp.network.ResourceType" title="nodriver.cdp.network.ResourceType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResourceType</span></code></a></em><a class="headerlink" href="#nodriver.cdp.fetch.AuthRequired.resource_type" title="Link to this definition">#</a></dt>
+<dd><p>How the requested resource will be used.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="headless_experimental.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">HeadlessExperimental</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="fed_cm.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">FedCm</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Author
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Fetch</a><ul>
+<li><a class="reference internal" href="#types">Types</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestId"><code class="docutils literal notranslate"><span class="pre">RequestId</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestStage"><code class="docutils literal notranslate"><span class="pre">RequestStage</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestStage.REQUEST"><code class="docutils literal notranslate"><span class="pre">RequestStage.REQUEST</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestStage.RESPONSE"><code class="docutils literal notranslate"><span class="pre">RequestStage.RESPONSE</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPattern"><code class="docutils literal notranslate"><span class="pre">RequestPattern</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPattern.request_stage"><code class="docutils literal notranslate"><span class="pre">RequestPattern.request_stage</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPattern.resource_type"><code class="docutils literal notranslate"><span class="pre">RequestPattern.resource_type</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPattern.url_pattern"><code class="docutils literal notranslate"><span class="pre">RequestPattern.url_pattern</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.HeaderEntry"><code class="docutils literal notranslate"><span class="pre">HeaderEntry</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.HeaderEntry.name"><code class="docutils literal notranslate"><span class="pre">HeaderEntry.name</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.HeaderEntry.value"><code class="docutils literal notranslate"><span class="pre">HeaderEntry.value</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthChallenge"><code class="docutils literal notranslate"><span class="pre">AuthChallenge</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthChallenge.origin"><code class="docutils literal notranslate"><span class="pre">AuthChallenge.origin</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthChallenge.realm"><code class="docutils literal notranslate"><span class="pre">AuthChallenge.realm</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthChallenge.scheme"><code class="docutils literal notranslate"><span class="pre">AuthChallenge.scheme</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthChallenge.source"><code class="docutils literal notranslate"><span class="pre">AuthChallenge.source</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthChallengeResponse"><code class="docutils literal notranslate"><span class="pre">AuthChallengeResponse</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthChallengeResponse.password"><code class="docutils literal notranslate"><span class="pre">AuthChallengeResponse.password</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthChallengeResponse.response"><code class="docutils literal notranslate"><span class="pre">AuthChallengeResponse.response</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthChallengeResponse.username"><code class="docutils literal notranslate"><span class="pre">AuthChallengeResponse.username</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#commands">Commands</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.continue_request"><code class="docutils literal notranslate"><span class="pre">continue_request()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.continue_response"><code class="docutils literal notranslate"><span class="pre">continue_response()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.continue_with_auth"><code class="docutils literal notranslate"><span class="pre">continue_with_auth()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.disable"><code class="docutils literal notranslate"><span class="pre">disable()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.enable"><code class="docutils literal notranslate"><span class="pre">enable()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.fail_request"><code class="docutils literal notranslate"><span class="pre">fail_request()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.fulfill_request"><code class="docutils literal notranslate"><span class="pre">fulfill_request()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.get_response_body"><code class="docutils literal notranslate"><span class="pre">get_response_body()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.take_response_body_as_stream"><code class="docutils literal notranslate"><span class="pre">take_response_body_as_stream()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#events">Events</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPaused"><code class="docutils literal notranslate"><span class="pre">RequestPaused</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPaused.frame_id"><code class="docutils literal notranslate"><span class="pre">RequestPaused.frame_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPaused.network_id"><code class="docutils literal notranslate"><span class="pre">RequestPaused.network_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPaused.redirected_request_id"><code class="docutils literal notranslate"><span class="pre">RequestPaused.redirected_request_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPaused.request"><code class="docutils literal notranslate"><span class="pre">RequestPaused.request</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPaused.request_id"><code class="docutils literal notranslate"><span class="pre">RequestPaused.request_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPaused.resource_type"><code class="docutils literal notranslate"><span class="pre">RequestPaused.resource_type</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPaused.response_error_reason"><code class="docutils literal notranslate"><span class="pre">RequestPaused.response_error_reason</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPaused.response_headers"><code class="docutils literal notranslate"><span class="pre">RequestPaused.response_headers</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPaused.response_status_code"><code class="docutils literal notranslate"><span class="pre">RequestPaused.response_status_code</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.RequestPaused.response_status_text"><code class="docutils literal notranslate"><span class="pre">RequestPaused.response_status_text</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthRequired"><code class="docutils literal notranslate"><span class="pre">AuthRequired</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthRequired.auth_challenge"><code class="docutils literal notranslate"><span class="pre">AuthRequired.auth_challenge</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthRequired.frame_id"><code class="docutils literal notranslate"><span class="pre">AuthRequired.frame_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthRequired.request"><code class="docutils literal notranslate"><span class="pre">AuthRequired.request</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthRequired.request_id"><code class="docutils literal notranslate"><span class="pre">AuthRequired.request_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.fetch.AuthRequired.resource_type"><code class="docutils literal notranslate"><span class="pre">AuthRequired.resource_type</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

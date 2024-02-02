@@ -1,0 +1,780 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>nodriver.cdp.service_worker - nodriver documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/./custom.css?v=3934642d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">nodriver  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">nodriver  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#components-and-interaction">Components and interaction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver object reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/element.html">Element class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/others_and_helpers.html">Other classes and Helper classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/page.html">Page class</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/accessibility.html">Accessibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/audits.html">Audits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/autofill.html">Autofill</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/background_service.html">BackgroundService</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/browser.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/cache_storage.html">CacheStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/dom.html">DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/dom_debugger.html">DOMDebugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/dom_snapshot.html">DOMSnapshot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/dom_storage.html">DOMStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/emulation.html">Emulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/fed_cm.html">FedCm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/fetch.html">Fetch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/headless_experimental.html">HeadlessExperimental</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/heap_profiler.html">HeapProfiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/indexed_db.html">IndexedDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/input_.html">Input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/inspector.html">Inspector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/io.html">IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/layer_tree.html">LayerTree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/media.html">Media</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/memory.html">Memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/network.html">Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/overlay.html">Overlay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/page.html">Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/performance.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/performance_timeline.html">PerformanceTimeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/preload.html">Preload</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/profiler.html">Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/runtime.html">Runtime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/security.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/service_worker.html">ServiceWorker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/storage.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/system_info.html">SystemInfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/target.html">Target</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/tethering.html">Tethering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/tracing.html">Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/web_audio.html">WebAudio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/web_authn.html">WebAuthn</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for nodriver.cdp.service_worker</h1><div class="highlight"><pre>
+<span></span><span class="c1"># DO NOT EDIT THIS FILE!</span>
+<span class="c1">#</span>
+<span class="c1"># This file is generated from the CDP specification. If you need to make</span>
+<span class="c1"># changes, edit the generator and regenerate all of the modules.</span>
+<span class="c1">#</span>
+<span class="c1"># CDP domain: ServiceWorker (experimental)</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">typing</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">target</span>
+
+
+<div class="viewcode-block" id="RegistrationID">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.RegistrationID">[docs]</a>
+<span class="k">class</span> <span class="nc">RegistrationID</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RegistrationID</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;RegistrationID(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="ServiceWorkerRegistration">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.ServiceWorkerRegistration">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ServiceWorkerRegistration</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    ServiceWorker registration.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">registration_id</span><span class="p">:</span> <span class="n">RegistrationID</span>
+
+    <span class="n">scope_url</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="n">is_deleted</span><span class="p">:</span> <span class="nb">bool</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;registrationId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">registration_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;scopeURL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope_url</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;isDeleted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_deleted</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ServiceWorkerRegistration</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">registration_id</span><span class="o">=</span><span class="n">RegistrationID</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;registrationId&#39;</span><span class="p">]),</span>
+            <span class="n">scope_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;scopeURL&#39;</span><span class="p">]),</span>
+            <span class="n">is_deleted</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;isDeleted&#39;</span><span class="p">]),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ServiceWorkerVersionRunningStatus">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus">[docs]</a>
+<span class="k">class</span> <span class="nc">ServiceWorkerVersionRunningStatus</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">STOPPED</span> <span class="o">=</span> <span class="s2">&quot;stopped&quot;</span>
+    <span class="n">STARTING</span> <span class="o">=</span> <span class="s2">&quot;starting&quot;</span>
+    <span class="n">RUNNING</span> <span class="o">=</span> <span class="s2">&quot;running&quot;</span>
+    <span class="n">STOPPING</span> <span class="o">=</span> <span class="s2">&quot;stopping&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ServiceWorkerVersionRunningStatus</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ServiceWorkerVersionStatus">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.ServiceWorkerVersionStatus">[docs]</a>
+<span class="k">class</span> <span class="nc">ServiceWorkerVersionStatus</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">NEW</span> <span class="o">=</span> <span class="s2">&quot;new&quot;</span>
+    <span class="n">INSTALLING</span> <span class="o">=</span> <span class="s2">&quot;installing&quot;</span>
+    <span class="n">INSTALLED</span> <span class="o">=</span> <span class="s2">&quot;installed&quot;</span>
+    <span class="n">ACTIVATING</span> <span class="o">=</span> <span class="s2">&quot;activating&quot;</span>
+    <span class="n">ACTIVATED</span> <span class="o">=</span> <span class="s2">&quot;activated&quot;</span>
+    <span class="n">REDUNDANT</span> <span class="o">=</span> <span class="s2">&quot;redundant&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ServiceWorkerVersionStatus</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ServiceWorkerVersion">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.ServiceWorkerVersion">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ServiceWorkerVersion</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    ServiceWorker version.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">version_id</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="n">registration_id</span><span class="p">:</span> <span class="n">RegistrationID</span>
+
+    <span class="n">script_url</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="n">running_status</span><span class="p">:</span> <span class="n">ServiceWorkerVersionRunningStatus</span>
+
+    <span class="n">status</span><span class="p">:</span> <span class="n">ServiceWorkerVersionStatus</span>
+
+    <span class="c1">#: The Last-Modified header value of the main script.</span>
+    <span class="n">script_last_modified</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: The time at which the response headers of the main script were received from the server.</span>
+    <span class="c1">#: For cached script it is the last time the cache entry was validated.</span>
+    <span class="n">script_response_time</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">controlled_clients</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">target</span><span class="o">.</span><span class="n">TargetID</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">target_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">target</span><span class="o">.</span><span class="n">TargetID</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">router_rules</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;versionId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">version_id</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;registrationId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">registration_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;scriptURL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">script_url</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;runningStatus&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_status</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">script_last_modified</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;scriptLastModified&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">script_last_modified</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">script_response_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;scriptResponseTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">script_response_time</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">controlled_clients</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;controlledClients&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">controlled_clients</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;targetId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">router_rules</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;routerRules&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">router_rules</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ServiceWorkerVersion</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">version_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;versionId&#39;</span><span class="p">]),</span>
+            <span class="n">registration_id</span><span class="o">=</span><span class="n">RegistrationID</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;registrationId&#39;</span><span class="p">]),</span>
+            <span class="n">script_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;scriptURL&#39;</span><span class="p">]),</span>
+            <span class="n">running_status</span><span class="o">=</span><span class="n">ServiceWorkerVersionRunningStatus</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;runningStatus&#39;</span><span class="p">]),</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">ServiceWorkerVersionStatus</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]),</span>
+            <span class="n">script_last_modified</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;scriptLastModified&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scriptLastModified&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">script_response_time</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;scriptResponseTime&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scriptResponseTime&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">controlled_clients</span><span class="o">=</span><span class="p">[</span><span class="n">target</span><span class="o">.</span><span class="n">TargetID</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;controlledClients&#39;</span><span class="p">]]</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;controlledClients&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">target_id</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">TargetID</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;targetId&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;targetId&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">router_rules</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;routerRules&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;routerRules&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ServiceWorkerErrorMessage">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.ServiceWorkerErrorMessage">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ServiceWorkerErrorMessage</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    ServiceWorker error message.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">error_message</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="n">registration_id</span><span class="p">:</span> <span class="n">RegistrationID</span>
+
+    <span class="n">version_id</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="n">source_url</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="n">line_number</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="n">column_number</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;errorMessage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;registrationId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">registration_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;versionId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">version_id</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;sourceURL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_url</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;lineNumber&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_number</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;columnNumber&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_number</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ServiceWorkerErrorMessage</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;errorMessage&#39;</span><span class="p">]),</span>
+            <span class="n">registration_id</span><span class="o">=</span><span class="n">RegistrationID</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;registrationId&#39;</span><span class="p">]),</span>
+            <span class="n">version_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;versionId&#39;</span><span class="p">]),</span>
+            <span class="n">source_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;sourceURL&#39;</span><span class="p">]),</span>
+            <span class="n">line_number</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;lineNumber&#39;</span><span class="p">]),</span>
+            <span class="n">column_number</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;columnNumber&#39;</span><span class="p">]),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="deliver_push_message">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.deliver_push_message">[docs]</a>
+<span class="k">def</span> <span class="nf">deliver_push_message</span><span class="p">(</span>
+        <span class="n">origin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">registration_id</span><span class="p">:</span> <span class="n">RegistrationID</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    :param origin:</span>
+<span class="sd">    :param registration_id:</span>
+<span class="sd">    :param data:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;registrationId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">registration_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;ServiceWorker.deliverPushMessage&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="disable">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.disable">[docs]</a>
+<span class="k">def</span> <span class="nf">disable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;ServiceWorker.disable&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="dispatch_sync_event">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.dispatch_sync_event">[docs]</a>
+<span class="k">def</span> <span class="nf">dispatch_sync_event</span><span class="p">(</span>
+        <span class="n">origin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">registration_id</span><span class="p">:</span> <span class="n">RegistrationID</span><span class="p">,</span>
+        <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">last_chance</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    :param origin:</span>
+<span class="sd">    :param registration_id:</span>
+<span class="sd">    :param tag:</span>
+<span class="sd">    :param last_chance:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;registrationId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">registration_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;lastChance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_chance</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;ServiceWorker.dispatchSyncEvent&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="dispatch_periodic_sync_event">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.dispatch_periodic_sync_event">[docs]</a>
+<span class="k">def</span> <span class="nf">dispatch_periodic_sync_event</span><span class="p">(</span>
+        <span class="n">origin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">registration_id</span><span class="p">:</span> <span class="n">RegistrationID</span><span class="p">,</span>
+        <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    :param origin:</span>
+<span class="sd">    :param registration_id:</span>
+<span class="sd">    :param tag:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;registrationId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">registration_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;ServiceWorker.dispatchPeriodicSyncEvent&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="enable">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.enable">[docs]</a>
+<span class="k">def</span> <span class="nf">enable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;ServiceWorker.enable&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="inspect_worker">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.inspect_worker">[docs]</a>
+<span class="k">def</span> <span class="nf">inspect_worker</span><span class="p">(</span>
+        <span class="n">version_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    :param version_id:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;versionId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">version_id</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;ServiceWorker.inspectWorker&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="set_force_update_on_page_load">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.set_force_update_on_page_load">[docs]</a>
+<span class="k">def</span> <span class="nf">set_force_update_on_page_load</span><span class="p">(</span>
+        <span class="n">force_update_on_page_load</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    :param force_update_on_page_load:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;forceUpdateOnPageLoad&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">force_update_on_page_load</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;ServiceWorker.setForceUpdateOnPageLoad&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="skip_waiting">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.skip_waiting">[docs]</a>
+<span class="k">def</span> <span class="nf">skip_waiting</span><span class="p">(</span>
+        <span class="n">scope_url</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    :param scope_url:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;scopeURL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scope_url</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;ServiceWorker.skipWaiting&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="start_worker">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.start_worker">[docs]</a>
+<span class="k">def</span> <span class="nf">start_worker</span><span class="p">(</span>
+        <span class="n">scope_url</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    :param scope_url:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;scopeURL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scope_url</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;ServiceWorker.startWorker&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="stop_all_workers">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.stop_all_workers">[docs]</a>
+<span class="k">def</span> <span class="nf">stop_all_workers</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;ServiceWorker.stopAllWorkers&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="stop_worker">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.stop_worker">[docs]</a>
+<span class="k">def</span> <span class="nf">stop_worker</span><span class="p">(</span>
+        <span class="n">version_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    :param version_id:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;versionId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">version_id</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;ServiceWorker.stopWorker&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="unregister">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.unregister">[docs]</a>
+<span class="k">def</span> <span class="nf">unregister</span><span class="p">(</span>
+        <span class="n">scope_url</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    :param scope_url:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;scopeURL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scope_url</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;ServiceWorker.unregister&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="update_registration">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.update_registration">[docs]</a>
+<span class="k">def</span> <span class="nf">update_registration</span><span class="p">(</span>
+        <span class="n">scope_url</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    :param scope_url:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;scopeURL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scope_url</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;ServiceWorker.updateRegistration&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="WorkerErrorReported">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.WorkerErrorReported">[docs]</a>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;ServiceWorker.workerErrorReported&#39;</span><span class="p">)</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">WorkerErrorReported</span><span class="p">:</span>
+    <span class="n">error_message</span><span class="p">:</span> <span class="n">ServiceWorkerErrorMessage</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkerErrorReported</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="n">ServiceWorkerErrorMessage</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;errorMessage&#39;</span><span class="p">])</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="WorkerRegistrationUpdated">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.WorkerRegistrationUpdated">[docs]</a>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;ServiceWorker.workerRegistrationUpdated&#39;</span><span class="p">)</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">WorkerRegistrationUpdated</span><span class="p">:</span>
+    <span class="n">registrations</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">ServiceWorkerRegistration</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkerRegistrationUpdated</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">registrations</span><span class="o">=</span><span class="p">[</span><span class="n">ServiceWorkerRegistration</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;registrations&#39;</span><span class="p">]]</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="WorkerVersionUpdated">
+<a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.WorkerVersionUpdated">[docs]</a>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;ServiceWorker.workerVersionUpdated&#39;</span><span class="p">)</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">WorkerVersionUpdated</span><span class="p">:</span>
+    <span class="n">versions</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">ServiceWorkerVersion</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkerVersionUpdated</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">versions</span><span class="o">=</span><span class="p">[</span><span class="n">ServiceWorkerVersion</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;versions&#39;</span><span class="p">]]</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Author
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

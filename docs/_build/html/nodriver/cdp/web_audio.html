@@ -1,0 +1,1246 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="WebAuthn" href="web_authn.html" /><link rel="prev" title="Tracing" href="tracing.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>WebAudio - nodriver documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/./custom.css?v=3934642d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">nodriver  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">nodriver  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#components-and-interaction">Components and interaction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver object reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../classes/browser.html">Browser class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/element.html">Element class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/others_and_helpers.html">Other classes and Helper classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/page.html">Page class</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="accessibility.html">Accessibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audits.html">Audits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autofill.html">Autofill</a></li>
+<li class="toctree-l1"><a class="reference internal" href="background_service.html">BackgroundService</a></li>
+<li class="toctree-l1"><a class="reference internal" href="browser.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cache_storage.html">CacheStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cast.html">Cast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="console.html">Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="css.html">CSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugger.html">Debugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device_access.html">DeviceAccess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device_orientation.html">DeviceOrientation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom.html">DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_debugger.html">DOMDebugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_snapshot.html">DOMSnapshot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_storage.html">DOMStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="emulation.html">Emulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fed_cm.html">FedCm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fetch.html">Fetch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="headless_experimental.html">HeadlessExperimental</a></li>
+<li class="toctree-l1"><a class="reference internal" href="heap_profiler.html">HeapProfiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexed_db.html">IndexedDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_.html">Input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inspector.html">Inspector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io.html">IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layer_tree.html">LayerTree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="media.html">Media</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">Memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overlay.html">Overlay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page.html">Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance_timeline.html">PerformanceTimeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preload.html">Preload</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiler.html">Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtime.html">Runtime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="service_worker.html">ServiceWorker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="system_info.html">SystemInfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="target.html">Target</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tethering.html">Tethering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">WebAudio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_authn.html">WebAuthn</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="webaudio">
+<h1>WebAudio<a class="headerlink" href="#webaudio" title="Link to this heading">#</a></h1>
+<p>This domain allows inspection of Web Audio API.
+<a class="reference external" href="https://webaudio.github.io/web-audio-api/">https://webaudio.github.io/web-audio-api/</a></p>
+<p><em>This CDP domain is experimental.</em></p>
+<ul class="simple" id="module-nodriver.cdp.web_audio">
+<li><p><a class="reference internal" href="#types">Types</a></p></li>
+<li><p><a class="reference internal" href="#commands">Commands</a></p></li>
+<li><p><a class="reference internal" href="#events">Events</a></p></li>
+</ul>
+<section id="types">
+<h2>Types<a class="headerlink" href="#types" title="Link to this heading">#</a></h2>
+<p>Generally, you do not need to instantiate CDP types
+yourself. Instead, the API creates objects for you as return
+values from commands, and then you can use those objects as
+arguments to other commands.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.GraphObjectId">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphObjectId</span></span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#GraphObjectId"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.GraphObjectId" title="Link to this definition">#</a></dt>
+<dd><p>An unique ID for a graph object (AudioContext, AudioNode, AudioParam) in Web Audio API</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ContextType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#ContextType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.ContextType" title="Link to this definition">#</a></dt>
+<dd><p>Enum of BaseAudioContext types</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextType.OFFLINE">
+<span class="sig-name descname"><span class="pre">OFFLINE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'offline'</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.ContextType.OFFLINE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextType.REALTIME">
+<span class="sig-name descname"><span class="pre">REALTIME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'realtime'</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.ContextType.REALTIME" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextState">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ContextState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#ContextState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.ContextState" title="Link to this definition">#</a></dt>
+<dd><p>Enum of AudioContextState from the spec</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextState.CLOSED">
+<span class="sig-name descname"><span class="pre">CLOSED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'closed'</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.ContextState.CLOSED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextState.RUNNING">
+<span class="sig-name descname"><span class="pre">RUNNING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'running'</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.ContextState.RUNNING" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextState.SUSPENDED">
+<span class="sig-name descname"><span class="pre">SUSPENDED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'suspended'</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.ContextState.SUSPENDED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodeType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NodeType</span></span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#NodeType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.NodeType" title="Link to this definition">#</a></dt>
+<dd><p>Enum of AudioNode types</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ChannelCountMode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ChannelCountMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#ChannelCountMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.ChannelCountMode" title="Link to this definition">#</a></dt>
+<dd><p>Enum of AudioNode::ChannelCountMode from the spec</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ChannelCountMode.CLAMPED_MAX">
+<span class="sig-name descname"><span class="pre">CLAMPED_MAX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'clamped-max'</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.ChannelCountMode.CLAMPED_MAX" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ChannelCountMode.EXPLICIT">
+<span class="sig-name descname"><span class="pre">EXPLICIT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'explicit'</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.ChannelCountMode.EXPLICIT" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ChannelCountMode.MAX_">
+<span class="sig-name descname"><span class="pre">MAX_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'max'</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.ChannelCountMode.MAX_" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ChannelInterpretation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ChannelInterpretation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#ChannelInterpretation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.ChannelInterpretation" title="Link to this definition">#</a></dt>
+<dd><p>Enum of AudioNode::ChannelInterpretation from the spec</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ChannelInterpretation.DISCRETE">
+<span class="sig-name descname"><span class="pre">DISCRETE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'discrete'</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.ChannelInterpretation.DISCRETE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ChannelInterpretation.SPEAKERS">
+<span class="sig-name descname"><span class="pre">SPEAKERS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'speakers'</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.ChannelInterpretation.SPEAKERS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ParamType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ParamType</span></span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#ParamType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.ParamType" title="Link to this definition">#</a></dt>
+<dd><p>Enum of AudioParam types</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AutomationRate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AutomationRate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#AutomationRate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.AutomationRate" title="Link to this definition">#</a></dt>
+<dd><p>Enum of AudioParam::AutomationRate from the spec</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AutomationRate.A_RATE">
+<span class="sig-name descname"><span class="pre">A_RATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'a-rate'</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.AutomationRate.A_RATE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AutomationRate.K_RATE">
+<span class="sig-name descname"><span class="pre">K_RATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'k-rate'</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.AutomationRate.K_RATE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextRealtimeData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ContextRealtimeData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render_capacity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_interval_mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_interval_variance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#ContextRealtimeData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.ContextRealtimeData" title="Link to this definition">#</a></dt>
+<dd><p>Fields in AudioContext that change in real-time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>current_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p></li>
+<li><p><strong>render_capacity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p></li>
+<li><p><strong>callback_interval_mean</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p></li>
+<li><p><strong>callback_interval_variance</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextRealtimeData.callback_interval_mean">
+<span class="sig-name descname"><span class="pre">callback_interval_mean</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.ContextRealtimeData.callback_interval_mean" title="Link to this definition">#</a></dt>
+<dd><p>A running mean of callback interval.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextRealtimeData.callback_interval_variance">
+<span class="sig-name descname"><span class="pre">callback_interval_variance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.ContextRealtimeData.callback_interval_variance" title="Link to this definition">#</a></dt>
+<dd><p>A running variance of callback interval.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextRealtimeData.current_time">
+<span class="sig-name descname"><span class="pre">current_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.ContextRealtimeData.current_time" title="Link to this definition">#</a></dt>
+<dd><p>The current context time in second in BaseAudioContext.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextRealtimeData.render_capacity">
+<span class="sig-name descname"><span class="pre">render_capacity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.ContextRealtimeData.render_capacity" title="Link to this definition">#</a></dt>
+<dd><p>The time spent on rendering graph divided by render quantum duration,
+and multiplied by 100. 100 means the audio renderer reached the full
+capacity and glitch may occur.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.BaseAudioContext">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BaseAudioContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_buffer_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_output_channel_count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realtime_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#BaseAudioContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.BaseAudioContext" title="Link to this definition">#</a></dt>
+<dd><p>Protocol object for BaseAudioContext</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>context_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>context_type</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.ContextType" title="nodriver.cdp.web_audio.ContextType"><em>ContextType</em></a>) – </p></li>
+<li><p><strong>context_state</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.ContextState" title="nodriver.cdp.web_audio.ContextState"><em>ContextState</em></a>) – </p></li>
+<li><p><strong>callback_buffer_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p></li>
+<li><p><strong>max_output_channel_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p></li>
+<li><p><strong>sample_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p></li>
+<li><p><strong>realtime_data</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.ContextRealtimeData" title="nodriver.cdp.web_audio.ContextRealtimeData"><em>ContextRealtimeData</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.BaseAudioContext.callback_buffer_size">
+<span class="sig-name descname"><span class="pre">callback_buffer_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.BaseAudioContext.callback_buffer_size" title="Link to this definition">#</a></dt>
+<dd><p>Platform-dependent callback buffer size.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.BaseAudioContext.context_id">
+<span class="sig-name descname"><span class="pre">context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.BaseAudioContext.context_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.BaseAudioContext.context_state">
+<span class="sig-name descname"><span class="pre">context_state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.ContextState" title="nodriver.cdp.web_audio.ContextState"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContextState</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.BaseAudioContext.context_state" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.BaseAudioContext.context_type">
+<span class="sig-name descname"><span class="pre">context_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.ContextType" title="nodriver.cdp.web_audio.ContextType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContextType</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.BaseAudioContext.context_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.BaseAudioContext.max_output_channel_count">
+<span class="sig-name descname"><span class="pre">max_output_channel_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.BaseAudioContext.max_output_channel_count" title="Link to this definition">#</a></dt>
+<dd><p>Number of output channels supported by audio hardware in use.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.BaseAudioContext.realtime_data">
+<span class="sig-name descname"><span class="pre">realtime_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.web_audio.ContextRealtimeData" title="nodriver.cdp.web_audio.ContextRealtimeData"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContextRealtimeData</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.BaseAudioContext.realtime_data" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.BaseAudioContext.sample_rate">
+<span class="sig-name descname"><span class="pre">sample_rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.BaseAudioContext.sample_rate" title="Link to this definition">#</a></dt>
+<dd><p>Context sample rate.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioListener">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AudioListener</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listener_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#AudioListener"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.AudioListener" title="Link to this definition">#</a></dt>
+<dd><p>Protocol object for AudioListener</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>listener_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>context_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioListener.context_id">
+<span class="sig-name descname"><span class="pre">context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioListener.context_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioListener.listener_id">
+<span class="sig-name descname"><span class="pre">listener_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioListener.listener_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AudioNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_count_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_interpretation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#AudioNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.AudioNode" title="Link to this definition">#</a></dt>
+<dd><p>Protocol object for AudioNode</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>context_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>node_type</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.NodeType" title="nodriver.cdp.web_audio.NodeType"><em>NodeType</em></a>) – </p></li>
+<li><p><strong>number_of_inputs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p></li>
+<li><p><strong>number_of_outputs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p></li>
+<li><p><strong>channel_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p></li>
+<li><p><strong>channel_count_mode</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.ChannelCountMode" title="nodriver.cdp.web_audio.ChannelCountMode"><em>ChannelCountMode</em></a>) – </p></li>
+<li><p><strong>channel_interpretation</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.ChannelInterpretation" title="nodriver.cdp.web_audio.ChannelInterpretation"><em>ChannelInterpretation</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioNode.channel_count">
+<span class="sig-name descname"><span class="pre">channel_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioNode.channel_count" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioNode.channel_count_mode">
+<span class="sig-name descname"><span class="pre">channel_count_mode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.ChannelCountMode" title="nodriver.cdp.web_audio.ChannelCountMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChannelCountMode</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioNode.channel_count_mode" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioNode.channel_interpretation">
+<span class="sig-name descname"><span class="pre">channel_interpretation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.ChannelInterpretation" title="nodriver.cdp.web_audio.ChannelInterpretation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChannelInterpretation</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioNode.channel_interpretation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioNode.context_id">
+<span class="sig-name descname"><span class="pre">context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioNode.context_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioNode.node_id">
+<span class="sig-name descname"><span class="pre">node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioNode.node_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioNode.node_type">
+<span class="sig-name descname"><span class="pre">node_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.NodeType" title="nodriver.cdp.web_audio.NodeType"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeType</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioNode.node_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioNode.number_of_inputs">
+<span class="sig-name descname"><span class="pre">number_of_inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioNode.number_of_inputs" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioNode.number_of_outputs">
+<span class="sig-name descname"><span class="pre">number_of_outputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioNode.number_of_outputs" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParam">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AudioParam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#AudioParam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParam" title="Link to this definition">#</a></dt>
+<dd><p>Protocol object for AudioParam</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>node_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>context_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>param_type</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.ParamType" title="nodriver.cdp.web_audio.ParamType"><em>ParamType</em></a>) – </p></li>
+<li><p><strong>rate</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.AutomationRate" title="nodriver.cdp.web_audio.AutomationRate"><em>AutomationRate</em></a>) – </p></li>
+<li><p><strong>default_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p></li>
+<li><p><strong>min_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p></li>
+<li><p><strong>max_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParam.context_id">
+<span class="sig-name descname"><span class="pre">context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParam.context_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParam.default_value">
+<span class="sig-name descname"><span class="pre">default_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParam.default_value" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParam.max_value">
+<span class="sig-name descname"><span class="pre">max_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParam.max_value" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParam.min_value">
+<span class="sig-name descname"><span class="pre">min_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParam.min_value" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParam.node_id">
+<span class="sig-name descname"><span class="pre">node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParam.node_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParam.param_id">
+<span class="sig-name descname"><span class="pre">param_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParam.param_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParam.param_type">
+<span class="sig-name descname"><span class="pre">param_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.ParamType" title="nodriver.cdp.web_audio.ParamType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParam.param_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParam.rate">
+<span class="sig-name descname"><span class="pre">rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.AutomationRate" title="nodriver.cdp.web_audio.AutomationRate"><code class="xref py py-class docutils literal notranslate"><span class="pre">AutomationRate</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParam.rate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading">#</a></h2>
+<p>Each command is a generator function. The return
+type <code class="docutils literal notranslate"><span class="pre">Generator[x,</span> <span class="pre">y,</span> <span class="pre">z]</span></code> indicates that the generator
+<em>yields</em> arguments of type <code class="docutils literal notranslate"><span class="pre">x</span></code>, it must be resumed with
+an argument of type <code class="docutils literal notranslate"><span class="pre">y</span></code>, and it returns type <code class="docutils literal notranslate"><span class="pre">z</span></code>. In
+this library, types <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are the same for all
+commands, and <code class="docutils literal notranslate"><span class="pre">z</span></code> is the return type you should pay attention
+to. For more information, see
+<a class="reference internal" href="../quickstart.html#getting-started-commands"><span class="std std-ref">Getting Started: Commands</span></a>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.disable">
+<span class="sig-name descname"><span class="pre">disable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#disable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.disable" title="Link to this definition">#</a></dt>
+<dd><p>Disables the WebAudio domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.enable">
+<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#enable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.enable" title="Link to this definition">#</a></dt>
+<dd><p>Enables the WebAudio domain and starts sending context lifetime events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.get_realtime_data">
+<span class="sig-name descname"><span class="pre">get_realtime_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#get_realtime_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.get_realtime_data" title="Link to this definition">#</a></dt>
+<dd><p>Fetch the realtime data from the registered contexts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>context_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference internal" href="#nodriver.cdp.web_audio.ContextRealtimeData" title="nodriver.cdp.web_audio.ContextRealtimeData"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContextRealtimeData</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="events">
+<h2>Events<a class="headerlink" href="#events" title="Link to this heading">#</a></h2>
+<p>Generally, you do not need to instantiate CDP events
+yourself. Instead, the API creates events for you and then
+you use the event’s attributes.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextCreated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ContextCreated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#ContextCreated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.ContextCreated" title="Link to this definition">#</a></dt>
+<dd><p>Notifies that a new BaseAudioContext has been created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>context</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.BaseAudioContext" title="nodriver.cdp.web_audio.BaseAudioContext"><em>BaseAudioContext</em></a>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextCreated.context">
+<span class="sig-name descname"><span class="pre">context</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.BaseAudioContext" title="nodriver.cdp.web_audio.BaseAudioContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseAudioContext</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.ContextCreated.context" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextWillBeDestroyed">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ContextWillBeDestroyed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#ContextWillBeDestroyed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.ContextWillBeDestroyed" title="Link to this definition">#</a></dt>
+<dd><p>Notifies that an existing BaseAudioContext will be destroyed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>context_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextWillBeDestroyed.context_id">
+<span class="sig-name descname"><span class="pre">context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.ContextWillBeDestroyed.context_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextChanged">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ContextChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#ContextChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.ContextChanged" title="Link to this definition">#</a></dt>
+<dd><p>Notifies that existing BaseAudioContext has changed some properties (id stays the same)..</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>context</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.BaseAudioContext" title="nodriver.cdp.web_audio.BaseAudioContext"><em>BaseAudioContext</em></a>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.ContextChanged.context">
+<span class="sig-name descname"><span class="pre">context</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.BaseAudioContext" title="nodriver.cdp.web_audio.BaseAudioContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseAudioContext</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.ContextChanged.context" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioListenerCreated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AudioListenerCreated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listener</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#AudioListenerCreated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.AudioListenerCreated" title="Link to this definition">#</a></dt>
+<dd><p>Notifies that the construction of an AudioListener has finished.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>listener</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.AudioListener" title="nodriver.cdp.web_audio.AudioListener"><em>AudioListener</em></a>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioListenerCreated.listener">
+<span class="sig-name descname"><span class="pre">listener</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.AudioListener" title="nodriver.cdp.web_audio.AudioListener"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioListener</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioListenerCreated.listener" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioListenerWillBeDestroyed">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AudioListenerWillBeDestroyed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">listener_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#AudioListenerWillBeDestroyed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.AudioListenerWillBeDestroyed" title="Link to this definition">#</a></dt>
+<dd><p>Notifies that a new AudioListener has been created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>context_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>listener_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioListenerWillBeDestroyed.context_id">
+<span class="sig-name descname"><span class="pre">context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioListenerWillBeDestroyed.context_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioListenerWillBeDestroyed.listener_id">
+<span class="sig-name descname"><span class="pre">listener_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioListenerWillBeDestroyed.listener_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioNodeCreated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AudioNodeCreated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#AudioNodeCreated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.AudioNodeCreated" title="Link to this definition">#</a></dt>
+<dd><p>Notifies that a new AudioNode has been created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>node</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.AudioNode" title="nodriver.cdp.web_audio.AudioNode"><em>AudioNode</em></a>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioNodeCreated.node">
+<span class="sig-name descname"><span class="pre">node</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNode" title="nodriver.cdp.web_audio.AudioNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioNode</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioNodeCreated.node" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioNodeWillBeDestroyed">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AudioNodeWillBeDestroyed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#AudioNodeWillBeDestroyed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.AudioNodeWillBeDestroyed" title="Link to this definition">#</a></dt>
+<dd><p>Notifies that an existing AudioNode has been destroyed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>context_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>node_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioNodeWillBeDestroyed.context_id">
+<span class="sig-name descname"><span class="pre">context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioNodeWillBeDestroyed.context_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioNodeWillBeDestroyed.node_id">
+<span class="sig-name descname"><span class="pre">node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioNodeWillBeDestroyed.node_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParamCreated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AudioParamCreated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#AudioParamCreated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParamCreated" title="Link to this definition">#</a></dt>
+<dd><p>Notifies that a new AudioParam has been created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>param</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.AudioParam" title="nodriver.cdp.web_audio.AudioParam"><em>AudioParam</em></a>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParamCreated.param">
+<span class="sig-name descname"><span class="pre">param</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParam" title="nodriver.cdp.web_audio.AudioParam"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioParam</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParamCreated.param" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParamWillBeDestroyed">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AudioParamWillBeDestroyed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#AudioParamWillBeDestroyed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParamWillBeDestroyed" title="Link to this definition">#</a></dt>
+<dd><p>Notifies that an existing AudioParam has been destroyed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>context_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>node_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>param_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParamWillBeDestroyed.context_id">
+<span class="sig-name descname"><span class="pre">context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParamWillBeDestroyed.context_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParamWillBeDestroyed.node_id">
+<span class="sig-name descname"><span class="pre">node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParamWillBeDestroyed.node_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.AudioParamWillBeDestroyed.param_id">
+<span class="sig-name descname"><span class="pre">param_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.AudioParamWillBeDestroyed.param_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodesConnected">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NodesConnected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_output_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_input_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#NodesConnected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.NodesConnected" title="Link to this definition">#</a></dt>
+<dd><p>Notifies that two AudioNodes are connected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>context_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>source_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>destination_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>source_output_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>destination_input_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodesConnected.context_id">
+<span class="sig-name descname"><span class="pre">context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodesConnected.context_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodesConnected.destination_id">
+<span class="sig-name descname"><span class="pre">destination_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodesConnected.destination_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodesConnected.destination_input_index">
+<span class="sig-name descname"><span class="pre">destination_input_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodesConnected.destination_input_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodesConnected.source_id">
+<span class="sig-name descname"><span class="pre">source_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodesConnected.source_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodesConnected.source_output_index">
+<span class="sig-name descname"><span class="pre">source_output_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodesConnected.source_output_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodesDisconnected">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NodesDisconnected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_output_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_input_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#NodesDisconnected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.NodesDisconnected" title="Link to this definition">#</a></dt>
+<dd><p>Notifies that AudioNodes are disconnected. The destination can be null, and it means all the outgoing connections from the source are disconnected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>context_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>source_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>destination_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>source_output_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>destination_input_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodesDisconnected.context_id">
+<span class="sig-name descname"><span class="pre">context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodesDisconnected.context_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodesDisconnected.destination_id">
+<span class="sig-name descname"><span class="pre">destination_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodesDisconnected.destination_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodesDisconnected.destination_input_index">
+<span class="sig-name descname"><span class="pre">destination_input_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodesDisconnected.destination_input_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodesDisconnected.source_id">
+<span class="sig-name descname"><span class="pre">source_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodesDisconnected.source_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodesDisconnected.source_output_index">
+<span class="sig-name descname"><span class="pre">source_output_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodesDisconnected.source_output_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodeParamConnected">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NodeParamConnected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_output_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#NodeParamConnected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.NodeParamConnected" title="Link to this definition">#</a></dt>
+<dd><p>Notifies that an AudioNode is connected to an AudioParam.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>context_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>source_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>destination_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>source_output_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodeParamConnected.context_id">
+<span class="sig-name descname"><span class="pre">context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodeParamConnected.context_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodeParamConnected.destination_id">
+<span class="sig-name descname"><span class="pre">destination_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodeParamConnected.destination_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodeParamConnected.source_id">
+<span class="sig-name descname"><span class="pre">source_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodeParamConnected.source_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodeParamConnected.source_output_index">
+<span class="sig-name descname"><span class="pre">source_output_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodeParamConnected.source_output_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodeParamDisconnected">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NodeParamDisconnected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_output_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/web_audio.html#NodeParamDisconnected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.web_audio.NodeParamDisconnected" title="Link to this definition">#</a></dt>
+<dd><p>Notifies that an AudioNode is disconnected to an AudioParam.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>context_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>source_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>destination_id</strong> (<a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><em>GraphObjectId</em></a>) – </p></li>
+<li><p><strong>source_output_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodeParamDisconnected.context_id">
+<span class="sig-name descname"><span class="pre">context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodeParamDisconnected.context_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodeParamDisconnected.destination_id">
+<span class="sig-name descname"><span class="pre">destination_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodeParamDisconnected.destination_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodeParamDisconnected.source_id">
+<span class="sig-name descname"><span class="pre">source_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId" title="nodriver.cdp.web_audio.GraphObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodeParamDisconnected.source_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.web_audio.NodeParamDisconnected.source_output_index">
+<span class="sig-name descname"><span class="pre">source_output_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.web_audio.NodeParamDisconnected.source_output_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="web_authn.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">WebAuthn</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="tracing.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Tracing</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Author
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">WebAudio</a><ul>
+<li><a class="reference internal" href="#types">Types</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.GraphObjectId"><code class="docutils literal notranslate"><span class="pre">GraphObjectId</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextType"><code class="docutils literal notranslate"><span class="pre">ContextType</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextType.OFFLINE"><code class="docutils literal notranslate"><span class="pre">ContextType.OFFLINE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextType.REALTIME"><code class="docutils literal notranslate"><span class="pre">ContextType.REALTIME</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextState"><code class="docutils literal notranslate"><span class="pre">ContextState</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextState.CLOSED"><code class="docutils literal notranslate"><span class="pre">ContextState.CLOSED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextState.RUNNING"><code class="docutils literal notranslate"><span class="pre">ContextState.RUNNING</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextState.SUSPENDED"><code class="docutils literal notranslate"><span class="pre">ContextState.SUSPENDED</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodeType"><code class="docutils literal notranslate"><span class="pre">NodeType</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ChannelCountMode"><code class="docutils literal notranslate"><span class="pre">ChannelCountMode</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ChannelCountMode.CLAMPED_MAX"><code class="docutils literal notranslate"><span class="pre">ChannelCountMode.CLAMPED_MAX</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ChannelCountMode.EXPLICIT"><code class="docutils literal notranslate"><span class="pre">ChannelCountMode.EXPLICIT</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ChannelCountMode.MAX_"><code class="docutils literal notranslate"><span class="pre">ChannelCountMode.MAX_</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ChannelInterpretation"><code class="docutils literal notranslate"><span class="pre">ChannelInterpretation</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ChannelInterpretation.DISCRETE"><code class="docutils literal notranslate"><span class="pre">ChannelInterpretation.DISCRETE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ChannelInterpretation.SPEAKERS"><code class="docutils literal notranslate"><span class="pre">ChannelInterpretation.SPEAKERS</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ParamType"><code class="docutils literal notranslate"><span class="pre">ParamType</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AutomationRate"><code class="docutils literal notranslate"><span class="pre">AutomationRate</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AutomationRate.A_RATE"><code class="docutils literal notranslate"><span class="pre">AutomationRate.A_RATE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AutomationRate.K_RATE"><code class="docutils literal notranslate"><span class="pre">AutomationRate.K_RATE</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextRealtimeData"><code class="docutils literal notranslate"><span class="pre">ContextRealtimeData</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextRealtimeData.callback_interval_mean"><code class="docutils literal notranslate"><span class="pre">ContextRealtimeData.callback_interval_mean</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextRealtimeData.callback_interval_variance"><code class="docutils literal notranslate"><span class="pre">ContextRealtimeData.callback_interval_variance</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextRealtimeData.current_time"><code class="docutils literal notranslate"><span class="pre">ContextRealtimeData.current_time</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextRealtimeData.render_capacity"><code class="docutils literal notranslate"><span class="pre">ContextRealtimeData.render_capacity</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.BaseAudioContext"><code class="docutils literal notranslate"><span class="pre">BaseAudioContext</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.BaseAudioContext.callback_buffer_size"><code class="docutils literal notranslate"><span class="pre">BaseAudioContext.callback_buffer_size</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.BaseAudioContext.context_id"><code class="docutils literal notranslate"><span class="pre">BaseAudioContext.context_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.BaseAudioContext.context_state"><code class="docutils literal notranslate"><span class="pre">BaseAudioContext.context_state</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.BaseAudioContext.context_type"><code class="docutils literal notranslate"><span class="pre">BaseAudioContext.context_type</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.BaseAudioContext.max_output_channel_count"><code class="docutils literal notranslate"><span class="pre">BaseAudioContext.max_output_channel_count</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.BaseAudioContext.realtime_data"><code class="docutils literal notranslate"><span class="pre">BaseAudioContext.realtime_data</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.BaseAudioContext.sample_rate"><code class="docutils literal notranslate"><span class="pre">BaseAudioContext.sample_rate</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioListener"><code class="docutils literal notranslate"><span class="pre">AudioListener</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioListener.context_id"><code class="docutils literal notranslate"><span class="pre">AudioListener.context_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioListener.listener_id"><code class="docutils literal notranslate"><span class="pre">AudioListener.listener_id</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNode"><code class="docutils literal notranslate"><span class="pre">AudioNode</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNode.channel_count"><code class="docutils literal notranslate"><span class="pre">AudioNode.channel_count</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNode.channel_count_mode"><code class="docutils literal notranslate"><span class="pre">AudioNode.channel_count_mode</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNode.channel_interpretation"><code class="docutils literal notranslate"><span class="pre">AudioNode.channel_interpretation</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNode.context_id"><code class="docutils literal notranslate"><span class="pre">AudioNode.context_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNode.node_id"><code class="docutils literal notranslate"><span class="pre">AudioNode.node_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNode.node_type"><code class="docutils literal notranslate"><span class="pre">AudioNode.node_type</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNode.number_of_inputs"><code class="docutils literal notranslate"><span class="pre">AudioNode.number_of_inputs</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNode.number_of_outputs"><code class="docutils literal notranslate"><span class="pre">AudioNode.number_of_outputs</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParam"><code class="docutils literal notranslate"><span class="pre">AudioParam</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParam.context_id"><code class="docutils literal notranslate"><span class="pre">AudioParam.context_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParam.default_value"><code class="docutils literal notranslate"><span class="pre">AudioParam.default_value</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParam.max_value"><code class="docutils literal notranslate"><span class="pre">AudioParam.max_value</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParam.min_value"><code class="docutils literal notranslate"><span class="pre">AudioParam.min_value</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParam.node_id"><code class="docutils literal notranslate"><span class="pre">AudioParam.node_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParam.param_id"><code class="docutils literal notranslate"><span class="pre">AudioParam.param_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParam.param_type"><code class="docutils literal notranslate"><span class="pre">AudioParam.param_type</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParam.rate"><code class="docutils literal notranslate"><span class="pre">AudioParam.rate</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#commands">Commands</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.disable"><code class="docutils literal notranslate"><span class="pre">disable()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.enable"><code class="docutils literal notranslate"><span class="pre">enable()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.get_realtime_data"><code class="docutils literal notranslate"><span class="pre">get_realtime_data()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#events">Events</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextCreated"><code class="docutils literal notranslate"><span class="pre">ContextCreated</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextCreated.context"><code class="docutils literal notranslate"><span class="pre">ContextCreated.context</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextWillBeDestroyed"><code class="docutils literal notranslate"><span class="pre">ContextWillBeDestroyed</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextWillBeDestroyed.context_id"><code class="docutils literal notranslate"><span class="pre">ContextWillBeDestroyed.context_id</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextChanged"><code class="docutils literal notranslate"><span class="pre">ContextChanged</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.ContextChanged.context"><code class="docutils literal notranslate"><span class="pre">ContextChanged.context</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioListenerCreated"><code class="docutils literal notranslate"><span class="pre">AudioListenerCreated</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioListenerCreated.listener"><code class="docutils literal notranslate"><span class="pre">AudioListenerCreated.listener</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioListenerWillBeDestroyed"><code class="docutils literal notranslate"><span class="pre">AudioListenerWillBeDestroyed</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioListenerWillBeDestroyed.context_id"><code class="docutils literal notranslate"><span class="pre">AudioListenerWillBeDestroyed.context_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioListenerWillBeDestroyed.listener_id"><code class="docutils literal notranslate"><span class="pre">AudioListenerWillBeDestroyed.listener_id</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNodeCreated"><code class="docutils literal notranslate"><span class="pre">AudioNodeCreated</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNodeCreated.node"><code class="docutils literal notranslate"><span class="pre">AudioNodeCreated.node</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNodeWillBeDestroyed"><code class="docutils literal notranslate"><span class="pre">AudioNodeWillBeDestroyed</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNodeWillBeDestroyed.context_id"><code class="docutils literal notranslate"><span class="pre">AudioNodeWillBeDestroyed.context_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioNodeWillBeDestroyed.node_id"><code class="docutils literal notranslate"><span class="pre">AudioNodeWillBeDestroyed.node_id</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParamCreated"><code class="docutils literal notranslate"><span class="pre">AudioParamCreated</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParamCreated.param"><code class="docutils literal notranslate"><span class="pre">AudioParamCreated.param</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParamWillBeDestroyed"><code class="docutils literal notranslate"><span class="pre">AudioParamWillBeDestroyed</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParamWillBeDestroyed.context_id"><code class="docutils literal notranslate"><span class="pre">AudioParamWillBeDestroyed.context_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParamWillBeDestroyed.node_id"><code class="docutils literal notranslate"><span class="pre">AudioParamWillBeDestroyed.node_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.AudioParamWillBeDestroyed.param_id"><code class="docutils literal notranslate"><span class="pre">AudioParamWillBeDestroyed.param_id</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodesConnected"><code class="docutils literal notranslate"><span class="pre">NodesConnected</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodesConnected.context_id"><code class="docutils literal notranslate"><span class="pre">NodesConnected.context_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodesConnected.destination_id"><code class="docutils literal notranslate"><span class="pre">NodesConnected.destination_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodesConnected.destination_input_index"><code class="docutils literal notranslate"><span class="pre">NodesConnected.destination_input_index</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodesConnected.source_id"><code class="docutils literal notranslate"><span class="pre">NodesConnected.source_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodesConnected.source_output_index"><code class="docutils literal notranslate"><span class="pre">NodesConnected.source_output_index</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodesDisconnected"><code class="docutils literal notranslate"><span class="pre">NodesDisconnected</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodesDisconnected.context_id"><code class="docutils literal notranslate"><span class="pre">NodesDisconnected.context_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodesDisconnected.destination_id"><code class="docutils literal notranslate"><span class="pre">NodesDisconnected.destination_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodesDisconnected.destination_input_index"><code class="docutils literal notranslate"><span class="pre">NodesDisconnected.destination_input_index</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodesDisconnected.source_id"><code class="docutils literal notranslate"><span class="pre">NodesDisconnected.source_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodesDisconnected.source_output_index"><code class="docutils literal notranslate"><span class="pre">NodesDisconnected.source_output_index</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodeParamConnected"><code class="docutils literal notranslate"><span class="pre">NodeParamConnected</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodeParamConnected.context_id"><code class="docutils literal notranslate"><span class="pre">NodeParamConnected.context_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodeParamConnected.destination_id"><code class="docutils literal notranslate"><span class="pre">NodeParamConnected.destination_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodeParamConnected.source_id"><code class="docutils literal notranslate"><span class="pre">NodeParamConnected.source_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodeParamConnected.source_output_index"><code class="docutils literal notranslate"><span class="pre">NodeParamConnected.source_output_index</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodeParamDisconnected"><code class="docutils literal notranslate"><span class="pre">NodeParamDisconnected</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodeParamDisconnected.context_id"><code class="docutils literal notranslate"><span class="pre">NodeParamDisconnected.context_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodeParamDisconnected.destination_id"><code class="docutils literal notranslate"><span class="pre">NodeParamDisconnected.destination_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodeParamDisconnected.source_id"><code class="docutils literal notranslate"><span class="pre">NodeParamDisconnected.source_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.web_audio.NodeParamDisconnected.source_output_index"><code class="docutils literal notranslate"><span class="pre">NodeParamDisconnected.source_output_index</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

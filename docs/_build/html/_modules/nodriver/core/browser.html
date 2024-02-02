@@ -1,0 +1,977 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>nodriver.core.browser - nodriver documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/./custom.css?v=3934642d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">nodriver  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">nodriver  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#components-and-interaction">Components and interaction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver object reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/element.html">Element class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/others_and_helpers.html">Other classes and Helper classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/tab.html">Tab class</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/accessibility.html">Accessibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/audits.html">Audits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/autofill.html">Autofill</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/background_service.html">BackgroundService</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/browser.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/cache_storage.html">CacheStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/dom.html">DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/dom_debugger.html">DOMDebugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/dom_snapshot.html">DOMSnapshot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/dom_storage.html">DOMStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/emulation.html">Emulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/fed_cm.html">FedCm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/fetch.html">Fetch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/headless_experimental.html">HeadlessExperimental</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/heap_profiler.html">HeapProfiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/indexed_db.html">IndexedDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/input_.html">Input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/inspector.html">Inspector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/io.html">IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/layer_tree.html">LayerTree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/media.html">Media</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/memory.html">Memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/network.html">Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/overlay.html">Overlay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/page.html">Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/performance.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/performance_timeline.html">PerformanceTimeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/preload.html">Preload</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/profiler.html">Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/runtime.html">Runtime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/security.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/service_worker.html">ServiceWorker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/storage.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/system_info.html">SystemInfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/target.html">Target</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/tethering.html">Tethering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/tracing.html">Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/web_audio.html">WebAudio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/web_authn.html">WebAuthn</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for nodriver.core.browser</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">atexit</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">weakref</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">cdp</span>
+<span class="kn">from</span> <span class="nn">.config</span> <span class="kn">import</span> <span class="n">PathLike</span><span class="p">,</span> <span class="n">Config</span><span class="p">,</span> <span class="n">is_posix</span>
+<span class="kn">from</span> <span class="nn">.connection</span> <span class="kn">import</span> <span class="n">SimpleConnection</span>
+<span class="kn">from</span> <span class="nn">._contradict</span> <span class="kn">import</span> <span class="n">ContraDict</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">__registered_instances__</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Browser">
+<a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser">[docs]</a>
+<span class="k">class</span> <span class="nc">Browser</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Browser object is the &quot;root&quot; of the hierarchy and contains a reference</span>
+<span class="sd">    to the browser parent process.</span>
+<span class="sd">    there should usually be only 1 instance of this.</span>
+
+<span class="sd">    All opened tabs, extra browser screens and resources will not cause a new Browser process,</span>
+<span class="sd">    but rather create additional :class:`nodriver.Tab` objects.</span>
+
+<span class="sd">    So, besides starting your instance and first/additional tabs, you don&#39;t actively use it a lot under normal conditions.</span>
+
+<span class="sd">    Tab objects will represent and control</span>
+<span class="sd">     - tabs (as you know them)</span>
+<span class="sd">     - browser windows (new window)</span>
+<span class="sd">     - iframe</span>
+<span class="sd">     - background processes</span>
+
+<span class="sd">    note:</span>
+<span class="sd">    the Browser object is not instantiated by __init__ but using the asynchronous :meth:`nodriver.Browser.create` method.</span>
+
+<span class="sd">    note:</span>
+<span class="sd">    in Chromium based browsers, there is a parent process which keeps running all the time, even if</span>
+<span class="sd">    there are no visible browser windows. sometimes it&#39;s stubborn to close it, so make sure after using</span>
+<span class="sd">    this library, the browser is correctly and fully closed/exited/killed.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_process</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">Process</span>
+    <span class="n">_process_pid</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">_http</span><span class="p">:</span> <span class="n">HTTPApi</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">config</span><span class="p">:</span> <span class="n">Config</span>
+    <span class="n">connection</span><span class="p">:</span> <span class="n">SimpleConnection</span>
+
+<div class="viewcode-block" id="Browser.create">
+<a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.create">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span>
+            <span class="n">config</span><span class="p">:</span> <span class="n">Config</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">*</span><span class="p">,</span>
+            <span class="n">user_data_dir</span><span class="p">:</span> <span class="n">PathLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">headless</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">browser_executable_path</span><span class="p">:</span> <span class="n">PathLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">browser_args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">sandbox</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">autodiscover_targets</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Browser</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        entry point for creating an instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+                <span class="n">user_data_dir</span><span class="o">=</span><span class="n">user_data_dir</span><span class="p">,</span>
+                <span class="n">headless</span><span class="o">=</span><span class="n">headless</span><span class="p">,</span>
+                <span class="n">browser_executable_path</span><span class="o">=</span><span class="n">browser_executable_path</span><span class="p">,</span>
+                <span class="n">browser_args</span><span class="o">=</span><span class="n">browser_args</span> <span class="ow">or</span> <span class="p">[],</span>
+                <span class="n">sandbox</span><span class="o">=</span><span class="n">sandbox</span><span class="p">,</span>
+                <span class="n">autodiscover_targets</span><span class="o">=</span><span class="n">autodiscover_targets</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">instance</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">instance</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        constructor. to create a instance, use :py:meth:`Browser.create(...)`</span>
+
+<span class="sd">        :param config:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> objects of this class are created using await </span><span class="si">{0}</span><span class="s2">.create()&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">weakref</span><span class="o">.</span><span class="n">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;current targets (all types&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process_pid</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_keep_user_data_dir</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">:</span> <span class="n">SimpleConnection</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Session object initialized: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Browser.start">
+<a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.start">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;launches the actual browser&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;use ``await Browser.create()`` to create a new instance&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_pid</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">returncode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;ignored! this call has no effect when already running.&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># self.config.update(kwargs)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">host</span> <span class="ow">or</span> <span class="s2">&quot;127.0.0.1&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">port</span> <span class="ow">or</span> <span class="n">free_port</span><span class="p">()</span>
+
+        <span class="c1"># self.config.browser_args.append(&quot;--remote-debugging-host=%s&quot; % self.host)</span>
+        <span class="c1"># self.config.browser_args.append(&quot;--remote-debugging-port=%d&quot; % self.port)</span>
+
+        <span class="c1"># if not self.config.custom_data_dir:</span>
+        <span class="c1">#     __temp_folders__.append(self.config.user_data_dir)</span>
+        <span class="c1">#     self._keep_user_data_dir = True</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     self._keep_user_data_dir = False</span>
+        <span class="c1">#</span>
+        <span class="c1"># if not self.config.user_data_dir:</span>
+        <span class="c1">#     # we want to use a temp profile</span>
+        <span class="c1">#     self.config.user_data_dir = os.path.normpath(tempfile.mkdtemp(prefix=&quot;uc_&quot;))</span>
+        <span class="c1">#     __temp_folders__.append(self.config.user_data_dir)</span>
+        <span class="c1">#     self._keep_user_data_dir = False</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     self._keep_user_data_dir = True</span>
+
+        <span class="c1"># cmdparams = []</span>
+        <span class="c1"># if self.config.headless:</span>
+        <span class="c1">#     cmdparams.append(&quot;--headless=new&quot;)</span>
+
+        <span class="c1"># cmdparams.append(&quot;--remote-debugging-host=%s&quot; % self.host)</span>
+        <span class="c1"># cmdparams.append(&quot;--remote-debugging-port=%s&quot; % self.port)</span>
+        <span class="c1"># cmdparams.append(&quot;--user-data-dir=%s&quot; % self.config.user_data_dir)</span>
+        <span class="c1"># cmdparams.append(&quot;--remote-allow-origins=*&quot;)</span>
+        <span class="c1"># cmdparams.append(&quot;--no-first-run&quot;)</span>
+        <span class="c1"># cmdparams.append(&quot;--no-service-autorun&quot;)</span>
+        <span class="c1"># cmdparams.append(&quot;--no-default-browser-check&quot;)</span>
+        <span class="c1"># cmdparams.append(&quot;--homepage=about:blank&quot;)</span>
+        <span class="c1"># cmdparams.append(&quot;--no-pings&quot;)</span>
+        <span class="c1"># cmdparams.append(&quot;--password-store=basic&quot;)</span>
+        <span class="c1"># cmdparams.append(&quot;--disable-infobars&quot;)</span>
+        <span class="c1"># cmdparams.append(&quot;--disable-breakpad&quot;)</span>
+        <span class="c1"># cmdparams.append(&quot;--disable-component-update&quot;)</span>
+        <span class="c1"># cmdparams.append(&quot;--disable-backgrounding-occluded-windows&quot;)</span>
+        <span class="c1"># cmdparams.append(&quot;--disable-renderer-backgrounding&quot;)</span>
+        <span class="c1"># cmdparams.append(&quot;--disable-background-networking&quot;)</span>
+        <span class="c1"># cmdparams.append(&quot;--disable-dev-shm-usage&quot;)</span>
+
+        <span class="c1"># if user is root and os is posix-ish add no-sandbox</span>
+        <span class="c1"># also add when user as configured it explicitly</span>
+        <span class="c1"># if self.config.no_sandbox or (IS_POSIX and is_root()):</span>
+        <span class="c1">#     cmdparams.append(&quot;--no-sandbox&quot;)</span>
+
+        <span class="c1"># add all optional arguments from config object</span>
+        <span class="c1"># cmdparams.extend(self.config.browser_args)</span>
+
+        <span class="c1"># if not self.config.browser_executable_path:</span>
+        <span class="c1"># self.config.browser_executable_path = find_chrome_executable()</span>
+        <span class="c1"># breakpoint()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;BROWSER EXECUTABLE PATH: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">browser_executable_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">browser_executable_path</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">---------------------</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;Could not determine browser executable.&quot;</span>
+                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">---------------------</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;Make sure your browser is installed in the default location (path).</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;If you are sure about the browser executable, you can specify it using</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;the `browser_executable_path=&#39;</span><span class="si">{}</span><span class="s2">` parameter.</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s2">&quot;/path/to/browser/executable&quot;</span>
+                    <span class="k">if</span> <span class="n">is_posix</span>
+                    <span class="k">else</span> <span class="s2">&quot;c:/path/to/your/browser.exe&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">exe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">browser_executable_path</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;starting</span><span class="se">\n\t</span><span class="s2">executable :</span><span class="si">%s</span><span class="se">\n\n</span><span class="s2">arguments:</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">exe</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">Process</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span>
+            <span class="c1"># self.config.browser_executable_path,</span>
+            <span class="c1"># *cmdparams,</span>
+            <span class="n">exe</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">params</span><span class="p">,</span>
+            <span class="n">stdin</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+            <span class="n">stdout</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+            <span class="n">stderr</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+            <span class="n">close_fds</span><span class="o">=</span><span class="n">is_posix</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process_pid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">pid</span>
+
+        <span class="n">__registered_instances__</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;created process with pid </span><span class="si">%d</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_pid</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_http</span> <span class="o">=</span> <span class="n">HTTPApi</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">port</span><span class="p">))</span>
+
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">ContraDict</span><span class="p">(</span>
+                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">Exception</span><span class="p">,):</span>
+                <span class="k">if</span> <span class="n">_</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;could not start&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">---------------------</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;Failed to connect to browser&quot;</span>
+                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">---------------------</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;One of the causes could be when you are running as root.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;In that case you need to pass no_sandbox=True.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="k">await</span> <span class="n">SimpleConnection</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">webSocketDebuggerUrl</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="bp">self</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">autodiscover_targets</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfoChanged</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_target_update</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetCreated</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_target_update</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetDestroyed</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_target_update</span><span class="p">]</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;enabling autodiscover targets&quot;</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">set_discover_targets</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span></div>
+
+
+            <span class="c1"># logger.info(&#39;enabling auto attach targets&#39;)</span>
+            <span class="c1"># await self.connection.send(cdp.target.set_auto_attach(True, False, True))</span>
+
+    <span class="c1"># async def http_api(self, endpoint=&quot;json&quot;, method=&quot;get&quot;, data=None):</span>
+    <span class="c1">#     return await to_thread(</span>
+    <span class="c1">#         http_get_json,</span>
+    <span class="c1">#         f&quot;http://{self.host}:{self.port}/json/{endpoint}&quot;,</span>
+    <span class="c1">#         method,</span>
+    <span class="c1">#         data,</span>
+    <span class="c1">#     )</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">websocket_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">webSocketDebuggerUrl</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">active_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;returns the target which was launched with the browser&quot;&quot;&quot;</span>
+        <span class="n">pages</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">pages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pages</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;returns the current targets which are of type &quot;page&quot;</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pages</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;page&#39;</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Browser.wait">
+<a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.wait">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Browser</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;wait for &lt;time&gt; seconds. important to use, especially in between page navigation</span>
+
+<span class="sd">        :param time:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+    <span class="n">sleep</span> <span class="o">=</span> <span class="n">wait</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;alias for wait&quot;&quot;&quot;</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_handle_target_update</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">event</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfoChanged</span><span class="p">,</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetDestroyed</span><span class="p">,</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetCreated</span><span class="p">,</span>
+            <span class="p">],</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;this is an internal handler which updates the targets when chrome emits the corresponding event&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfoChanged</span><span class="p">):</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">target_info</span>
+            <span class="n">conn</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">target_id</span> <span class="o">==</span> <span class="n">info</span><span class="o">.</span><span class="n">target_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">))</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s2">&quot;connection # </span><span class="si">%d</span><span class="s2"> to target changed to: </span><span class="si">%s</span><span class="s2">&quot;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">conn</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">type_</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">attached</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">attached</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">info</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">url</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetCreated</span><span class="p">):</span>
+            <span class="n">target</span><span class="p">:</span> <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfo</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">target_info</span>
+            <span class="n">new_conn</span> <span class="o">=</span> <span class="n">SimpleConnection</span><span class="p">((</span>
+                <span class="sa">f</span><span class="s2">&quot;ws://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;/devtools/</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">type_</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">target_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;target added!  # </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_conn</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetDestroyed</span><span class="p">):</span>
+            <span class="n">conn</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">target_id</span> <span class="o">==</span> <span class="n">event</span><span class="o">.</span><span class="n">target_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;target removed. id # </span><span class="si">%d</span><span class="s2"> =&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">conn</span><span class="p">),</span> <span class="n">conn</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Browser.get">
+<a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.get">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;chrome://welcome&quot;</span><span class="p">,</span> <span class="n">new_tab</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">new_window</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;top level get. utilizes the first tab to retrieve given url.</span>
+
+<span class="sd">        convenience function known from selenium.</span>
+<span class="sd">        this function handles waits/sleeps and detects when DOM events fired, so it&#39;s the safest</span>
+<span class="sd">        way of navigating.</span>
+
+<span class="sd">        :param url: the url to navigate to</span>
+<span class="sd">        :param new_tab: open new tab</span>
+<span class="sd">        :param new_window:  open new window</span>
+<span class="sd">        :return: Page</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">new_window</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">new_tab</span><span class="p">:</span>
+            <span class="n">new_tab</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1"># get first tab</span>
+        <span class="n">tab</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;page&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">new_tab</span><span class="p">:</span>
+            <span class="n">target_id</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">create_target</span><span class="p">(</span>
+                    <span class="n">url</span><span class="p">,</span> <span class="n">new_window</span><span class="o">=</span><span class="n">new_window</span><span class="p">,</span> <span class="n">enable_begin_frame_control</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="c1"># await self.wait(0.5)</span>
+            <span class="n">tab</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;page&#39;</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">target_id</span> <span class="o">==</span> <span class="n">target_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">))</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">tab</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;not tab&quot;</span><span class="p">)</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+                <span class="n">tab</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;page&#39;</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">target_id</span> <span class="o">==</span> <span class="n">target_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">))</span>
+
+            <span class="k">return</span> <span class="n">tab</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">frame_id</span><span class="p">,</span> <span class="n">loader_id</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">navigate</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+            <span class="n">tab</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="n">frame_id</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">tab</span></div>
+
+
+    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># asyncio.get_running_loop().create_task(self.connection.send(cdp.browser.close()))</span>
+
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">aclose</span><span class="p">())</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;closed the connection using get_event_loop().create_task()&quot;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># asyncio.run(self.connection.send(cdp.browser.close()))</span>
+                    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">aclose</span><span class="p">())</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;closed the connection using asyncio.run()&quot;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;exccc while closing&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">pass</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="s2">&quot;terminated browser with pid </span><span class="si">%d</span><span class="s2"> successfully&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">pid</span>
+                <span class="p">)</span>
+                <span class="k">break</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">Exception</span><span class="p">,):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                        <span class="s2">&quot;killed browser with pid </span><span class="si">%d</span><span class="s2"> successfully&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">pid</span>
+                    <span class="p">)</span>
+                    <span class="k">break</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">Exception</span><span class="p">,):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;browser_process_pid&quot;</span><span class="p">):</span>
+                            <span class="n">os</span><span class="o">.</span><span class="n">kill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_process_pid</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                                <span class="s2">&quot;killed browser with pid </span><span class="si">%d</span><span class="s2"> using signal 15 successfully&quot;</span>
+                                <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">pid</span>
+                            <span class="p">)</span>
+                            <span class="k">break</span>
+                    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,):</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;typerror&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="k">pass</span>
+                    <span class="k">except</span> <span class="p">(</span><span class="ne">PermissionError</span><span class="p">,):</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                            <span class="s2">&quot;browser already stopped, or no permission to kill. skip&quot;</span>
+                        <span class="p">)</span>
+                        <span class="k">pass</span>
+                    <span class="k">except</span> <span class="p">(</span><span class="ne">ProcessLookupError</span><span class="p">,):</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;process lookup failure&quot;</span><span class="p">)</span>
+                        <span class="k">pass</span>
+                    <span class="k">except</span> <span class="p">(</span><span class="ne">Exception</span><span class="p">,):</span>
+                        <span class="k">raise</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process_pid</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">stopped</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">returncode</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_pid</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Browser.quit">
+<a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.quit">[docs]</a>
+    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;quit browser, sessions, everything&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_quit</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># this &quot;unusual&quot; construction exists</span>
+        <span class="c1"># for weakref.finalize to ensure cleanup</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">is_custom_data_dir</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">),</span> <span class="s2">&quot;custom_data_dir&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_custom_data_dir</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">user_data_dir</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;user_data_dir&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">user_data_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">user_data_dir</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                            <span class="s2">&quot;removed temporary user data dir @ </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">user_data_dir</span>
+                        <span class="p">)</span>
+                        <span class="k">break</span>
+                    <span class="k">except</span> <span class="ne">PermissionError</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># noqa</span>
+                        <span class="k">break</span>
+
+<div class="viewcode-block" id="Browser.tile_windows">
+<a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.tile_windows">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">tile_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">pages</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;a very bad function which adjust each of the windows size and specified number of rows,</span>
+<span class="sd">        and position according to screen size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">tile_windows</span> <span class="k">as</span> <span class="n">_tile_windows</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">_tile_windows</span><span class="p">(</span><span class="n">pages</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">,</span> <span class="n">rows</span><span class="p">)</span></div>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># async def minimize(self):</span>
+    <span class="c1">#     return  await self.active_page.minimize()</span>
+    <span class="c1">#</span>
+    <span class="c1"># async def maximize(self):</span>
+    <span class="c1">#     return await self.active_page.maximize()</span>
+
+<div class="viewcode-block" id="Browser.bring_to_front">
+<a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.bring_to_front">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">bring_to_front</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;brings instance to front (only useful if you have multiple Browser instances,</span>
+<span class="sd">        which is wrong anyway)&quot;&quot;&quot;</span>
+        <span class="n">instance</span><span class="p">:</span> <span class="n">Browser</span>
+        <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">__registered_instances__</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">instance</span><span class="o">.</span><span class="n">active_page</span><span class="o">.</span><span class="n">maximize</span><span class="p">()</span>
+            <span class="k">await</span> <span class="n">instance</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">instance</span><span class="o">.</span><span class="n">active_page</span><span class="o">.</span><span class="n">minimize</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">browser</span> <span class="ow">in</span> <span class="n">__registered_instances__</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">browser</span> <span class="ow">is</span> <span class="bp">self</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_page</span><span class="o">.</span><span class="n">maximize</span><span class="p">()</span></div>
+
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_get_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfo</span><span class="p">]:</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+            <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">get_targets</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">info</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_update_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">targets</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfo</span><span class="p">]</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_targets</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ot</span><span class="o">.</span><span class="n">target_id</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">target_id</span><span class="p">:</span>
+                    <span class="n">ot</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">exc_type</span> <span class="ow">and</span> <span class="n">exc_val</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exc_type</span><span class="p">(</span><span class="n">exc_val</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__await__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_targets</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span><span class="o">.</span><span class="fm">__await__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+
+        <span class="c1"># Close connection when this object is destroyed</span>
+        <span class="c1">#</span>
+        <span class="c1"># try:</span>
+        <span class="c1">#     loop = asyncio.get_running_loop()</span>
+        <span class="c1">#     logger.debug(&#39;%s __del__ =&gt; scheduling websocket cleanup to existing running loop&#39;,</span>
+        <span class="c1">#                  self.__class__.__name__)</span>
+        <span class="c1">#     loop.create_task(self.connection.send(cdp.browser.close()))</span>
+        <span class="c1">#</span>
+        <span class="c1">#     # if loop.is_running():</span>
+        <span class="c1">#     #</span>
+        <span class="c1">#     #     loop.create_task(self.connection.send(cdp.browser.close()))</span>
+
+        <span class="c1"># except RuntimeError:</span>
+        <span class="c1">#     logger.debug(&#39;%s __del__ =&gt; scheduling websocket cleanup to new loop&#39;,</span>
+        <span class="c1">#                  self.__class__.__name__)</span>
+        <span class="c1">#     asyncio.run(self.connection.send(cdp.browser.close()))</span>
+        <span class="c1"># except Exception:  # noqa</span>
+        <span class="c1">#     raise</span>
+
+    <span class="c1"># def __del__(self):</span>
+    <span class="c1">#     try:</span>
+    <span class="c1">#         loop = asyncio.get_running_loop()</span>
+    <span class="c1">#     except RuntimeError:</span>
+    <span class="c1">#         return</span>
+    <span class="c1">#     coro = self.connection.send(cdp.browser.close())</span>
+    <span class="c1">#     if loop.is_running():</span>
+    <span class="c1">#         loop.create_task(coro)</span>
+    <span class="c1">#     else:</span>
+    <span class="c1">#         loop.run_until_complete(coro)</span>
+
+
+<span class="k">def</span> <span class="nf">free_port</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determines a free port using sockets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">socket</span>
+
+    <span class="n">free_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+    <span class="n">free_socket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">free_socket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">free_socket</span><span class="o">.</span><span class="n">getsockname</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">free_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">port</span>
+
+<span class="c1">#</span>
+<span class="c1"># def http_get_json(url, method=&quot;get&quot;, data=None):</span>
+<span class="c1">#     &quot;&quot;&quot;gets browser info from http api</span>
+<span class="c1">#</span>
+<span class="c1">#     :param url: url to fetch</span>
+<span class="c1">#     :param method: str = &#39;get&#39;</span>
+<span class="c1">#     :data: data to send in case of other method</span>
+<span class="c1">#     :return: dict</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     import urllib.request</span>
+<span class="c1">#</span>
+<span class="c1">#     kwargs = dict(method=method)</span>
+<span class="c1">#     if data:</span>
+<span class="c1">#         kwargs.update(dict(data=json.dumps(data)))</span>
+<span class="c1">#     return json.loads(</span>
+<span class="c1">#         urllib.request.urlopen(urllib.request.Request(url, **kwargs)).read()</span>
+<span class="c1">#     )</span>
+
+
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">import</span> <span class="nn">urllib.parse</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="k">class</span> <span class="nc">HTTPApi</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">addr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">=</span> <span class="s2">&quot;http://</span><span class="si">%s</span><span class="s2">:</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_target</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span> <span class="n">Page</span><span class="p">):</span>
+        <span class="n">ws_url</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">websocket_url</span><span class="p">)</span>
+        <span class="n">inst</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">((</span><span class="n">ws_url</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span> <span class="n">ws_url</span><span class="o">.</span><span class="n">port</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">inst</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">method</span> <span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">and</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;get&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;get requests cannot contain data&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">+</span> <span class="n">endpoint</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">,</span> <span class="n">request</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
+            <span class="n">response</span>
+            <span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="p">)</span>
+
+
+
+
+
+<span class="k">def</span> <span class="nf">remove_temp_profile</span><span class="p">():</span>
+    <span class="kn">import</span> <span class="nn">time</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">__registered_instances__</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">_</span><span class="o">.</span><span class="n">config</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">custom_data_dir</span><span class="p">:</span>
+                    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">user_data_dir</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">PermissionError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">attempt</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                        <span class="s2">&quot;problem removing data dir </span><span class="si">%s</span><span class="se">\n</span><span class="s2">Consider checking whether it&#39;s there and remove it by hand</span><span class="se">\n</span><span class="s2">error: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="n">_</span><span class="p">,</span>
+                        <span class="n">e</span>
+                    <span class="p">)</span>
+                    <span class="k">break</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.15</span><span class="p">)</span>
+                <span class="k">continue</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;successfully removed temp profile </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span>
+
+
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">remove_temp_profile</span><span class="p">)</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Author
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

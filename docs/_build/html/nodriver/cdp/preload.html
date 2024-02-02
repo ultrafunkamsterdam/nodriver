@@ -1,0 +1,1561 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Profiler" href="profiler.html" /><link rel="prev" title="PerformanceTimeline" href="performance_timeline.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>Preload - nodriver documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/./custom.css?v=3934642d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">nodriver  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">nodriver  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#components-and-interaction">Components and interaction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver object reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../classes/browser.html">Browser class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/element.html">Element class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/others_and_helpers.html">Other classes and Helper classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/page.html">Page class</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="accessibility.html">Accessibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audits.html">Audits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autofill.html">Autofill</a></li>
+<li class="toctree-l1"><a class="reference internal" href="background_service.html">BackgroundService</a></li>
+<li class="toctree-l1"><a class="reference internal" href="browser.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cache_storage.html">CacheStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cast.html">Cast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="console.html">Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="css.html">CSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugger.html">Debugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device_access.html">DeviceAccess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device_orientation.html">DeviceOrientation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom.html">DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_debugger.html">DOMDebugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_snapshot.html">DOMSnapshot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dom_storage.html">DOMStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="emulation.html">Emulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fed_cm.html">FedCm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fetch.html">Fetch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="headless_experimental.html">HeadlessExperimental</a></li>
+<li class="toctree-l1"><a class="reference internal" href="heap_profiler.html">HeapProfiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexed_db.html">IndexedDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_.html">Input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inspector.html">Inspector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io.html">IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layer_tree.html">LayerTree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="media.html">Media</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">Memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network.html">Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overlay.html">Overlay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page.html">Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance_timeline.html">PerformanceTimeline</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Preload</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiler.html">Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtime.html">Runtime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="service_worker.html">ServiceWorker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="system_info.html">SystemInfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="target.html">Target</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tethering.html">Tethering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_audio.html">WebAudio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_authn.html">WebAuthn</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="preload">
+<h1>Preload<a class="headerlink" href="#preload" title="Link to this heading">#</a></h1>
+<p><em>This CDP domain is experimental.</em></p>
+<ul class="simple" id="module-nodriver.cdp.preload">
+<li><p><a class="reference internal" href="#types">Types</a></p></li>
+<li><p><a class="reference internal" href="#commands">Commands</a></p></li>
+<li><p><a class="reference internal" href="#events">Events</a></p></li>
+</ul>
+<section id="types">
+<h2>Types<a class="headerlink" href="#types" title="Link to this heading">#</a></h2>
+<p>Generally, you do not need to instantiate CDP types
+yourself. Instead, the API creates objects for you as return
+values from commands, and then you can use those objects as
+arguments to other commands.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSetId">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RuleSetId</span></span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#RuleSetId"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.RuleSetId" title="Link to this definition">#</a></dt>
+<dd><p>Unique id</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RuleSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loader_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend_node_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#RuleSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.RuleSet" title="Link to this definition">#</a></dt>
+<dd><p>Corresponds to SpeculationRuleSet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id_</strong> (<a class="reference internal" href="#nodriver.cdp.preload.RuleSetId" title="nodriver.cdp.preload.RuleSetId"><em>RuleSetId</em></a>) – </p></li>
+<li><p><strong>loader_id</strong> (<a class="reference internal" href="network.html#nodriver.cdp.network.LoaderId" title="nodriver.cdp.network.LoaderId"><em>LoaderId</em></a>) – </p></li>
+<li><p><strong>source_text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>backend_node_id</strong> (<a class="reference internal" href="dom.html#nodriver.cdp.dom.BackendNodeId" title="nodriver.cdp.dom.BackendNodeId"><em>BackendNodeId</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>request_id</strong> (<a class="reference internal" href="network.html#nodriver.cdp.network.RequestId" title="nodriver.cdp.network.RequestId"><em>RequestId</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>error_type</strong> (<a class="reference internal" href="#nodriver.cdp.preload.RuleSetErrorType" title="nodriver.cdp.preload.RuleSetErrorType"><em>RuleSetErrorType</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>error_message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSet.backend_node_id">
+<span class="sig-name descname"><span class="pre">backend_node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="dom.html#nodriver.cdp.dom.BackendNodeId" title="nodriver.cdp.dom.BackendNodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendNodeId</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.preload.RuleSet.backend_node_id" title="Link to this definition">#</a></dt>
+<dd><p>A speculation rule set is either added through an inline
+<code class="docutils literal notranslate"><span class="pre">&lt;script&gt;</span></code> tag or through an external resource via the
+‘Speculation-Rules’ HTTP header. For the first case, we include
+the BackendNodeId of the relevant <code class="docutils literal notranslate"><span class="pre">&lt;script&gt;</span></code> tag. For the second
+case, we include the external URL where the rule set was loaded
+from, and also RequestId if Network domain is enabled.</p>
+<p>See also:
+- <a class="reference external" href="https://wicg.github.io/nav-speculation/speculation-rules.html#speculation-rules-script">https://wicg.github.io/nav-speculation/speculation-rules.html#speculation-rules-script</a>
+- <a class="reference external" href="https://wicg.github.io/nav-speculation/speculation-rules.html#speculation-rules-header">https://wicg.github.io/nav-speculation/speculation-rules.html#speculation-rules-header</a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSet.error_message">
+<span class="sig-name descname"><span class="pre">error_message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.preload.RuleSet.error_message" title="Link to this definition">#</a></dt>
+<dd><p>Replace this property with structured error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TODO(https</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>//crbug.com/1425354)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSet.error_type">
+<span class="sig-name descname"><span class="pre">error_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.preload.RuleSetErrorType" title="nodriver.cdp.preload.RuleSetErrorType"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuleSetErrorType</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.preload.RuleSet.error_type" title="Link to this definition">#</a></dt>
+<dd><p>Error information
+<code class="docutils literal notranslate"><span class="pre">errorMessage</span></code> is null iff <code class="docutils literal notranslate"><span class="pre">errorType</span></code> is null.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSet.id_">
+<span class="sig-name descname"><span class="pre">id_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.preload.RuleSetId" title="nodriver.cdp.preload.RuleSetId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuleSetId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.RuleSet.id_" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSet.loader_id">
+<span class="sig-name descname"><span class="pre">loader_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="network.html#nodriver.cdp.network.LoaderId" title="nodriver.cdp.network.LoaderId"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.RuleSet.loader_id" title="Link to this definition">#</a></dt>
+<dd><p>Identifies a document which the rule set is associated with.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSet.request_id">
+<span class="sig-name descname"><span class="pre">request_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="network.html#nodriver.cdp.network.RequestId" title="nodriver.cdp.network.RequestId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestId</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.preload.RuleSet.request_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSet.source_text">
+<span class="sig-name descname"><span class="pre">source_text</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.RuleSet.source_text" title="Link to this definition">#</a></dt>
+<dd><p>Source text of JSON representing the rule set. If it comes from
+<code class="docutils literal notranslate"><span class="pre">&lt;script&gt;</span></code> tag, it is the textContent of the node. Note that it is
+a JSON for valid case.</p>
+<p>See also:
+- <a class="reference external" href="https://wicg.github.io/nav-speculation/speculation-rules.html">https://wicg.github.io/nav-speculation/speculation-rules.html</a>
+- <a class="reference external" href="https://github.com/WICG/nav-speculation/blob/main/triggers.md">https://github.com/WICG/nav-speculation/blob/main/triggers.md</a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSet.url">
+<span class="sig-name descname"><span class="pre">url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.preload.RuleSet.url" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSetErrorType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RuleSetErrorType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#RuleSetErrorType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.RuleSetErrorType" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSetErrorType.INVALID_RULES_SKIPPED">
+<span class="sig-name descname"><span class="pre">INVALID_RULES_SKIPPED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'InvalidRulesSkipped'</span></em><a class="headerlink" href="#nodriver.cdp.preload.RuleSetErrorType.INVALID_RULES_SKIPPED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSetErrorType.SOURCE_IS_NOT_JSON_OBJECT">
+<span class="sig-name descname"><span class="pre">SOURCE_IS_NOT_JSON_OBJECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SourceIsNotJsonObject'</span></em><a class="headerlink" href="#nodriver.cdp.preload.RuleSetErrorType.SOURCE_IS_NOT_JSON_OBJECT" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.SpeculationAction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SpeculationAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#SpeculationAction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.SpeculationAction" title="Link to this definition">#</a></dt>
+<dd><p>The type of preloading attempted. It corresponds to
+mojom::SpeculationAction (although PrefetchWithSubresources is omitted as it
+isn’t being used by clients).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.SpeculationAction.PREFETCH">
+<span class="sig-name descname"><span class="pre">PREFETCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Prefetch'</span></em><a class="headerlink" href="#nodriver.cdp.preload.SpeculationAction.PREFETCH" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.SpeculationAction.PRERENDER">
+<span class="sig-name descname"><span class="pre">PRERENDER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Prerender'</span></em><a class="headerlink" href="#nodriver.cdp.preload.SpeculationAction.PRERENDER" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.SpeculationTargetHint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SpeculationTargetHint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#SpeculationTargetHint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.SpeculationTargetHint" title="Link to this definition">#</a></dt>
+<dd><p>Corresponds to mojom::SpeculationTargetHint.
+See https://github.com/WICG/nav-speculation/blob/main/triggers.md#window-name-targeting-hints</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.SpeculationTargetHint.BLANK">
+<span class="sig-name descname"><span class="pre">BLANK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Blank'</span></em><a class="headerlink" href="#nodriver.cdp.preload.SpeculationTargetHint.BLANK" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.SpeculationTargetHint.SELF">
+<span class="sig-name descname"><span class="pre">SELF</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Self'</span></em><a class="headerlink" href="#nodriver.cdp.preload.SpeculationTargetHint.SELF" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingAttemptKey">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreloadingAttemptKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loader_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_hint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PreloadingAttemptKey"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PreloadingAttemptKey" title="Link to this definition">#</a></dt>
+<dd><p>A key that identifies a preloading attempt.</p>
+<p>The url used is the url specified by the trigger (i.e. the initial URL), and
+not the final url that is navigated to. For example, prerendering allows
+same-origin main frame navigations during the attempt, but the attempt is
+still keyed with the initial URL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loader_id</strong> (<a class="reference internal" href="network.html#nodriver.cdp.network.LoaderId" title="nodriver.cdp.network.LoaderId"><em>LoaderId</em></a>) – </p></li>
+<li><p><strong>action</strong> (<a class="reference internal" href="#nodriver.cdp.preload.SpeculationAction" title="nodriver.cdp.preload.SpeculationAction"><em>SpeculationAction</em></a>) – </p></li>
+<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>target_hint</strong> (<a class="reference internal" href="#nodriver.cdp.preload.SpeculationTargetHint" title="nodriver.cdp.preload.SpeculationTargetHint"><em>SpeculationTargetHint</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingAttemptKey.action">
+<span class="sig-name descname"><span class="pre">action</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.preload.SpeculationAction" title="nodriver.cdp.preload.SpeculationAction"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpeculationAction</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingAttemptKey.action" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingAttemptKey.loader_id">
+<span class="sig-name descname"><span class="pre">loader_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="network.html#nodriver.cdp.network.LoaderId" title="nodriver.cdp.network.LoaderId"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingAttemptKey.loader_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingAttemptKey.target_hint">
+<span class="sig-name descname"><span class="pre">target_hint</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.preload.SpeculationTargetHint" title="nodriver.cdp.preload.SpeculationTargetHint"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpeculationTargetHint</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingAttemptKey.target_hint" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingAttemptKey.url">
+<span class="sig-name descname"><span class="pre">url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingAttemptKey.url" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingAttemptSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreloadingAttemptSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rule_set_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_ids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PreloadingAttemptSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PreloadingAttemptSource" title="Link to this definition">#</a></dt>
+<dd><p>Lists sources for a preloading attempt, specifically the ids of rule sets
+that had a speculation rule that triggered the attempt, and the
+BackendNodeIds of &lt;a href&gt; or &lt;area href&gt; elements that triggered the
+attempt (in the case of attempts triggered by a document rule). It is
+possible for mulitple rule sets and links to trigger a single attempt.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptKey" title="nodriver.cdp.preload.PreloadingAttemptKey"><em>PreloadingAttemptKey</em></a>) – </p></li>
+<li><p><strong>rule_set_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference internal" href="#nodriver.cdp.preload.RuleSetId" title="nodriver.cdp.preload.RuleSetId"><em>RuleSetId</em></a><em>]</em>) – </p></li>
+<li><p><strong>node_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference internal" href="dom.html#nodriver.cdp.dom.BackendNodeId" title="nodriver.cdp.dom.BackendNodeId"><em>BackendNodeId</em></a><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingAttemptSource.key">
+<span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptKey" title="nodriver.cdp.preload.PreloadingAttemptKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreloadingAttemptKey</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingAttemptSource.key" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingAttemptSource.node_ids">
+<span class="sig-name descname"><span class="pre">node_ids</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="dom.html#nodriver.cdp.dom.BackendNodeId" title="nodriver.cdp.dom.BackendNodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendNodeId</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingAttemptSource.node_ids" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingAttemptSource.rule_set_ids">
+<span class="sig-name descname"><span class="pre">rule_set_ids</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.preload.RuleSetId" title="nodriver.cdp.preload.RuleSetId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuleSetId</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingAttemptSource.rule_set_ids" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrerenderFinalStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PrerenderFinalStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus" title="Link to this definition">#</a></dt>
+<dd><p>List of FinalStatus reasons for Prerender2.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED">
+<span class="sig-name descname"><span class="pre">ACTIVATED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Activated'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED_BEFORE_STARTED">
+<span class="sig-name descname"><span class="pre">ACTIVATED_BEFORE_STARTED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ActivatedBeforeStarted'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED_BEFORE_STARTED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED_DURING_MAIN_FRAME_NAVIGATION">
+<span class="sig-name descname"><span class="pre">ACTIVATED_DURING_MAIN_FRAME_NAVIGATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ActivatedDuringMainFrameNavigation'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED_DURING_MAIN_FRAME_NAVIGATION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED_IN_BACKGROUND">
+<span class="sig-name descname"><span class="pre">ACTIVATED_IN_BACKGROUND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ActivatedInBackground'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED_IN_BACKGROUND" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED_WITH_AUXILIARY_BROWSING_CONTEXTS">
+<span class="sig-name descname"><span class="pre">ACTIVATED_WITH_AUXILIARY_BROWSING_CONTEXTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ActivatedWithAuxiliaryBrowsingContexts'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED_WITH_AUXILIARY_BROWSING_CONTEXTS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATION_FRAME_POLICY_NOT_COMPATIBLE">
+<span class="sig-name descname"><span class="pre">ACTIVATION_FRAME_POLICY_NOT_COMPATIBLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ActivationFramePolicyNotCompatible'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATION_FRAME_POLICY_NOT_COMPATIBLE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATION_NAVIGATION_DESTROYED_BEFORE_SUCCESS">
+<span class="sig-name descname"><span class="pre">ACTIVATION_NAVIGATION_DESTROYED_BEFORE_SUCCESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ActivationNavigationDestroyedBeforeSuccess'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATION_NAVIGATION_DESTROYED_BEFORE_SUCCESS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATION_NAVIGATION_PARAMETER_MISMATCH">
+<span class="sig-name descname"><span class="pre">ACTIVATION_NAVIGATION_PARAMETER_MISMATCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ActivationNavigationParameterMismatch'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATION_NAVIGATION_PARAMETER_MISMATCH" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATION_URL_HAS_EFFECTIVE_URL">
+<span class="sig-name descname"><span class="pre">ACTIVATION_URL_HAS_EFFECTIVE_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ActivationUrlHasEffectiveUrl'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATION_URL_HAS_EFFECTIVE_URL" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.AUDIO_OUTPUT_DEVICE_REQUESTED">
+<span class="sig-name descname"><span class="pre">AUDIO_OUTPUT_DEVICE_REQUESTED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'AudioOutputDeviceRequested'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.AUDIO_OUTPUT_DEVICE_REQUESTED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.BATTERY_SAVER_ENABLED">
+<span class="sig-name descname"><span class="pre">BATTERY_SAVER_ENABLED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'BatterySaverEnabled'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.BATTERY_SAVER_ENABLED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.BLOCKED_BY_CLIENT">
+<span class="sig-name descname"><span class="pre">BLOCKED_BY_CLIENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'BlockedByClient'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.BLOCKED_BY_CLIENT" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.CANCEL_ALL_HOSTS_FOR_TESTING">
+<span class="sig-name descname"><span class="pre">CANCEL_ALL_HOSTS_FOR_TESTING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CancelAllHostsForTesting'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.CANCEL_ALL_HOSTS_FOR_TESTING" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.CLIENT_CERT_REQUESTED">
+<span class="sig-name descname"><span class="pre">CLIENT_CERT_REQUESTED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ClientCertRequested'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.CLIENT_CERT_REQUESTED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.CROSS_SITE_NAVIGATION_IN_INITIAL_NAVIGATION">
+<span class="sig-name descname"><span class="pre">CROSS_SITE_NAVIGATION_IN_INITIAL_NAVIGATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CrossSiteNavigationInInitialNavigation'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.CROSS_SITE_NAVIGATION_IN_INITIAL_NAVIGATION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.CROSS_SITE_NAVIGATION_IN_MAIN_FRAME_NAVIGATION">
+<span class="sig-name descname"><span class="pre">CROSS_SITE_NAVIGATION_IN_MAIN_FRAME_NAVIGATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CrossSiteNavigationInMainFrameNavigation'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.CROSS_SITE_NAVIGATION_IN_MAIN_FRAME_NAVIGATION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.CROSS_SITE_REDIRECT_IN_INITIAL_NAVIGATION">
+<span class="sig-name descname"><span class="pre">CROSS_SITE_REDIRECT_IN_INITIAL_NAVIGATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CrossSiteRedirectInInitialNavigation'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.CROSS_SITE_REDIRECT_IN_INITIAL_NAVIGATION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.CROSS_SITE_REDIRECT_IN_MAIN_FRAME_NAVIGATION">
+<span class="sig-name descname"><span class="pre">CROSS_SITE_REDIRECT_IN_MAIN_FRAME_NAVIGATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CrossSiteRedirectInMainFrameNavigation'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.CROSS_SITE_REDIRECT_IN_MAIN_FRAME_NAVIGATION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.DATA_SAVER_ENABLED">
+<span class="sig-name descname"><span class="pre">DATA_SAVER_ENABLED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DataSaverEnabled'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.DATA_SAVER_ENABLED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.DESTROYED">
+<span class="sig-name descname"><span class="pre">DESTROYED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Destroyed'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.DESTROYED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.DID_FAIL_LOAD">
+<span class="sig-name descname"><span class="pre">DID_FAIL_LOAD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DidFailLoad'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.DID_FAIL_LOAD" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.DOWNLOAD">
+<span class="sig-name descname"><span class="pre">DOWNLOAD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Download'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.DOWNLOAD" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.EMBEDDER_HOST_DISALLOWED">
+<span class="sig-name descname"><span class="pre">EMBEDDER_HOST_DISALLOWED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'EmbedderHostDisallowed'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.EMBEDDER_HOST_DISALLOWED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.INACTIVE_PAGE_RESTRICTION">
+<span class="sig-name descname"><span class="pre">INACTIVE_PAGE_RESTRICTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'InactivePageRestriction'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.INACTIVE_PAGE_RESTRICTION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.INVALID_SCHEME_NAVIGATION">
+<span class="sig-name descname"><span class="pre">INVALID_SCHEME_NAVIGATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'InvalidSchemeNavigation'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.INVALID_SCHEME_NAVIGATION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.INVALID_SCHEME_REDIRECT">
+<span class="sig-name descname"><span class="pre">INVALID_SCHEME_REDIRECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'InvalidSchemeRedirect'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.INVALID_SCHEME_REDIRECT" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.LOGIN_AUTH_REQUESTED">
+<span class="sig-name descname"><span class="pre">LOGIN_AUTH_REQUESTED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'LoginAuthRequested'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.LOGIN_AUTH_REQUESTED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.LOW_END_DEVICE">
+<span class="sig-name descname"><span class="pre">LOW_END_DEVICE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'LowEndDevice'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.LOW_END_DEVICE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.MAIN_FRAME_NAVIGATION">
+<span class="sig-name descname"><span class="pre">MAIN_FRAME_NAVIGATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MainFrameNavigation'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.MAIN_FRAME_NAVIGATION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.MAX_NUM_OF_RUNNING_EAGER_PRERENDERS_EXCEEDED">
+<span class="sig-name descname"><span class="pre">MAX_NUM_OF_RUNNING_EAGER_PRERENDERS_EXCEEDED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MaxNumOfRunningEagerPrerendersExceeded'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.MAX_NUM_OF_RUNNING_EAGER_PRERENDERS_EXCEEDED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.MAX_NUM_OF_RUNNING_EMBEDDER_PRERENDERS_EXCEEDED">
+<span class="sig-name descname"><span class="pre">MAX_NUM_OF_RUNNING_EMBEDDER_PRERENDERS_EXCEEDED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MaxNumOfRunningEmbedderPrerendersExceeded'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.MAX_NUM_OF_RUNNING_EMBEDDER_PRERENDERS_EXCEEDED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.MAX_NUM_OF_RUNNING_NON_EAGER_PRERENDERS_EXCEEDED">
+<span class="sig-name descname"><span class="pre">MAX_NUM_OF_RUNNING_NON_EAGER_PRERENDERS_EXCEEDED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MaxNumOfRunningNonEagerPrerendersExceeded'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.MAX_NUM_OF_RUNNING_NON_EAGER_PRERENDERS_EXCEEDED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.MEMORY_LIMIT_EXCEEDED">
+<span class="sig-name descname"><span class="pre">MEMORY_LIMIT_EXCEEDED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MemoryLimitExceeded'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.MEMORY_LIMIT_EXCEEDED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.MEMORY_PRESSURE_AFTER_TRIGGERED">
+<span class="sig-name descname"><span class="pre">MEMORY_PRESSURE_AFTER_TRIGGERED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MemoryPressureAfterTriggered'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.MEMORY_PRESSURE_AFTER_TRIGGERED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.MEMORY_PRESSURE_ON_TRIGGER">
+<span class="sig-name descname"><span class="pre">MEMORY_PRESSURE_ON_TRIGGER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MemoryPressureOnTrigger'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.MEMORY_PRESSURE_ON_TRIGGER" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.MIXED_CONTENT">
+<span class="sig-name descname"><span class="pre">MIXED_CONTENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MixedContent'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.MIXED_CONTENT" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.MOJO_BINDER_POLICY">
+<span class="sig-name descname"><span class="pre">MOJO_BINDER_POLICY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MojoBinderPolicy'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.MOJO_BINDER_POLICY" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.NAVIGATION_BAD_HTTP_STATUS">
+<span class="sig-name descname"><span class="pre">NAVIGATION_BAD_HTTP_STATUS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'NavigationBadHttpStatus'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.NAVIGATION_BAD_HTTP_STATUS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.NAVIGATION_NOT_COMMITTED">
+<span class="sig-name descname"><span class="pre">NAVIGATION_NOT_COMMITTED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'NavigationNotCommitted'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.NAVIGATION_NOT_COMMITTED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.NAVIGATION_REQUEST_BLOCKED_BY_CSP">
+<span class="sig-name descname"><span class="pre">NAVIGATION_REQUEST_BLOCKED_BY_CSP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'NavigationRequestBlockedByCsp'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.NAVIGATION_REQUEST_BLOCKED_BY_CSP" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.NAVIGATION_REQUEST_NETWORK_ERROR">
+<span class="sig-name descname"><span class="pre">NAVIGATION_REQUEST_NETWORK_ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'NavigationRequestNetworkError'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.NAVIGATION_REQUEST_NETWORK_ERROR" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.PRELOADING_DISABLED">
+<span class="sig-name descname"><span class="pre">PRELOADING_DISABLED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PreloadingDisabled'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.PRELOADING_DISABLED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.PRELOADING_UNSUPPORTED_BY_WEB_CONTENTS">
+<span class="sig-name descname"><span class="pre">PRELOADING_UNSUPPORTED_BY_WEB_CONTENTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PreloadingUnsupportedByWebContents'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.PRELOADING_UNSUPPORTED_BY_WEB_CONTENTS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.PRERENDERING_DISABLED_BY_DEV_TOOLS">
+<span class="sig-name descname"><span class="pre">PRERENDERING_DISABLED_BY_DEV_TOOLS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrerenderingDisabledByDevTools'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.PRERENDERING_DISABLED_BY_DEV_TOOLS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.PRERENDERING_URL_HAS_EFFECTIVE_URL">
+<span class="sig-name descname"><span class="pre">PRERENDERING_URL_HAS_EFFECTIVE_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrerenderingUrlHasEffectiveUrl'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.PRERENDERING_URL_HAS_EFFECTIVE_URL" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.PRIMARY_MAIN_FRAME_RENDERER_PROCESS_CRASHED">
+<span class="sig-name descname"><span class="pre">PRIMARY_MAIN_FRAME_RENDERER_PROCESS_CRASHED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrimaryMainFrameRendererProcessCrashed'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.PRIMARY_MAIN_FRAME_RENDERER_PROCESS_CRASHED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.PRIMARY_MAIN_FRAME_RENDERER_PROCESS_KILLED">
+<span class="sig-name descname"><span class="pre">PRIMARY_MAIN_FRAME_RENDERER_PROCESS_KILLED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrimaryMainFrameRendererProcessKilled'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.PRIMARY_MAIN_FRAME_RENDERER_PROCESS_KILLED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.REDIRECTED_PRERENDERING_URL_HAS_EFFECTIVE_URL">
+<span class="sig-name descname"><span class="pre">REDIRECTED_PRERENDERING_URL_HAS_EFFECTIVE_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'RedirectedPrerenderingUrlHasEffectiveUrl'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.REDIRECTED_PRERENDERING_URL_HAS_EFFECTIVE_URL" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.RENDERER_PROCESS_CRASHED">
+<span class="sig-name descname"><span class="pre">RENDERER_PROCESS_CRASHED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'RendererProcessCrashed'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.RENDERER_PROCESS_CRASHED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.RENDERER_PROCESS_KILLED">
+<span class="sig-name descname"><span class="pre">RENDERER_PROCESS_KILLED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'RendererProcessKilled'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.RENDERER_PROCESS_KILLED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_INITIAL_NAVIGATION">
+<span class="sig-name descname"><span class="pre">SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_INITIAL_NAVIGATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SameSiteCrossOriginNavigationNotOptInInInitialNavigation'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_INITIAL_NAVIGATION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION">
+<span class="sig-name descname"><span class="pre">SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SameSiteCrossOriginNavigationNotOptInInMainFrameNavigation'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_INITIAL_NAVIGATION">
+<span class="sig-name descname"><span class="pre">SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_INITIAL_NAVIGATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SameSiteCrossOriginRedirectNotOptInInInitialNavigation'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_INITIAL_NAVIGATION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION">
+<span class="sig-name descname"><span class="pre">SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SameSiteCrossOriginRedirectNotOptInInMainFrameNavigation'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.SPECULATION_RULE_REMOVED">
+<span class="sig-name descname"><span class="pre">SPECULATION_RULE_REMOVED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SpeculationRuleRemoved'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.SPECULATION_RULE_REMOVED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.SSL_CERTIFICATE_ERROR">
+<span class="sig-name descname"><span class="pre">SSL_CERTIFICATE_ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SslCertificateError'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.SSL_CERTIFICATE_ERROR" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.START_FAILED">
+<span class="sig-name descname"><span class="pre">START_FAILED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'StartFailed'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.START_FAILED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.STOP">
+<span class="sig-name descname"><span class="pre">STOP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Stop'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.STOP" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.TAB_CLOSED_BY_USER_GESTURE">
+<span class="sig-name descname"><span class="pre">TAB_CLOSED_BY_USER_GESTURE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TabClosedByUserGesture'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.TAB_CLOSED_BY_USER_GESTURE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.TAB_CLOSED_WITHOUT_USER_GESTURE">
+<span class="sig-name descname"><span class="pre">TAB_CLOSED_WITHOUT_USER_GESTURE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TabClosedWithoutUserGesture'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.TAB_CLOSED_WITHOUT_USER_GESTURE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.TIMEOUT_BACKGROUNDED">
+<span class="sig-name descname"><span class="pre">TIMEOUT_BACKGROUNDED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TimeoutBackgrounded'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.TIMEOUT_BACKGROUNDED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.TRIGGER_BACKGROUNDED">
+<span class="sig-name descname"><span class="pre">TRIGGER_BACKGROUNDED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TriggerBackgrounded'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.TRIGGER_BACKGROUNDED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.TRIGGER_DESTROYED">
+<span class="sig-name descname"><span class="pre">TRIGGER_DESTROYED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TriggerDestroyed'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.TRIGGER_DESTROYED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.TRIGGER_URL_HAS_EFFECTIVE_URL">
+<span class="sig-name descname"><span class="pre">TRIGGER_URL_HAS_EFFECTIVE_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TriggerUrlHasEffectiveUrl'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.TRIGGER_URL_HAS_EFFECTIVE_URL" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.UA_CHANGE_REQUIRES_RELOAD">
+<span class="sig-name descname"><span class="pre">UA_CHANGE_REQUIRES_RELOAD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'UaChangeRequiresReload'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.UA_CHANGE_REQUIRES_RELOAD" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingStatus">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreloadingStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PreloadingStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PreloadingStatus" title="Link to this definition">#</a></dt>
+<dd><p>Preloading status values, see also PreloadingTriggeringOutcome. This
+status is shared by prefetchStatusUpdated and prerenderStatusUpdated.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingStatus.FAILURE">
+<span class="sig-name descname"><span class="pre">FAILURE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Failure'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingStatus.FAILURE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingStatus.NOT_SUPPORTED">
+<span class="sig-name descname"><span class="pre">NOT_SUPPORTED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'NotSupported'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingStatus.NOT_SUPPORTED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingStatus.PENDING">
+<span class="sig-name descname"><span class="pre">PENDING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Pending'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingStatus.PENDING" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingStatus.READY">
+<span class="sig-name descname"><span class="pre">READY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Ready'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingStatus.READY" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingStatus.RUNNING">
+<span class="sig-name descname"><span class="pre">RUNNING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Running'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingStatus.RUNNING" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingStatus.SUCCESS">
+<span class="sig-name descname"><span class="pre">SUCCESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Success'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingStatus.SUCCESS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrefetchStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PrefetchStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus" title="Link to this definition">#</a></dt>
+<dd><p>TODO(<a class="reference external" href="https://crbug.com/1384419">https://crbug.com/1384419</a>): revisit the list of PrefetchStatus and
+filter out the ones that aren’t necessary to the developers.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_ALLOWED">
+<span class="sig-name descname"><span class="pre">PREFETCH_ALLOWED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchAllowed'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_ALLOWED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED">
+<span class="sig-name descname"><span class="pre">PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchEvictedAfterCandidateRemoved'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_EVICTED_FOR_NEWER_PREFETCH">
+<span class="sig-name descname"><span class="pre">PREFETCH_EVICTED_FOR_NEWER_PREFETCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchEvictedForNewerPrefetch'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_EVICTED_FOR_NEWER_PREFETCH" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_INELIGIBLE_REDIRECT">
+<span class="sig-name descname"><span class="pre">PREFETCH_FAILED_INELIGIBLE_REDIRECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchFailedIneligibleRedirect'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_INELIGIBLE_REDIRECT" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_INVALID_REDIRECT">
+<span class="sig-name descname"><span class="pre">PREFETCH_FAILED_INVALID_REDIRECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchFailedInvalidRedirect'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_INVALID_REDIRECT" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_MIME_NOT_SUPPORTED">
+<span class="sig-name descname"><span class="pre">PREFETCH_FAILED_MIME_NOT_SUPPORTED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchFailedMIMENotSupported'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_MIME_NOT_SUPPORTED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_NET_ERROR">
+<span class="sig-name descname"><span class="pre">PREFETCH_FAILED_NET_ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchFailedNetError'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_NET_ERROR" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_NON2_XX">
+<span class="sig-name descname"><span class="pre">PREFETCH_FAILED_NON2_XX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchFailedNon2XX'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_NON2_XX" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_PER_PAGE_LIMIT_EXCEEDED">
+<span class="sig-name descname"><span class="pre">PREFETCH_FAILED_PER_PAGE_LIMIT_EXCEEDED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchFailedPerPageLimitExceeded'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_PER_PAGE_LIMIT_EXCEEDED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_HELDBACK">
+<span class="sig-name descname"><span class="pre">PREFETCH_HELDBACK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchHeldback'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_HELDBACK" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_INELIGIBLE_RETRY_AFTER">
+<span class="sig-name descname"><span class="pre">PREFETCH_INELIGIBLE_RETRY_AFTER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchIneligibleRetryAfter'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_INELIGIBLE_RETRY_AFTER" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_IS_PRIVACY_DECOY">
+<span class="sig-name descname"><span class="pre">PREFETCH_IS_PRIVACY_DECOY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchIsPrivacyDecoy'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_IS_PRIVACY_DECOY" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_IS_STALE">
+<span class="sig-name descname"><span class="pre">PREFETCH_IS_STALE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchIsStale'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_IS_STALE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_BATTERY_SAVER_ENABLED">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_BATTERY_SAVER_ENABLED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligibleBatterySaverEnabled'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_BATTERY_SAVER_ENABLED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_BROWSER_CONTEXT_OFF_THE_RECORD">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_BROWSER_CONTEXT_OFF_THE_RECORD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligibleBrowserContextOffTheRecord'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_BROWSER_CONTEXT_OFF_THE_RECORD" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_DATA_SAVER_ENABLED">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_DATA_SAVER_ENABLED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligibleDataSaverEnabled'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_DATA_SAVER_ENABLED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_EXISTING_PROXY">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_EXISTING_PROXY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligibleExistingProxy'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_EXISTING_PROXY" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_HOST_IS_NON_UNIQUE">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_HOST_IS_NON_UNIQUE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligibleHostIsNonUnique'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_HOST_IS_NON_UNIQUE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_NON_DEFAULT_STORAGE_PARTITION">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_NON_DEFAULT_STORAGE_PARTITION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligibleNonDefaultStoragePartition'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_NON_DEFAULT_STORAGE_PARTITION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_PRELOADING_DISABLED">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_PRELOADING_DISABLED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligiblePreloadingDisabled'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_PRELOADING_DISABLED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_SAME_SITE_CROSS_ORIGIN_PREFETCH_REQUIRED_PROXY">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_SAME_SITE_CROSS_ORIGIN_PREFETCH_REQUIRED_PROXY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligibleSameSiteCrossOriginPrefetchRequiredProxy'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_SAME_SITE_CROSS_ORIGIN_PREFETCH_REQUIRED_PROXY" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_SCHEME_IS_NOT_HTTPS">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_SCHEME_IS_NOT_HTTPS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligibleSchemeIsNotHttps'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_SCHEME_IS_NOT_HTTPS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_COOKIES">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_USER_HAS_COOKIES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligibleUserHasCookies'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_COOKIES" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligibleUserHasServiceWorker'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_FINISHED_IN_TIME">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_FINISHED_IN_TIME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotFinishedInTime'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_FINISHED_IN_TIME" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_STARTED">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_STARTED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotStarted'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_STARTED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_USED_COOKIES_CHANGED">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_USED_COOKIES_CHANGED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotUsedCookiesChanged'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_USED_COOKIES_CHANGED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_USED_PROBE_FAILED">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_USED_PROBE_FAILED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotUsedProbeFailed'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_USED_PROBE_FAILED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_PROXY_NOT_AVAILABLE">
+<span class="sig-name descname"><span class="pre">PREFETCH_PROXY_NOT_AVAILABLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchProxyNotAvailable'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_PROXY_NOT_AVAILABLE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_RESPONSE_USED">
+<span class="sig-name descname"><span class="pre">PREFETCH_RESPONSE_USED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchResponseUsed'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_RESPONSE_USED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_SUCCESSFUL_BUT_NOT_USED">
+<span class="sig-name descname"><span class="pre">PREFETCH_SUCCESSFUL_BUT_NOT_USED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchSuccessfulButNotUsed'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_SUCCESSFUL_BUT_NOT_USED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderMismatchedHeaders">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrerenderMismatchedHeaders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PrerenderMismatchedHeaders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PrerenderMismatchedHeaders" title="Link to this definition">#</a></dt>
+<dd><p>Information of headers to be displayed when the header mismatch occurred.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>header_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>initial_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>activation_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderMismatchedHeaders.activation_value">
+<span class="sig-name descname"><span class="pre">activation_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderMismatchedHeaders.activation_value" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderMismatchedHeaders.header_name">
+<span class="sig-name descname"><span class="pre">header_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderMismatchedHeaders.header_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderMismatchedHeaders.initial_value">
+<span class="sig-name descname"><span class="pre">initial_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderMismatchedHeaders.initial_value" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading">#</a></h2>
+<p>Each command is a generator function. The return
+type <code class="docutils literal notranslate"><span class="pre">Generator[x,</span> <span class="pre">y,</span> <span class="pre">z]</span></code> indicates that the generator
+<em>yields</em> arguments of type <code class="docutils literal notranslate"><span class="pre">x</span></code>, it must be resumed with
+an argument of type <code class="docutils literal notranslate"><span class="pre">y</span></code>, and it returns type <code class="docutils literal notranslate"><span class="pre">z</span></code>. In
+this library, types <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are the same for all
+commands, and <code class="docutils literal notranslate"><span class="pre">z</span></code> is the return type you should pay attention
+to. For more information, see
+<a class="reference internal" href="../quickstart.html#getting-started-commands"><span class="std std-ref">Getting Started: Commands</span></a>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.disable">
+<span class="sig-name descname"><span class="pre">disable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#disable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.disable" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.enable">
+<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#enable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.enable" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="events">
+<h2>Events<a class="headerlink" href="#events" title="Link to this heading">#</a></h2>
+<p>Generally, you do not need to instantiate CDP events
+yourself. Instead, the API creates events for you and then
+you use the event’s attributes.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSetUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RuleSetUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rule_set</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#RuleSetUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.RuleSetUpdated" title="Link to this definition">#</a></dt>
+<dd><p>Upsert. Currently, it is only emitted when a rule set added.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rule_set</strong> (<a class="reference internal" href="#nodriver.cdp.preload.RuleSet" title="nodriver.cdp.preload.RuleSet"><em>RuleSet</em></a>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSetUpdated.rule_set">
+<span class="sig-name descname"><span class="pre">rule_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.preload.RuleSet" title="nodriver.cdp.preload.RuleSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuleSet</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.RuleSetUpdated.rule_set" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSetRemoved">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RuleSetRemoved</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#RuleSetRemoved"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.RuleSetRemoved" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id_</strong> (<a class="reference internal" href="#nodriver.cdp.preload.RuleSetId" title="nodriver.cdp.preload.RuleSetId"><em>RuleSetId</em></a>) – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.RuleSetRemoved.id_">
+<span class="sig-name descname"><span class="pre">id_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.preload.RuleSetId" title="nodriver.cdp.preload.RuleSetId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RuleSetId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.RuleSetRemoved.id_" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadEnabledStateUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreloadEnabledStateUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disabled_by_preference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled_by_data_saver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled_by_battery_saver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled_by_holdback_prefetch_speculation_rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled_by_holdback_prerender_speculation_rules</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PreloadEnabledStateUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PreloadEnabledStateUpdated" title="Link to this definition">#</a></dt>
+<dd><p>Fired when a preload enabled state is updated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>disabled_by_preference</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>disabled_by_data_saver</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>disabled_by_battery_saver</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>disabled_by_holdback_prefetch_speculation_rules</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+<li><p><strong>disabled_by_holdback_prerender_speculation_rules</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_battery_saver">
+<span class="sig-name descname"><span class="pre">disabled_by_battery_saver</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_battery_saver" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_data_saver">
+<span class="sig-name descname"><span class="pre">disabled_by_data_saver</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_data_saver" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_holdback_prefetch_speculation_rules">
+<span class="sig-name descname"><span class="pre">disabled_by_holdback_prefetch_speculation_rules</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_holdback_prefetch_speculation_rules" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_holdback_prerender_speculation_rules">
+<span class="sig-name descname"><span class="pre">disabled_by_holdback_prerender_speculation_rules</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_holdback_prerender_speculation_rules" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_preference">
+<span class="sig-name descname"><span class="pre">disabled_by_preference</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_preference" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatusUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrefetchStatusUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initiating_frame_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefetch_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefetch_status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PrefetchStatusUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatusUpdated" title="Link to this definition">#</a></dt>
+<dd><p>Fired when a prefetch attempt is updated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptKey" title="nodriver.cdp.preload.PreloadingAttemptKey"><em>PreloadingAttemptKey</em></a>) – </p></li>
+<li><p><strong>initiating_frame_id</strong> (<a class="reference internal" href="page.html#nodriver.cdp.page.FrameId" title="nodriver.cdp.page.FrameId"><em>FrameId</em></a>) – </p></li>
+<li><p><strong>prefetch_url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>status</strong> (<a class="reference internal" href="#nodriver.cdp.preload.PreloadingStatus" title="nodriver.cdp.preload.PreloadingStatus"><em>PreloadingStatus</em></a>) – </p></li>
+<li><p><strong>prefetch_status</strong> (<a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus" title="nodriver.cdp.preload.PrefetchStatus"><em>PrefetchStatus</em></a>) – </p></li>
+<li><p><strong>request_id</strong> (<a class="reference internal" href="network.html#nodriver.cdp.network.RequestId" title="nodriver.cdp.network.RequestId"><em>RequestId</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatusUpdated.initiating_frame_id">
+<span class="sig-name descname"><span class="pre">initiating_frame_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="page.html#nodriver.cdp.page.FrameId" title="nodriver.cdp.page.FrameId"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrameId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatusUpdated.initiating_frame_id" title="Link to this definition">#</a></dt>
+<dd><p>The frame id of the frame initiating prefetch.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatusUpdated.key">
+<span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptKey" title="nodriver.cdp.preload.PreloadingAttemptKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreloadingAttemptKey</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatusUpdated.key" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatusUpdated.prefetch_status">
+<span class="sig-name descname"><span class="pre">prefetch_status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus" title="nodriver.cdp.preload.PrefetchStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrefetchStatus</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatusUpdated.prefetch_status" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatusUpdated.prefetch_url">
+<span class="sig-name descname"><span class="pre">prefetch_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatusUpdated.prefetch_url" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatusUpdated.request_id">
+<span class="sig-name descname"><span class="pre">request_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="network.html#nodriver.cdp.network.RequestId" title="nodriver.cdp.network.RequestId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatusUpdated.request_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatusUpdated.status">
+<span class="sig-name descname"><span class="pre">status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.preload.PreloadingStatus" title="nodriver.cdp.preload.PreloadingStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreloadingStatus</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatusUpdated.status" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderStatusUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrerenderStatusUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prerender_status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disallowed_mojo_interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mismatched_headers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PrerenderStatusUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PrerenderStatusUpdated" title="Link to this definition">#</a></dt>
+<dd><p>Fired when a prerender attempt is updated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptKey" title="nodriver.cdp.preload.PreloadingAttemptKey"><em>PreloadingAttemptKey</em></a>) – </p></li>
+<li><p><strong>status</strong> (<a class="reference internal" href="#nodriver.cdp.preload.PreloadingStatus" title="nodriver.cdp.preload.PreloadingStatus"><em>PreloadingStatus</em></a>) – </p></li>
+<li><p><strong>prerender_status</strong> (<a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus" title="nodriver.cdp.preload.PrerenderFinalStatus"><em>PrerenderFinalStatus</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>disallowed_mojo_interface</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>mismatched_headers</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference internal" href="#nodriver.cdp.preload.PrerenderMismatchedHeaders" title="nodriver.cdp.preload.PrerenderMismatchedHeaders"><em>PrerenderMismatchedHeaders</em></a><em>] </em><em>| </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderStatusUpdated.disallowed_mojo_interface">
+<span class="sig-name descname"><span class="pre">disallowed_mojo_interface</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderStatusUpdated.disallowed_mojo_interface" title="Link to this definition">#</a></dt>
+<dd><p>This is used to give users more information about the name of Mojo interface
+that is incompatible with prerender and has caused the cancellation of the attempt.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderStatusUpdated.key">
+<span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptKey" title="nodriver.cdp.preload.PreloadingAttemptKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreloadingAttemptKey</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderStatusUpdated.key" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderStatusUpdated.mismatched_headers">
+<span class="sig-name descname"><span class="pre">mismatched_headers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.preload.PrerenderMismatchedHeaders" title="nodriver.cdp.preload.PrerenderMismatchedHeaders"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrerenderMismatchedHeaders</span></code></a><span class="pre">]]</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderStatusUpdated.mismatched_headers" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderStatusUpdated.prerender_status">
+<span class="sig-name descname"><span class="pre">prerender_status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus" title="nodriver.cdp.preload.PrerenderFinalStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrerenderFinalStatus</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderStatusUpdated.prerender_status" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderStatusUpdated.status">
+<span class="sig-name descname"><span class="pre">status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.preload.PreloadingStatus" title="nodriver.cdp.preload.PreloadingStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreloadingStatus</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderStatusUpdated.status" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingAttemptSourcesUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreloadingAttemptSourcesUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loader_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preloading_attempt_sources</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PreloadingAttemptSourcesUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PreloadingAttemptSourcesUpdated" title="Link to this definition">#</a></dt>
+<dd><p>Send a list of sources for all preloading attempts in a document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loader_id</strong> (<a class="reference internal" href="network.html#nodriver.cdp.network.LoaderId" title="nodriver.cdp.network.LoaderId"><em>LoaderId</em></a>) – </p></li>
+<li><p><strong>preloading_attempt_sources</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptSource" title="nodriver.cdp.preload.PreloadingAttemptSource"><em>PreloadingAttemptSource</em></a><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingAttemptSourcesUpdated.loader_id">
+<span class="sig-name descname"><span class="pre">loader_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="network.html#nodriver.cdp.network.LoaderId" title="nodriver.cdp.network.LoaderId"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingAttemptSourcesUpdated.loader_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadingAttemptSourcesUpdated.preloading_attempt_sources">
+<span class="sig-name descname"><span class="pre">preloading_attempt_sources</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptSource" title="nodriver.cdp.preload.PreloadingAttemptSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreloadingAttemptSource</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingAttemptSourcesUpdated.preloading_attempt_sources" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="profiler.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Profiler</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="performance_timeline.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">PerformanceTimeline</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Author
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Preload</a><ul>
+<li><a class="reference internal" href="#types">Types</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSetId"><code class="docutils literal notranslate"><span class="pre">RuleSetId</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSet"><code class="docutils literal notranslate"><span class="pre">RuleSet</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSet.backend_node_id"><code class="docutils literal notranslate"><span class="pre">RuleSet.backend_node_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSet.error_message"><code class="docutils literal notranslate"><span class="pre">RuleSet.error_message</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSet.error_type"><code class="docutils literal notranslate"><span class="pre">RuleSet.error_type</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSet.id_"><code class="docutils literal notranslate"><span class="pre">RuleSet.id_</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSet.loader_id"><code class="docutils literal notranslate"><span class="pre">RuleSet.loader_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSet.request_id"><code class="docutils literal notranslate"><span class="pre">RuleSet.request_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSet.source_text"><code class="docutils literal notranslate"><span class="pre">RuleSet.source_text</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSet.url"><code class="docutils literal notranslate"><span class="pre">RuleSet.url</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSetErrorType"><code class="docutils literal notranslate"><span class="pre">RuleSetErrorType</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSetErrorType.INVALID_RULES_SKIPPED"><code class="docutils literal notranslate"><span class="pre">RuleSetErrorType.INVALID_RULES_SKIPPED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSetErrorType.SOURCE_IS_NOT_JSON_OBJECT"><code class="docutils literal notranslate"><span class="pre">RuleSetErrorType.SOURCE_IS_NOT_JSON_OBJECT</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.SpeculationAction"><code class="docutils literal notranslate"><span class="pre">SpeculationAction</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.SpeculationAction.PREFETCH"><code class="docutils literal notranslate"><span class="pre">SpeculationAction.PREFETCH</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.SpeculationAction.PRERENDER"><code class="docutils literal notranslate"><span class="pre">SpeculationAction.PRERENDER</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.SpeculationTargetHint"><code class="docutils literal notranslate"><span class="pre">SpeculationTargetHint</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.SpeculationTargetHint.BLANK"><code class="docutils literal notranslate"><span class="pre">SpeculationTargetHint.BLANK</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.SpeculationTargetHint.SELF"><code class="docutils literal notranslate"><span class="pre">SpeculationTargetHint.SELF</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptKey"><code class="docutils literal notranslate"><span class="pre">PreloadingAttemptKey</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptKey.action"><code class="docutils literal notranslate"><span class="pre">PreloadingAttemptKey.action</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptKey.loader_id"><code class="docutils literal notranslate"><span class="pre">PreloadingAttemptKey.loader_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptKey.target_hint"><code class="docutils literal notranslate"><span class="pre">PreloadingAttemptKey.target_hint</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptKey.url"><code class="docutils literal notranslate"><span class="pre">PreloadingAttemptKey.url</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptSource"><code class="docutils literal notranslate"><span class="pre">PreloadingAttemptSource</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptSource.key"><code class="docutils literal notranslate"><span class="pre">PreloadingAttemptSource.key</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptSource.node_ids"><code class="docutils literal notranslate"><span class="pre">PreloadingAttemptSource.node_ids</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptSource.rule_set_ids"><code class="docutils literal notranslate"><span class="pre">PreloadingAttemptSource.rule_set_ids</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.ACTIVATED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED_BEFORE_STARTED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.ACTIVATED_BEFORE_STARTED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED_DURING_MAIN_FRAME_NAVIGATION"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.ACTIVATED_DURING_MAIN_FRAME_NAVIGATION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED_IN_BACKGROUND"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.ACTIVATED_IN_BACKGROUND</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED_WITH_AUXILIARY_BROWSING_CONTEXTS"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.ACTIVATED_WITH_AUXILIARY_BROWSING_CONTEXTS</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATION_FRAME_POLICY_NOT_COMPATIBLE"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.ACTIVATION_FRAME_POLICY_NOT_COMPATIBLE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATION_NAVIGATION_DESTROYED_BEFORE_SUCCESS"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.ACTIVATION_NAVIGATION_DESTROYED_BEFORE_SUCCESS</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATION_NAVIGATION_PARAMETER_MISMATCH"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.ACTIVATION_NAVIGATION_PARAMETER_MISMATCH</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATION_URL_HAS_EFFECTIVE_URL"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.ACTIVATION_URL_HAS_EFFECTIVE_URL</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.AUDIO_OUTPUT_DEVICE_REQUESTED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.AUDIO_OUTPUT_DEVICE_REQUESTED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.BATTERY_SAVER_ENABLED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.BATTERY_SAVER_ENABLED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.BLOCKED_BY_CLIENT"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.BLOCKED_BY_CLIENT</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.CANCEL_ALL_HOSTS_FOR_TESTING"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.CANCEL_ALL_HOSTS_FOR_TESTING</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.CLIENT_CERT_REQUESTED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.CLIENT_CERT_REQUESTED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.CROSS_SITE_NAVIGATION_IN_INITIAL_NAVIGATION"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.CROSS_SITE_NAVIGATION_IN_INITIAL_NAVIGATION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.CROSS_SITE_NAVIGATION_IN_MAIN_FRAME_NAVIGATION"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.CROSS_SITE_NAVIGATION_IN_MAIN_FRAME_NAVIGATION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.CROSS_SITE_REDIRECT_IN_INITIAL_NAVIGATION"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.CROSS_SITE_REDIRECT_IN_INITIAL_NAVIGATION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.CROSS_SITE_REDIRECT_IN_MAIN_FRAME_NAVIGATION"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.CROSS_SITE_REDIRECT_IN_MAIN_FRAME_NAVIGATION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.DATA_SAVER_ENABLED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.DATA_SAVER_ENABLED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.DESTROYED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.DESTROYED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.DID_FAIL_LOAD"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.DID_FAIL_LOAD</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.DOWNLOAD"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.DOWNLOAD</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.EMBEDDER_HOST_DISALLOWED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.EMBEDDER_HOST_DISALLOWED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.INACTIVE_PAGE_RESTRICTION"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.INACTIVE_PAGE_RESTRICTION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.INVALID_SCHEME_NAVIGATION"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.INVALID_SCHEME_NAVIGATION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.INVALID_SCHEME_REDIRECT"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.INVALID_SCHEME_REDIRECT</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.LOGIN_AUTH_REQUESTED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.LOGIN_AUTH_REQUESTED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.LOW_END_DEVICE"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.LOW_END_DEVICE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.MAIN_FRAME_NAVIGATION"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.MAIN_FRAME_NAVIGATION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.MAX_NUM_OF_RUNNING_EAGER_PRERENDERS_EXCEEDED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.MAX_NUM_OF_RUNNING_EAGER_PRERENDERS_EXCEEDED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.MAX_NUM_OF_RUNNING_EMBEDDER_PRERENDERS_EXCEEDED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.MAX_NUM_OF_RUNNING_EMBEDDER_PRERENDERS_EXCEEDED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.MAX_NUM_OF_RUNNING_NON_EAGER_PRERENDERS_EXCEEDED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.MAX_NUM_OF_RUNNING_NON_EAGER_PRERENDERS_EXCEEDED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.MEMORY_LIMIT_EXCEEDED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.MEMORY_LIMIT_EXCEEDED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.MEMORY_PRESSURE_AFTER_TRIGGERED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.MEMORY_PRESSURE_AFTER_TRIGGERED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.MEMORY_PRESSURE_ON_TRIGGER"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.MEMORY_PRESSURE_ON_TRIGGER</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.MIXED_CONTENT"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.MIXED_CONTENT</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.MOJO_BINDER_POLICY"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.MOJO_BINDER_POLICY</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.NAVIGATION_BAD_HTTP_STATUS"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.NAVIGATION_BAD_HTTP_STATUS</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.NAVIGATION_NOT_COMMITTED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.NAVIGATION_NOT_COMMITTED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.NAVIGATION_REQUEST_BLOCKED_BY_CSP"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.NAVIGATION_REQUEST_BLOCKED_BY_CSP</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.NAVIGATION_REQUEST_NETWORK_ERROR"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.NAVIGATION_REQUEST_NETWORK_ERROR</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.PRELOADING_DISABLED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.PRELOADING_DISABLED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.PRELOADING_UNSUPPORTED_BY_WEB_CONTENTS"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.PRELOADING_UNSUPPORTED_BY_WEB_CONTENTS</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.PRERENDERING_DISABLED_BY_DEV_TOOLS"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.PRERENDERING_DISABLED_BY_DEV_TOOLS</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.PRERENDERING_URL_HAS_EFFECTIVE_URL"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.PRERENDERING_URL_HAS_EFFECTIVE_URL</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.PRIMARY_MAIN_FRAME_RENDERER_PROCESS_CRASHED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.PRIMARY_MAIN_FRAME_RENDERER_PROCESS_CRASHED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.PRIMARY_MAIN_FRAME_RENDERER_PROCESS_KILLED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.PRIMARY_MAIN_FRAME_RENDERER_PROCESS_KILLED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.REDIRECTED_PRERENDERING_URL_HAS_EFFECTIVE_URL"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.REDIRECTED_PRERENDERING_URL_HAS_EFFECTIVE_URL</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.RENDERER_PROCESS_CRASHED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.RENDERER_PROCESS_CRASHED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.RENDERER_PROCESS_KILLED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.RENDERER_PROCESS_KILLED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_INITIAL_NAVIGATION"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_INITIAL_NAVIGATION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_INITIAL_NAVIGATION"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_INITIAL_NAVIGATION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.SPECULATION_RULE_REMOVED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.SPECULATION_RULE_REMOVED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.SSL_CERTIFICATE_ERROR"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.SSL_CERTIFICATE_ERROR</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.START_FAILED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.START_FAILED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.STOP"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.STOP</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.TAB_CLOSED_BY_USER_GESTURE"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.TAB_CLOSED_BY_USER_GESTURE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.TAB_CLOSED_WITHOUT_USER_GESTURE"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.TAB_CLOSED_WITHOUT_USER_GESTURE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.TIMEOUT_BACKGROUNDED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.TIMEOUT_BACKGROUNDED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.TRIGGER_BACKGROUNDED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.TRIGGER_BACKGROUNDED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.TRIGGER_DESTROYED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.TRIGGER_DESTROYED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.TRIGGER_URL_HAS_EFFECTIVE_URL"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.TRIGGER_URL_HAS_EFFECTIVE_URL</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.UA_CHANGE_REQUIRES_RELOAD"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.UA_CHANGE_REQUIRES_RELOAD</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingStatus"><code class="docutils literal notranslate"><span class="pre">PreloadingStatus</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingStatus.FAILURE"><code class="docutils literal notranslate"><span class="pre">PreloadingStatus.FAILURE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingStatus.NOT_SUPPORTED"><code class="docutils literal notranslate"><span class="pre">PreloadingStatus.NOT_SUPPORTED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingStatus.PENDING"><code class="docutils literal notranslate"><span class="pre">PreloadingStatus.PENDING</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingStatus.READY"><code class="docutils literal notranslate"><span class="pre">PreloadingStatus.READY</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingStatus.RUNNING"><code class="docutils literal notranslate"><span class="pre">PreloadingStatus.RUNNING</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingStatus.SUCCESS"><code class="docutils literal notranslate"><span class="pre">PreloadingStatus.SUCCESS</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_ALLOWED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_ALLOWED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_EVICTED_FOR_NEWER_PREFETCH"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_EVICTED_FOR_NEWER_PREFETCH</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_INELIGIBLE_REDIRECT"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_FAILED_INELIGIBLE_REDIRECT</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_INVALID_REDIRECT"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_FAILED_INVALID_REDIRECT</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_MIME_NOT_SUPPORTED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_FAILED_MIME_NOT_SUPPORTED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_NET_ERROR"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_FAILED_NET_ERROR</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_NON2_XX"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_FAILED_NON2_XX</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_PER_PAGE_LIMIT_EXCEEDED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_FAILED_PER_PAGE_LIMIT_EXCEEDED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_HELDBACK"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_HELDBACK</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_INELIGIBLE_RETRY_AFTER"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_INELIGIBLE_RETRY_AFTER</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_IS_PRIVACY_DECOY"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_IS_PRIVACY_DECOY</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_IS_STALE"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_IS_STALE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_BATTERY_SAVER_ENABLED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_BATTERY_SAVER_ENABLED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_BROWSER_CONTEXT_OFF_THE_RECORD"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_BROWSER_CONTEXT_OFF_THE_RECORD</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_DATA_SAVER_ENABLED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_DATA_SAVER_ENABLED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_EXISTING_PROXY"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_EXISTING_PROXY</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_HOST_IS_NON_UNIQUE"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_HOST_IS_NON_UNIQUE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_NON_DEFAULT_STORAGE_PARTITION"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_NON_DEFAULT_STORAGE_PARTITION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_PRELOADING_DISABLED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_PRELOADING_DISABLED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_SAME_SITE_CROSS_ORIGIN_PREFETCH_REQUIRED_PROXY"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_SAME_SITE_CROSS_ORIGIN_PREFETCH_REQUIRED_PROXY</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_SCHEME_IS_NOT_HTTPS"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_SCHEME_IS_NOT_HTTPS</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_COOKIES"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_COOKIES</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_FINISHED_IN_TIME"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_FINISHED_IN_TIME</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_STARTED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_STARTED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_USED_COOKIES_CHANGED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_USED_COOKIES_CHANGED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_USED_PROBE_FAILED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_USED_PROBE_FAILED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_PROXY_NOT_AVAILABLE"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_PROXY_NOT_AVAILABLE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_RESPONSE_USED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_RESPONSE_USED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_SUCCESSFUL_BUT_NOT_USED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_SUCCESSFUL_BUT_NOT_USED</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderMismatchedHeaders"><code class="docutils literal notranslate"><span class="pre">PrerenderMismatchedHeaders</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderMismatchedHeaders.activation_value"><code class="docutils literal notranslate"><span class="pre">PrerenderMismatchedHeaders.activation_value</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderMismatchedHeaders.header_name"><code class="docutils literal notranslate"><span class="pre">PrerenderMismatchedHeaders.header_name</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderMismatchedHeaders.initial_value"><code class="docutils literal notranslate"><span class="pre">PrerenderMismatchedHeaders.initial_value</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#commands">Commands</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.disable"><code class="docutils literal notranslate"><span class="pre">disable()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.enable"><code class="docutils literal notranslate"><span class="pre">enable()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#events">Events</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSetUpdated"><code class="docutils literal notranslate"><span class="pre">RuleSetUpdated</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSetUpdated.rule_set"><code class="docutils literal notranslate"><span class="pre">RuleSetUpdated.rule_set</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSetRemoved"><code class="docutils literal notranslate"><span class="pre">RuleSetRemoved</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.RuleSetRemoved.id_"><code class="docutils literal notranslate"><span class="pre">RuleSetRemoved.id_</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadEnabledStateUpdated"><code class="docutils literal notranslate"><span class="pre">PreloadEnabledStateUpdated</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_battery_saver"><code class="docutils literal notranslate"><span class="pre">PreloadEnabledStateUpdated.disabled_by_battery_saver</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_data_saver"><code class="docutils literal notranslate"><span class="pre">PreloadEnabledStateUpdated.disabled_by_data_saver</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_holdback_prefetch_speculation_rules"><code class="docutils literal notranslate"><span class="pre">PreloadEnabledStateUpdated.disabled_by_holdback_prefetch_speculation_rules</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_holdback_prerender_speculation_rules"><code class="docutils literal notranslate"><span class="pre">PreloadEnabledStateUpdated.disabled_by_holdback_prerender_speculation_rules</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadEnabledStateUpdated.disabled_by_preference"><code class="docutils literal notranslate"><span class="pre">PreloadEnabledStateUpdated.disabled_by_preference</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatusUpdated"><code class="docutils literal notranslate"><span class="pre">PrefetchStatusUpdated</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatusUpdated.initiating_frame_id"><code class="docutils literal notranslate"><span class="pre">PrefetchStatusUpdated.initiating_frame_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatusUpdated.key"><code class="docutils literal notranslate"><span class="pre">PrefetchStatusUpdated.key</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatusUpdated.prefetch_status"><code class="docutils literal notranslate"><span class="pre">PrefetchStatusUpdated.prefetch_status</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatusUpdated.prefetch_url"><code class="docutils literal notranslate"><span class="pre">PrefetchStatusUpdated.prefetch_url</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatusUpdated.request_id"><code class="docutils literal notranslate"><span class="pre">PrefetchStatusUpdated.request_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatusUpdated.status"><code class="docutils literal notranslate"><span class="pre">PrefetchStatusUpdated.status</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderStatusUpdated"><code class="docutils literal notranslate"><span class="pre">PrerenderStatusUpdated</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderStatusUpdated.disallowed_mojo_interface"><code class="docutils literal notranslate"><span class="pre">PrerenderStatusUpdated.disallowed_mojo_interface</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderStatusUpdated.key"><code class="docutils literal notranslate"><span class="pre">PrerenderStatusUpdated.key</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderStatusUpdated.mismatched_headers"><code class="docutils literal notranslate"><span class="pre">PrerenderStatusUpdated.mismatched_headers</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderStatusUpdated.prerender_status"><code class="docutils literal notranslate"><span class="pre">PrerenderStatusUpdated.prerender_status</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderStatusUpdated.status"><code class="docutils literal notranslate"><span class="pre">PrerenderStatusUpdated.status</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptSourcesUpdated"><code class="docutils literal notranslate"><span class="pre">PreloadingAttemptSourcesUpdated</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptSourcesUpdated.loader_id"><code class="docutils literal notranslate"><span class="pre">PreloadingAttemptSourcesUpdated.loader_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptSourcesUpdated.preloading_attempt_sources"><code class="docutils literal notranslate"><span class="pre">PreloadingAttemptSourcesUpdated.preloading_attempt_sources</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

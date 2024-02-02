@@ -1,0 +1,843 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>nodriver.cdp.web_authn - nodriver documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/./custom.css?v=3934642d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #272822;
+  --color-code-foreground: #f8f8f2;
+  --color-brand-primary: #8eefba;
+  --color-background-primary: #111112;
+  --color-problematic: #e7aeae;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">nodriver  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">nodriver  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#components-and-interaction">Components and interaction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver object reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/element.html">Element class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/others_and_helpers.html">Other classes and Helper classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/page.html">Page class</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/accessibility.html">Accessibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/animation.html">Animation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/audits.html">Audits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/autofill.html">Autofill</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/background_service.html">BackgroundService</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/browser.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/cache_storage.html">CacheStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/dom.html">DOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/dom_debugger.html">DOMDebugger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/dom_snapshot.html">DOMSnapshot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/dom_storage.html">DOMStorage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/emulation.html">Emulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/fed_cm.html">FedCm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/fetch.html">Fetch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/headless_experimental.html">HeadlessExperimental</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/heap_profiler.html">HeapProfiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/indexed_db.html">IndexedDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/input_.html">Input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/inspector.html">Inspector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/io.html">IO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/layer_tree.html">LayerTree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/media.html">Media</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/memory.html">Memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/network.html">Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/overlay.html">Overlay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/page.html">Page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/performance.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/performance_timeline.html">PerformanceTimeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/preload.html">Preload</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/profiler.html">Profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/runtime.html">Runtime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/security.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/service_worker.html">ServiceWorker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/storage.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/system_info.html">SystemInfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/target.html">Target</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/tethering.html">Tethering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/tracing.html">Tracing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/web_audio.html">WebAudio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/web_authn.html">WebAuthn</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for nodriver.cdp.web_authn</h1><div class="highlight"><pre>
+<span></span><span class="c1"># DO NOT EDIT THIS FILE!</span>
+<span class="c1">#</span>
+<span class="c1"># This file is generated from the CDP specification. If you need to make</span>
+<span class="c1"># changes, edit the generator and regenerate all of the modules.</span>
+<span class="c1">#</span>
+<span class="c1"># CDP domain: WebAuthn (experimental)</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">typing</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
+
+
+<div class="viewcode-block" id="AuthenticatorId">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.AuthenticatorId">[docs]</a>
+<span class="k">class</span> <span class="nc">AuthenticatorId</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AuthenticatorId</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;AuthenticatorId(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="AuthenticatorProtocol">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.AuthenticatorProtocol">[docs]</a>
+<span class="k">class</span> <span class="nc">AuthenticatorProtocol</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">U2F</span> <span class="o">=</span> <span class="s2">&quot;u2f&quot;</span>
+    <span class="n">CTAP2</span> <span class="o">=</span> <span class="s2">&quot;ctap2&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AuthenticatorProtocol</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Ctap2Version">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.Ctap2Version">[docs]</a>
+<span class="k">class</span> <span class="nc">Ctap2Version</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">CTAP2_0</span> <span class="o">=</span> <span class="s2">&quot;ctap2_0&quot;</span>
+    <span class="n">CTAP2_1</span> <span class="o">=</span> <span class="s2">&quot;ctap2_1&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Ctap2Version</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="AuthenticatorTransport">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.AuthenticatorTransport">[docs]</a>
+<span class="k">class</span> <span class="nc">AuthenticatorTransport</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">USB</span> <span class="o">=</span> <span class="s2">&quot;usb&quot;</span>
+    <span class="n">NFC</span> <span class="o">=</span> <span class="s2">&quot;nfc&quot;</span>
+    <span class="n">BLE</span> <span class="o">=</span> <span class="s2">&quot;ble&quot;</span>
+    <span class="n">CABLE</span> <span class="o">=</span> <span class="s2">&quot;cable&quot;</span>
+    <span class="n">INTERNAL</span> <span class="o">=</span> <span class="s2">&quot;internal&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AuthenticatorTransport</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="VirtualAuthenticatorOptions">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.VirtualAuthenticatorOptions">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">VirtualAuthenticatorOptions</span><span class="p">:</span>
+    <span class="n">protocol</span><span class="p">:</span> <span class="n">AuthenticatorProtocol</span>
+
+    <span class="n">transport</span><span class="p">:</span> <span class="n">AuthenticatorTransport</span>
+
+    <span class="c1">#: Defaults to ctap2_0. Ignored if ``protocol`` == u2f.</span>
+    <span class="n">ctap2_version</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Ctap2Version</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Defaults to false.</span>
+    <span class="n">has_resident_key</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Defaults to false.</span>
+    <span class="n">has_user_verification</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: If set to true, the authenticator will support the largeBlob extension.</span>
+    <span class="c1">#: https://w3c.github.io/webauthn#largeBlob</span>
+    <span class="c1">#: Defaults to false.</span>
+    <span class="n">has_large_blob</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: If set to true, the authenticator will support the credBlob extension.</span>
+    <span class="c1">#: https://fidoalliance.org/specs/fido-v2.1-rd-20201208/fido-client-to-authenticator-protocol-v2.1-rd-20201208.html#sctn-credBlob-extension</span>
+    <span class="c1">#: Defaults to false.</span>
+    <span class="n">has_cred_blob</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: If set to true, the authenticator will support the minPinLength extension.</span>
+    <span class="c1">#: https://fidoalliance.org/specs/fido-v2.1-ps-20210615/fido-client-to-authenticator-protocol-v2.1-ps-20210615.html#sctn-minpinlength-extension</span>
+    <span class="c1">#: Defaults to false.</span>
+    <span class="n">has_min_pin_length</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: If set to true, the authenticator will support the prf extension.</span>
+    <span class="c1">#: https://w3c.github.io/webauthn/#prf-extension</span>
+    <span class="c1">#: Defaults to false.</span>
+    <span class="n">has_prf</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: If set to true, tests of user presence will succeed immediately.</span>
+    <span class="c1">#: Otherwise, they will not be resolved. Defaults to true.</span>
+    <span class="n">automatic_presence_simulation</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Sets whether User Verification succeeds or fails for an authenticator.</span>
+    <span class="c1">#: Defaults to false.</span>
+    <span class="n">is_user_verified</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Credentials created by this authenticator will have the backup</span>
+    <span class="c1">#: eligibility (BE) flag set to this value. Defaults to false.</span>
+    <span class="c1">#: https://w3c.github.io/webauthn/#sctn-credential-backup</span>
+    <span class="n">default_backup_eligibility</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Credentials created by this authenticator will have the backup state</span>
+    <span class="c1">#: (BS) flag set to this value. Defaults to false.</span>
+    <span class="c1">#: https://w3c.github.io/webauthn/#sctn-credential-backup</span>
+    <span class="n">default_backup_state</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;protocol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;transport&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctap2_version</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;ctap2Version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctap2_version</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_resident_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;hasResidentKey&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_resident_key</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_user_verification</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;hasUserVerification&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_user_verification</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_large_blob</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;hasLargeBlob&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_large_blob</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_cred_blob</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;hasCredBlob&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_cred_blob</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_min_pin_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;hasMinPinLength&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_min_pin_length</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_prf</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;hasPrf&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_prf</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">automatic_presence_simulation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;automaticPresenceSimulation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">automatic_presence_simulation</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_user_verified</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;isUserVerified&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_user_verified</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_backup_eligibility</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;defaultBackupEligibility&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_backup_eligibility</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_backup_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;defaultBackupState&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_backup_state</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VirtualAuthenticatorOptions</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">protocol</span><span class="o">=</span><span class="n">AuthenticatorProtocol</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;protocol&#39;</span><span class="p">]),</span>
+            <span class="n">transport</span><span class="o">=</span><span class="n">AuthenticatorTransport</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;transport&#39;</span><span class="p">]),</span>
+            <span class="n">ctap2_version</span><span class="o">=</span><span class="n">Ctap2Version</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;ctap2Version&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ctap2Version&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">has_resident_key</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;hasResidentKey&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;hasResidentKey&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">has_user_verification</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;hasUserVerification&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;hasUserVerification&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">has_large_blob</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;hasLargeBlob&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;hasLargeBlob&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">has_cred_blob</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;hasCredBlob&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;hasCredBlob&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">has_min_pin_length</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;hasMinPinLength&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;hasMinPinLength&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">has_prf</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;hasPrf&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;hasPrf&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">automatic_presence_simulation</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;automaticPresenceSimulation&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;automaticPresenceSimulation&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_user_verified</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;isUserVerified&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;isUserVerified&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">default_backup_eligibility</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;defaultBackupEligibility&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;defaultBackupEligibility&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">default_backup_state</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;defaultBackupState&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;defaultBackupState&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Credential">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.Credential">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Credential</span><span class="p">:</span>
+    <span class="n">credential_id</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="n">is_resident_credential</span><span class="p">:</span> <span class="nb">bool</span>
+
+    <span class="c1">#: The ECDSA P-256 private key in PKCS#8 format. (Encoded as a base64 string when passed over JSON)</span>
+    <span class="n">private_key</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="c1">#: Signature counter. This is incremented by one for each successful</span>
+    <span class="c1">#: assertion.</span>
+    <span class="c1">#: See https://w3c.github.io/webauthn/#signature-counter</span>
+    <span class="n">sign_count</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="c1">#: Relying Party ID the credential is scoped to. Must be set when adding a</span>
+    <span class="c1">#: credential.</span>
+    <span class="n">rp_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: An opaque byte sequence with a maximum size of 64 bytes mapping the</span>
+    <span class="c1">#: credential to a specific user. (Encoded as a base64 string when passed over JSON)</span>
+    <span class="n">user_handle</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: The large blob associated with the credential.</span>
+    <span class="c1">#: See https://w3c.github.io/webauthn/#sctn-large-blob-extension (Encoded as a base64 string when passed over JSON)</span>
+    <span class="n">large_blob</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;credentialId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">credential_id</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;isResidentCredential&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_resident_credential</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;privateKey&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">private_key</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;signCount&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sign_count</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rp_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;rpId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rp_id</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_handle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;userHandle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_handle</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">large_blob</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;largeBlob&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">large_blob</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Credential</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">credential_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;credentialId&#39;</span><span class="p">]),</span>
+            <span class="n">is_resident_credential</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;isResidentCredential&#39;</span><span class="p">]),</span>
+            <span class="n">private_key</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;privateKey&#39;</span><span class="p">]),</span>
+            <span class="n">sign_count</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;signCount&#39;</span><span class="p">]),</span>
+            <span class="n">rp_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;rpId&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rpId&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">user_handle</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;userHandle&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;userHandle&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">large_blob</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;largeBlob&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;largeBlob&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="enable">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.enable">[docs]</a>
+<span class="k">def</span> <span class="nf">enable</span><span class="p">(</span>
+        <span class="n">enable_ui</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Enable the WebAuthn domain and start intercepting credential storage and</span>
+<span class="sd">    retrieval with a virtual authenticator.</span>
+
+<span class="sd">    :param enable_ui: *(Optional)* Whether to enable the WebAuthn user interface. Enabling the UI is recommended for debugging and demo purposes, as it is closer to the real experience. Disabling the UI is recommended for automated testing. Supported at the embedder&#39;s discretion if UI is available. Defaults to false.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">enable_ui</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;enableUI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">enable_ui</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;WebAuthn.enable&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="disable">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.disable">[docs]</a>
+<span class="k">def</span> <span class="nf">disable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Disable the WebAuthn domain.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;WebAuthn.disable&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="add_virtual_authenticator">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.add_virtual_authenticator">[docs]</a>
+<span class="k">def</span> <span class="nf">add_virtual_authenticator</span><span class="p">(</span>
+        <span class="n">options</span><span class="p">:</span> <span class="n">VirtualAuthenticatorOptions</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">AuthenticatorId</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Creates and adds a virtual authenticator.</span>
+
+<span class="sd">    :param options:</span>
+<span class="sd">    :returns: </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;options&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;WebAuthn.addVirtualAuthenticator&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span>
+    <span class="k">return</span> <span class="n">AuthenticatorId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;authenticatorId&#39;</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="set_response_override_bits">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.set_response_override_bits">[docs]</a>
+<span class="k">def</span> <span class="nf">set_response_override_bits</span><span class="p">(</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
+        <span class="n">is_bogus_signature</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_bad_uv</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_bad_up</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Resets parameters isBogusSignature, isBadUV, isBadUP to false if they are not present.</span>
+
+<span class="sd">    :param authenticator_id:</span>
+<span class="sd">    :param is_bogus_signature: *(Optional)* If isBogusSignature is set, overrides the signature in the authenticator response to be zero. Defaults to false.</span>
+<span class="sd">    :param is_bad_uv: *(Optional)* If isBadUV is set, overrides the UV bit in the flags in the authenticator response to be zero. Defaults to false.</span>
+<span class="sd">    :param is_bad_up: *(Optional)* If isBadUP is set, overrides the UP bit in the flags in the authenticator response to be zero. Defaults to false.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;authenticatorId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authenticator_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">is_bogus_signature</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;isBogusSignature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_bogus_signature</span>
+    <span class="k">if</span> <span class="n">is_bad_uv</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;isBadUV&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_bad_uv</span>
+    <span class="k">if</span> <span class="n">is_bad_up</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;isBadUP&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_bad_up</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;WebAuthn.setResponseOverrideBits&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="remove_virtual_authenticator">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.remove_virtual_authenticator">[docs]</a>
+<span class="k">def</span> <span class="nf">remove_virtual_authenticator</span><span class="p">(</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Removes the given authenticator.</span>
+
+<span class="sd">    :param authenticator_id:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;authenticatorId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authenticator_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;WebAuthn.removeVirtualAuthenticator&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="add_credential">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.add_credential">[docs]</a>
+<span class="k">def</span> <span class="nf">add_credential</span><span class="p">(</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
+        <span class="n">credential</span><span class="p">:</span> <span class="n">Credential</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Adds the credential to the specified authenticator.</span>
+
+<span class="sd">    :param authenticator_id:</span>
+<span class="sd">    :param credential:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;authenticatorId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authenticator_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;credential&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credential</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;WebAuthn.addCredential&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="get_credential">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.get_credential">[docs]</a>
+<span class="k">def</span> <span class="nf">get_credential</span><span class="p">(</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
+        <span class="n">credential_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">Credential</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Returns a single credential stored in the given virtual authenticator that</span>
+<span class="sd">    matches the credential ID.</span>
+
+<span class="sd">    :param authenticator_id:</span>
+<span class="sd">    :param credential_id:</span>
+<span class="sd">    :returns: </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;authenticatorId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authenticator_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;credentialId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credential_id</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;WebAuthn.getCredential&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span>
+    <span class="k">return</span> <span class="n">Credential</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;credential&#39;</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="get_credentials">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.get_credentials">[docs]</a>
+<span class="k">def</span> <span class="nf">get_credentials</span><span class="p">(</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">Credential</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Returns all the credentials stored in the given virtual authenticator.</span>
+
+<span class="sd">    :param authenticator_id:</span>
+<span class="sd">    :returns: </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;authenticatorId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authenticator_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;WebAuthn.getCredentials&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Credential</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;credentials&#39;</span><span class="p">]]</span></div>
+
+
+
+<div class="viewcode-block" id="remove_credential">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.remove_credential">[docs]</a>
+<span class="k">def</span> <span class="nf">remove_credential</span><span class="p">(</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
+        <span class="n">credential_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Removes a credential from the authenticator.</span>
+
+<span class="sd">    :param authenticator_id:</span>
+<span class="sd">    :param credential_id:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;authenticatorId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authenticator_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;credentialId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credential_id</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;WebAuthn.removeCredential&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="clear_credentials">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.clear_credentials">[docs]</a>
+<span class="k">def</span> <span class="nf">clear_credentials</span><span class="p">(</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Clears all the credentials from the specified device.</span>
+
+<span class="sd">    :param authenticator_id:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;authenticatorId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authenticator_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;WebAuthn.clearCredentials&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="set_user_verified">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.set_user_verified">[docs]</a>
+<span class="k">def</span> <span class="nf">set_user_verified</span><span class="p">(</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
+        <span class="n">is_user_verified</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Sets whether User Verification succeeds or fails for an authenticator.</span>
+<span class="sd">    The default is true.</span>
+
+<span class="sd">    :param authenticator_id:</span>
+<span class="sd">    :param is_user_verified:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;authenticatorId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authenticator_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;isUserVerified&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_user_verified</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;WebAuthn.setUserVerified&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="set_automatic_presence_simulation">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.set_automatic_presence_simulation">[docs]</a>
+<span class="k">def</span> <span class="nf">set_automatic_presence_simulation</span><span class="p">(</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
+        <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Sets whether tests of user presence will succeed immediately (if true) or fail to resolve (if false) for an authenticator.</span>
+<span class="sd">    The default is true.</span>
+
+<span class="sd">    :param authenticator_id:</span>
+<span class="sd">    :param enabled:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;authenticatorId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authenticator_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;enabled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">enabled</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;WebAuthn.setAutomaticPresenceSimulation&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="CredentialAdded">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.CredentialAdded">[docs]</a>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;WebAuthn.credentialAdded&#39;</span><span class="p">)</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CredentialAdded</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Triggered when a credential is added to an authenticator.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span>
+    <span class="n">credential</span><span class="p">:</span> <span class="n">Credential</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CredentialAdded</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">authenticator_id</span><span class="o">=</span><span class="n">AuthenticatorId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;authenticatorId&#39;</span><span class="p">]),</span>
+            <span class="n">credential</span><span class="o">=</span><span class="n">Credential</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;credential&#39;</span><span class="p">])</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CredentialAsserted">
+<a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.CredentialAsserted">[docs]</a>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;WebAuthn.credentialAsserted&#39;</span><span class="p">)</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CredentialAsserted</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Triggered when a credential is used in a webauthn assertion.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span>
+    <span class="n">credential</span><span class="p">:</span> <span class="n">Credential</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CredentialAsserted</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">authenticator_id</span><span class="o">=</span><span class="n">AuthenticatorId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;authenticatorId&#39;</span><span class="p">]),</span>
+            <span class="n">credential</span><span class="o">=</span><span class="n">Credential</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;credential&#39;</span><span class="p">])</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Author
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>
