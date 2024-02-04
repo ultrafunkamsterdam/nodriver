@@ -16,7 +16,7 @@ from typing import List, Optional, Union, Tuple
 
 from .. import cdp
 from .config import PathLike, Config, is_posix
-from .connection import SimpleConnection
+from .connection import Connection
 from ._contradict import ContraDict
 from . import util
 
@@ -55,7 +55,7 @@ class Browser:
     _http: HTTPApi = None
 
     config: Config
-    connection: SimpleConnection
+    connection: Connection
 
     @classmethod
     async def create(
@@ -111,7 +111,7 @@ class Browser:
         self.info = None
         self._target = None
         self._keep_user_data_dir = None
-        self.connection: SimpleConnection = None
+        self.connection: Connection = None
         self._is_updating = asyncio.Event()
         logger.debug("Session object initialized: %s" % vars(self))
 
@@ -122,7 +122,7 @@ class Browser:
     @property
     def active_page(self):
         """returns the target which was launched with the browser"""
-        return sorted(self.targets, key=lambda x: x.type_ == 'page', reverse=True)[0]
+        return sorted(self.targets, key=lambda x: x.type_ == "page", reverse=True)[0]
 
     @property
     def pages(self) -> List:
@@ -164,16 +164,16 @@ class Browser:
         if isinstance(event, cdp.target.TargetInfoChanged):
             target_info = event.target_info
 
-            _current_target = next(
+            current_page = next(
                 filter(
                     lambda item: item.target_id == target_info.target_id, self.targets
                 )
             )
-            current_target = _current_target._target
+            current_target = current_page.target
             logger.debug(
                 "target for #%d to target changed from %s to: %s"
                 % (
-                    self.targets.index(_current_target),
+                    self.targets.index(current_page),
                     current_target.target_id,
                     target_info.target_id,
                 )
@@ -182,15 +182,16 @@ class Browser:
 
         elif isinstance(event, cdp.target.TargetCreated):
             target_info: cdp.target.TargetInfo = event.target_info
-            from .target import Target
+            from .page import Page
 
-            new_target = Target(
+            new_target = Page(
                 (
                     f"ws://{self.config.host}:{self.config.port}"
                     f"/devtools/{target_info.type_.lower()}"
                     f"/{target_info.target_id}"
                 ),
                 target=target_info,
+                browser=self,
             )
 
             self.targets.append(new_target)
@@ -508,7 +509,7 @@ class Browser:
                 "In that case you need to pass no_sandbox=True.\n\n"
             )
 
-        self.connection = await SimpleConnection.create(
+        self.connection = await Connection.create(
             self.info.webSocketDebuggerUrl, _owner=self
         )
 
@@ -562,21 +563,22 @@ class Browser:
         targets: List[cdp.target.TargetInfo]
         targets = await self._get_targets()
         for t in targets:
-            for ot in self.pages:
-                if ot._target.target_id == t.target_id:
-                    ot._target.__dict__.update(t.__dict__)
+            for existing_tab in self.targets:
+                existing_target = existing_tab.target
+                if existing_target.target_id == t.target_id:
+                    existing_tab.target.__dict__.update(t.__dict__)
                     break
-        else:
-            self.pages.append(
-                SimpleConnection(
-                    (
-                        f"ws://{self.config.host}:{self.config.port}"
-                        f"/devtools/{t.type_.lower()}"
-                        f"/{t.target_id}"
-                    ),
-                    target=t,
+            else:
+                self.targets.append(
+                    Connection(
+                        (
+                            f"ws://{self.config.host}:{self.config.port}"
+                            f"/devtools/{t.type_.lower()}"
+                            f"/{t.target_id}"
+                        ),
+                        target=t,
+                    )
                 )
-            )
 
         await asyncio.sleep(0)
         # asyncio.get_running_loop().call_later(
@@ -592,17 +594,37 @@ class Browser:
         if exc_type and exc_val:
             raise exc_type(exc_val)
 
+    def __iter__(self):
+        self._i = self.pages.index(self.active_page)
+        return self
+
+    def __next__(self):
+        try:
+            return self.pages[self._i]
+        except IndexError:
+            del self._i
+            raise StopIteration
+        except AttributeError:
+            del self._i
+            raise StopIteration
+        finally:
+            if hasattr(self, "_i"):
+                if self._i != len(self.pages):
+                    self._i += 1
+                else:
+                    del self._i
+
     def stop(self):
         try:
             # asyncio.get_running_loop().create_task(self.connection.send(cdp.browser.close()))
 
-            asyncio.get_event_loop().create_task(self.connection.close())
+            asyncio.get_event_loop().create_task(self.connection.aclose())
             logger.debug("closed the connection using get_event_loop().create_task()")
         except:
             if self.connection:
                 try:
                     # asyncio.run(self.connection.send(cdp.browser.close()))
-                    asyncio.run(self.connection.close())
+                    asyncio.run(self.connection.aclose())
                     logger.debug("closed the connection using asyncio.run()")
                 except Exception:
                     logger.exception("exccc while closing", exc_info=True)

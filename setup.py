@@ -38,10 +38,10 @@ setup(
     name="nodriver",
     version=version,
     packages=[
-
         "nodriver",
         "nodriver.core",
-        "nodriver.core.util",
+        "nodriver.cdp"
+
 
     ],
     install_requires=[

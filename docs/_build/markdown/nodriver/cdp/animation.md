@@ -1,0 +1,305 @@
+# Animation
+
+*This CDP domain is experimental.*
+
+<a id="module-nodriver.cdp.animation"></a>
+* [Types]()
+* [Commands]()
+* [Events]()
+
+## Types
+
+Generally, you do not need to instantiate CDP types
+yourself. Instead, the API creates objects for you as return
+values from commands, and then you can use those objects as
+arguments to other commands.
+
+### *class* Animation(id_, name, paused_state, play_state, playback_rate, start_time, current_time, type_, source=None, css_id=None)
+
+Animation instance.
+
+* **Parameters:**
+  * **id_** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **paused_state** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – 
+  * **play_state** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **playback_rate** ([*float*](https://docs.python.org/3/library/functions.html#float)) – 
+  * **start_time** ([*float*](https://docs.python.org/3/library/functions.html#float)) – 
+  * **current_time** ([*float*](https://docs.python.org/3/library/functions.html#float)) – 
+  * **type_** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **source** ([*AnimationEffect*](#nodriver.cdp.animation.AnimationEffect) *|* *None*) – 
+  * **css_id** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
+
+#### css_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+A unique ID for `Animation` representing the sources that triggered this CSS
+animation/transition.
+
+#### current_time*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+
+`Animation`’s current time.
+
+#### id_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+`Animation`’s id.
+
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+`Animation`’s name.
+
+#### paused_state*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+
+`Animation`’s internal paused state.
+
+#### play_state*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+`Animation`’s play state.
+
+#### playback_rate*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+
+`Animation`’s playback rate.
+
+#### source*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AnimationEffect`](#nodriver.cdp.animation.AnimationEffect)]* *= None*
+
+`Animation`’s source animation node.
+
+#### start_time*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+
+`Animation`’s start time.
+
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+Animation type of `Animation`.
+
+### *class* AnimationEffect(delay, end_delay, iteration_start, iterations, duration, direction, fill, easing, backend_node_id=None, keyframes_rule=None)
+
+AnimationEffect instance
+
+* **Parameters:**
+  * **delay** ([*float*](https://docs.python.org/3/library/functions.html#float)) – 
+  * **end_delay** ([*float*](https://docs.python.org/3/library/functions.html#float)) – 
+  * **iteration_start** ([*float*](https://docs.python.org/3/library/functions.html#float)) – 
+  * **iterations** ([*float*](https://docs.python.org/3/library/functions.html#float)) – 
+  * **duration** ([*float*](https://docs.python.org/3/library/functions.html#float)) – 
+  * **direction** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **fill** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **easing** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **backend_node_id** ([*BackendNodeId*](dom.md#nodriver.cdp.dom.BackendNodeId) *|* *None*) – 
+  * **keyframes_rule** ([*KeyframesRule*](#nodriver.cdp.animation.KeyframesRule) *|* *None*) – 
+
+#### backend_node_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
+
+`AnimationEffect`’s target node.
+
+#### delay*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+
+`AnimationEffect`’s delay.
+
+#### direction*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+`AnimationEffect`’s playback direction.
+
+#### duration*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+
+`AnimationEffect`’s iteration duration.
+
+#### easing*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+`AnimationEffect`’s timing function.
+
+#### end_delay*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+
+`AnimationEffect`’s end delay.
+
+#### fill*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+`AnimationEffect`’s fill mode.
+
+#### iteration_start*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+
+`AnimationEffect`’s iteration start.
+
+#### iterations*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+
+`AnimationEffect`’s iterations.
+
+#### keyframes_rule*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`KeyframesRule`](#nodriver.cdp.animation.KeyframesRule)]* *= None*
+
+`AnimationEffect`’s keyframes.
+
+### *class* KeyframesRule(keyframes, name=None)
+
+Keyframes Rule
+
+* **Parameters:**
+  * **keyframes** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*KeyframeStyle*](#nodriver.cdp.animation.KeyframeStyle)*]*) – 
+  * **name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
+
+#### keyframes*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`KeyframeStyle`](#nodriver.cdp.animation.KeyframeStyle)]*
+
+List of animation keyframes.
+
+#### name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+CSS keyframed animation’s name.
+
+### *class* KeyframeStyle(offset, easing)
+
+Keyframe Style
+
+* **Parameters:**
+  * **offset** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **easing** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+
+#### easing*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+`AnimationEffect`’s timing function.
+
+#### offset*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+Keyframe’s time offset.
+
+## Commands
+
+Each command is a generator function. The return
+type `Generator[x, y, z]` indicates that the generator
+*yields* arguments of type `x`, it must be resumed with
+an argument of type `y`, and it returns type `z`. In
+this library, types `x` and `y` are the same for all
+commands, and `z` is the return type you should pay attention
+to. For more information, see
+[Getting Started: Commands](../quickstart.md#getting-started-commands).
+
+### disable()
+
+Disables animation domain notifications.
+
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### enable()
+
+Enables animation domain notifications.
+
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### get_current_time(id_)
+
+Returns the current time of the an animation.
+
+* **Parameters:**
+  * **id** – Id of animation.
+  * **id_** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`float`](https://docs.python.org/3/library/functions.html#float)]
+* **Returns:**
+  Current time of the page.
+
+### get_playback_rate()
+
+Gets the playback rate of the document timeline.
+
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`float`](https://docs.python.org/3/library/functions.html#float)]
+* **Returns:**
+  Playback rate for animations on page.
+
+### release_animations(animations)
+
+Releases a set of animations to no longer be manipulated.
+
+* **Parameters:**
+  **animations** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – List of animation ids to seek.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### resolve_animation(animation_id)
+
+Gets the remote object of the Animation.
+
+* **Parameters:**
+  **animation_id** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Animation id.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)]
+* **Returns:**
+  Corresponding remote object.
+
+### seek_animations(animations, current_time)
+
+Seek a set of animations to a particular time within each animation.
+
+* **Parameters:**
+  * **animations** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – List of animation ids to seek.
+  * **current_time** ([`float`](https://docs.python.org/3/library/functions.html#float)) – Set the current time of each animation.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### set_paused(animations, paused)
+
+Sets the paused state of a set of animations.
+
+* **Parameters:**
+  * **animations** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – Animations to set the pause state of.
+  * **paused** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – Paused state to set to.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### set_playback_rate(playback_rate)
+
+Sets the playback rate of the document timeline.
+
+* **Parameters:**
+  **playback_rate** ([`float`](https://docs.python.org/3/library/functions.html#float)) – Playback rate for animations on page
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### set_timing(animation_id, duration, delay)
+
+Sets the timing of an animation node.
+
+* **Parameters:**
+  * **animation_id** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Animation id.
+  * **duration** ([`float`](https://docs.python.org/3/library/functions.html#float)) – Duration of the animation.
+  * **delay** ([`float`](https://docs.python.org/3/library/functions.html#float)) – Delay of the animation.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+## Events
+
+Generally, you do not need to instantiate CDP events
+yourself. Instead, the API creates events for you and then
+you use the event’s attributes.
+
+### *class* AnimationCanceled(id_)
+
+Event for when an animation has been cancelled.
+
+* **Parameters:**
+  **id_** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+
+#### id_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+Id of the animation that was cancelled.
+
+### *class* AnimationCreated(id_)
+
+Event for each animation that has been created.
+
+* **Parameters:**
+  **id_** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+
+#### id_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+Id of the animation that was created.
+
+### *class* AnimationStarted(animation)
+
+Event for animation that has been started.
+
+* **Parameters:**
+  **animation** ([*Animation*](#nodriver.cdp.animation.Animation)) – 
+
+#### animation*: [`Animation`](#nodriver.cdp.animation.Animation)*
+
+Animation that was started.

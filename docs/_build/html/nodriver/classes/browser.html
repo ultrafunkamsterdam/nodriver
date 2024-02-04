@@ -172,7 +172,7 @@
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Browser class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="element.html">Element class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="others_and_helpers.html">Other classes and Helper classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tab.html">Tab class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page.html">Page class</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
 <ul>
@@ -269,7 +269,7 @@
 to the browser parent process.
 there should usually be only 1 instance of this.</p>
 <p>All opened tabs, extra browser screens and resources will not cause a new Browser process,
-but rather create additional <a class="reference internal" href="tab.html#nodriver.Tab" title="nodriver.Tab"><code class="xref py py-class docutils literal notranslate"><span class="pre">nodriver.Tab</span></code></a> objects.</p>
+but rather create additional <code class="xref py py-class docutils literal notranslate"><span class="pre">nodriver.Tab</span></code> objects.</p>
 <p>So, besides starting your instance and first/additional tabs, you don’t actively use it a lot under normal conditions.</p>
 <dl class="simple">
 <dt>Tab objects will represent and control</dt><dd><ul class="simple">
@@ -286,11 +286,6 @@ the Browser object is not instantiated by __init__ but using the asynchronous <a
 in Chromium based browsers, there is a parent process which keeps running all the time, even if
 there are no visible browser windows. sometimes it’s stubborn to close it, so make sure after using
 this library, the browser is correctly and fully closed/exited/killed.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>config</strong> (<a class="reference internal" href="others_and_helpers.html#nodriver.Config" title="nodriver.core.config.Config"><em>Config</em></a>) – </p>
-</dd>
-</dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="nodriver.Browser.active_page">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">active_page</span></span><a class="headerlink" href="#nodriver.Browser.active_page" title="Link to this definition">#</a></dt>
@@ -298,29 +293,12 @@ this library, the browser is correctly and fully closed/exited/killed.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="nodriver.Browser.bring_to_front">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bring_to_front</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/browser.html#Browser.bring_to_front"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Browser.bring_to_front" title="Link to this definition">#</a></dt>
-<dd><p>brings instance to front (only useful if you have multiple Browser instances,
-which is wrong anyway)</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Browser.create">
-<em class="property"><span class="pre">async</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headless</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">browser_executable_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">browser_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sandbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autodiscover_targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/browser.html#Browser.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Browser.create" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headless</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">browser_executable_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">browser_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sandbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/browser.html#Browser.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Browser.create" title="Link to this definition">#</a></dt>
 <dd><p>entry point for creating an instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.Browser" title="nodriver.core.browser.Browser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Browser</span></code></a></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>config</strong> (<a class="reference internal" href="others_and_helpers.html#nodriver.Config" title="nodriver.core.config.Config"><em>Config</em></a>) – </p></li>
-<li><p><strong>user_data_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.12)"><em>Path</em></a>) – </p></li>
-<li><p><strong>headless</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
-<li><p><strong>browser_executable_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.12)"><em>Path</em></a>) – </p></li>
-<li><p><strong>browser_args</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – </p></li>
-<li><p><strong>sandbox</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – </p></li>
-</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -354,21 +332,12 @@ way of navigating.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="nodriver.Browser.quit">
-<span class="sig-name descname"><span class="pre">quit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/browser.html#Browser.quit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Browser.quit" title="Link to this definition">#</a></dt>
-<dd><p>quit browser, sessions, everything</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Browser.sleep">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sleep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Browser.sleep" title="Link to this definition">#</a></dt>
 <dd><p>alias for wait</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.Browser" title="nodriver.core.browser.Browser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Browser</span></code></a></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – </p>
 </dd>
 </dl>
 </dd></dl>
@@ -383,13 +352,6 @@ way of navigating.</p>
 <dt class="sig sig-object py" id="nodriver.Browser.targets">
 <span class="sig-name descname"><span class="pre">targets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a></em><a class="headerlink" href="#nodriver.Browser.targets" title="Link to this definition">#</a></dt>
 <dd><p>current targets (all types</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="nodriver.Browser.tile_windows">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tile_windows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pages</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/browser.html#Browser.tile_windows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Browser.tile_windows" title="Link to this definition">#</a></dt>
-<dd><p>a very bad function which adjust each of the windows size and specified number of rows,
-and position according to screen size</p>
 </dd></dl>
 
 <dl class="py method">
@@ -471,15 +433,12 @@ and position according to screen size</p>
 <li><a class="reference internal" href="#">Browser class</a><ul>
 <li><a class="reference internal" href="#nodriver.Browser"><code class="docutils literal notranslate"><span class="pre">Browser</span></code></a><ul>
 <li><a class="reference internal" href="#nodriver.Browser.active_page"><code class="docutils literal notranslate"><span class="pre">Browser.active_page</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Browser.bring_to_front"><code class="docutils literal notranslate"><span class="pre">Browser.bring_to_front()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Browser.create"><code class="docutils literal notranslate"><span class="pre">Browser.create()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Browser.get"><code class="docutils literal notranslate"><span class="pre">Browser.get()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Browser.pages"><code class="docutils literal notranslate"><span class="pre">Browser.pages</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Browser.quit"><code class="docutils literal notranslate"><span class="pre">Browser.quit()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Browser.sleep"><code class="docutils literal notranslate"><span class="pre">Browser.sleep()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Browser.start"><code class="docutils literal notranslate"><span class="pre">Browser.start()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Browser.targets"><code class="docutils literal notranslate"><span class="pre">Browser.targets</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Browser.tile_windows"><code class="docutils literal notranslate"><span class="pre">Browser.tile_windows()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Browser.wait"><code class="docutils literal notranslate"><span class="pre">Browser.wait()</span></code></a></li>
 </ul>
 </li>

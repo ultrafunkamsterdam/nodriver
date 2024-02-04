@@ -1468,7 +1468,7 @@ def set_attributes_as_text(
     json = yield cmd_dict
 
 
-def  set_file_input_files(
+def set_file_input_files(
     files: typing.List[str],
     node_id: typing.Optional[NodeId] = None,
     backend_node_id: typing.Optional[BackendNodeId] = None,

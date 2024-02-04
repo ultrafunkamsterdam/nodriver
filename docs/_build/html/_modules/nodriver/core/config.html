@@ -171,7 +171,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/element.html">Element class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/others_and_helpers.html">Other classes and Helper classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/page.html">Page class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/tab.html">Tab class</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
 <ul>
@@ -285,9 +285,7 @@
 <div class="viewcode-block" id="Config">
 <a class="viewcode-back" href="../../../nodriver/classes/others_and_helpers.html#nodriver.Config">[docs]</a>
 <span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">ContraDict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -296,9 +294,8 @@
         <span class="n">browser_executable_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PathLike</span><span class="p">]</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
         <span class="n">browser_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
         <span class="n">sandbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">autodiscover_targets</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">lang</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;en-US,en;q=0.9&quot;</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        creates a config object.</span>
@@ -325,7 +322,6 @@
 <span class="sd">        :type browser_executable_path: PathLike</span>
 <span class="sd">        :type browser_args: list[str]</span>
 <span class="sd">        :type sandbox: bool</span>
-<span class="sd">        :type autodiscover_targets: bool</span>
 <span class="sd">        :type lang: str</span>
 <span class="sd">        :type kwargs: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -352,10 +348,10 @@
         <span class="c1"># when using posix-ish operating system and running as root</span>
         <span class="c1"># you must use no_sandbox = True, which in case is corrected here</span>
         <span class="k">if</span> <span class="n">is_posix</span> <span class="ow">and</span> <span class="n">is_root</span><span class="p">()</span> <span class="ow">and</span> <span class="n">sandbox</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;detected root usage, autoo disabling sandbox mode&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;detected root usage, autoo disabling sandbox mode&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sandbox</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">autodiscover_targets</span> <span class="o">=</span> <span class="n">autodiscover_targets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autodiscover_targets</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lang</span> <span class="o">=</span> <span class="n">lang</span>
 
         <span class="c1"># other keyword args will be accessible by attribute</span>
@@ -402,10 +398,10 @@
 
 <div class="viewcode-block" id="Config.add_argument">
 <a class="viewcode-back" href="../../../nodriver/classes/others_and_helpers.html#nodriver.Config.add_argument">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_argument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_argument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-             <span class="n">x</span> <span class="ow">in</span> <span class="n">arg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-             <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="n">x</span> <span class="ow">in</span> <span class="n">arg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span>
                 <span class="s2">&quot;headless&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;data-dir&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;data_dir&quot;</span><span class="p">,</span>

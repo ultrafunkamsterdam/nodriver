@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+import asyncio
 import logging
 import shutil
 import typing
@@ -108,7 +110,7 @@ def deconstruct_browser():
                     break
                 time.sleep(0.15)
                 continue
-        logger.info("successfully removed temp profile %s", _.config.user_data_dir)
+        print("successfully removed temp profile %s", _.config.user_data_dir)
 
 
 class Meta(type):
@@ -222,7 +224,7 @@ def remove_from_tree(tree: cdp.dom.Node, node: cdp.dom.Node) -> cdp.dom.Node:
     return tree
 
 
-async def html_from_tree(tree: Union[cdp.dom.Node, Element], target: "nodriver.Target"):
+async def html_from_tree(tree: Union[cdp.dom.Node, Element], target: "nodriver.Page"):
     if not hasattr(tree, "children"):
         raise TypeError("object should have a .children attribute")
     out = ""
@@ -236,3 +238,9 @@ async def html_from_tree(tree: Union[cdp.dom.Node, Element], target: "nodriver.T
                 )
             out += await html_from_tree(child, target)
     return out
+
+
+def loop():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    return loop

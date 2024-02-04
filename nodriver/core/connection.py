@@ -4,6 +4,7 @@ import asyncio
 import collections
 import functools
 import importlib
+import inspect
 import itertools
 import json
 import logging
@@ -25,6 +26,7 @@ from .. import cdp
 
 T = TypeVar("T")
 
+GLOBAL_DELAY = 0.005
 MAX_SIZE: int = 2**28
 PING_TIMEOUT: int = 900  # 15 minutes
 
@@ -171,6 +173,12 @@ def update_targets(fn: types.MethodType):
 
 class CantTouchThis(type):
     def __setattr__(cls, attr, value):
+        """
+        :meta private:
+        """
+        if attr == "__annotations__":
+            # fix autodoc
+            return super().__setattr__(attr, value)
         raise SettingClassVarNotAllowedException(
             "\n".join(
                 (
@@ -182,7 +190,7 @@ class CantTouchThis(type):
         )
 
 
-class SimpleConnection(metaclass=CantTouchThis):
+class Connection(metaclass=CantTouchThis):
     attached: bool = None
     websocket: websockets.WebSocketClientProtocol
     _target: cdp.target.TargetInfo
@@ -240,6 +248,42 @@ class SimpleConnection(metaclass=CantTouchThis):
         event_type_or_domain: Union[type, types.ModuleType],
         handler: Union[Callable, Awaitable],
     ):
+        """
+        add a handler for an event type or entire domain (=all events for that domain)
+
+        if you want to receive event updates (network traffic are also 'events') you can add handlers for those events.
+
+        handlers can be regular callback functions or async coroutine functions (and also just lamba's).
+
+        for example, you want to check the network traffic:
+
+        .. code-block::
+
+            page.add_handler(cdp.network.RequestWillBeSent, lambda event: print('network event => %s' % event.request))
+
+
+        the next time you make network traffic you will see your console print like crazy.
+
+
+        :param event_type_or_domain:
+        :type event_type_or_domain:
+        :param handler:
+        :type handler:
+        :return:
+        :rtype:
+        """
+        if isinstance(event_type_or_domain, types.ModuleType):
+            for name, obj in inspect.getmembers_static(cdp.network):
+                if name.isupper():
+                    continue
+                if not name[0].isupper():
+                    continue
+                if type(obj) != type:
+                    continue
+                if inspect.isbuiltin(obj):
+                    continue
+                self.handlers[obj].append(handler)
+            return
         self.handlers[event_type_or_domain].append(handler)
 
     @classmethod
@@ -250,7 +294,7 @@ class SimpleConnection(metaclass=CantTouchThis):
         # instance.recv_task = asyncio.create_task(instance.recv_loop())
         # return instance
 
-    async def open(self, **kw):
+    async def aopen(self, **kw):
         """
         :param kw:
         :return:
@@ -270,7 +314,7 @@ class SimpleConnection(metaclass=CantTouchThis):
             logger.debug("\n✅  opened websocket connection to %s", self.websocket_url)
             # self.recv_task = asyncio.create_task(self.recv_loop())
 
-    async def close(self):
+    async def aclose(self):
         if self.websocket and not self.websocket.closed:
             if self.listener and self.listener.running:
                 self.listener.cancel()
@@ -278,17 +322,27 @@ class SimpleConnection(metaclass=CantTouchThis):
             await self.websocket.close()
             logger.debug("\n❌ closed websocket connection to %s", self.websocket_url)
 
+    async def sleep(self, t: Union[int, float] = 0.25):
+        await asyncio.sleep(t)
+
+    async def wait(self):
+        await self
+        await self.listener.busy.wait()
+
     def __getattr__(self, item):
+        """:meta private:"""
         try:
             return getattr(self.target, item)
         except AttributeError:
             raise
 
     async def __aenter__(self):
+        """:meta private:"""
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
-        await self.close()
+        """:meta private:"""
+        await self.aclose()
         if exc_type and exc_val:
             raise exc_type(exc_val)
 
@@ -312,7 +366,7 @@ class SimpleConnection(metaclass=CantTouchThis):
         :param _is_update:
         :return:
         """
-        await self.open()
+        await self.aopen()
         if not self.listener or not self.listener.running:
             self.listener = Listener(self)
 
@@ -321,80 +375,91 @@ class SimpleConnection(metaclass=CantTouchThis):
         self.mapper.update({tx.id: tx})
 
         if not _is_update:
-            pass
-            # await self._register_handlers()
+            # pass
+            await self._register_handlers()
 
         # send out
         await self.websocket.send(tx.message)
 
+        # try:
         return await tx
+        # finally:
+        # await asyncio.sleep(GLOBAL_DELAY)
 
-    async def listener(self):
-        if not self.websocket:
-            await self.open()
-
-        async for msg in self.websocket:
-            message = json.loads(msg)
-            if "id" in message:
-                # response to our command
-                if message["id"] in self.mapper:
-                    tx = self.mapper[message["id"]]
-                    tx(**message)
-            else:
-                # probably an event
-                try:
-                    event = cdp.util.parse_json_event(message)
-
-                except Exception as e:
-                    logger.info(
-                        "%s: %s  during parsing of json from event : %s"
-                        % (type(e).__name__, e.args, message),
-                        exc_info=True,
-                    )
-
-                    continue
-                except KeyError as e:
-                    logger.info("some lousy KeyError %s" % e, exc_info=True)
-
-                    continue
-
-                try:
-                    # logger.warning('%s in handlers? %s' % (type(event), type(event) in self.handlers))
-                    if type(event) in self.handlers:
-                        callbacks = self.handlers[type(event)]
-                    else:
-                        module = cdp_get_module(type(event).__module__)
-                        event_type = getattr(module, type(event).__qualname__, None)
-                        if not event_type:
-                            continue
-                        callbacks = self.handlers[event_type]
-                    # logger.warning('callbacks? %s' % callbacks)
-                    if not len(callbacks):
-                        continue
-                    # if not isinstance(callbacks, typing.Sequence):
-                    #     if isinstance(callbacks, types.FunctionType):
-                    #         self.handlers[type(event)] = [callbacks]
-
-                    for handler in self.handlers[type(event)]:
-                        try:
-                            if iscoroutinefunction(handler) or iscoroutine(handler):
-                                await handler(event)
-                            else:
-                                handler(event)
-
-                        except Exception as e:
-                            logger.warning(
-                                "exception in handler %s for event %s => %s",
-                                handler,
-                                event.__class__.__name__,
-                                e,
-                                exc_info=True,
-                            )
-                            raise
-                except Exception:
-                    raise
-
-                continue
+    # async def listener(self):
+    #
+    #     if not self.websocket:
+    #         await self.open()
+    #     while True:
+    #         try:
+    #             msg = await asyncio.wait_for(self.websocket.recv(), 1)
+    #         except asyncio.TimeoutError:
+    #             self.recv_task_busy.clear()
+    #             await self.sleep(.5)
+    #             continue
+    #         # async for msg in self.websocket:
+    #         self.recv_task.busy.set()
+    #         message = json.loads(msg)
+    #         if "id" in message:
+    #             # response to our command
+    #             if message["id"] in self.mapper:
+    #                 tx = self.mapper[message["id"]]
+    #                 tx(**message)
+    #         else:
+    #             # probably an event
+    #             try:
+    #                 event = cdp.util.parse_json_event(message)
+    #
+    #             except Exception as e:
+    #                 logger.info(
+    #                     "%s: %s  during parsing of json from event : %s"
+    #                     % (type(e).__name__, e.args, message),
+    #                     exc_info=True,
+    #                 )
+    #
+    #                 continue
+    #             except KeyError as e:
+    #                 logger.info("some lousy KeyError %s" % e, exc_info=True)
+    #
+    #                 continue
+    #
+    #             try:
+    #                 # logger.warning('%s in handlers? %s' % (type(event), type(event) in self.handlers))
+    #                 if type(event) in self.handlers:
+    #                     callbacks = self.handlers[type(event)]
+    #                 else:
+    #                     module = cdp_get_module(type(event).__module__)
+    #                     event_type = getattr(module, type(event).__qualname__, None)
+    #                     if not event_type:
+    #                         continue
+    #                     callbacks = self.handlers[event_type]
+    #                 # logger.warning('callbacks? %s' % callbacks)
+    #                 if not len(callbacks):
+    #                     continue
+    #                 # if not isinstance(callbacks, typing.Sequence):
+    #                 #     if isinstance(callbacks, types.FunctionType):
+    #                 #         self.handlers[type(event)] = [callbacks]
+    #
+    #                 for handler in self.handlers[type(event)]:
+    #                     try:
+    #                         if iscoroutinefunction(handler) or iscoroutine(handler):
+    #                             await handler(event)
+    #                         else:
+    #                             handler(event)
+    #
+    #                     except Exception as e:
+    #                         logger.warning(
+    #                             "exception in handler %s for event %s => %s",
+    #                             handler,
+    #                             event.__class__.__name__,
+    #                             e,
+    #                             exc_info=True,
+    #                         )
+    #                         raise
+    #             except Exception:
+    #                 raise
+    #
+    #             continue
 
     async def _register_handlers(self):
         """
@@ -402,23 +467,29 @@ class SimpleConnection(metaclass=CantTouchThis):
         domain is enabled in the protocol.
 
         """
-
+        seen = []
         for event_type in self.handlers.copy():
             domain_mod = None
+            if len(self.handlers[event_type]) == 0:
+                self.handlers.pop(event_type)
+                continue
             if isinstance(event_type, type):
                 domain_mod = cdp_get_module(event_type.__module__)
-            if isinstance(event_type, types.ModuleType):
-                domain_mod = event_type
-            if domain_mod not in self.enabled_domains:
+            # if isinstance(event_type, types.ModuleType):
+            #     domain_mod = event_type
+            if domain_mod in self.enabled_domains:
+                continue
+            elif domain_mod not in self.enabled_domains:
                 if domain_mod in (cdp.target, cdp.storage):
                     # by default enabled
                     continue
                 try:
                     # we add this before sending the request, because it will
                     # loop indefinite
+                    # self.enabled_domains.append(domain_mod)
                     self.enabled_domains.append(domain_mod)
-                    logger.debug("added %s to enabled domains" % domain_mod)
-                    await self.send(domain_mod.enable())
+                    # logger.debug("added %s to enabled domains" % domain_mod)
+                    await self.send(domain_mod.enable(), _is_update=True)
 
                 except:  # noqa - as broad as possible, we don't want an error before the "actual" request is sent
                     logger.info("", exc_info=True)
@@ -426,7 +497,7 @@ class SimpleConnection(metaclass=CantTouchThis):
                         self.enabled_domains.remove(domain_mod)
                     except:  # noqa
                         logger.debug("NOT GOOD", exc_info=True)
-                        pass
+                        continue
                 finally:
                     continue
 
@@ -455,10 +526,15 @@ def cdp_get_module(domain: Union[str, types.ModuleType]):
 
 
 class Listener:
-    def __init__(self, connection: SimpleConnection):
+    def __init__(self, connection: Connection):
         self.connection = connection
         self.task: asyncio.Future = None
+        self.busy = asyncio.Event()
         self.run()
+
+    # def busy_monitor(self):
+    #     print('recv_task busy ? ', self.busy.is_set())
+    #     asyncio.get_running_loop().call_later(.5, self.busy_monitor)
 
     def run(self):
         self.task = asyncio.create_task(self.listener_loop())
@@ -476,12 +552,21 @@ class Listener:
 
     async def listener_loop(self):
         if not self.connection.websocket:
-            await self.connection.open()
-
-        async for msg in self.connection.websocket:
+            await self.connection.aopen()
+        while True:
+            try:
+                msg = await asyncio.wait_for(self.connection.websocket.recv(), 1)
+            except asyncio.TimeoutError:
+                self.busy.clear()
+                await asyncio.sleep(0.1)
+                continue
+            except Exception:
+                break
+            # async for msg in self.connection.websocket:
             if not self.running:
                 print("not running")
                 break
+            self.busy.set()
             message = json.loads(msg)
             if "id" in message:
                 # response to our command
@@ -511,11 +596,13 @@ class Listener:
                     if type(event) in self.connection.handlers:
                         callbacks = self.connection.handlers[type(event)]
                     else:
-                        module = cdp_get_module(type(event).__module__)
-                        event_type = getattr(module, type(event).__qualname__, None)
-                        if not event_type:
-                            continue
-                        callbacks = self.connection.handlers[event_type]
+                        continue
+                    # else:
+                    #     module = cdp_get_module(type(event).__module__)
+                    #     event_type = getattr(module, type(event).__qualname__, None)
+                    #     if not event_type:
+                    #         continue
+                    #     callbacks = self.connection.handlers[event_type]
 
                     # logger.warning('callbacks? %s' % callbacks)
                     if not len(callbacks):

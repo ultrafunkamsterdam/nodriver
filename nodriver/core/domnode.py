@@ -9,7 +9,7 @@ from ._contradict import ContraDict
 class DomNode:
     attrs: ContraDict
 
-    def __init__(self, node: cdp.dom.Node, target: "nodriver.Target"):
+    def __init__(self, node: cdp.dom.Node, target: "nodriver.Page"):
         self._target = target
         self._attrs = ContraDict()
         self._node = node

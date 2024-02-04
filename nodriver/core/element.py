@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import asyncio
+import json
 
 import logging
 import pathlib
 import secrets
 import typing
+
+from .config import PathLike
 from .. import cdp
 from . import util
 from ._contradict import ContraDict
@@ -13,7 +16,7 @@ from ._contradict import ContraDict
 logger = logging.getLogger(__name__)
 
 if typing.TYPE_CHECKING:
-    from .target import Target
+    from .page import Page
 
 
 class Registry(ContraDict):
@@ -26,9 +29,7 @@ class Registry(ContraDict):
         return super().__getitem__(item)
 
 
-def create(
-        node: cdp.dom.Node, target: Target, tree: typing.Optional[cdp.dom.Node] = None
-):
+def create(node: cdp.dom.Node, page: Page, tree: typing.Optional[cdp.dom.Node] = None):
     """
     factory for Elements
     this is used with page.query_selector(_all), since we already have the tree,
@@ -36,31 +37,34 @@ def create(
 
     :param node: cdp dom node representation
     :type node: cdp.dom.Node
-    :param target: the target object to which this element belongs
-    :type target: Target
+    :param page: the target object to which this element belongs
+    :type page: Page
     :param tree: [Optional] the full node tree to which <node> belongs, enhances performance.
                 when not provided, you need to call `await elem.update()` before using .children / .parent
     :type tree:
     """
 
-    elem = Element(node, target, tree)
+    elem = Element(node, page, tree)
 
     return elem
 
 
 class Element:
-    def __init__(self, node: cdp.dom.Node, target: Target, tree: cdp.dom.Node = None):
+    def __init__(self, node: cdp.dom.Node, page: Page, tree: cdp.dom.Node = None):
         """
         Represents an (HTML) DOM Element
 
         :param node: cdp dom node representation
         :type node: cdp.dom.Node
-        :param target: the target object to which this element belongs
-        :type target: Target
+        :param page: the target object to which this element belongs
+        :type page: Page
         """
         if not node:
             raise Exception("node cannot be None")
-        self._target = target
+        self._page = page
+        # if node.node_name == 'IFRAME':
+        #     self._node = node.content_document
+        # else:
         self._node = node
         self._tree = tree
         self._parent = None
@@ -184,6 +188,10 @@ class Element:
     def assigned_slot(self):
         return self.node.assigned_slot
 
+    @property
+    def page(self):
+        return self._page
+
     def __getattr__(self, item):
         # returns None when attribute is not found
         # instead of raising AttributeError
@@ -210,25 +218,35 @@ class Element:
         return self.attrs.get(item, None)
 
     async def save_to_dom(self):
-        self._remote_object = await self._target.send(
+        self._remote_object = await self._page.send(
             cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
         )
-        await self._target.send(
+        await self._page.send(
             cdp.dom.set_outer_html(self.node_id, outer_html=str(self))
         )
         await self.update()
 
     async def remove_from_dom(self):
         if not self.tree:
-            self._tree = await self._target.send(cdp.dom.get_document(-1, True))
+            self._tree = await self._page.send(cdp.dom.get_document(-1, True))
         self._tree = util.remove_from_tree(self.tree, self.node)
 
     async def update(self, _node=None):
         """
-        updates element to retrieve more properties. for example this enables .children and .parent  attributes,
-        and also resolves js opbject which is stored object in .remote_object .
+        updates element to retrieve more properties. for example this enables
+        :py:obj:`~children` and :py:obj:`~parent` attributes.
 
-        the reason for a seperate call instead of doing it at initialization,
+        also resolves js opbject which is stored object in :py:obj:`~remote_object`
+
+        usually you will get element nodes by the usage of
+
+        :py:meth:`Page.query_selector_all()`
+
+        :py:meth:`Page.find_elements_by_text()`
+
+        those elements are already updated and you can browse through children directly.
+
+        The reason for a seperate call instead of doing it at initialization,
         is because when you are retrieving 100+ elements this becomes quite expensive.
 
         therefore, it is not advised to call this method on a bunch of blocks (100+) at the same time.
@@ -240,24 +258,27 @@ class Element:
             self._node = _node
         # self._children.clear()
         self._parent = None
-        doc = await self._target.send(cdp.dom.get_document(-1, True))
+        doc = await self._page.send(cdp.dom.get_document(-1, True))
+        # if self.node_name != "IFRAME":
         updated_node = util.filter_recurse(
             doc, lambda n: n.backend_node_id == self._node.backend_node_id
         )
         self._node = updated_node
         self._tree = doc
-        self._remote_object = await self._target.send(
+
+        self._remote_object = await self._page.send(
             cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
         )
         self.attrs.clear()
         self._make_attrs()
-        parent_node = util.filter_recurse(
-            doc, lambda n: n.node_id == updated_node.parent_id
-        )
-        if not parent_node:
-            # could happen if node is for example <html>
-            return self
-        self._parent = create(parent_node, target=self._target, tree=self._tree)
+        if self.node_name != "IFRAME":
+            parent_node = util.filter_recurse(
+                doc, lambda n: n.node_id == updated_node.parent_id
+            )
+            if not parent_node:
+                # could happen if node is for example <html>
+                return self
+            self._parent = create(parent_node, page=self._page, tree=self._tree)
         return self
 
     @property
@@ -284,17 +305,28 @@ class Element:
         )
         if not parent_node:
             return None
-        parent_element = create(parent_node, target=self.target, tree=self.tree)
+        parent_element = create(parent_node, page=self._page, tree=self.tree)
         return parent_element
         # self._parent = parent_element
         # return self._parent
 
     @property
     def attrs(self):
+        """
+        attributes are stored here, however, you can set them directly on the element object as well.
+        :return:
+        :rtype:
+        """
         return self._attrs
 
     @property
     def children(self) -> typing.Union[typing.List[Element], str]:
+        """
+        returns the elements' children. those children also have a children property
+        so you can browse through the entire tree as well.
+        :return:
+        :rtype:
+        """
         _children = []
         if self._node.node_name == "IFRAME":
             # iframes are not exact the same as other nodes
@@ -305,17 +337,18 @@ class Element:
             if not frame.child_node_count:
                 return []
             for child in frame.children:
-                child_elem = create(child, self._target, frame)
+                child_elem = create(child, self._page, frame)
                 if child_elem:
                     _children.append(child_elem)
-            self._node = frame
+            # self._node = frame
             return _children
         elif not self.node.child_node_count:
             return []
-        for child in self.node.children:
-            child_elem = create(child, self._target, self.tree)
-            if child_elem:
-                _children.append(child_elem)
+        if self.node.children:
+            for child in self.node.children:
+                child_elem = create(child, self._page, self.tree)
+                if child_elem:
+                    _children.append(child_elem)
         return _children
 
     @property
@@ -330,17 +363,23 @@ class Element:
             pass
 
     # # methods
-    @property
-    def target(self):
-        return self._target
+    # @property
+    # def target(self):
+    #     return self._page
 
     async def click(self):
-        self._remote_object = await self._target.send(
+        """
+        Click the element.
+
+        :return:
+        :rtype:
+        """
+        self._remote_object = await self._page.send(
             cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
         )
         arguments = [cdp.runtime.CallArgument(object_id=self._remote_object.object_id)]
         await self.flash(0.25)
-        await self._target.send(
+        await self._page.send(
             cdp.runtime.call_function_on(
                 "(el) => el.click()",
                 object_id=self._remote_object.object_id,
@@ -352,16 +391,20 @@ class Element:
         )
 
     async def get_js_attributes(self):
-        await self.apply(
-            """
+        return ContraDict(
+            json.loads(
+                await self.apply(
+                    """
             function (e) {
                 let o = {}
                 for(let k in e){
                     o[k] = e[k]
                 }
-            return JSON.stringify(o)
+                return JSON.stringify(o)
             }
             """
+                )
+            )
         )
 
     def __await__(self):
@@ -379,12 +422,12 @@ class Element:
         return self.apply(f"(e) => e['{js_method}']()")
 
     async def apply(self, js_function, return_by_value=True):
-        self._remote_object = await self._target.send(
+        self._remote_object = await self._page.send(
             cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
         )
         result: typing.Tuple[
             cdp.runtime.RemoteObject, typing.Any
-        ] = await self._target.send(
+        ] = await self._page.send(
             cdp.runtime.call_function_on(
                 js_function,
                 object_id=self._remote_object.object_id,
@@ -392,6 +435,7 @@ class Element:
                     cdp.runtime.CallArgument(object_id=self._remote_object.object_id)
                 ],
                 return_by_value=True,
+                user_gesture=True,
             )
         )
         if result and result[0]:
@@ -403,7 +447,7 @@ class Element:
 
     async def get_position(self, abs=False) -> Position:
         await self.update()
-        quads = await self._target.send(
+        quads = await self._page.send(
             cdp.dom.get_content_quads(object_id=self.remote_object.object_id)
         )
         try:
@@ -423,11 +467,11 @@ class Element:
             )
 
     async def mouse_click(
-            self,
-            button: str = "left",
-            buttons: typing.Optional[int] = 1,
-            modifiers: typing.Optional[int] = 0,
-            _until_event: typing.Optional[type] = None,
+        self,
+        button: str = "left",
+        buttons: typing.Optional[int] = 1,
+        modifiers: typing.Optional[int] = 0,
+        _until_event: typing.Optional[type] = None,
     ):
         """native click (on element) . note: this likely does not work atm, use click() instead
 
@@ -450,7 +494,7 @@ class Element:
         logger.debug("clicking on location %.2f, %.2f" % center)
 
         await asyncio.gather(
-            self._target.send(
+            self._page.send(
                 cdp.input_.dispatch_mouse_event(
                     "mousePressed",
                     x=center[0],
@@ -461,7 +505,7 @@ class Element:
                     click_count=1,
                 )
             ),
-            self._target.send(
+            self._page.send(
                 cdp.input_.dispatch_mouse_event(
                     "mouseReleased",
                     x=center[0],
@@ -485,16 +529,16 @@ class Element:
         logger.debug(
             "mouse move to location %.2f, %.2f where %s is located", *center, self
         )
-        await self._target.send(
+        await self._page.send(
             cdp.input_.dispatch_mouse_event("mouseMoved", x=center[0], y=center[1])
         )
-        await self._target
-        await self._target.send(
+        await self._page
+        await self._page.send(
             cdp.input_.dispatch_mouse_event("mouseReleased", x=center[0], y=center[1])
         )
 
     async def scroll_into_view(self):
-        """scrolls element into view (if needed)"""
+        """scrolls element into view"""
         await self.apply("""(el) => el.scrollIntoView(false)""")
 
     async def clear_input(self, _until_event: type = None):
@@ -513,16 +557,28 @@ class Element:
         """
         await self.apply("(elem) => elem.focus()")
         [
-            await self._target.send(cdp.input_.dispatch_key_event("char", text=char))
+            await self._page.send(cdp.input_.dispatch_key_event("char", text=char))
             for char in list(text)
         ]
 
-    async def send_file(self, file_paths: typing.List[str]):
-        await self._target.send(
+    async def send_file(self, *file_paths: str):
+        """
+        some form input require a file (upload).
+        this method sends 1 or more file(s) to the input field.
+
+        needles to say, but make sure the field accepts multiple files if you want to send more files.
+        otherwise the browser might crash.
+
+        example :
+        `await fileinputElement.send_file('c:/temp/image.png', 'c:/users/myuser/lol.gif')`
+
+        """
+        await self._page.send(
             cdp.dom.set_file_input_files(
-                files=file_paths,
+                files=[*file_paths],
                 backend_node_id=self.backend_node_id,
-                object_id=self.object_id)
+                object_id=self.object_id,
+            )
         )
 
     async def focus(self):
@@ -540,9 +596,7 @@ class Element:
             return await self.apply("(o) => o.selected = true")
 
     async def set_value(self, value):
-        await self._target.send(
-            cdp.dom.set_node_value(node_id=self.node_id, value=value)
-        )
+        await self._page.send(cdp.dom.set_node_value(node_id=self.node_id, value=value))
 
     async def set_text(self, value):
         if not self.node_type == 3:
@@ -554,12 +608,10 @@ class Element:
             else:
                 raise RuntimeError("could only set value of text nodes")
         await self.update()
-        await self.target.send(
-            cdp.dom.set_node_value(node_id=self.node_id, value=value)
-        )
+        await self._page.send(cdp.dom.set_node_value(node_id=self.node_id, value=value))
 
     async def get_html(self):
-        return await self.target.send(
+        return await self._page.send(
             cdp.dom.get_outer_html(backend_node_id=self.backend_node_id)
         )
 
@@ -589,62 +641,89 @@ class Element:
         return " ".join([n.node_value for n in text_nodes])
 
     async def query_selector_all(self, selector: str):
-        return await self._target.query_selector_all(selector, self)
+        if self.node_name == "IFRAME":
+            return await self.page.query_selector_all(selector, _node=self)
+        await self
+        return await self._page.query_selector_all(selector, self)
 
-    # async def flash(self, *coords, duration: typing.Union[float, int] = .5):
-    #     """
-    #     displays for a short time a red dot on the element (only if the element itself is visible)
+    async def query_selector(self, selector):
+        if self.node_name == "IFRAME":
+            return await self.page.query_selector(selector, self)
+            # async def query_selector_in_frame(self: Element, selector: str):
+            #     if not getattr(self, "content_document", None):
+            #         raise TypeError("no content_document found in %s " % self)
+            #     nid = self.content_document.node_id
+            #     node_id = await self.page.send(cdp.dom.query_selector(node_id=nid, selector=selector))
+            #     node = util.filter_recurse(self.content_document, lambda n: n.node_id == node_id)
+            #     #     return create(node, self.page, self.tree)
+            #     return create(node, self.page, self.content_document)
+            # return await query_selector_in_frame(self, selector)
+        await self
+        return await self._page.query_selector(selector, self)
+
     #
-    #     :param coords: x,y
-    #     :type coords: x,y
-    #     :param duration: seconds (default 0.5)
-    #     :type duration:
-    #     :return:
-    #     :rtype:
-    #     """
-    #     if not coords:
-    #         pos = await self.get_position()
-    #         if not pos:
-    #             return
-    #         coords = pos.center
-    #     style = (
-    #         "position:absolute;z-index:99999;padding:0;margin:0;left:calc({:.0f}px - .5em);"
-    #         "top:calc({:.0f}px - .5em);width:1em;height:1em;border-radius:50%;background:red;opacity:0;"
-    #         "animation:show-pointer-ani {:.2f}s ease 1;"
-    #     ).format(*coords, duration)
-    #     script = (
-    #         """
-    #         var css = document.styleSheets[0];
-    #         for( let css of [...document.styleSheets]) {{
-    #             try {{
-    #                 css.insertRule(`
-    #                 @keyframes show-pointer-ani {{
-    #                       0% {{ opacity: 1; transform: scale(2, 2);}}
-    #                       25% {{ transform: scale(5,5) }}
-    #                       50% {{ transform: scale(3, 3);}}
-    #                       75%: {{ transform: scale(2,2) }}
-    #                       100% {{ transform: scale(1, 1); opacity: 0;}}
-    #                 }}`,css.cssRules.length);
-    #                 break;
-    #             }} catch (e) {{
-    #                 console.log(e)
-    #             }}
-    #         }};
-    #         var _d = document.createElement('div');
-    #         _d.style = `{0:s}`;
-    #         _d.id = `{1:s}`;
-    #         document.body.insertAdjacentElement('afterBegin', _d);
-    #         setTimeout( () => document.getElementById('{1:s}').remove(), {2:d});
-    #         """.format(
-    #             style,
-    #             secrets.token_hex(8),
-    #             int(duration * 1000),
-    #         )
-    #         .replace("  ", "")
-    #         .replace("\n", "")
-    #     )
-    #
-    #     await self._target.send(cdp.runtime.evaluate(script))
+    async def save_screenshot(
+        self,
+        filename: typing.Optional[PathLike] = "auto",
+        format: typing.Optional[str] = "jpeg",
+        scale: typing.Optional[typing.Union[int, float]] = 1,
+    ):
+        """
+        Saves a screenshot of this element (only)
+        This is not the same as :py:obj:`Page.save_screenshot`, which saves a "regular" screenshot
+
+        When the element is hidden, or has no size, or is otherwise not capturable, a RuntimeError is raised
+
+        :param filename: uses this as the save path
+        :type filename: PathLike
+        :param format: jpeg or png (defaults to jpeg)
+        :type format: str
+        :param scale: the scale of the screenshot, eg: 1 = size as is, 2 = double, 0.5 is half
+        :return: the path/filename of saved screenshot
+        :rtype: str
+        """
+
+        import urllib.parse
+        import datetime
+        import base64
+
+        pos = await self.get_position()
+        if not pos:
+            raise RuntimeError(
+                "could not determine position of element. probably because it's not in view, or hidden"
+            )
+        viewport = pos.to_viewport(scale)
+        path = None
+        await self.page
+        if not filename or filename == "auto":
+            parsed = urllib.parse.urlparse(self.page.target.url)
+            parts = parsed.path.split("/")
+            last_part = parts[-1]
+            last_part = last_part.rsplit("?", 1)[0]
+            dt_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            candidate = f"{parsed.hostname}__{last_part}_{dt_str}"
+            ext = ""
+            if format.lower() in ["jpg", "jpeg"]:
+                ext = ".jpg"
+                format = "jpeg"
+            elif format.lower() in ["png"]:
+                ext = ".png"
+                format = "png"
+            path = pathlib.Path(candidate + ext)
+        else:
+            path = pathlib.Path(filename)
+
+        path.parent.mkdir(parents=True, exist_ok=True)
+        data = await self._page.send(
+            cdp.page.capture_screenshot(
+                format, clip=viewport, capture_beyond_viewport=True
+            )
+        )
+        data_bytes = base64.b64decode(data)
+        if not path:
+            raise RuntimeError("invalid filename or path: '%s'" % filename)
+        path.write_bytes(data_bytes)
+        return str(path)
 
     async def flash(self, duration: typing.Union[float, int] = 0.5):
         """
@@ -658,7 +737,7 @@ class Element:
         :rtype:
         """
         if not self.remote_object:
-            self._remote_object = await self._target.send(
+            self._remote_object = await self._page.send(
                 cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
             )
         style = (
@@ -702,7 +781,7 @@ class Element:
             .replace("\n", "")
         )
         arguments = [cdp.runtime.CallArgument(object_id=self._remote_object.object_id)]
-        await self._target.send(
+        await self._page.send(
             cdp.runtime.call_function_on(
                 script,
                 object_id=self._remote_object.object_id,
@@ -713,23 +792,28 @@ class Element:
         )
 
     async def record_video(
-            self,
-            filename: str = None,
-            folder: str = None,
-            duration: typing.Union[int, float] = None,
+        self,
+        filename: typing.Optional[str] = None,
+        folder: typing.Optional[str] = None,
+        duration: typing.Optional[typing.Union[int, float]] = None,
     ):
         """
         experimental option.
-        :param filename: optional - the desired filename
-        :param folder: optional - the download folder path
-        :param duration: record for <duration> seconds
+
+        :param filename: the desired filename
+        :param folder: the download folder path
+        :param duration: record for this many seconds and then download
 
         on html5 video nodes, you can call this method to start recording of the video.
+
         when any of the follow happens:
-            - video ends
-            - calling videoelement('pause')
-            - video stops
-            the video recorded will be downloaded.
+
+        - video ends
+        - calling videoelement('pause')
+        - video stops
+
+        the video recorded will be downloaded.
+
         """
         if self.node_name != "VIDEO":
             raise RuntimeError(
@@ -741,7 +825,7 @@ class Element:
             directory_path = pathlib.Path(folder)
 
         directory_path.mkdir(exist_ok=True)
-        await self._target.send(
+        await self._page.send(
             cdp.browser.set_download_behavior(
                 "allow", download_path=str(directory_path)
             )
@@ -755,6 +839,7 @@ class Element:
                       var stream = vid.captureStream();
                       var mr = new MediaRecorder(stream, {{audio:true, video:true}})
                       mr.ondataavailable  = function(e) {{
+                          vid['_recording'] = false
                           var blob = e.data;
                           f = new File([blob], {{name: {filename}, type:'octet/stream'}});
                           var objectUrl = URL.createObjectURL(f);
@@ -779,7 +864,7 @@ class Element:
                        if ( duration ) {{ 
                             setTimeout(() => {{ vid.pause(); vid.play() }}, duration);
                        }}
-                       
+                       vid['_recording'] = true
                   ;}}
                 
             """.format(
@@ -788,7 +873,10 @@ class Element:
             )
         )
         await self("play")
-        await self._target
+        await self._page
+
+    async def is_recording(self):
+        return await self.apply('(vid) => vid["_recording"]')
 
     def _make_attrs(self):
         sav = None
@@ -857,6 +945,11 @@ class Position(cdp.dom.Quad):
         self.center = (
             self.left + (self.width / 2),
             self.top + (self.height / 2),
+        )
+
+    def to_viewport(self, scale=1):
+        return cdp.page.Viewport(
+            x=self.x, y=self.y, width=self.width, height=self.height, scale=scale
         )
 
     def __repr__(self):

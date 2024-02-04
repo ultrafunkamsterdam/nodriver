@@ -28,7 +28,8 @@ language = "en"
 
 default_role = "py:obj"
 
-autodoc_typehints = "description"
+# autodoc_typehints = "none"
+# autoclass_content = "both"
 # Don't show class signature with the class' name.
 # autodoc_class_signature = "separated"
 
