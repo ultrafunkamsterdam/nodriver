@@ -78,16 +78,6 @@ class Transaction(asyncio.Future):
     def message(self):
         return json.dumps({"method": self.method, "params": self.params, "id": self.id})
 
-    # @property
-    # def result(self):
-    #     # just make it an attribute instead of having to call it
-    #     return super().result()
-    #
-    # @property
-    # def exception(self):
-    #     # just make it an attribute instead of having to call it
-    #     return super().exception()
-
     def __call__(self, **response: dict):
         """
         parsed the response message and marks the future
@@ -96,22 +86,6 @@ class Transaction(asyncio.Future):
         :param response:
         :return:
         """
-
-        # s = ""
-        # for k,v in self.raw_request['params'].items():
-        #     s += f"{k} = {v}"
-        # print(s)
-        # tx_logger.info(s)
-        # tx_logger.debug(
-        #     "\n[%d]\n"
-        #     "-----------------\n"
-        #     ">>> %s \n"
-        #     "<<< %s \n"
-        #     "-----------------\n",
-        #     self.message_id,
-        #     self.cdp_method,
-        #     self.raw_response,
-        # )
 
         if "error" in response:
             # set exception and bail out
@@ -214,15 +188,7 @@ class Connection(metaclass=CantTouchThis):
         self.enabled_domains = []
         self._last_result = []
         self.listener: Listener = None
-        # self.listener_task  = None
-        # self.target = target
-        # self.type: str = ""
 
-        # self._targets = []
-
-        # if target and target.type_:
-        #     self.type = target.__dict__.pop('type_')
-        # self._retrieve_task = None
         self.__dict__.update(**kwargs)
 
     @property
@@ -237,10 +203,6 @@ class Connection(metaclass=CantTouchThis):
                 % (cdp.target.TargetInfo.__name__, type(target).__name__)
             )
         self._target = target
-        # try:
-        #     self.__dict__.update(target.__dict__)
-        # except AttributeError:
-        #     pass
 
     def add_handler(
         self,
@@ -288,10 +250,7 @@ class Connection(metaclass=CantTouchThis):
     @classmethod
     async def create(cls, websocket_url: str, **kwargs):
         instance = cls(websocket_url, **kwargs)
-        # await instance.open()
         return instance
-        # instance.recv_task = asyncio.create_task(instance.recv_loop())
-        # return instance
 
     async def aopen(self, **kw):
         """
@@ -307,11 +266,7 @@ class Connection(metaclass=CantTouchThis):
             self.listener = Listener(self)
         if not self.listener or not self.listener.running:
             self.listener = Listener(self)
-
-            # if self.websocket and not self._retrieve_task or self._retrieve_task.done():
-            #     self._retrieve_task = asyncio.ensure_future(self._retrieve_loop())
             logger.debug("\n✅  opened websocket connection to %s", self.websocket_url)
-            # self.recv_task = asyncio.create_task(self.recv_loop())
 
     async def aclose(self):
         if self.websocket and not self.websocket.closed:
@@ -380,86 +335,7 @@ class Connection(metaclass=CantTouchThis):
         # send out
         await self.websocket.send(tx.message)
 
-        # try:
         return await tx
-        # finally:
-        # await asyncio.sleep(GLOBAL_DELAY)
-
-    # async def listener(self):
-    #
-    #     if not self.websocket:
-    #         await self.open()
-    #     while True:
-    #         try:
-    #             msg = await asyncio.wait_for(self.websocket.recv(), 1)
-    #         except asyncio.TimeoutError:
-    #             self.recv_task_busy.clear()
-    #             await self.sleep(.5)
-    #             continue
-    #         # async for msg in self.websocket:
-    #         self.recv_task.busy.set()
-    #         message = json.loads(msg)
-    #         if "id" in message:
-    #             # response to our command
-    #             if message["id"] in self.mapper:
-    #                 tx = self.mapper[message["id"]]
-    #                 tx(**message)
-    #         else:
-    #             # probably an event
-    #             try:
-    #                 event = cdp.util.parse_json_event(message)
-    #
-    #             except Exception as e:
-    #                 logger.info(
-    #                     "%s: %s  during parsing of json from event : %s"
-    #                     % (type(e).__name__, e.args, message),
-    #                     exc_info=True,
-    #                 )
-    #
-    #                 continue
-    #             except KeyError as e:
-    #                 logger.info("some lousy KeyError %s" % e, exc_info=True)
-    #
-    #                 continue
-    #
-    #             try:
-    #                 # logger.warning('%s in handlers? %s' % (type(event), type(event) in self.handlers))
-    #                 if type(event) in self.handlers:
-    #                     callbacks = self.handlers[type(event)]
-    #                 else:
-
-    #                     module = cdp_get_module(type(event).__module__)
-    #                     event_type = getattr(module, type(event).__qualname__, None)
-    #                     if not event_type:
-    #                         continue
-    #                     callbacks = self.handlers[event_type]
-    #                 # logger.warning('callbacks? %s' % callbacks)
-    #                 if not len(callbacks):
-    #                     continue
-    #                 # if not isinstance(callbacks, typing.Sequence):
-    #                 #     if isinstance(callbacks, types.FunctionType):
-    #                 #         self.handlers[type(event)] = [callbacks]
-    #
-    #                 for handler in self.handlers[type(event)]:
-    #                     try:
-    #                         if iscoroutinefunction(handler) or iscoroutine(handler):
-    #                             await handler(event)
-    #                         else:
-    #                             handler(event)
-    #
-    #                     except Exception as e:
-    #                         logger.warning(
-    #                             "exception in handler %s for event %s => %s",
-    #                             handler,
-    #                             event.__class__.__name__,
-    #                             e,
-    #                             exc_info=True,
-    #                         )
-    #                         raise
-    #             except Exception:
-    #                 raise
-    #
-    #             continue
 
     async def _register_handlers(self):
         """
@@ -475,8 +351,7 @@ class Connection(metaclass=CantTouchThis):
                 continue
             if isinstance(event_type, type):
                 domain_mod = util.cdp_get_module(event_type.__module__)
-            # if isinstance(event_type, types.ModuleType):
-            #     domain_mod = event_type
+
             if domain_mod in self.enabled_domains:
                 continue
             elif domain_mod not in self.enabled_domains:
@@ -486,9 +361,8 @@ class Connection(metaclass=CantTouchThis):
                 try:
                     # we add this before sending the request, because it will
                     # loop indefinite
-                    # self.enabled_domains.append(domain_mod)
                     self.enabled_domains.append(domain_mod)
-                    # logger.debug("added %s to enabled domains" % domain_mod)
+
                     await self.send(domain_mod.enable(), _is_update=True)
 
                 except:  # noqa - as broad as possible, we don't want an error before the "actual" request is sent
@@ -508,10 +382,6 @@ class Listener:
         self.task: asyncio.Future = None
         self.busy = asyncio.Event()
         self.run()
-
-    # def busy_monitor(self):
-    #     print('recv_task busy ? ', self.busy.is_set())
-    #     asyncio.get_running_loop().call_later(.5, self.busy_monitor)
 
     def run(self):
         self.task = asyncio.create_task(self.listener_loop())
