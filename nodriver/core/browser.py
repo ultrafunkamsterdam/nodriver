@@ -56,15 +56,15 @@ class Browser:
 
     @classmethod
     async def create(
-            cls,
-            config: Config = None,
-            *,
-            user_data_dir: PathLike = None,
-            headless: bool = False,
-            browser_executable_path: PathLike = None,
-            browser_args: List[str] = None,
-            sandbox: bool = True,
-            **kwargs,
+        cls,
+        config: Config = None,
+        *,
+        user_data_dir: PathLike = None,
+        headless: bool = False,
+        browser_executable_path: PathLike = None,
+        browser_args: List[str] = None,
+        sandbox: bool = True,
+        **kwargs,
     ) -> Browser:
         """
         entry point for creating an instance
@@ -148,13 +148,13 @@ class Browser:
     """alias for wait"""
 
     def _handle_target_update(
-            self,
-            event: Union[
-                cdp.target.TargetInfoChanged,
-                cdp.target.TargetDestroyed,
-                cdp.target.TargetCreated,
-                cdp.target.TargetCrashed,
-            ],
+        self,
+        event: Union[
+            cdp.target.TargetInfoChanged,
+            cdp.target.TargetDestroyed,
+            cdp.target.TargetCreated,
+            cdp.target.TargetCrashed,
+        ],
     ):
         """this is an internal handler which updates the targets when chrome emits the corresponding event"""
 
@@ -205,7 +205,7 @@ class Browser:
             self.targets.remove(current_target)
 
     async def get(
-            self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
+        self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
     ):
         """top level get. utilizes the first tab to retrieve given url.
 
@@ -240,7 +240,7 @@ class Browser:
                 tab = next(
                     filter(
                         lambda item: item.type_ == "page"
-                                     and item.target_id == target_id,
+                        and item.target_id == target_id,
                         self.targets,
                     )
                 )
@@ -251,187 +251,6 @@ class Browser:
             tab.frame_id = frame_id
             await self.wait()
             return tab
-
-    # async def get(
-    #         self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
-    # ):
-    #     """top level get. utilizes the first tab to retrieve given url.
-    #
-    #     convenience function known from selenium.
-    #     this function handles waits/sleeps and detects when DOM events fired, so it's the safest
-    #     way of navigating.
-    #
-    #     :param url: the url to navigate to
-    #     :param new_tab: open new tab
-    #     :param new_window:  open new window
-    #     :return: Page
-    #     """
-    #     from .target import Target
-    #     if new_window and not new_tab:
-    #         new_tab = True
-    #
-    #     # get first tab
-    #     try:
-    #         tab = next(filter(lambda item: item.type_ == 'page', self.targets))
-    #     except StopIteration:
-    #         print(' stopiteration')
-    #
-    #         targets_http = await self._http.get('list')
-    #         pages = [t for t in targets_http if t['type'] == 'page']
-    #         _t = pages[0]  # dict
-    #         # remap keys
-    #         target_info = cdp.target.TargetInfo(**{
-    #             'target_id': cdp.target.TargetID(_t.pop('id')),
-    #             'type_': _t.pop('type'),
-    #             'url': _t.pop('url'),
-    #             'title': _t.pop('title'),
-    #             'attached': True,
-    #             'can_access_opener': True
-    #         })
-    #         tab = Target((
-    #             f"ws://{self.config.host}:{self.config.port}"
-    #             f"/devtools/{target_info.type_.lower()}"
-    #             f"/{target_info.target_id}")
-    #             , target=target_info)
-    #         await tab.open()
-    #         self.targets.append(tab)
-    #         return await self.get(url, new_tab=new_tab, new_window=new_window)
-    #     if new_tab:
-    #         if not self.config.autodiscover_targets:
-    #             _t = await self._http._request(method='put', endpoint=f'new/?{url}')
-    #             target_info = cdp.target.TargetInfo(**{
-    #                 'target_id': cdp.target.TargetID(_t.pop('id')),
-    #                 'type_': _t.pop('type'),
-    #                 'url': _t.pop('url'),
-    #                 'title': _t.pop('title'),
-    #                 'attached': False,
-    #                 'can_access_opener': False
-    #             })
-    #             tab = Target((
-    #                 f"ws://{self.config.host}:{self.config.port}"
-    #                 f"/devtools/{target_info.type_.lower()}"
-    #                 f"/{target_info.target_id}")
-    #                 , target=target_info)
-    #
-    #             self.targets.append(tab)
-    #         else:
-    #
-    #             target_id = await self.connection.send(
-    #                 cdp.target.create_target(
-    #                     url, new_window=new_window,
-    #                     enable_begin_frame_control=True
-    #                 )
-    #             )
-    #             if not self.config.autodiscover_targets:
-    #                 target_info = cdp.target.TargetInfo(**{
-    #                     'target_id': target_id,
-    #                     'type_': 'page',
-    #                     'url': url,
-    #                     'title': None,
-    #                     'attached': False,
-    #                     'can_access_opener': False
-    #                 })
-    #                 tab = Target((
-    #                     f"ws://{self.config.host}:{self.config.port}"
-    #                     f"/devtools/{target_info.type_.lower()}"
-    #                     f"/{target_info.target_id}")
-    #                     , target=target_info)
-    #             else:
-    #                 tab = next(filter(lambda item: item.type_ == 'page' and item.target_id == target_id, self.targets))
-    #             while not tab:
-    #                 await self.wait()
-    #                 tab = next(filter(lambda item: item.type_ == 'page' and item.target_id == target_id, self.targets))
-    #         return tab
-    #
-    #     else:
-    #         frame_id, loader_id, *_ = await tab.send(cdp.page.navigate(url))
-    #         tab.frame_id = frame_id
-    #         await self.wait()
-    #         return tab
-
-    #     """top level get. utilizes the first tab to retrieve given url.
-    #
-    #     convenience function known from selenium.
-    #     this function handles waits/sleeps and detects when DOM events fired, so it's the safest
-    #     way of navigating.
-    #
-    #     :param url: the url to navigate to
-    #     :param new_tab: open new tab
-    #     :param new_window:  open new window
-    #     :return: Page
-    #     """
-    #
-    #     if new_window and not new_tab:
-    #         new_tab = True
-    #     # get first tab
-    #     try:
-    #         tab = next(filter(lambda item: item.type_ == 'page', self.targets))
-    #     except StopIteration:
-    #         from .target import Target
-    #         targets_http = await self._http.get('list')
-    #         pages = [t for t in targets_http if t['type'] == 'page']
-    #         _t = pages[0] # dict
-    #         # remap keys
-    #         target_info = cdp.target.TargetInfo(**{
-    #             'target_id': cdp.target.TargetID(_t.pop('id')),
-    #             'type_': _t.pop('type'),
-    #             'url': _t.pop('url'),
-    #             'title': _t.pop('title'),
-    #             'attached': None,
-    #             'can_access_opener': None
-    #         })
-    #
-    #         tab = Target((
-    #             f"ws://{self.config.host}:{self.config.port}"
-    #             f"/devtools/{target_info.type_.lower()}"
-    #             f"/{target_info.target_id}")
-    #             , target=target_info)
-    #         await tab.open()
-    #
-    #         self.targets.append(tab)
-    #
-    #     if new_tab:
-    #         target_id = await self.connection.send(
-    #             cdp.target.create_target(
-    #                 url, new_window=new_window,
-    #                 enable_begin_frame_control=True
-    #             )
-    #         )
-    #         if not tab:
-    #             tab = next(filter(lambda item: item.type_ == 'page' and item.target_id == target_id, self.targets))
-    #
-    #         while not tab:
-    #             await self.wait()
-    #             tab = next(filter(lambda item: item.type_ == 'page' and item.target_id == target_id, self.targets))
-    #
-    #         return tab
-    #     else:
-    #         if not tab:
-    #             print(' creating tab')
-    #             await self.update_targets()
-    #             tab = next(filter(lambda item: item.type_ == 'page', self.targets))
-    #             #
-    #             # target_id = await self.connection.send(
-    #             #     cdp.target.create_target(
-    #             #         url,
-    #             #         new_window=False,
-    #             #         enable_begin_frame_control=True
-    #             #     )
-    #             # )
-    #             # target_info = await self.connection.send(
-    #             #     cdp.target.get_target_info(target_id)
-    #             # )
-    #             # tab = SimpleConnection((
-    #             #     f"ws://{self.config.host}:{self.config.port}"
-    #             #     f"/devtools/{target_info.type_.lower()}"
-    #             #     f"/{target_info.target_id}"))
-    #         if isinstance(tab, list):
-    #             print(' tab is a list', tab)
-    #             tab = tab[-1]
-    #         frame_id, loader_id, *_ = await tab.send(cdp.page.navigate(url))
-    #         tab.frame_id = frame_id
-    #         await self.wait()
-    #         return tab
 
     async def start(self=None):
         """launches the actual browser"""
@@ -578,10 +397,6 @@ class Browser:
                 )
 
         await asyncio.sleep(0)
-        # asyncio.get_running_loop().call_later(
-        #     2,
-        #     lambda: asyncio.create_task(self._update_targets())
-        # )
 
     async def __aenter__(self):
         print("x")
@@ -672,36 +487,6 @@ class Browser:
 
     def __del__(self):
         pass
-
-        # Close connection when this object is destroyed
-        #
-        # try:
-        #     loop = asyncio.get_running_loop()
-        #     logger.debug('%s __del__ => scheduling websocket cleanup to existing running loop',
-        #                  self.__class__.__name__)
-        #     loop.create_task(self.connection.send(cdp.browser.close()))
-        #
-        #     # if loop.is_running():
-        #     #
-        #     #     loop.create_task(self.connection.send(cdp.browser.close()))
-
-        # except RuntimeError:
-        #     logger.debug('%s __del__ => scheduling websocket cleanup to new loop',
-        #                  self.__class__.__name__)
-        #     asyncio.run(self.connection.send(cdp.browser.close()))
-        # except Exception:  # noqa
-        #     raise
-
-    # def __del__(self):
-    #     try:
-    #         loop = asyncio.get_running_loop()
-    #     except RuntimeError:
-    #         return
-    #     coro = self.connection.send(cdp.browser.close())
-    #     if loop.is_running():
-    #         loop.create_task(coro)
-    #     else:
-    #         loop.run_until_complete(coro)
 
 
 class HTTPApi:

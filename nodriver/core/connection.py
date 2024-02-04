@@ -26,7 +26,7 @@ from .. import cdp
 T = TypeVar("T")
 
 GLOBAL_DELAY = 0.005
-MAX_SIZE: int = 2 ** 28
+MAX_SIZE: int = 2**28
 PING_TIMEOUT: int = 900  # 15 minutes
 
 TargetType = Union[cdp.target.TargetInfo, cdp.target.TargetID]
@@ -195,11 +195,11 @@ class Connection(metaclass=CantTouchThis):
     _target: cdp.target.TargetInfo
 
     def __init__(
-            self,
-            websocket_url: str,
-            target: cdp.target.TargetInfo = None,
-            _owner: "Browser" = None,
-            **kwargs,
+        self,
+        websocket_url: str,
+        target: cdp.target.TargetInfo = None,
+        _owner: "Browser" = None,
+        **kwargs,
     ):
         super().__init__()
         self._target = target
@@ -243,9 +243,9 @@ class Connection(metaclass=CantTouchThis):
         #     pass
 
     def add_handler(
-            self,
-            event_type_or_domain: Union[type, types.ModuleType],
-            handler: Union[Callable, Awaitable],
+        self,
+        event_type_or_domain: Union[type, types.ModuleType],
+        handler: Union[Callable, Awaitable],
     ):
         """
         add a handler for an event type or entire domain (=all events for that domain)
@@ -355,7 +355,7 @@ class Connection(metaclass=CantTouchThis):
         self.target.__dict__.update(target_info.__dict__)
 
     async def send(
-            self, cdp_obj: Generator[dict[str, Any], dict[str, Any], Any], _is_update=False
+        self, cdp_obj: Generator[dict[str, Any], dict[str, Any], Any], _is_update=False
     ) -> Any:
         """
         send a protocol command

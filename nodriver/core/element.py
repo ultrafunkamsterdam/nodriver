@@ -466,11 +466,11 @@ class Element:
             )
 
     async def mouse_click(
-            self,
-            button: str = "left",
-            buttons: typing.Optional[int] = 1,
-            modifiers: typing.Optional[int] = 0,
-            _until_event: typing.Optional[type] = None,
+        self,
+        button: str = "left",
+        buttons: typing.Optional[int] = 1,
+        modifiers: typing.Optional[int] = 0,
+        _until_event: typing.Optional[type] = None,
     ):
         """native click (on element) . note: this likely does not work atm, use click() instead
 
@@ -648,24 +648,16 @@ class Element:
     async def query_selector(self, selector):
         if self.node_name == "IFRAME":
             return await self.page.query_selector(selector, self)
-            # async def query_selector_in_frame(self: Element, selector: str):
-            #     if not getattr(self, "content_document", None):
-            #         raise TypeError("no content_document found in %s " % self)
-            #     nid = self.content_document.node_id
-            #     node_id = await self.page.send(cdp.dom.query_selector(node_id=nid, selector=selector))
-            #     node = util.filter_recurse(self.content_document, lambda n: n.node_id == node_id)
-            #     #     return create(node, self.page, self.tree)
-            #     return create(node, self.page, self.content_document)
-            # return await query_selector_in_frame(self, selector)
+
         await self
         return await self._page.query_selector(selector, self)
 
     #
     async def save_screenshot(
-            self,
-            filename: typing.Optional[PathLike] = "auto",
-            format: typing.Optional[str] = "jpeg",
-            scale: typing.Optional[typing.Union[int, float]] = 1,
+        self,
+        filename: typing.Optional[PathLike] = "auto",
+        format: typing.Optional[str] = "jpeg",
+        scale: typing.Optional[typing.Union[int, float]] = 1,
     ):
         """
         Saves a screenshot of this element (only)
@@ -791,10 +783,10 @@ class Element:
         )
 
     async def record_video(
-            self,
-            filename: typing.Optional[str] = None,
-            folder: typing.Optional[str] = None,
-            duration: typing.Optional[typing.Union[int, float]] = None,
+        self,
+        filename: typing.Optional[str] = None,
+        folder: typing.Optional[str] = None,
+        duration: typing.Optional[typing.Union[int, float]] = None,
     ):
         """
         experimental option.
@@ -893,27 +885,25 @@ class Element:
         tag_name = self.node.node_name.lower()
         content = ""
 
+        # collect all text from this leaf
         if self.child_node_count:
             if self.child_node_count == 1:
                 if self.children:
                     content += str(self.children[0])
-                # if self.node.children:  # optimize speed
-                #     child = self.node.children[0]
-                #     if child.node_type == 3:  # textnode type
-                #         content += child.node_value
-                # else:
-                #     node = self.node.children[0]
-                #     if node.node_type == 3:
-                #         content += node.node_value
+
             elif self.child_node_count > 1:
                 if self.children:
                     for child in self.children:
                         content += str(child)
+
         if self.node.node_type == 3:  # we could be a text node ourselves
             content += self.node_value
+
             # return text only, no tag names
             # this makes it look most natural, and compatible with other hml libs
+
             return content
+
         attrs = " ".join(
             [f'{k if k != "class_" else "class"}="{v}"' for k, v in self.attrs.items()]
         )

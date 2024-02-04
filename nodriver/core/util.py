@@ -23,13 +23,13 @@ T = typing.TypeVar("T")
 
 
 async def start(
-        user_data_dir: Optional[PathLike] = None,
-        headless: Optional[bool] = False,
-        browser_executable_path: Optional[PathLike] = None,
-        browser_args: Optional[List[str]] = None,
-        sandbox: Optional[bool] = True,
-        lang: Optional[str] = None,
-        **kwargs: Optional[dict],
+    user_data_dir: Optional[PathLike] = None,
+    headless: Optional[bool] = False,
+    browser_executable_path: Optional[PathLike] = None,
+    browser_args: Optional[List[str]] = None,
+    sandbox: Optional[bool] = True,
+    lang: Optional[str] = None,
+    **kwargs: Optional[dict],
 ) -> Browser:
     """
     helper function to launch a browser. it accepts several keyword parameters.
@@ -116,7 +116,7 @@ def deconstruct_browser():
 
 
 def filter_recurse_all(
-        doc: T, predicate: Callable[[cdp.dom.Node, Element], bool]
+    doc: T, predicate: Callable[[cdp.dom.Node, Element], bool]
 ) -> List[T]:
     """
     test each child using predicate(child), and return all children for which predicate(child) == True
@@ -205,6 +205,7 @@ def cdp_get_module(domain: Union[str, types.ModuleType]):
     :rtype:
     """
     import importlib
+
     if isinstance(domain, types.ModuleType):
         # you get what you ask for
         domain_mod = domain
