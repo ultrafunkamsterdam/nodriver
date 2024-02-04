@@ -6,9 +6,11 @@
 # CDP domain: Input
 
 from __future__ import annotations
+
 import enum
 import typing
 from dataclasses import dataclass
+
 from .util import event_class, T_JSON_DICT
 
 
@@ -214,11 +216,11 @@ class DragData:
 
 
 def dispatch_drag_event(
-    type_: str,
-    x: float,
-    y: float,
-    data: DragData,
-    modifiers: typing.Optional[int] = None,
+        type_: str,
+        x: float,
+        y: float,
+        data: DragData,
+        modifiers: typing.Optional[int] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Dispatches a drag event into the page.
@@ -246,21 +248,21 @@ def dispatch_drag_event(
 
 
 def dispatch_key_event(
-    type_: str,
-    modifiers: typing.Optional[int] = None,
-    timestamp: typing.Optional[TimeSinceEpoch] = None,
-    text: typing.Optional[str] = None,
-    unmodified_text: typing.Optional[str] = None,
-    key_identifier: typing.Optional[str] = None,
-    code: typing.Optional[str] = None,
-    key: typing.Optional[str] = None,
-    windows_virtual_key_code: typing.Optional[int] = None,
-    native_virtual_key_code: typing.Optional[int] = None,
-    auto_repeat: typing.Optional[bool] = None,
-    is_keypad: typing.Optional[bool] = None,
-    is_system_key: typing.Optional[bool] = None,
-    location: typing.Optional[int] = None,
-    commands: typing.Optional[typing.List[str]] = None,
+        type_: str,
+        modifiers: typing.Optional[int] = None,
+        timestamp: typing.Optional[TimeSinceEpoch] = None,
+        text: typing.Optional[str] = None,
+        unmodified_text: typing.Optional[str] = None,
+        key_identifier: typing.Optional[str] = None,
+        code: typing.Optional[str] = None,
+        key: typing.Optional[str] = None,
+        windows_virtual_key_code: typing.Optional[int] = None,
+        native_virtual_key_code: typing.Optional[int] = None,
+        auto_repeat: typing.Optional[bool] = None,
+        is_keypad: typing.Optional[bool] = None,
+        is_system_key: typing.Optional[bool] = None,
+        location: typing.Optional[int] = None,
+        commands: typing.Optional[typing.List[str]] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Dispatches a key event to the page.
@@ -337,11 +339,11 @@ def insert_text(text: str) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def ime_set_composition(
-    text: str,
-    selection_start: int,
-    selection_end: int,
-    replacement_start: typing.Optional[int] = None,
-    replacement_end: typing.Optional[int] = None,
+        text: str,
+        selection_start: int,
+        selection_end: int,
+        replacement_start: typing.Optional[int] = None,
+        replacement_end: typing.Optional[int] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     This method sets the current candidate text for ime.
@@ -372,22 +374,22 @@ def ime_set_composition(
 
 
 def dispatch_mouse_event(
-    type_: str,
-    x: float,
-    y: float,
-    modifiers: typing.Optional[int] = None,
-    timestamp: typing.Optional[TimeSinceEpoch] = None,
-    button: typing.Optional[MouseButton] = None,
-    buttons: typing.Optional[int] = None,
-    click_count: typing.Optional[int] = None,
-    force: typing.Optional[float] = None,
-    tangential_pressure: typing.Optional[float] = None,
-    tilt_x: typing.Optional[float] = None,
-    tilt_y: typing.Optional[float] = None,
-    twist: typing.Optional[int] = None,
-    delta_x: typing.Optional[float] = None,
-    delta_y: typing.Optional[float] = None,
-    pointer_type: typing.Optional[str] = None,
+        type_: str,
+        x: float,
+        y: float,
+        modifiers: typing.Optional[int] = None,
+        timestamp: typing.Optional[TimeSinceEpoch] = None,
+        button: typing.Optional[MouseButton] = None,
+        buttons: typing.Optional[int] = None,
+        click_count: typing.Optional[int] = None,
+        force: typing.Optional[float] = None,
+        tangential_pressure: typing.Optional[float] = None,
+        tilt_x: typing.Optional[float] = None,
+        tilt_y: typing.Optional[float] = None,
+        twist: typing.Optional[int] = None,
+        delta_x: typing.Optional[float] = None,
+        delta_y: typing.Optional[float] = None,
+        pointer_type: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Dispatches a mouse event to the page.
@@ -447,10 +449,10 @@ def dispatch_mouse_event(
 
 
 def dispatch_touch_event(
-    type_: str,
-    touch_points: typing.List[TouchPoint],
-    modifiers: typing.Optional[int] = None,
-    timestamp: typing.Optional[TimeSinceEpoch] = None,
+        type_: str,
+        touch_points: typing.List[TouchPoint],
+        modifiers: typing.Optional[int] = None,
+        timestamp: typing.Optional[TimeSinceEpoch] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Dispatches a touch event to the page.
@@ -485,15 +487,15 @@ def cancel_dragging() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def emulate_touch_from_mouse_event(
-    type_: str,
-    x: int,
-    y: int,
-    button: MouseButton,
-    timestamp: typing.Optional[TimeSinceEpoch] = None,
-    delta_x: typing.Optional[float] = None,
-    delta_y: typing.Optional[float] = None,
-    modifiers: typing.Optional[int] = None,
-    click_count: typing.Optional[int] = None,
+        type_: str,
+        x: int,
+        y: int,
+        button: MouseButton,
+        timestamp: typing.Optional[TimeSinceEpoch] = None,
+        delta_x: typing.Optional[float] = None,
+        delta_y: typing.Optional[float] = None,
+        modifiers: typing.Optional[int] = None,
+        click_count: typing.Optional[int] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Emulates touch event from the mouse event parameters.
@@ -533,7 +535,7 @@ def emulate_touch_from_mouse_event(
 
 
 def set_ignore_input_events(
-    ignore: bool,
+        ignore: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Ignores input events (useful while auditing page).
@@ -550,7 +552,7 @@ def set_ignore_input_events(
 
 
 def set_intercept_drags(
-    enabled: bool,
+        enabled: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Prevents default drag and drop behavior and instead emits ``Input.dragIntercepted`` events.
@@ -570,11 +572,11 @@ def set_intercept_drags(
 
 
 def synthesize_pinch_gesture(
-    x: float,
-    y: float,
-    scale_factor: float,
-    relative_speed: typing.Optional[int] = None,
-    gesture_source_type: typing.Optional[GestureSourceType] = None,
+        x: float,
+        y: float,
+        scale_factor: float,
+        relative_speed: typing.Optional[int] = None,
+        gesture_source_type: typing.Optional[GestureSourceType] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Synthesizes a pinch gesture over a time period by issuing appropriate touch events.
@@ -603,18 +605,18 @@ def synthesize_pinch_gesture(
 
 
 def synthesize_scroll_gesture(
-    x: float,
-    y: float,
-    x_distance: typing.Optional[float] = None,
-    y_distance: typing.Optional[float] = None,
-    x_overscroll: typing.Optional[float] = None,
-    y_overscroll: typing.Optional[float] = None,
-    prevent_fling: typing.Optional[bool] = None,
-    speed: typing.Optional[int] = None,
-    gesture_source_type: typing.Optional[GestureSourceType] = None,
-    repeat_count: typing.Optional[int] = None,
-    repeat_delay_ms: typing.Optional[int] = None,
-    interaction_marker_name: typing.Optional[str] = None,
+        x: float,
+        y: float,
+        x_distance: typing.Optional[float] = None,
+        y_distance: typing.Optional[float] = None,
+        x_overscroll: typing.Optional[float] = None,
+        y_overscroll: typing.Optional[float] = None,
+        prevent_fling: typing.Optional[bool] = None,
+        speed: typing.Optional[int] = None,
+        gesture_source_type: typing.Optional[GestureSourceType] = None,
+        repeat_count: typing.Optional[int] = None,
+        repeat_delay_ms: typing.Optional[int] = None,
+        interaction_marker_name: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Synthesizes a scroll gesture over a time period by issuing appropriate touch events.
@@ -665,11 +667,11 @@ def synthesize_scroll_gesture(
 
 
 def synthesize_tap_gesture(
-    x: float,
-    y: float,
-    duration: typing.Optional[int] = None,
-    tap_count: typing.Optional[int] = None,
-    gesture_source_type: typing.Optional[GestureSourceType] = None,
+        x: float,
+        y: float,
+        duration: typing.Optional[int] = None,
+        tap_count: typing.Optional[int] = None,
+        gesture_source_type: typing.Optional[GestureSourceType] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Synthesizes a tap gesture over a time period by issuing appropriate touch events.

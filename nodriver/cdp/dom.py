@@ -6,14 +6,16 @@
 # CDP domain: DOM
 
 from __future__ import annotations
+
 import enum
 import typing
 from dataclasses import dataclass
-from .util import event_class, T_JSON_DICT
+
+from deprecated.sphinx import deprecated  # type: ignore
 
 from . import page
 from . import runtime
-from deprecated.sphinx import deprecated  # type: ignore
+from .util import event_class, T_JSON_DICT
 
 
 class NodeId(int):
@@ -629,7 +631,7 @@ class CSSComputedStyleProperty:
 
 
 def collect_class_names_from_subtree(
-    node_id: NodeId,
+        node_id: NodeId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[str]]:
     """
     Collects class names for the node with given id and all of it's child nodes.
@@ -650,9 +652,9 @@ def collect_class_names_from_subtree(
 
 
 def copy_to(
-    node_id: NodeId,
-    target_node_id: NodeId,
-    insert_before_node_id: typing.Optional[NodeId] = None,
+        node_id: NodeId,
+        target_node_id: NodeId,
+        insert_before_node_id: typing.Optional[NodeId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
     """
     Creates a deep copy of the specified node and places it into the target container before the
@@ -679,11 +681,11 @@ def copy_to(
 
 
 def describe_node(
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
-    depth: typing.Optional[int] = None,
-    pierce: typing.Optional[bool] = None,
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        depth: typing.Optional[int] = None,
+        pierce: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, Node]:
     """
     Describes node given its id, does not require domain to be enabled. Does not start tracking any
@@ -716,10 +718,10 @@ def describe_node(
 
 
 def scroll_into_view_if_needed(
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
-    rect: typing.Optional[Rect] = None,
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        rect: typing.Optional[Rect] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Scrolls the specified rect of the given node into view if not already visible.
@@ -758,7 +760,7 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def discard_search_results(
-    search_id: str,
+        search_id: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Discards search results from the session with the given id. ``getSearchResults`` should no longer
@@ -778,7 +780,7 @@ def discard_search_results(
 
 
 def enable(
-    include_whitespace: typing.Optional[str] = None,
+        include_whitespace: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enables DOM agent for the given page.
@@ -796,9 +798,9 @@ def enable(
 
 
 def focus(
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Focuses the given element.
@@ -822,7 +824,7 @@ def focus(
 
 
 def get_attributes(
-    node_id: NodeId,
+        node_id: NodeId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[str]]:
     """
     Returns attributes for the specified node.
@@ -841,9 +843,9 @@ def get_attributes(
 
 
 def get_box_model(
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, BoxModel]:
     """
     Returns boxes for the given node.
@@ -869,9 +871,9 @@ def get_box_model(
 
 
 def get_content_quads(
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[Quad]]:
     """
     Returns quads that describe node position on the page. This method
@@ -900,7 +902,7 @@ def get_content_quads(
 
 
 def get_document(
-    depth: typing.Optional[int] = None, pierce: typing.Optional[bool] = None
+        depth: typing.Optional[int] = None, pierce: typing.Optional[bool] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, Node]:
     """
     Returns the root DOM node (and optionally the subtree) to the caller.
@@ -925,7 +927,7 @@ def get_document(
 
 @deprecated(version="1.3")
 def get_flattened_document(
-    depth: typing.Optional[int] = None, pierce: typing.Optional[bool] = None
+        depth: typing.Optional[int] = None, pierce: typing.Optional[bool] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[Node]]:
     """
     Returns the root DOM node (and optionally the subtree) to the caller.
@@ -952,9 +954,9 @@ def get_flattened_document(
 
 
 def get_nodes_for_subtree_by_style(
-    node_id: NodeId,
-    computed_styles: typing.List[CSSComputedStyleProperty],
-    pierce: typing.Optional[bool] = None,
+        node_id: NodeId,
+        computed_styles: typing.List[CSSComputedStyleProperty],
+        pierce: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[NodeId]]:
     """
     Finds nodes with a given computed style in a subtree.
@@ -980,10 +982,10 @@ def get_nodes_for_subtree_by_style(
 
 
 def get_node_for_location(
-    x: int,
-    y: int,
-    include_user_agent_shadow_dom: typing.Optional[bool] = None,
-    ignore_pointer_events_none: typing.Optional[bool] = None,
+        x: int,
+        y: int,
+        include_user_agent_shadow_dom: typing.Optional[bool] = None,
+        ignore_pointer_events_none: typing.Optional[bool] = None,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -1025,9 +1027,9 @@ def get_node_for_location(
 
 
 def get_outer_html(
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
     """
     Returns node's HTML markup.
@@ -1053,7 +1055,7 @@ def get_outer_html(
 
 
 def get_relayout_boundary(
-    node_id: NodeId,
+        node_id: NodeId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
     """
     Returns the id of the nearest ancestor that is a relayout boundary.
@@ -1074,7 +1076,7 @@ def get_relayout_boundary(
 
 
 def get_search_results(
-    search_id: str, from_index: int, to_index: int
+        search_id: str, from_index: int, to_index: int
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[NodeId]]:
     """
     Returns search results from given ``fromIndex`` to given ``toIndex`` from the search with the given
@@ -1142,9 +1144,9 @@ def mark_undoable_state() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def move_to(
-    node_id: NodeId,
-    target_node_id: NodeId,
-    insert_before_node_id: typing.Optional[NodeId] = None,
+        node_id: NodeId,
+        target_node_id: NodeId,
+        insert_before_node_id: typing.Optional[NodeId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
     """
     Moves node into the new container, places it before the given anchor.
@@ -1168,7 +1170,7 @@ def move_to(
 
 
 def perform_search(
-    query: str, include_user_agent_shadow_dom: typing.Optional[bool] = None
+        query: str, include_user_agent_shadow_dom: typing.Optional[bool] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[str, int]]:
     """
     Searches for a given string in the DOM tree. Use ``getSearchResults`` to access search results or
@@ -1196,7 +1198,7 @@ def perform_search(
 
 
 def push_node_by_path_to_frontend(
-    path: str,
+        path: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
     """
     Requests that the node is sent to the caller given its path. // FIXME, use XPath
@@ -1217,7 +1219,7 @@ def push_node_by_path_to_frontend(
 
 
 def push_nodes_by_backend_ids_to_frontend(
-    backend_node_ids: typing.List[BackendNodeId],
+        backend_node_ids: typing.List[BackendNodeId],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[NodeId]]:
     """
     Requests that a batch of nodes is sent to the caller given their backend node ids.
@@ -1238,7 +1240,7 @@ def push_nodes_by_backend_ids_to_frontend(
 
 
 def query_selector(
-    node_id: NodeId, selector: str
+        node_id: NodeId, selector: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
     """
     Executes ``querySelector`` on a given node.
@@ -1259,7 +1261,7 @@ def query_selector(
 
 
 def query_selector_all(
-    node_id: NodeId, selector: str
+        node_id: NodeId, selector: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[NodeId]]:
     """
     Executes ``querySelectorAll`` on a given node.
@@ -1280,7 +1282,7 @@ def query_selector_all(
 
 
 def get_top_layer_elements() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[NodeId]]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[NodeId]]
 ):
     """
     Returns NodeIds of current top layer elements.
@@ -1311,7 +1313,7 @@ def redo() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def remove_attribute(
-    node_id: NodeId, name: str
+        node_id: NodeId, name: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Removes attribute with given name from an element with given id.
@@ -1345,9 +1347,9 @@ def remove_node(node_id: NodeId) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, N
 
 
 def request_child_nodes(
-    node_id: NodeId,
-    depth: typing.Optional[int] = None,
-    pierce: typing.Optional[bool] = None,
+        node_id: NodeId,
+        depth: typing.Optional[int] = None,
+        pierce: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Requests that children of the node with given id are returned to the caller in form of
@@ -1372,7 +1374,7 @@ def request_child_nodes(
 
 
 def request_node(
-    object_id: runtime.RemoteObjectId,
+        object_id: runtime.RemoteObjectId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
     """
     Requests that the node is sent to the caller given the JavaScript node object reference. All
@@ -1393,10 +1395,10 @@ def request_node(
 
 
 def resolve_node(
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_group: typing.Optional[str] = None,
-    execution_context_id: typing.Optional[runtime.ExecutionContextId] = None,
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_group: typing.Optional[str] = None,
+        execution_context_id: typing.Optional[runtime.ExecutionContextId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, runtime.RemoteObject]:
     """
     Resolves the JavaScript node object for a given NodeId or BackendNodeId.
@@ -1425,7 +1427,7 @@ def resolve_node(
 
 
 def set_attribute_value(
-    node_id: NodeId, name: str, value: str
+        node_id: NodeId, name: str, value: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets attribute for an element with given id.
@@ -1446,7 +1448,7 @@ def set_attribute_value(
 
 
 def set_attributes_as_text(
-    node_id: NodeId, text: str, name: typing.Optional[str] = None
+        node_id: NodeId, text: str, name: typing.Optional[str] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets attributes on element with given id. This method is useful when user edits some existing
@@ -1469,10 +1471,10 @@ def set_attributes_as_text(
 
 
 def set_file_input_files(
-    files: typing.List[str],
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        files: typing.List[str],
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets files for the given file input element.
@@ -1498,7 +1500,7 @@ def set_file_input_files(
 
 
 def set_node_stack_traces_enabled(
-    enable: bool,
+        enable: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets if stack traces should be captured for Nodes. See ``Node.getNodeStackTraces``. Default is disabled.
@@ -1517,7 +1519,7 @@ def set_node_stack_traces_enabled(
 
 
 def get_node_stack_traces(
-    node_id: NodeId,
+        node_id: NodeId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Optional[runtime.StackTrace]]:
     """
     Gets stack traces associated with a Node. As of now, only provides stack trace for Node creation.
@@ -1542,7 +1544,7 @@ def get_node_stack_traces(
 
 
 def get_file_info(
-    object_id: runtime.RemoteObjectId,
+        object_id: runtime.RemoteObjectId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
     """
     Returns file information for the given
@@ -1564,7 +1566,7 @@ def get_file_info(
 
 
 def set_inspected_node(
-    node_id: NodeId,
+        node_id: NodeId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enables console to refer to the node with given id via $x (see Command Line API for more details
@@ -1584,7 +1586,7 @@ def set_inspected_node(
 
 
 def set_node_name(
-    node_id: NodeId, name: str
+        node_id: NodeId, name: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
     """
     Sets node name for a node with given id.
@@ -1605,7 +1607,7 @@ def set_node_name(
 
 
 def set_node_value(
-    node_id: NodeId, value: str
+        node_id: NodeId, value: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets node value for a node with given id.
@@ -1624,7 +1626,7 @@ def set_node_value(
 
 
 def set_outer_html(
-    node_id: NodeId, outer_html: str
+        node_id: NodeId, outer_html: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets node HTML markup, returns new node id.
@@ -1655,7 +1657,7 @@ def undo() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def get_frame_owner(
-    frame_id: page.FrameId,
+        frame_id: page.FrameId,
 ) -> typing.Generator[
     T_JSON_DICT, T_JSON_DICT, typing.Tuple[BackendNodeId, typing.Optional[NodeId]]
 ]:
@@ -1686,10 +1688,10 @@ def get_frame_owner(
 
 
 def get_container_for_node(
-    node_id: NodeId,
-    container_name: typing.Optional[str] = None,
-    physical_axes: typing.Optional[PhysicalAxes] = None,
-    logical_axes: typing.Optional[LogicalAxes] = None,
+        node_id: NodeId,
+        container_name: typing.Optional[str] = None,
+        physical_axes: typing.Optional[PhysicalAxes] = None,
+        logical_axes: typing.Optional[LogicalAxes] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Optional[NodeId]]:
     """
     Returns the query container of the given node based on container query
@@ -1726,7 +1728,7 @@ def get_container_for_node(
 
 
 def get_querying_descendants_for_container(
-    node_id: NodeId,
+        node_id: NodeId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[NodeId]]:
     """
     Returns the descendants of a container query container that have

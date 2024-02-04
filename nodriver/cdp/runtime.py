@@ -6,9 +6,10 @@
 # CDP domain: Runtime
 
 from __future__ import annotations
-import enum
+
 import typing
 from dataclasses import dataclass
+
 from .util import event_class, T_JSON_DICT
 
 
@@ -910,9 +911,9 @@ class StackTraceId:
 
 
 def await_promise(
-    promise_object_id: RemoteObjectId,
-    return_by_value: typing.Optional[bool] = None,
-    generate_preview: typing.Optional[bool] = None,
+        promise_object_id: RemoteObjectId,
+        return_by_value: typing.Optional[bool] = None,
+        generate_preview: typing.Optional[bool] = None,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -949,19 +950,19 @@ def await_promise(
 
 
 def call_function_on(
-    function_declaration: str,
-    object_id: typing.Optional[RemoteObjectId] = None,
-    arguments: typing.Optional[typing.List[CallArgument]] = None,
-    silent: typing.Optional[bool] = None,
-    return_by_value: typing.Optional[bool] = None,
-    generate_preview: typing.Optional[bool] = None,
-    user_gesture: typing.Optional[bool] = None,
-    await_promise: typing.Optional[bool] = None,
-    execution_context_id: typing.Optional[ExecutionContextId] = None,
-    object_group: typing.Optional[str] = None,
-    throw_on_side_effect: typing.Optional[bool] = None,
-    unique_context_id: typing.Optional[str] = None,
-    serialization_options: typing.Optional[SerializationOptions] = None,
+        function_declaration: str,
+        object_id: typing.Optional[RemoteObjectId] = None,
+        arguments: typing.Optional[typing.List[CallArgument]] = None,
+        silent: typing.Optional[bool] = None,
+        return_by_value: typing.Optional[bool] = None,
+        generate_preview: typing.Optional[bool] = None,
+        user_gesture: typing.Optional[bool] = None,
+        await_promise: typing.Optional[bool] = None,
+        execution_context_id: typing.Optional[ExecutionContextId] = None,
+        object_group: typing.Optional[str] = None,
+        throw_on_side_effect: typing.Optional[bool] = None,
+        unique_context_id: typing.Optional[str] = None,
+        serialization_options: typing.Optional[SerializationOptions] = None,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -1029,10 +1030,10 @@ def call_function_on(
 
 
 def compile_script(
-    expression: str,
-    source_url: str,
-    persist_script: bool,
-    execution_context_id: typing.Optional[ExecutionContextId] = None,
+        expression: str,
+        source_url: str,
+        persist_script: bool,
+        execution_context_id: typing.Optional[ExecutionContextId] = None,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -1104,22 +1105,22 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def evaluate(
-    expression: str,
-    object_group: typing.Optional[str] = None,
-    include_command_line_api: typing.Optional[bool] = None,
-    silent: typing.Optional[bool] = None,
-    context_id: typing.Optional[ExecutionContextId] = None,
-    return_by_value: typing.Optional[bool] = None,
-    generate_preview: typing.Optional[bool] = None,
-    user_gesture: typing.Optional[bool] = None,
-    await_promise: typing.Optional[bool] = None,
-    throw_on_side_effect: typing.Optional[bool] = None,
-    timeout: typing.Optional[TimeDelta] = None,
-    disable_breaks: typing.Optional[bool] = None,
-    repl_mode: typing.Optional[bool] = None,
-    allow_unsafe_eval_blocked_by_csp: typing.Optional[bool] = None,
-    unique_context_id: typing.Optional[str] = None,
-    serialization_options: typing.Optional[SerializationOptions] = None,
+        expression: str,
+        object_group: typing.Optional[str] = None,
+        include_command_line_api: typing.Optional[bool] = None,
+        silent: typing.Optional[bool] = None,
+        context_id: typing.Optional[ExecutionContextId] = None,
+        return_by_value: typing.Optional[bool] = None,
+        generate_preview: typing.Optional[bool] = None,
+        user_gesture: typing.Optional[bool] = None,
+        await_promise: typing.Optional[bool] = None,
+        throw_on_side_effect: typing.Optional[bool] = None,
+        timeout: typing.Optional[TimeDelta] = None,
+        disable_breaks: typing.Optional[bool] = None,
+        repl_mode: typing.Optional[bool] = None,
+        allow_unsafe_eval_blocked_by_csp: typing.Optional[bool] = None,
+        unique_context_id: typing.Optional[str] = None,
+        serialization_options: typing.Optional[SerializationOptions] = None,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -1210,7 +1211,7 @@ def get_isolate_id() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
 
 
 def get_heap_usage() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[float, float]]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[float, float]]
 ):
     """
     Returns the JavaScript heap usage.
@@ -1231,11 +1232,11 @@ def get_heap_usage() -> (
 
 
 def get_properties(
-    object_id: RemoteObjectId,
-    own_properties: typing.Optional[bool] = None,
-    accessor_properties_only: typing.Optional[bool] = None,
-    generate_preview: typing.Optional[bool] = None,
-    non_indexed_properties_only: typing.Optional[bool] = None,
+        object_id: RemoteObjectId,
+        own_properties: typing.Optional[bool] = None,
+        accessor_properties_only: typing.Optional[bool] = None,
+        generate_preview: typing.Optional[bool] = None,
+        non_indexed_properties_only: typing.Optional[bool] = None,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -1292,7 +1293,7 @@ def get_properties(
 
 
 def global_lexical_scope_names(
-    execution_context_id: typing.Optional[ExecutionContextId] = None,
+        execution_context_id: typing.Optional[ExecutionContextId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[str]]:
     """
     Returns all let, const and class variables from global scope.
@@ -1312,7 +1313,7 @@ def global_lexical_scope_names(
 
 
 def query_objects(
-    prototype_object_id: RemoteObjectId, object_group: typing.Optional[str] = None
+        prototype_object_id: RemoteObjectId, object_group: typing.Optional[str] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, RemoteObject]:
     """
     :param prototype_object_id: Identifier of the prototype to return objects for.
@@ -1332,7 +1333,7 @@ def query_objects(
 
 
 def release_object(
-    object_id: RemoteObjectId,
+        object_id: RemoteObjectId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Releases remote object with given id.
@@ -1349,7 +1350,7 @@ def release_object(
 
 
 def release_object_group(
-    object_group: str,
+        object_group: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Releases all remote objects that belong to a given group.
@@ -1376,14 +1377,14 @@ def run_if_waiting_for_debugger() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, 
 
 
 def run_script(
-    script_id: ScriptId,
-    execution_context_id: typing.Optional[ExecutionContextId] = None,
-    object_group: typing.Optional[str] = None,
-    silent: typing.Optional[bool] = None,
-    include_command_line_api: typing.Optional[bool] = None,
-    return_by_value: typing.Optional[bool] = None,
-    generate_preview: typing.Optional[bool] = None,
-    await_promise: typing.Optional[bool] = None,
+        script_id: ScriptId,
+        execution_context_id: typing.Optional[ExecutionContextId] = None,
+        object_group: typing.Optional[str] = None,
+        silent: typing.Optional[bool] = None,
+        include_command_line_api: typing.Optional[bool] = None,
+        return_by_value: typing.Optional[bool] = None,
+        generate_preview: typing.Optional[bool] = None,
+        await_promise: typing.Optional[bool] = None,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -1435,7 +1436,7 @@ def run_script(
 
 
 def set_async_call_stack_depth(
-    max_depth: int,
+        max_depth: int,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enables or disables async call stacks tracking.
@@ -1452,7 +1453,7 @@ def set_async_call_stack_depth(
 
 
 def set_custom_object_formatter_enabled(
-    enabled: bool,
+        enabled: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
 
@@ -1471,7 +1472,7 @@ def set_custom_object_formatter_enabled(
 
 
 def set_max_call_stack_size_to_capture(
-    size: int,
+        size: int,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
 
@@ -1503,9 +1504,9 @@ def terminate_execution() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def add_binding(
-    name: str,
-    execution_context_id: typing.Optional[ExecutionContextId] = None,
-    execution_context_name: typing.Optional[str] = None,
+        name: str,
+        execution_context_id: typing.Optional[ExecutionContextId] = None,
+        execution_context_name: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     If executionContextId is empty, adds binding with the given name on the
@@ -1549,7 +1550,7 @@ def remove_binding(name: str) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None
 
 
 def get_exception_details(
-    error_object_id: RemoteObjectId,
+        error_object_id: RemoteObjectId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Optional[ExceptionDetails]]:
     """
     This method tries to lookup and populate exception details for a

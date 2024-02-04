@@ -1,24 +1,21 @@
 from __future__ import annotations
 
-import urllib.request
-import urllib.parse
 import asyncio
 import atexit
 import json
 import logging
-import operator
 import os
 import pathlib
-import shutil
+import urllib.parse
+import urllib.request
 import warnings
-import weakref
-from typing import List, Optional, Union, Tuple
+from typing import List, Union, Tuple
 
-from .. import cdp
+from . import util
+from ._contradict import ContraDict
 from .config import PathLike, Config, is_posix
 from .connection import Connection
-from ._contradict import ContraDict
-from . import util
+from .. import cdp
 
 logger = logging.getLogger(__name__)
 
@@ -59,15 +56,15 @@ class Browser:
 
     @classmethod
     async def create(
-        cls,
-        config: Config = None,
-        *,
-        user_data_dir: PathLike = None,
-        headless: bool = False,
-        browser_executable_path: PathLike = None,
-        browser_args: List[str] = None,
-        sandbox: bool = True,
-        **kwargs,
+            cls,
+            config: Config = None,
+            *,
+            user_data_dir: PathLike = None,
+            headless: bool = False,
+            browser_executable_path: PathLike = None,
+            browser_args: List[str] = None,
+            sandbox: bool = True,
+            **kwargs,
     ) -> Browser:
         """
         entry point for creating an instance
@@ -151,13 +148,13 @@ class Browser:
     """alias for wait"""
 
     def _handle_target_update(
-        self,
-        event: Union[
-            cdp.target.TargetInfoChanged,
-            cdp.target.TargetDestroyed,
-            cdp.target.TargetCreated,
-            cdp.target.TargetCrashed,
-        ],
+            self,
+            event: Union[
+                cdp.target.TargetInfoChanged,
+                cdp.target.TargetDestroyed,
+                cdp.target.TargetCreated,
+                cdp.target.TargetCrashed,
+            ],
     ):
         """this is an internal handler which updates the targets when chrome emits the corresponding event"""
 
@@ -195,7 +192,7 @@ class Browser:
             )
 
             self.targets.append(new_target)
-            logger.warning("target #%d created => %s", len(self.targets), new_target)
+            logger.debug("target #%d created => %s", len(self.targets), new_target)
 
         elif isinstance(event, cdp.target.TargetDestroyed):
             current_target = next(
@@ -208,7 +205,7 @@ class Browser:
             self.targets.remove(current_target)
 
     async def get(
-        self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
+            self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
     ):
         """top level get. utilizes the first tab to retrieve given url.
 
@@ -243,7 +240,7 @@ class Browser:
                 tab = next(
                     filter(
                         lambda item: item.type_ == "page"
-                        and item.target_id == target_id,
+                                     and item.target_id == target_id,
                         self.targets,
                     )
                 )

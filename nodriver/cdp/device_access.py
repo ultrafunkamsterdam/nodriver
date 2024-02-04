@@ -6,9 +6,10 @@
 # CDP domain: DeviceAccess (experimental)
 
 from __future__ import annotations
-import enum
+
 import typing
 from dataclasses import dataclass
+
 from .util import event_class, T_JSON_DICT
 
 
@@ -90,7 +91,7 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def select_prompt(
-    id_: RequestId, device_id: DeviceId
+        id_: RequestId, device_id: DeviceId
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Select a device in response to a DeviceAccess.deviceRequestPrompted event.

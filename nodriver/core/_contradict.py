@@ -36,7 +36,7 @@ class ContraDict(dict):
                     and not k.startswith("_")
                     and not callable(v)
                     and k not in self.__class__.__dict__
-                )
+            )
             }
         )
         _.update(*args, **kwargs)
@@ -75,7 +75,7 @@ def _wrap(cls, v):
         v = cls(v)
 
     elif isinstance(v, _Sequence) and not isinstance(
-        v, (str, bytes, bytearray, set, tuple)
+            v, (str, bytes, bytearray, set, tuple)
     ):
         v = list([_wrap(cls, x) for x in v])
     return v

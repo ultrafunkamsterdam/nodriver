@@ -6,12 +6,13 @@
 # CDP domain: Tracing (experimental)
 
 from __future__ import annotations
+
 import enum
 import typing
 from dataclasses import dataclass
-from .util import event_class, T_JSON_DICT
 
 from . import io
+from .util import event_class, T_JSON_DICT
 
 
 class MemoryDumpConfig(dict):
@@ -212,7 +213,7 @@ def get_categories() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[s
 
 
 def record_clock_sync_marker(
-    sync_id: str,
+        sync_id: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Record a clock sync marker in the trace.
@@ -229,8 +230,8 @@ def record_clock_sync_marker(
 
 
 def request_memory_dump(
-    deterministic: typing.Optional[bool] = None,
-    level_of_detail: typing.Optional[MemoryDumpLevelOfDetail] = None,
+        deterministic: typing.Optional[bool] = None,
+        level_of_detail: typing.Optional[MemoryDumpLevelOfDetail] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[str, bool]]:
     """
     Request a global memory dump.
@@ -256,15 +257,15 @@ def request_memory_dump(
 
 
 def start(
-    categories: typing.Optional[str] = None,
-    options: typing.Optional[str] = None,
-    buffer_usage_reporting_interval: typing.Optional[float] = None,
-    transfer_mode: typing.Optional[str] = None,
-    stream_format: typing.Optional[StreamFormat] = None,
-    stream_compression: typing.Optional[StreamCompression] = None,
-    trace_config: typing.Optional[TraceConfig] = None,
-    perfetto_config: typing.Optional[str] = None,
-    tracing_backend: typing.Optional[TracingBackend] = None,
+        categories: typing.Optional[str] = None,
+        options: typing.Optional[str] = None,
+        buffer_usage_reporting_interval: typing.Optional[float] = None,
+        transfer_mode: typing.Optional[str] = None,
+        stream_format: typing.Optional[StreamFormat] = None,
+        stream_compression: typing.Optional[StreamCompression] = None,
+        trace_config: typing.Optional[TraceConfig] = None,
+        perfetto_config: typing.Optional[str] = None,
+        tracing_backend: typing.Optional[TracingBackend] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Start trace events collection.

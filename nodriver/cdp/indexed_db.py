@@ -6,13 +6,13 @@
 # CDP domain: IndexedDB (experimental)
 
 from __future__ import annotations
-import enum
+
 import typing
 from dataclasses import dataclass
-from .util import event_class, T_JSON_DICT
 
 from . import runtime
 from . import storage
+from .util import T_JSON_DICT
 
 
 @dataclass
@@ -281,11 +281,11 @@ class KeyPath:
 
 
 def clear_object_store(
-    database_name: str,
-    object_store_name: str,
-    security_origin: typing.Optional[str] = None,
-    storage_key: typing.Optional[str] = None,
-    storage_bucket: typing.Optional[storage.StorageBucket] = None,
+        database_name: str,
+        object_store_name: str,
+        security_origin: typing.Optional[str] = None,
+        storage_key: typing.Optional[str] = None,
+        storage_bucket: typing.Optional[storage.StorageBucket] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Clears all entries from an object store.
@@ -313,10 +313,10 @@ def clear_object_store(
 
 
 def delete_database(
-    database_name: str,
-    security_origin: typing.Optional[str] = None,
-    storage_key: typing.Optional[str] = None,
-    storage_bucket: typing.Optional[storage.StorageBucket] = None,
+        database_name: str,
+        security_origin: typing.Optional[str] = None,
+        storage_key: typing.Optional[str] = None,
+        storage_bucket: typing.Optional[storage.StorageBucket] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Deletes a database.
@@ -342,12 +342,12 @@ def delete_database(
 
 
 def delete_object_store_entries(
-    database_name: str,
-    object_store_name: str,
-    key_range: KeyRange,
-    security_origin: typing.Optional[str] = None,
-    storage_key: typing.Optional[str] = None,
-    storage_bucket: typing.Optional[storage.StorageBucket] = None,
+        database_name: str,
+        object_store_name: str,
+        key_range: KeyRange,
+        security_origin: typing.Optional[str] = None,
+        storage_key: typing.Optional[str] = None,
+        storage_bucket: typing.Optional[storage.StorageBucket] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Delete a range of entries from an object store
@@ -397,15 +397,15 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def request_data(
-    database_name: str,
-    object_store_name: str,
-    index_name: str,
-    skip_count: int,
-    page_size: int,
-    security_origin: typing.Optional[str] = None,
-    storage_key: typing.Optional[str] = None,
-    storage_bucket: typing.Optional[storage.StorageBucket] = None,
-    key_range: typing.Optional[KeyRange] = None,
+        database_name: str,
+        object_store_name: str,
+        index_name: str,
+        skip_count: int,
+        page_size: int,
+        security_origin: typing.Optional[str] = None,
+        storage_key: typing.Optional[str] = None,
+        storage_bucket: typing.Optional[storage.StorageBucket] = None,
+        key_range: typing.Optional[KeyRange] = None,
 ) -> typing.Generator[
     T_JSON_DICT, T_JSON_DICT, typing.Tuple[typing.List[DataEntry], bool]
 ]:
@@ -452,11 +452,11 @@ def request_data(
 
 
 def get_metadata(
-    database_name: str,
-    object_store_name: str,
-    security_origin: typing.Optional[str] = None,
-    storage_key: typing.Optional[str] = None,
-    storage_bucket: typing.Optional[storage.StorageBucket] = None,
+        database_name: str,
+        object_store_name: str,
+        security_origin: typing.Optional[str] = None,
+        storage_key: typing.Optional[str] = None,
+        storage_bucket: typing.Optional[storage.StorageBucket] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[float, float]]:
     """
     Gets metadata of an object store.
@@ -489,10 +489,10 @@ def get_metadata(
 
 
 def request_database(
-    database_name: str,
-    security_origin: typing.Optional[str] = None,
-    storage_key: typing.Optional[str] = None,
-    storage_bucket: typing.Optional[storage.StorageBucket] = None,
+        database_name: str,
+        security_origin: typing.Optional[str] = None,
+        storage_key: typing.Optional[str] = None,
+        storage_bucket: typing.Optional[storage.StorageBucket] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, DatabaseWithObjectStores]:
     """
     Requests database with given name in given frame.
@@ -520,9 +520,9 @@ def request_database(
 
 
 def request_database_names(
-    security_origin: typing.Optional[str] = None,
-    storage_key: typing.Optional[str] = None,
-    storage_bucket: typing.Optional[storage.StorageBucket] = None,
+        security_origin: typing.Optional[str] = None,
+        storage_key: typing.Optional[str] = None,
+        storage_bucket: typing.Optional[storage.StorageBucket] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[str]]:
     """
     Requests database names for given security origin.

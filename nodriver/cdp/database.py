@@ -6,9 +6,10 @@
 # CDP domain: Database (experimental)
 
 from __future__ import annotations
-import enum
+
 import typing
 from dataclasses import dataclass
+
 from .util import event_class, T_JSON_DICT
 
 
@@ -111,7 +112,7 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def execute_sql(
-    database_id: DatabaseId, query: str
+        database_id: DatabaseId, query: str
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -150,7 +151,7 @@ def execute_sql(
 
 
 def get_database_table_names(
-    database_id: DatabaseId,
+        database_id: DatabaseId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[str]]:
     """
     :param database_id:

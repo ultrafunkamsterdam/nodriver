@@ -6,14 +6,15 @@
 # CDP domain: Accessibility (experimental)
 
 from __future__ import annotations
+
 import enum
 import typing
 from dataclasses import dataclass
-from .util import event_class, T_JSON_DICT
 
 from . import dom
 from . import page
 from . import runtime
+from .util import event_class, T_JSON_DICT
 
 
 class AXNodeId(str):
@@ -480,10 +481,10 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def get_partial_ax_tree(
-    node_id: typing.Optional[dom.NodeId] = None,
-    backend_node_id: typing.Optional[dom.BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
-    fetch_relatives: typing.Optional[bool] = None,
+        node_id: typing.Optional[dom.NodeId] = None,
+        backend_node_id: typing.Optional[dom.BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        fetch_relatives: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[AXNode]]:
     """
     Fetches the accessibility node and partial accessibility tree for this DOM node, if it exists.
@@ -514,7 +515,7 @@ def get_partial_ax_tree(
 
 
 def get_full_ax_tree(
-    depth: typing.Optional[int] = None, frame_id: typing.Optional[page.FrameId] = None
+        depth: typing.Optional[int] = None, frame_id: typing.Optional[page.FrameId] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[AXNode]]:
     """
     Fetches the entire accessibility tree for the root Document
@@ -539,7 +540,7 @@ def get_full_ax_tree(
 
 
 def get_root_ax_node(
-    frame_id: typing.Optional[page.FrameId] = None,
+        frame_id: typing.Optional[page.FrameId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, AXNode]:
     """
     Fetches the root node.
@@ -562,9 +563,9 @@ def get_root_ax_node(
 
 
 def get_ax_node_and_ancestors(
-    node_id: typing.Optional[dom.NodeId] = None,
-    backend_node_id: typing.Optional[dom.BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        node_id: typing.Optional[dom.NodeId] = None,
+        backend_node_id: typing.Optional[dom.BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[AXNode]]:
     """
     Fetches a node and all ancestors up to and including the root.
@@ -593,7 +594,7 @@ def get_ax_node_and_ancestors(
 
 
 def get_child_ax_nodes(
-    id_: AXNodeId, frame_id: typing.Optional[page.FrameId] = None
+        id_: AXNodeId, frame_id: typing.Optional[page.FrameId] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[AXNode]]:
     """
     Fetches a particular accessibility node by AXNodeId.
@@ -618,11 +619,11 @@ def get_child_ax_nodes(
 
 
 def query_ax_tree(
-    node_id: typing.Optional[dom.NodeId] = None,
-    backend_node_id: typing.Optional[dom.BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
-    accessible_name: typing.Optional[str] = None,
-    role: typing.Optional[str] = None,
+        node_id: typing.Optional[dom.NodeId] = None,
+        backend_node_id: typing.Optional[dom.BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        accessible_name: typing.Optional[str] = None,
+        role: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[AXNode]]:
     """
     Query a DOM node's accessibility subtree for accessible name and role.

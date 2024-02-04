@@ -1,9 +1,10 @@
 from __future__ import annotations
+
 from typing import List
 
 from . import util
-from .. import cdp
 from ._contradict import ContraDict
+from .. import cdp
 
 
 class DomNode:

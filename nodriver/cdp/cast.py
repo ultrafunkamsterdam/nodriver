@@ -6,9 +6,10 @@
 # CDP domain: Cast (experimental)
 
 from __future__ import annotations
-import enum
+
 import typing
 from dataclasses import dataclass
+
 from .util import event_class, T_JSON_DICT
 
 
@@ -42,7 +43,7 @@ class Sink:
 
 
 def enable(
-    presentation_url: typing.Optional[str] = None,
+        presentation_url: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Starts observing for sinks that can be used for tab mirroring, and if set,
@@ -90,7 +91,7 @@ def set_sink_to_use(sink_name: str) -> typing.Generator[T_JSON_DICT, T_JSON_DICT
 
 
 def start_desktop_mirroring(
-    sink_name: str,
+        sink_name: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Starts mirroring the desktop to the sink.
@@ -107,7 +108,7 @@ def start_desktop_mirroring(
 
 
 def start_tab_mirroring(
-    sink_name: str,
+        sink_name: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Starts mirroring the tab to the sink.

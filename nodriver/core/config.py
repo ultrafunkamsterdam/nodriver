@@ -4,6 +4,7 @@ import pathlib
 import sys
 import tempfile
 from typing import Union, List, Optional
+
 from ._contradict import ContraDict
 
 __all__ = [
@@ -26,14 +27,14 @@ class Config(ContraDict):
     """ """
 
     def __init__(
-        self,
-        user_data_dir: Optional[PathLike] = AUTO,
-        headless: Optional[bool] = False,
-        browser_executable_path: Optional[PathLike] = AUTO,
-        browser_args: Optional[List[str]] = AUTO,
-        sandbox: Optional[bool] = True,
-        lang: Optional[str] = "en-US,en;q=0.9",
-        **kwargs: dict,
+            self,
+            user_data_dir: Optional[PathLike] = AUTO,
+            headless: Optional[bool] = False,
+            browser_executable_path: Optional[PathLike] = AUTO,
+            browser_args: Optional[List[str]] = AUTO,
+            sandbox: Optional[bool] = True,
+            lang: Optional[str] = "en-US,en;q=0.9",
+            **kwargs: dict,
     ):
         """
         creates a config object.
@@ -136,15 +137,15 @@ class Config(ContraDict):
 
     def add_argument(self, arg: str):
         if any(
-            x in arg.lower()
-            for x in [
-                "headless",
-                "data-dir",
-                "data_dir",
-                "no-sandbox",
-                "no_sandbox",
-                "lang",
-            ]
+                x in arg.lower()
+                for x in [
+                    "headless",
+                    "data-dir",
+                    "data_dir",
+                    "no-sandbox",
+                    "no_sandbox",
+                    "lang",
+                ]
         ):
             raise ValueError(
                 '"%s" not allowed. please use one of the attributes of the Config object to set it'
@@ -183,11 +184,11 @@ def find_chrome_executable(return_all=False):
     if is_posix:
         for item in os.environ.get("PATH").split(os.pathsep):
             for subitem in (
-                "google-chrome",
-                "chromium",
-                "chromium-browser",
-                "chrome",
-                "google-chrome-stable",
+                    "google-chrome",
+                    "chromium",
+                    "chromium-browser",
+                    "chrome",
+                    "google-chrome-stable",
             ):
                 candidates.append(os.sep.join((item, subitem)))
         if "darwin" in sys.platform:
@@ -198,14 +199,14 @@ def find_chrome_executable(return_all=False):
 
     else:
         for item in map(
-            os.environ.get,
-            ("PROGRAMFILES", "PROGRAMFILES(X86)", "LOCALAPPDATA", "PROGRAMW6432"),
+                os.environ.get,
+                ("PROGRAMFILES", "PROGRAMFILES(X86)", "LOCALAPPDATA", "PROGRAMW6432"),
         ):
             if item is not None:
                 for subitem in (
-                    "Google/Chrome/Application",
-                    "Google/Chrome Beta/Application",
-                    "Google/Chrome Canary/Application",
+                        "Google/Chrome/Application",
+                        "Google/Chrome Beta/Application",
+                        "Google/Chrome Canary/Application",
                 ):
                     candidates.append(os.sep.join((item, subitem, "chrome.exe")))
     rv = []

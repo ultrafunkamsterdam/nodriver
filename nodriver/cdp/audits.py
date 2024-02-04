@@ -6,15 +6,16 @@
 # CDP domain: Audits (experimental)
 
 from __future__ import annotations
+
 import enum
 import typing
 from dataclasses import dataclass
-from .util import event_class, T_JSON_DICT
 
 from . import dom
 from . import network
 from . import page
 from . import runtime
+from .util import event_class, T_JSON_DICT
 
 
 @dataclass
@@ -1631,10 +1632,10 @@ class InspectorIssue:
 
 
 def get_encoded_response(
-    request_id: network.RequestId,
-    encoding: str,
-    quality: typing.Optional[float] = None,
-    size_only: typing.Optional[bool] = None,
+        request_id: network.RequestId,
+        encoding: str,
+        quality: typing.Optional[float] = None,
+        size_only: typing.Optional[bool] = None,
 ) -> typing.Generator[
     T_JSON_DICT, T_JSON_DICT, typing.Tuple[typing.Optional[str], int, int]
 ]:
@@ -1693,7 +1694,7 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def check_contrast(
-    report_aaa: typing.Optional[bool] = None,
+        report_aaa: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Runs the contrast check for the target page. Found issues are reported
@@ -1712,7 +1713,7 @@ def check_contrast(
 
 
 def check_forms_issues() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[GenericIssueDetails]]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[GenericIssueDetails]]
 ):
     """
     Runs the form issues check for the target page. Found issues are reported

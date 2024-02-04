@@ -1,17 +1,17 @@
 import asyncio
+import http.cookiejar
+import logging
 import pathlib
 import types
 import warnings
-from typing import Generator, Any, Dict, List, Union, Optional
-import logging
+from typing import List, Union, Optional
+
 import nodriver.core.browser
-import mss
-import http.cookiejar
-from .. import cdp
-from .config import PathLike
-from .connection import Connection, ProtocolException
 from . import element
 from . import util
+from .config import PathLike
+from .connection import Connection, ProtocolException
+from .. import cdp
 
 logger = logging.getLogger(__name__)
 
@@ -73,11 +73,11 @@ class Page(Connection):
     _download_behavior: List[str] = None
 
     def __init__(
-        self,
-        websocket_url: str,
-        target: cdp.target.TargetInfo,
-        browser: Optional["nodriver.Browser"] = None,
-        **kwargs,
+            self,
+            websocket_url: str,
+            target: cdp.target.TargetInfo,
+            browser: Optional["nodriver.Browser"] = None,
+            **kwargs,
     ):
         super().__init__(websocket_url, target, **kwargs)
         self.browser = browser
@@ -92,7 +92,8 @@ class Page(Connection):
                 f'"{self.__class__.__name__}" has no attribute "%s"' % item
             )
 
-    def __call__(self, selector="*", text=""):
+    def __call__(self, text: Optional[str] = "", selector: Optional[str] = "",
+                 timeout: Optional[Union[int, float]] = 5):
         """
         alias to query_selector_all or find_elements_by_text, depending
         on whether text= is set or selector= is set
@@ -102,16 +103,17 @@ class Page(Connection):
         :return:
         :rtype:
         """
-        if selector == "*" and text != "":
-            return self.find_elements_by_text(text)
-        return self.query_selector_all(selector)
+        return self.wait_for(text, selector, timeout)
+        # if selector == "*" and text != "":
+        #     return self.find_elements_by_text(text)
+        # return self.query_selector_all(selector)
 
     def __repr__(self):
         s = f"<{type(self).__name__} [{self.target_id}] [{self.type_}]>"
         return s
 
     async def get(
-        self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
+            self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
     ):
         """top level get. utilizes the first tab to retrieve given url.
 
@@ -153,7 +155,7 @@ class Page(Connection):
                 tab = next(
                     filter(
                         lambda item: item.type_ == "page"
-                        and item.target_id == target_id,
+                                     and item.target_id == target_id,
                         self.browser.targets,
                     )
                 )
@@ -166,9 +168,9 @@ class Page(Connection):
             return tab
 
     async def query_selector_all(
-        self,
-        selector: str,
-        _node: Optional[Union[cdp.dom.Node, "element.Element"]] = None,
+            self,
+            selector: str,
+            _node: Optional[Union[cdp.dom.Node, "element.Element"]] = None,
     ):
         """
         equivalent of javascripts document.querySelectorAll.
@@ -221,9 +223,9 @@ class Page(Connection):
         return results
 
     async def query_selector(
-        self,
-        selector: str,
-        _node: Optional[Union[cdp.dom.Node, element.Element]] = None,
+            self,
+            selector: str,
+            _node: Optional[Union[cdp.dom.Node, element.Element]] = None,
     ):
         """
         find single element based on css selector string
@@ -249,7 +251,7 @@ class Page(Connection):
         return element.create(node, self, doc)
 
     async def find_elements_by_text(
-        self, text: str, return_enclosing_element: Optional[bool] = True
+            self, text: str, tag_hint: Optional[str] = None, return_enclosing_element: Optional[bool] = True
     ) -> List[element.Element]:
         """
 
@@ -280,6 +282,9 @@ class Page(Connection):
             if node:
                 try:
                     elem = element.create(node, self, doc)
+                    if tag_hint:
+                        if elem.node_name.lower() != tag_hint.lower():
+                            continue
                 except:
                     continue
                 if return_enclosing_element:
@@ -298,7 +303,7 @@ class Page(Connection):
         return results
 
     async def find_element_by_text(
-        self, text: str, return_enclosing_element: Optional[bool] = True
+            self, text: str, return_enclosing_element: Optional[bool] = True
     ) -> element.Element:
         """
 
@@ -353,9 +358,9 @@ class Page(Connection):
         await self.send(cdp.runtime.evaluate("window.history.forward()"))
 
     async def reload(
-        self,
-        ignore_cache: Optional[bool] = True,
-        script_to_evaluate_on_load: Optional[str] = None,
+            self,
+            ignore_cache: Optional[bool] = True,
+            script_to_evaluate_on_load: Optional[str] = None,
     ):
         """
         Reloads the page
@@ -395,7 +400,7 @@ class Page(Connection):
         return bounds
 
     async def get_all_cookies(
-        self, requests_cookie_format: bool = False
+            self, requests_cookie_format: bool = False
     ) -> List[Union[cdp.network.Cookie, "http.cookiejar.Cookie"]]:
         """
         get all cookies
@@ -488,7 +493,7 @@ class Page(Connection):
         await self.activate()
 
     async def set_window_state(
-        self, left=0, top=0, width=1280, height=720, state="normal"
+            self, left=0, top=0, width=1280, height=720, state="normal"
     ):
         """
         sets the window size and state.
@@ -597,60 +602,101 @@ class Page(Connection):
             )
         )
 
-    async def wait_for(self, element, timeout_ms: Union[int, float]):
+    async def wait_for(self, text: Optional[str] = "", selector: Optional[str] = "",
+                       timeout: Optional[Union[int, float]] = 5):
         """
-        wait for element to appear in the dom. could be useful when you expect some element but
-        not want a hard coded time value to wait
+        variant on query_selector_all and find_elements_by_text
+        this variant takes either selector or text, and will block until
+        the requested element(s) are found.
 
-        :param selector:
+        it will block for a maximum of <timeout> seconds, after which
+        an TimeoutError will be raised
+
+        :param selector: css selector
         :type selector:
-        :param timeout_ms:
-        :type timeout_ms:
+        :param text: text
+        :type text:
+        :param timeout:
+        :type timeout:
         :return:
         :rtype:
         """
-        await element.update()
-        js = """
-        (elem) => { 
-        
-        
-                return new Promise( ( resolve, reject ) => {
-                    
-                    function check(mutations) {
-                        console.log('check => mutations : ', mutations)
-                        elements = doc.querySelectorAll(listener.selector);
-                        for (var j = 0, jLen = elements.length, element; j < jLen; j++) {
-                             let element = elements[j];
-                             if  (  element == elem )   resolve(elem)
-                        }
-                    }
-            
-                    
-                    observer = new MutationObserver(check);
-                    let config = { characterData: false, attributes: true, childList: true, subtree: true };
-                    observer.observe(elem, config);
-            
-                })
-            }
-        """
-        try:
-            return await asyncio.wait_for(
-                self.send(
-                    cdp.runtime.call_function_on(
-                        js,
-                        arguments=[
-                            cdp.runtime.CallArgument(object_id=element.object_id)
-                        ],
-                        object_id=element.object_id,
-                        user_gesture=True,
-                        await_promise=True,
-                        return_by_value=True,
-                    )
-                ),
-                timeout=timeout_ms / 1000,
-            )
-        except asyncio.TimeoutError:
-            return False
+        loop = asyncio.get_running_loop()
+        now = loop.time()
+        if selector:
+            item = await self.query_selector(selector)
+            while not item:
+                await self
+                item = await self.query_selector(selector)
+                if loop.time() - now > timeout:
+                    raise asyncio.TimeoutError("time ran out while waiting for %s" % selector)
+                await self.sleep(.5)
+            return item
+        if text:
+            item = await self.find_element_by_text(text)
+            while not item:
+                await self
+                item = await self.find_element_by_text(text)
+                if loop.time() - now > timeout:
+                    raise asyncio.TimeoutError("time ran out while waiting for text: %s" % text)
+                await self.sleep(.5)
+            return item
+
+    #
+    # async def wait_for(self, element, timeout_ms: Union[int, float]):
+    #     """
+    #     wait for element to appear in the dom. could be useful when you expect some element but
+    #     not want a hard coded time value to wait
+    #
+    #     :param selector:
+    #     :type selector:
+    #     :param timeout_ms:
+    #     :type timeout_ms:
+    #     :return:
+    #     :rtype:
+    #     """
+    #     await element.update()
+    #     js = """
+    #     (elem) => {
+    #
+    #
+    #             return new Promise( ( resolve, reject ) => {
+    #
+    #                 function check(mutations) {
+    #                     console.log('check => mutations : ', mutations)
+    #                     elements = doc.querySelectorAll(listener.selector);
+    #                     for (var j = 0, jLen = elements.length, element; j < jLen; j++) {
+    #                          let element = elements[j];
+    #                          if  (  element == elem )   resolve(elem)
+    #                     }
+    #                 }
+    #
+    #
+    #                 observer = new MutationObserver(check);
+    #                 let config = { characterData: false, attributes: true, childList: true, subtree: true };
+    #                 observer.observe(elem, config);
+    #
+    #             })
+    #         }
+    #     """
+    #     try:
+    #         return await asyncio.wait_for(
+    #             self.send(
+    #                 cdp.runtime.call_function_on(
+    #                     js,
+    #                     arguments=[
+    #                         cdp.runtime.CallArgument(object_id=element.object_id)
+    #                     ],
+    #                     object_id=element.object_id,
+    #                     user_gesture=True,
+    #                     await_promise=True,
+    #                     return_by_value=True,
+    #                 )
+    #             ),
+    #             timeout=timeout_ms / 1000,
+    #         )
+    #     except asyncio.TimeoutError:
+    #         return False
 
     async def download_file(self, url: str, filename: Optional[PathLike] = None):
         """
@@ -714,10 +760,10 @@ class Page(Connection):
         # await .close()
 
     async def save_screenshot(
-        self,
-        filename: Optional[PathLike] = "auto",
-        format: Optional[str] = "jpeg",
-        full_page: Optional[bool] = False,
+            self,
+            filename: Optional[PathLike] = "auto",
+            format: Optional[str] = "jpeg",
+            full_page: Optional[bool] = False,
     ) -> str:
         """
         Saves a screenshot of the page.
@@ -825,3 +871,31 @@ class Page(Connection):
                             continue
                         res.append(abs_url)
         return res
+
+
+class WaitFor:
+    def __init__(self, page: Page):
+        self.page = page
+
+    async def __call__(self, text: str = None, selector: str = None, timeout: int = 5):
+
+        loop = asyncio.get_running_loop()
+        now = loop.time()
+        if selector:
+            item = await self.page.query_selector_all(selector)
+            while not item:
+                await self.page
+                item = await self.page.query_selector_all(selector)
+                if loop.time() - now > timeout:
+                    raise asyncio.TimeoutError("time ran out while waiting for %s" % selector)
+                await self.page.sleep(.5)
+            return item
+        if text:
+            item = await self.page.find_elements_by_text(text)
+            while not item:
+                await self.page
+                item = await self.page.find_elements_by_text(text)
+                if loop.time() - now > timeout:
+                    raise asyncio.TimeoutError("time ran out while waiting for text: %s" % text)
+                await self.page.sleep(.5)
+            return item

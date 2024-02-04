@@ -6,13 +6,13 @@
 # CDP domain: Log
 
 from __future__ import annotations
-import enum
+
 import typing
 from dataclasses import dataclass
-from .util import event_class, T_JSON_DICT
 
 from . import network
 from . import runtime
+from .util import event_class, T_JSON_DICT
 
 
 @dataclass
@@ -162,7 +162,7 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def start_violations_report(
-    config: typing.List[ViolationSetting],
+        config: typing.List[ViolationSetting],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     start violation reporting.

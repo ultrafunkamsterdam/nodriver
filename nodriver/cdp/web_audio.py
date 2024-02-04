@@ -6,9 +6,11 @@
 # CDP domain: WebAudio (experimental)
 
 from __future__ import annotations
+
 import enum
 import typing
 from dataclasses import dataclass
+
 from .util import event_class, T_JSON_DICT
 
 
@@ -373,7 +375,7 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def get_realtime_data(
-    context_id: GraphObjectId,
+        context_id: GraphObjectId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, ContextRealtimeData]:
     """
     Fetch the realtime data from the registered contexts.

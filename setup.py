@@ -45,11 +45,7 @@ setup(
 
     ],
     install_requires=[
-        # "selenium>=4.9.0",
-        # "requests",
-        # "chrome-devtools-protocol @ git+https://github.com/ultrafunkamsterdam/chrome-devtools-protocol",
         "mss",
-        # "python-cdp @ git+https://github.com/HMaker/python-cdp",
         "websockets>=11",
     ],
     package_data={

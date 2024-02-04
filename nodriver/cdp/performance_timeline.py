@@ -6,14 +6,14 @@
 # CDP domain: PerformanceTimeline (experimental)
 
 from __future__ import annotations
-import enum
+
 import typing
 from dataclasses import dataclass
-from .util import event_class, T_JSON_DICT
 
 from . import dom
 from . import network
 from . import page
+from .util import event_class, T_JSON_DICT
 
 
 @dataclass
@@ -182,7 +182,7 @@ class TimelineEvent:
 
 
 def enable(
-    event_types: typing.List[str],
+        event_types: typing.List[str],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Previously buffered events would be reported before method returns.

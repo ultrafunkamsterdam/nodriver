@@ -2,7 +2,6 @@
 #
 # This file is generated from the CDP specification. If you need to make
 # changes, edit the generator and regenerate all of the modules.
-from . import util
 from . import (
     accessibility,
     animation,
@@ -55,3 +54,4 @@ from . import (
     web_audio,
     web_authn,
 )
+from . import util

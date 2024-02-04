@@ -6,13 +6,14 @@
 # CDP domain: BackgroundService (experimental)
 
 from __future__ import annotations
+
 import enum
 import typing
 from dataclasses import dataclass
-from .util import event_class, T_JSON_DICT
 
 from . import network
 from . import service_worker
+from .util import event_class, T_JSON_DICT
 
 
 class ServiceName(enum.Enum):
@@ -118,7 +119,7 @@ class BackgroundServiceEvent:
 
 
 def start_observing(
-    service: ServiceName,
+        service: ServiceName,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enables event updates for the service.
@@ -135,7 +136,7 @@ def start_observing(
 
 
 def stop_observing(
-    service: ServiceName,
+        service: ServiceName,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Disables event updates for the service.
@@ -152,7 +153,7 @@ def stop_observing(
 
 
 def set_recording(
-    should_record: bool, service: ServiceName
+        should_record: bool, service: ServiceName
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Set the recording state for the service.
@@ -171,7 +172,7 @@ def set_recording(
 
 
 def clear_events(
-    service: ServiceName,
+        service: ServiceName,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Clears all stored data for the service.

@@ -6,14 +6,15 @@
 # CDP domain: Storage (experimental)
 
 from __future__ import annotations
+
 import enum
 import typing
 from dataclasses import dataclass
-from .util import event_class, T_JSON_DICT
 
 from . import browser
 from . import network
 from . import page
+from .util import event_class, T_JSON_DICT
 
 
 class SerializedStorageKey(str):
@@ -925,7 +926,7 @@ class AttributionReportingAggregatableTriggerData:
 
     @classmethod
     def from_json(
-        cls, json: T_JSON_DICT
+            cls, json: T_JSON_DICT
     ) -> AttributionReportingAggregatableTriggerData:
         return cls(
             key_piece=UnsignedInt128AsBase16.from_json(json["keyPiece"]),
@@ -1092,7 +1093,7 @@ class AttributionReportingAggregatableResult(enum.Enum):
 
 
 def get_storage_key_for_frame(
-    frame_id: page.FrameId,
+        frame_id: page.FrameId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, SerializedStorageKey]:
     """
     Returns a storage key given a frame id.
@@ -1111,7 +1112,7 @@ def get_storage_key_for_frame(
 
 
 def clear_data_for_origin(
-    origin: str, storage_types: str
+        origin: str, storage_types: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Clears storage for origin.
@@ -1130,7 +1131,7 @@ def clear_data_for_origin(
 
 
 def clear_data_for_storage_key(
-    storage_key: str, storage_types: str
+        storage_key: str, storage_types: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Clears storage for storage key.
@@ -1149,7 +1150,7 @@ def clear_data_for_storage_key(
 
 
 def get_cookies(
-    browser_context_id: typing.Optional[browser.BrowserContextID] = None,
+        browser_context_id: typing.Optional[browser.BrowserContextID] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[network.Cookie]]:
     """
     Returns all browser cookies.
@@ -1169,8 +1170,8 @@ def get_cookies(
 
 
 def set_cookies(
-    cookies: typing.List[network.CookieParam],
-    browser_context_id: typing.Optional[browser.BrowserContextID] = None,
+        cookies: typing.List[network.CookieParam],
+        browser_context_id: typing.Optional[browser.BrowserContextID] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets given cookies.
@@ -1190,7 +1191,7 @@ def set_cookies(
 
 
 def clear_cookies(
-    browser_context_id: typing.Optional[browser.BrowserContextID] = None,
+        browser_context_id: typing.Optional[browser.BrowserContextID] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Clears cookies.
@@ -1208,7 +1209,7 @@ def clear_cookies(
 
 
 def get_usage_and_quota(
-    origin: str,
+        origin: str,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -1241,7 +1242,7 @@ def get_usage_and_quota(
 
 
 def override_quota_for_origin(
-    origin: str, quota_size: typing.Optional[float] = None
+        origin: str, quota_size: typing.Optional[float] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Override quota for the specified origin
@@ -1263,7 +1264,7 @@ def override_quota_for_origin(
 
 
 def track_cache_storage_for_origin(
-    origin: str,
+        origin: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Registers origin to be notified when an update occurs to its cache storage list.
@@ -1280,7 +1281,7 @@ def track_cache_storage_for_origin(
 
 
 def track_cache_storage_for_storage_key(
-    storage_key: str,
+        storage_key: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Registers storage key to be notified when an update occurs to its cache storage list.
@@ -1297,7 +1298,7 @@ def track_cache_storage_for_storage_key(
 
 
 def track_indexed_db_for_origin(
-    origin: str,
+        origin: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Registers origin to be notified when an update occurs to its IndexedDB.
@@ -1314,7 +1315,7 @@ def track_indexed_db_for_origin(
 
 
 def track_indexed_db_for_storage_key(
-    storage_key: str,
+        storage_key: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Registers storage key to be notified when an update occurs to its IndexedDB.
@@ -1331,7 +1332,7 @@ def track_indexed_db_for_storage_key(
 
 
 def untrack_cache_storage_for_origin(
-    origin: str,
+        origin: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Unregisters origin from receiving notifications for cache storage.
@@ -1348,7 +1349,7 @@ def untrack_cache_storage_for_origin(
 
 
 def untrack_cache_storage_for_storage_key(
-    storage_key: str,
+        storage_key: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Unregisters storage key from receiving notifications for cache storage.
@@ -1365,7 +1366,7 @@ def untrack_cache_storage_for_storage_key(
 
 
 def untrack_indexed_db_for_origin(
-    origin: str,
+        origin: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Unregisters origin from receiving notifications for IndexedDB.
@@ -1382,7 +1383,7 @@ def untrack_indexed_db_for_origin(
 
 
 def untrack_indexed_db_for_storage_key(
-    storage_key: str,
+        storage_key: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Unregisters storage key from receiving notifications for IndexedDB.
@@ -1399,7 +1400,7 @@ def untrack_indexed_db_for_storage_key(
 
 
 def get_trust_tokens() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[TrustTokens]]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[TrustTokens]]
 ):
     """
     Returns the number of stored Trust Tokens per issuer for the
@@ -1417,7 +1418,7 @@ def get_trust_tokens() -> (
 
 
 def clear_trust_tokens(
-    issuer_origin: str,
+        issuer_origin: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, bool]:
     """
     Removes all Trust Tokens issued by the provided issuerOrigin.
@@ -1439,7 +1440,7 @@ def clear_trust_tokens(
 
 
 def get_interest_group_details(
-    owner_origin: str, name: str
+        owner_origin: str, name: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, InterestGroupDetails]:
     """
     Gets details for a named interest group.
@@ -1462,7 +1463,7 @@ def get_interest_group_details(
 
 
 def set_interest_group_tracking(
-    enable: bool,
+        enable: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enables/Disables issuing of interestGroupAccessed events.
@@ -1481,7 +1482,7 @@ def set_interest_group_tracking(
 
 
 def get_shared_storage_metadata(
-    owner_origin: str,
+        owner_origin: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, SharedStorageMetadata]:
     """
     Gets metadata for an origin's shared storage.
@@ -1502,7 +1503,7 @@ def get_shared_storage_metadata(
 
 
 def get_shared_storage_entries(
-    owner_origin: str,
+        owner_origin: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[SharedStorageEntry]]:
     """
     Gets the entries in an given origin's shared storage.
@@ -1523,10 +1524,10 @@ def get_shared_storage_entries(
 
 
 def set_shared_storage_entry(
-    owner_origin: str,
-    key: str,
-    value: str,
-    ignore_if_present: typing.Optional[bool] = None,
+        owner_origin: str,
+        key: str,
+        value: str,
+        ignore_if_present: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets entry with ``key`` and ``value`` for a given origin's shared storage.
@@ -1552,7 +1553,7 @@ def set_shared_storage_entry(
 
 
 def delete_shared_storage_entry(
-    owner_origin: str, key: str
+        owner_origin: str, key: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Deletes entry for ``key`` (if it exists) for a given origin's shared storage.
@@ -1573,7 +1574,7 @@ def delete_shared_storage_entry(
 
 
 def clear_shared_storage_entries(
-    owner_origin: str,
+        owner_origin: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Clears all entries for a given origin's shared storage.
@@ -1592,7 +1593,7 @@ def clear_shared_storage_entries(
 
 
 def reset_shared_storage_budget(
-    owner_origin: str,
+        owner_origin: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Resets the budget for ``ownerOrigin`` by clearing all budget withdrawals.
@@ -1611,7 +1612,7 @@ def reset_shared_storage_budget(
 
 
 def set_shared_storage_tracking(
-    enable: bool,
+        enable: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enables/disables issuing of sharedStorageAccessed events.
@@ -1630,7 +1631,7 @@ def set_shared_storage_tracking(
 
 
 def set_storage_bucket_tracking(
-    storage_key: str, enable: bool
+        storage_key: str, enable: bool
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Set tracking for a storage key's buckets.
@@ -1651,7 +1652,7 @@ def set_storage_bucket_tracking(
 
 
 def delete_storage_bucket(
-    bucket: StorageBucket,
+        bucket: StorageBucket,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Deletes the Storage Bucket with the given storage key and bucket name.
@@ -1670,7 +1671,7 @@ def delete_storage_bucket(
 
 
 def run_bounce_tracking_mitigations() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[str]]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[str]]
 ):
     """
     Deletes state for sites identified as potential bounce trackers, immediately.
@@ -1687,7 +1688,7 @@ def run_bounce_tracking_mitigations() -> (
 
 
 def set_attribution_reporting_local_testing_mode(
-    enabled: bool,
+        enabled: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     https://wicg.github.io/attribution-reporting-api/
@@ -1706,7 +1707,7 @@ def set_attribution_reporting_local_testing_mode(
 
 
 def set_attribution_reporting_tracking(
-    enable: bool,
+        enable: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enables/disables issuing of Attribution Reporting events.

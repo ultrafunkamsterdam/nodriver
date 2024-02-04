@@ -6,9 +6,10 @@
 # CDP domain: DOMStorage (experimental)
 
 from __future__ import annotations
-import enum
+
 import typing
 from dataclasses import dataclass
+
 from .util import event_class, T_JSON_DICT
 
 
@@ -111,7 +112,7 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def get_dom_storage_items(
-    storage_id: StorageId,
+        storage_id: StorageId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[Item]]:
     """
     :param storage_id:
@@ -128,7 +129,7 @@ def get_dom_storage_items(
 
 
 def remove_dom_storage_item(
-    storage_id: StorageId, key: str
+        storage_id: StorageId, key: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param storage_id:
@@ -145,7 +146,7 @@ def remove_dom_storage_item(
 
 
 def set_dom_storage_item(
-    storage_id: StorageId, key: str, value: str
+        storage_id: StorageId, key: str, value: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param storage_id:

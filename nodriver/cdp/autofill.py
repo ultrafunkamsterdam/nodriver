@@ -6,13 +6,14 @@
 # CDP domain: Autofill (experimental)
 
 from __future__ import annotations
+
 import enum
 import typing
 from dataclasses import dataclass
-from .util import event_class, T_JSON_DICT
 
 from . import dom
 from . import page
+from .util import event_class, T_JSON_DICT
 
 
 @dataclass
@@ -202,9 +203,9 @@ class FilledField:
 
 
 def trigger(
-    field_id: dom.BackendNodeId,
-    card: CreditCard,
-    frame_id: typing.Optional[page.FrameId] = None,
+        field_id: dom.BackendNodeId,
+        card: CreditCard,
+        frame_id: typing.Optional[page.FrameId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Trigger autofill on a form identified by the fieldId.
@@ -227,7 +228,7 @@ def trigger(
 
 
 def set_addresses(
-    addresses: typing.List[Address],
+        addresses: typing.List[Address],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Set addresses so that developers can verify their forms implementation.

@@ -6,6 +6,7 @@ import shutil
 import types
 import typing
 from typing import Optional, List, Set, Union, Callable
+
 import typing_extensions
 
 from .element import Element
@@ -22,13 +23,13 @@ T = typing.TypeVar("T")
 
 
 async def start(
-    user_data_dir: Optional[PathLike] = None,
-    headless: Optional[bool] = False,
-    browser_executable_path: Optional[PathLike] = None,
-    browser_args: Optional[List[str]] = None,
-    sandbox: Optional[bool] = True,
-    lang: Optional[str] = None,
-    **kwargs: Optional[dict],
+        user_data_dir: Optional[PathLike] = None,
+        headless: Optional[bool] = False,
+        browser_executable_path: Optional[PathLike] = None,
+        browser_args: Optional[List[str]] = None,
+        sandbox: Optional[bool] = True,
+        lang: Optional[str] = None,
+        **kwargs: Optional[dict],
 ) -> Browser:
     """
     helper function to launch a browser. it accepts several keyword parameters.
@@ -114,61 +115,8 @@ def deconstruct_browser():
         print("successfully removed temp profile %s", _.config.user_data_dir)
 
 
-class Meta(type):
-    REGISTRY = {}
-
-    def __new__(mcls, name, bases, attrs):
-        # instantiate a new type corresponding to the type of class being defined
-        # this is currently RegisterBase but in child classes will be the child class
-        instance = super().__new__(mcls, name, bases, attrs)
-        mcls.REGISTRY[instance.__name__] = instance
-        return instance
-
-    def __init__(cls, name, bases, attrs):
-        super().__init__(name, bases, attrs)
-
-    def __call__(self, *args, **kwargs):
-        instance = super().__call__(*args, **kwargs)
-        instance.get_registry = self.get_registry
-        type(self).REGISTRY[type(instance).__name__] = instance
-        return instance
-
-    def __del__(cls):
-        print(" meta __del__")
-
-    @classmethod
-    def get_registry(cls):
-        return dict(cls.REGISTRY)
-
-
-#
-# def flatten(node: cdp.dom.Node):
-#     """returns a flat list of dom nodes from a hierarchical structured node"""
-#
-#     def _flatten(node: cdp.dom.Node, __d=0):
-#         if node.children:
-#             for c in node.children:
-#                 yield from _flatten(c, __d + 1)
-#                 continue
-#         else:
-#             yield node
-#
-#     return list(_flatten(node))
-
-#
-# def find_recurse(doc: cdp.dom.Node, node_id: cdp.dom.NodeId):
-#
-#     if doc.children:
-#         for child in doc.children:
-#             if child.node_id == node_id:
-#                 return child
-#             result = find_recurse(child, node_id)
-#             if result:
-#                 return result
-
-
 def filter_recurse_all(
-    doc: T, predicate: Callable[[cdp.dom.Node, Element], bool]
+        doc: T, predicate: Callable[[cdp.dom.Node, Element], bool]
 ) -> List[T]:
     """
     test each child using predicate(child), and return all children for which predicate(child) == True
@@ -247,8 +195,16 @@ def loop():
     return loop
 
 
-import importlib
 def cdp_get_module(domain: Union[str, types.ModuleType]):
+    """
+    get cdp module by given string
+
+    :param domain:
+    :type domain:
+    :return:
+    :rtype:
+    """
+    import importlib
     if isinstance(domain, types.ModuleType):
         # you get what you ask for
         domain_mod = domain
