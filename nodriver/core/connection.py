@@ -23,6 +23,7 @@ from typing import (
 
 import websockets
 from .. import cdp
+from . import util
 
 T = TypeVar("T")
 
@@ -428,6 +429,7 @@ class Connection(metaclass=CantTouchThis):
     #                 if type(event) in self.handlers:
     #                     callbacks = self.handlers[type(event)]
     #                 else:
+
     #                     module = cdp_get_module(type(event).__module__)
     #                     event_type = getattr(module, type(event).__qualname__, None)
     #                     if not event_type:
@@ -474,7 +476,7 @@ class Connection(metaclass=CantTouchThis):
                 self.handlers.pop(event_type)
                 continue
             if isinstance(event_type, type):
-                domain_mod = cdp_get_module(event_type.__module__)
+                domain_mod = util.cdp_get_module(event_type.__module__)
             # if isinstance(event_type, types.ModuleType):
             #     domain_mod = event_type
             if domain_mod in self.enabled_domains:
@@ -500,29 +502,6 @@ class Connection(metaclass=CantTouchThis):
                         continue
                 finally:
                     continue
-
-
-def cdp_get_module(domain: Union[str, types.ModuleType]):
-    if isinstance(domain, types.ModuleType):
-        # you get what you ask for
-        domain_mod = domain
-    else:
-        try:
-            if domain in ("input",):
-                domain = "input_"
-
-            #  fallback if someone passes a str
-            domain_mod = getattr(cdp, domain)
-            if not domain_mod:
-                raise AttributeError
-        except AttributeError:
-            try:
-                domain_mod = importlib.import_module(domain)
-            except ModuleNotFoundError:
-                raise ModuleNotFoundError(
-                    "could not find cdp module from input '%s'" % domain
-                )
-    return domain_mod
 
 
 class Listener:
@@ -583,33 +562,18 @@ class Listener:
                         % (type(e).__name__, e.args, message),
                         exc_info=True,
                     )
-
                     continue
                 except KeyError as e:
                     logger.info("some lousy KeyError %s" % e, exc_info=True)
-
                     continue
-
                 try:
-                    # logger.warning('%s in handlers? %s' % (type(event), type(event) in self.connection.handlers))
-                    # logger.warning("%s" % event)
                     if type(event) in self.connection.handlers:
                         callbacks = self.connection.handlers[type(event)]
                     else:
                         continue
-                    # else:
-                    #     module = cdp_get_module(type(event).__module__)
-                    #     event_type = getattr(module, type(event).__qualname__, None)
-                    #     if not event_type:
-                    #         continue
-                    #     callbacks = self.connection.handlers[event_type]
 
-                    # logger.warning('callbacks? %s' % callbacks)
                     if not len(callbacks):
                         continue
-                    # if not isinstance(callbacks, typing.Sequence):
-                    #     if isinstance(callbacks, types.FunctionType):
-                    #         self.handlers[type(event)] = [callbacks]
 
                     for handler in self.connection.handlers[type(event)]:
                         try:

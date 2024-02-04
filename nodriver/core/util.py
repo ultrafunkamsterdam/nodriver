@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import shutil
+import types
 import typing
 from typing import Optional, List, Set, Union, Callable
 import typing_extensions
@@ -244,3 +245,27 @@ def loop():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     return loop
+
+
+import importlib
+def cdp_get_module(domain: Union[str, types.ModuleType]):
+    if isinstance(domain, types.ModuleType):
+        # you get what you ask for
+        domain_mod = domain
+    else:
+        try:
+            if domain in ("input",):
+                domain = "input_"
+
+            #  fallback if someone passes a str
+            domain_mod = getattr(cdp, domain)
+            if not domain_mod:
+                raise AttributeError
+        except AttributeError:
+            try:
+                domain_mod = importlib.import_module(domain)
+            except ModuleNotFoundError:
+                raise ModuleNotFoundError(
+                    "could not find cdp module from input '%s'" % domain
+                )
+    return domain_mod
