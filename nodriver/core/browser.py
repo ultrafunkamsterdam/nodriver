@@ -9,6 +9,7 @@ import pathlib
 import urllib.parse
 import urllib.request
 import warnings
+from collections import defaultdict
 from typing import List, Union, Tuple
 
 from . import util
@@ -117,17 +118,17 @@ class Browser:
         return self.info.webSocketDebuggerUrl
 
     @property
-    def active_page(self):
+    def main_tab(self):
         """returns the target which was launched with the browser"""
         return sorted(self.targets, key=lambda x: x.type_ == "page", reverse=True)[0]
 
     @property
-    def pages(self) -> List:
+    def tabs(self) -> List:
         """returns the current targets which are of type "page"
         :return:
         """
-        pages = filter(lambda item: item.type_ == "page", self.targets)
-        return list(pages)
+        tabs = filter(lambda item: item.type_ == "page", self.targets)
+        return list(tabs)
 
     @property
     def stopped(self):
@@ -161,27 +162,27 @@ class Browser:
         if isinstance(event, cdp.target.TargetInfoChanged):
             target_info = event.target_info
 
-            current_page = next(
+            current_tab = next(
                 filter(
                     lambda item: item.target_id == target_info.target_id, self.targets
                 )
             )
-            current_target = current_page.target
+            current_target = current_tab.target
             logger.debug(
                 "target for #%d to target changed from %s to: %s"
                 % (
-                    self.targets.index(current_page),
+                    self.targets.index(current_tab),
                     current_target.target_id,
                     target_info.target_id,
                 )
             )
-            self.target = target_info
+            current_tab.target = target_info
 
         elif isinstance(event, cdp.target.TargetCreated):
             target_info: cdp.target.TargetInfo = event.target_info
-            from .page import Page
+            from .tab import Tab
 
-            new_target = Page(
+            new_target = Tab(
                 (
                     f"ws://{self.config.host}:{self.config.port}"
                     f"/devtools/{target_info.type_.lower()}"
@@ -195,14 +196,14 @@ class Browser:
             logger.debug("target #%d created => %s", len(self.targets), new_target)
 
         elif isinstance(event, cdp.target.TargetDestroyed):
-            current_target = next(
+            current_tab = next(
                 filter(lambda item: item.target_id == event.target_id, self.targets)
             )
             logger.debug(
                 "target removed. id # %d => %s"
-                % (self.targets.index(current_target), current_target)
+                % (self.targets.index(current_tab), current_tab)
             )
-            self.targets.remove(current_target)
+            self.targets.remove(current_tab)
 
     async def get(
         self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
@@ -348,28 +349,78 @@ class Browser:
             await self.connection.send(cdp.target.set_discover_targets(True))
         # await self
 
-    async def tile_windows(self, rows=2, columns=2):
+    async def tile_windows(self, max_columns: int = 0):
         import mss
         import math
 
         m = mss.mss()
-
+        screen, screen_width, screen_height = 3 * (None,)
         if m.monitors and len(m.monitors) >= 1:
             screen = m.monitors[0]
-            width = screen["width"]
-            height = screen["height"]
+            screen_width = screen["width"]
+            screen_height = screen["height"]
+        if not screen or not screen_width or not screen_height:
+            warnings.warn("no monitors detected")
+            return
         await self
+        distinct_windows = defaultdict(list)
+        for tab in self.tabs:
+            window_id, bounds = await tab.get_window()
+            distinct_windows[window_id].append(tab)
 
-        ntabs = len(self.pages)  # number of actual browser windows
-        print(ntabs)
-        cols = math.floor(ntabs / rows)
-        while (cols * rows) < ntabs:
-            cols += 1
-        _rows = math.floor(ntabs / columns)
-        while (cols * _rows) < ntabs:
-            _rows += 1
+        num_windows = len(distinct_windows)
+        req_cols = max_columns or int(num_windows * (19 / 6))
+        req_rows = int(num_windows / req_cols)
 
-        return _rows, cols, screen
+        while req_cols * req_rows < num_windows:
+            req_rows += 1
+
+        # print(num_windows)
+        # print(req_cols, req_rows, max_columns)
+        # # req_rows = math.ceil(num_windows / max_columns)
+        # # req_cols = math.ceil(num_windows / req_rows)
+        # # req_cols = math.floor(num_windows / max_columns)
+        # # while (req_rows * req_cols) < num_windows:
+        # #     columns += 1
+        # # while (req_cols * rows) < num_windows:
+        # #     req_cols += 1
+        # # req_rows = math.floor(num_windows / columns)
+        # # while (req_rows * req_cols) < num_windows:
+        # #     req_rows += 1
+
+        box_w = math.floor((screen_width / req_cols) - 1)
+        box_h = math.floor(screen_height / req_rows)
+
+        distinct_windows_iter = iter(distinct_windows.values())
+        grid = []
+        for x in range(req_cols):
+            for y in range(req_rows):
+                num = x + y
+                try:
+                    tabs = next(distinct_windows_iter)
+                except StopIteration:
+                    continue
+                if not tabs:
+                    continue
+                tab = tabs[0]
+
+                try:
+                    pos = [x * box_w, y * box_h, box_w, box_h]
+                    grid.append(pos)
+                    await tab.set_window_size(*pos)
+                except Exception:
+                    logger.info(
+                        "could not set window size. exception => ", exc_info=True
+                    )
+                    continue
+        return grid
+        # yield tab
+        # yield (
+        #     x * box_w,
+        #     y * box_h,
+        #     box_w,
+        #     box_h )
+        # return req_rows, req_cols, screen
 
     async def _get_targets(self) -> List[cdp.target.TargetInfo]:
         info = await self.connection.send(cdp.target.get_targets(), _is_update=True)
@@ -407,12 +458,12 @@ class Browser:
             raise exc_type(exc_val)
 
     def __iter__(self):
-        self._i = self.pages.index(self.active_page)
+        self._i = self.tabs.index(self.main_tab)
         return self
 
     def __next__(self):
         try:
-            return self.pages[self._i]
+            return self.tabs[self._i]
         except IndexError:
             del self._i
             raise StopIteration
@@ -421,7 +472,7 @@ class Browser:
             raise StopIteration
         finally:
             if hasattr(self, "_i"):
-                if self._i != len(self.pages):
+                if self._i != len(self.tabs):
                     self._i += 1
                 else:
                     del self._i

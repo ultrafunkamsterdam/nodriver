@@ -204,7 +204,7 @@ class ServiceWorkerErrorMessage:
 
 
 def deliver_push_message(
-        origin: str, registration_id: RegistrationID, data: str
+    origin: str, registration_id: RegistrationID, data: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param origin:
@@ -230,7 +230,7 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def dispatch_sync_event(
-        origin: str, registration_id: RegistrationID, tag: str, last_chance: bool
+    origin: str, registration_id: RegistrationID, tag: str, last_chance: bool
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param origin:
@@ -251,7 +251,7 @@ def dispatch_sync_event(
 
 
 def dispatch_periodic_sync_event(
-        origin: str, registration_id: RegistrationID, tag: str
+    origin: str, registration_id: RegistrationID, tag: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param origin:
@@ -290,7 +290,7 @@ def inspect_worker(version_id: str) -> typing.Generator[T_JSON_DICT, T_JSON_DICT
 
 
 def set_force_update_on_page_load(
-        force_update_on_page_load: bool,
+    force_update_on_page_load: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param force_update_on_page_load:
@@ -364,7 +364,7 @@ def unregister(scope_url: str) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, Non
 
 
 def update_registration(
-        scope_url: str,
+    scope_url: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param scope_url:

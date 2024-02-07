@@ -245,7 +245,7 @@ class Credential:
 
 
 def enable(
-        enable_ui: typing.Optional[bool] = None,
+    enable_ui: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enable the WebAuthn domain and start intercepting credential storage and
@@ -274,7 +274,7 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def add_virtual_authenticator(
-        options: VirtualAuthenticatorOptions,
+    options: VirtualAuthenticatorOptions,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, AuthenticatorId]:
     """
     Creates and adds a virtual authenticator.
@@ -293,10 +293,10 @@ def add_virtual_authenticator(
 
 
 def set_response_override_bits(
-        authenticator_id: AuthenticatorId,
-        is_bogus_signature: typing.Optional[bool] = None,
-        is_bad_uv: typing.Optional[bool] = None,
-        is_bad_up: typing.Optional[bool] = None,
+    authenticator_id: AuthenticatorId,
+    is_bogus_signature: typing.Optional[bool] = None,
+    is_bad_uv: typing.Optional[bool] = None,
+    is_bad_up: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Resets parameters isBogusSignature, isBadUV, isBadUP to false if they are not present.
@@ -322,7 +322,7 @@ def set_response_override_bits(
 
 
 def remove_virtual_authenticator(
-        authenticator_id: AuthenticatorId,
+    authenticator_id: AuthenticatorId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Removes the given authenticator.
@@ -339,7 +339,7 @@ def remove_virtual_authenticator(
 
 
 def add_credential(
-        authenticator_id: AuthenticatorId, credential: Credential
+    authenticator_id: AuthenticatorId, credential: Credential
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Adds the credential to the specified authenticator.
@@ -358,7 +358,7 @@ def add_credential(
 
 
 def get_credential(
-        authenticator_id: AuthenticatorId, credential_id: str
+    authenticator_id: AuthenticatorId, credential_id: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, Credential]:
     """
     Returns a single credential stored in the given virtual authenticator that
@@ -380,7 +380,7 @@ def get_credential(
 
 
 def get_credentials(
-        authenticator_id: AuthenticatorId,
+    authenticator_id: AuthenticatorId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[Credential]]:
     """
     Returns all the credentials stored in the given virtual authenticator.
@@ -399,7 +399,7 @@ def get_credentials(
 
 
 def remove_credential(
-        authenticator_id: AuthenticatorId, credential_id: str
+    authenticator_id: AuthenticatorId, credential_id: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Removes a credential from the authenticator.
@@ -418,7 +418,7 @@ def remove_credential(
 
 
 def clear_credentials(
-        authenticator_id: AuthenticatorId,
+    authenticator_id: AuthenticatorId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Clears all the credentials from the specified device.
@@ -435,7 +435,7 @@ def clear_credentials(
 
 
 def set_user_verified(
-        authenticator_id: AuthenticatorId, is_user_verified: bool
+    authenticator_id: AuthenticatorId, is_user_verified: bool
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets whether User Verification succeeds or fails for an authenticator.
@@ -455,7 +455,7 @@ def set_user_verified(
 
 
 def set_automatic_presence_simulation(
-        authenticator_id: AuthenticatorId, enabled: bool
+    authenticator_id: AuthenticatorId, enabled: bool
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets whether tests of user presence will succeed immediately (if true) or fail to resolve (if false) for an authenticator.

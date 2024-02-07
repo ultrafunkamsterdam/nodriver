@@ -123,7 +123,7 @@ class SamplingHeapProfile:
 
 
 def add_inspected_heap_object(
-        heap_object_id: HeapSnapshotObjectId,
+    heap_object_id: HeapSnapshotObjectId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enables console to refer to the node with given id via $x (see Command Line API for more details
@@ -162,7 +162,7 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def get_heap_object_id(
-        object_id: runtime.RemoteObjectId,
+    object_id: runtime.RemoteObjectId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, HeapSnapshotObjectId]:
     """
     :param object_id: Identifier of the object to get heap object id for.
@@ -179,7 +179,7 @@ def get_heap_object_id(
 
 
 def get_object_by_heap_object_id(
-        object_id: HeapSnapshotObjectId, object_group: typing.Optional[str] = None
+    object_id: HeapSnapshotObjectId, object_group: typing.Optional[str] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, runtime.RemoteObject]:
     """
     :param object_id:
@@ -199,7 +199,7 @@ def get_object_by_heap_object_id(
 
 
 def get_sampling_profile() -> (
-        typing.Generator[T_JSON_DICT, T_JSON_DICT, SamplingHeapProfile]
+    typing.Generator[T_JSON_DICT, T_JSON_DICT, SamplingHeapProfile]
 ):
     """
 
@@ -214,9 +214,9 @@ def get_sampling_profile() -> (
 
 
 def start_sampling(
-        sampling_interval: typing.Optional[float] = None,
-        include_objects_collected_by_major_gc: typing.Optional[bool] = None,
-        include_objects_collected_by_minor_gc: typing.Optional[bool] = None,
+    sampling_interval: typing.Optional[float] = None,
+    include_objects_collected_by_major_gc: typing.Optional[bool] = None,
+    include_objects_collected_by_minor_gc: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param sampling_interval: *(Optional)* Average sample interval in bytes. Poisson distribution is used for the intervals. The default value is 32768 bytes.
@@ -242,7 +242,7 @@ def start_sampling(
 
 
 def start_tracking_heap_objects(
-        track_allocations: typing.Optional[bool] = None,
+    track_allocations: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param track_allocations: *(Optional)*
@@ -271,10 +271,10 @@ def stop_sampling() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, SamplingHeapPr
 
 
 def stop_tracking_heap_objects(
-        report_progress: typing.Optional[bool] = None,
-        treat_global_objects_as_roots: typing.Optional[bool] = None,
-        capture_numeric_value: typing.Optional[bool] = None,
-        expose_internals: typing.Optional[bool] = None,
+    report_progress: typing.Optional[bool] = None,
+    treat_global_objects_as_roots: typing.Optional[bool] = None,
+    capture_numeric_value: typing.Optional[bool] = None,
+    expose_internals: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param report_progress: *(Optional)* If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken when the tracking is stopped.
@@ -299,10 +299,10 @@ def stop_tracking_heap_objects(
 
 
 def take_heap_snapshot(
-        report_progress: typing.Optional[bool] = None,
-        treat_global_objects_as_roots: typing.Optional[bool] = None,
-        capture_numeric_value: typing.Optional[bool] = None,
-        expose_internals: typing.Optional[bool] = None,
+    report_progress: typing.Optional[bool] = None,
+    treat_global_objects_as_roots: typing.Optional[bool] = None,
+    capture_numeric_value: typing.Optional[bool] = None,
+    expose_internals: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param report_progress: *(Optional)* If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken.

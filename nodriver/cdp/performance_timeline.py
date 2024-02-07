@@ -182,7 +182,7 @@ class TimelineEvent:
 
 
 def enable(
-        event_types: typing.List[str],
+    event_types: typing.List[str],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Previously buffered events would be reported before method returns.

@@ -388,7 +388,7 @@ class DebugSymbols:
 
 
 def continue_to_location(
-        location: Location, target_call_frames: typing.Optional[str] = None
+    location: Location, target_call_frames: typing.Optional[str] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Continues execution until specific location is reached.
@@ -418,7 +418,7 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def enable(
-        max_scripts_cache_size: typing.Optional[float] = None,
+    max_scripts_cache_size: typing.Optional[float] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, runtime.UniqueDebuggerId]:
     """
     Enables debugger for the given page. Clients should not assume that the debugging has been
@@ -439,15 +439,15 @@ def enable(
 
 
 def evaluate_on_call_frame(
-        call_frame_id: CallFrameId,
-        expression: str,
-        object_group: typing.Optional[str] = None,
-        include_command_line_api: typing.Optional[bool] = None,
-        silent: typing.Optional[bool] = None,
-        return_by_value: typing.Optional[bool] = None,
-        generate_preview: typing.Optional[bool] = None,
-        throw_on_side_effect: typing.Optional[bool] = None,
-        timeout: typing.Optional[runtime.TimeDelta] = None,
+    call_frame_id: CallFrameId,
+    expression: str,
+    object_group: typing.Optional[str] = None,
+    include_command_line_api: typing.Optional[bool] = None,
+    silent: typing.Optional[bool] = None,
+    return_by_value: typing.Optional[bool] = None,
+    generate_preview: typing.Optional[bool] = None,
+    throw_on_side_effect: typing.Optional[bool] = None,
+    timeout: typing.Optional[runtime.TimeDelta] = None,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -501,9 +501,9 @@ def evaluate_on_call_frame(
 
 
 def get_possible_breakpoints(
-        start: Location,
-        end: typing.Optional[Location] = None,
-        restrict_to_function: typing.Optional[bool] = None,
+    start: Location,
+    end: typing.Optional[Location] = None,
+    restrict_to_function: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[BreakLocation]]:
     """
     Returns possible locations for breakpoint. scriptId in start and end range locations should be
@@ -529,7 +529,7 @@ def get_possible_breakpoints(
 
 
 def get_script_source(
-        script_id: runtime.ScriptId,
+    script_id: runtime.ScriptId,
 ) -> typing.Generator[
     T_JSON_DICT, T_JSON_DICT, typing.Tuple[str, typing.Optional[str]]
 ]:
@@ -556,7 +556,7 @@ def get_script_source(
 
 
 def disassemble_wasm_module(
-        script_id: runtime.ScriptId,
+    script_id: runtime.ScriptId,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -591,7 +591,7 @@ def disassemble_wasm_module(
 
 
 def next_wasm_disassembly_chunk(
-        stream_id: str,
+    stream_id: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, WasmDisassemblyChunk]:
     """
     Disassemble the next chunk of lines for the module corresponding to the
@@ -616,7 +616,7 @@ def next_wasm_disassembly_chunk(
 
 @deprecated(version="1.3")
 def get_wasm_bytecode(
-        script_id: runtime.ScriptId,
+    script_id: runtime.ScriptId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
     """
     This command is deprecated. Use getScriptSource instead.
@@ -637,7 +637,7 @@ def get_wasm_bytecode(
 
 
 def get_stack_trace(
-        stack_trace_id: runtime.StackTraceId,
+    stack_trace_id: runtime.StackTraceId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, runtime.StackTrace]:
     """
     Returns stack trace with given ``stackTraceId``.
@@ -669,7 +669,7 @@ def pause() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 @deprecated(version="1.3")
 def pause_on_async_call(
-        parent_stack_trace_id: runtime.StackTraceId,
+    parent_stack_trace_id: runtime.StackTraceId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
 
@@ -690,7 +690,7 @@ def pause_on_async_call(
 
 
 def remove_breakpoint(
-        breakpoint_id: BreakpointId,
+    breakpoint_id: BreakpointId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Removes JavaScript breakpoint.
@@ -707,7 +707,7 @@ def remove_breakpoint(
 
 
 def restart_frame(
-        call_frame_id: CallFrameId, mode: typing.Optional[str] = None
+    call_frame_id: CallFrameId, mode: typing.Optional[str] = None
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -761,7 +761,7 @@ def restart_frame(
 
 
 def resume(
-        terminate_on_resume: typing.Optional[bool] = None,
+    terminate_on_resume: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Resumes JavaScript execution.
@@ -779,10 +779,10 @@ def resume(
 
 
 def search_in_content(
-        script_id: runtime.ScriptId,
-        query: str,
-        case_sensitive: typing.Optional[bool] = None,
-        is_regex: typing.Optional[bool] = None,
+    script_id: runtime.ScriptId,
+    query: str,
+    case_sensitive: typing.Optional[bool] = None,
+    is_regex: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[SearchMatch]]:
     """
     Searches for given string in script content.
@@ -809,7 +809,7 @@ def search_in_content(
 
 
 def set_async_call_stack_depth(
-        max_depth: int,
+    max_depth: int,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enables or disables async call stacks tracking.
@@ -826,7 +826,7 @@ def set_async_call_stack_depth(
 
 
 def set_blackbox_patterns(
-        patterns: typing.List[str],
+    patterns: typing.List[str],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Replace previous blackbox patterns with passed ones. Forces backend to skip stepping/pausing in
@@ -847,7 +847,7 @@ def set_blackbox_patterns(
 
 
 def set_blackboxed_ranges(
-        script_id: runtime.ScriptId, positions: typing.List[ScriptPosition]
+    script_id: runtime.ScriptId, positions: typing.List[ScriptPosition]
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Makes backend skip steps in the script in blackboxed ranges. VM will try leave blacklisted
@@ -871,7 +871,7 @@ def set_blackboxed_ranges(
 
 
 def set_breakpoint(
-        location: Location, condition: typing.Optional[str] = None
+    location: Location, condition: typing.Optional[str] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[BreakpointId, Location]]:
     """
     Sets JavaScript breakpoint at a given location.
@@ -899,7 +899,7 @@ def set_breakpoint(
 
 
 def set_instrumentation_breakpoint(
-        instrumentation: str,
+    instrumentation: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, BreakpointId]:
     """
     Sets instrumentation breakpoint.
@@ -918,12 +918,12 @@ def set_instrumentation_breakpoint(
 
 
 def set_breakpoint_by_url(
-        line_number: int,
-        url: typing.Optional[str] = None,
-        url_regex: typing.Optional[str] = None,
-        script_hash: typing.Optional[str] = None,
-        column_number: typing.Optional[int] = None,
-        condition: typing.Optional[str] = None,
+    line_number: int,
+    url: typing.Optional[str] = None,
+    url_regex: typing.Optional[str] = None,
+    script_hash: typing.Optional[str] = None,
+    column_number: typing.Optional[int] = None,
+    condition: typing.Optional[str] = None,
 ) -> typing.Generator[
     T_JSON_DICT, T_JSON_DICT, typing.Tuple[BreakpointId, typing.List[Location]]
 ]:
@@ -968,7 +968,7 @@ def set_breakpoint_by_url(
 
 
 def set_breakpoint_on_function_call(
-        object_id: runtime.RemoteObjectId, condition: typing.Optional[str] = None
+    object_id: runtime.RemoteObjectId, condition: typing.Optional[str] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, BreakpointId]:
     """
     Sets JavaScript breakpoint before each call to the given function.
@@ -994,7 +994,7 @@ def set_breakpoint_on_function_call(
 
 
 def set_breakpoints_active(
-        active: bool,
+    active: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Activates / deactivates all breakpoints on the page.
@@ -1011,7 +1011,7 @@ def set_breakpoints_active(
 
 
 def set_pause_on_exceptions(
-        state: str,
+    state: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Defines pause on exceptions state. Can be set to stop on all exceptions, uncaught exceptions,
@@ -1029,7 +1029,7 @@ def set_pause_on_exceptions(
 
 
 def set_return_value(
-        new_value: runtime.CallArgument,
+    new_value: runtime.CallArgument,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Changes return value in top frame. Available only at return break position.
@@ -1048,10 +1048,10 @@ def set_return_value(
 
 
 def set_script_source(
-        script_id: runtime.ScriptId,
-        script_source: str,
-        dry_run: typing.Optional[bool] = None,
-        allow_top_frame_editing: typing.Optional[bool] = None,
+    script_id: runtime.ScriptId,
+    script_source: str,
+    dry_run: typing.Optional[bool] = None,
+    allow_top_frame_editing: typing.Optional[bool] = None,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -1134,10 +1134,10 @@ def set_skip_all_pauses(skip: bool) -> typing.Generator[T_JSON_DICT, T_JSON_DICT
 
 
 def set_variable_value(
-        scope_number: int,
-        variable_name: str,
-        new_value: runtime.CallArgument,
-        call_frame_id: CallFrameId,
+    scope_number: int,
+    variable_name: str,
+    new_value: runtime.CallArgument,
+    call_frame_id: CallFrameId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Changes value of variable in a callframe. Object-based scopes are not supported and must be
@@ -1161,8 +1161,8 @@ def set_variable_value(
 
 
 def step_into(
-        break_on_async_call: typing.Optional[bool] = None,
-        skip_list: typing.Optional[typing.List[LocationRange]] = None,
+    break_on_async_call: typing.Optional[bool] = None,
+    skip_list: typing.Optional[typing.List[LocationRange]] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Steps into the function call.
@@ -1193,7 +1193,7 @@ def step_out() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def step_over(
-        skip_list: typing.Optional[typing.List[LocationRange]] = None,
+    skip_list: typing.Optional[typing.List[LocationRange]] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Steps over the statement.

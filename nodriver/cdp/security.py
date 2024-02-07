@@ -416,7 +416,7 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def set_ignore_certificate_errors(
-        ignore: bool,
+    ignore: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enable/disable whether all certificate errors should be ignored.
@@ -434,7 +434,7 @@ def set_ignore_certificate_errors(
 
 @deprecated(version="1.3")
 def handle_certificate_error(
-        event_id: int, action: CertificateErrorAction
+    event_id: int, action: CertificateErrorAction
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Handles a certificate error that fired a certificateError event.
@@ -456,7 +456,7 @@ def handle_certificate_error(
 
 @deprecated(version="1.3")
 def set_override_certificate_errors(
-        override: bool,
+    override: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enable/disable overriding certificate errors. If enabled, all certificate error events need to

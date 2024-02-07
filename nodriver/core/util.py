@@ -173,7 +173,7 @@ def remove_from_tree(tree: cdp.dom.Node, node: cdp.dom.Node) -> cdp.dom.Node:
     return tree
 
 
-async def html_from_tree(tree: Union[cdp.dom.Node, Element], target: "nodriver.Page"):
+async def html_from_tree(tree: Union[cdp.dom.Node, Element], target: "nodriver.Tab"):
     if not hasattr(tree, "children"):
         raise TypeError("object should have a .children attribute")
     out = ""

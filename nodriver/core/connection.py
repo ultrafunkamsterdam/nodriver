@@ -210,12 +210,13 @@ class Connection(metaclass=CantTouchThis):
         handler: Union[Callable, Awaitable],
     ):
         """
-        add a handler for an event type or entire domain (=all events for that domain)
+        add a handler for given event
+
+        if event_type_or_domain is a module instead of a type, it will find all available events and add
+        the handler.
 
         if you want to receive event updates (network traffic are also 'events') you can add handlers for those events.
-
         handlers can be regular callback functions or async coroutine functions (and also just lamba's).
-
         for example, you want to check the network traffic:
 
         .. code-block::
@@ -234,7 +235,7 @@ class Connection(metaclass=CantTouchThis):
         :rtype:
         """
         if isinstance(event_type_or_domain, types.ModuleType):
-            for name, obj in inspect.getmembers_static(cdp.network):
+            for name, obj in inspect.getmembers_static(event_type_or_domain):
                 if name.isupper():
                     continue
                 if not name[0].isupper():
@@ -279,9 +280,11 @@ class Connection(metaclass=CantTouchThis):
     async def sleep(self, t: Union[int, float] = 0.25):
         await asyncio.sleep(t)
 
-    async def wait(self):
+    async def wait(self, t: Union[int, float] = None):
         await self
         await self.listener.busy.wait()
+        if t:
+            await self.sleep(t)
 
     def __getattr__(self, item):
         """:meta private:"""

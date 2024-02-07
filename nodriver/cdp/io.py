@@ -46,9 +46,9 @@ def close(handle: StreamHandle) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, No
 
 
 def read(
-        handle: StreamHandle,
-        offset: typing.Optional[int] = None,
-        size: typing.Optional[int] = None,
+    handle: StreamHandle,
+    offset: typing.Optional[int] = None,
+    size: typing.Optional[int] = None,
 ) -> typing.Generator[
     T_JSON_DICT, T_JSON_DICT, typing.Tuple[typing.Optional[bool], str, bool]
 ]:
@@ -85,7 +85,7 @@ def read(
 
 
 def resolve_blob(
-        object_id: runtime.RemoteObjectId,
+    object_id: runtime.RemoteObjectId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
     """
     Return UUID of Blob object specified by a remote object id.

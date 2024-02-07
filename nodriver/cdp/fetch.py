@@ -203,8 +203,8 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def enable(
-        patterns: typing.Optional[typing.List[RequestPattern]] = None,
-        handle_auth_requests: typing.Optional[bool] = None,
+    patterns: typing.Optional[typing.List[RequestPattern]] = None,
+    handle_auth_requests: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enables issuing of requestPaused events. A request will be paused until client
@@ -226,7 +226,7 @@ def enable(
 
 
 def fail_request(
-        request_id: RequestId, error_reason: network.ErrorReason
+    request_id: RequestId, error_reason: network.ErrorReason
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Causes the request to fail with specified reason.
@@ -245,12 +245,12 @@ def fail_request(
 
 
 def fulfill_request(
-        request_id: RequestId,
-        response_code: int,
-        response_headers: typing.Optional[typing.List[HeaderEntry]] = None,
-        binary_response_headers: typing.Optional[str] = None,
-        body: typing.Optional[str] = None,
-        response_phrase: typing.Optional[str] = None,
+    request_id: RequestId,
+    response_code: int,
+    response_headers: typing.Optional[typing.List[HeaderEntry]] = None,
+    binary_response_headers: typing.Optional[str] = None,
+    body: typing.Optional[str] = None,
+    response_phrase: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     r"""
     Provides response to the request.
@@ -281,12 +281,12 @@ def fulfill_request(
 
 
 def continue_request(
-        request_id: RequestId,
-        url: typing.Optional[str] = None,
-        method: typing.Optional[str] = None,
-        post_data: typing.Optional[str] = None,
-        headers: typing.Optional[typing.List[HeaderEntry]] = None,
-        intercept_response: typing.Optional[bool] = None,
+    request_id: RequestId,
+    url: typing.Optional[str] = None,
+    method: typing.Optional[str] = None,
+    post_data: typing.Optional[str] = None,
+    headers: typing.Optional[typing.List[HeaderEntry]] = None,
+    intercept_response: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Continues the request, optionally modifying some of its parameters.
@@ -318,7 +318,7 @@ def continue_request(
 
 
 def continue_with_auth(
-        request_id: RequestId, auth_challenge_response: AuthChallengeResponse
+    request_id: RequestId, auth_challenge_response: AuthChallengeResponse
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Continues a request supplying authChallengeResponse following authRequired event.
@@ -337,11 +337,11 @@ def continue_with_auth(
 
 
 def continue_response(
-        request_id: RequestId,
-        response_code: typing.Optional[int] = None,
-        response_phrase: typing.Optional[str] = None,
-        response_headers: typing.Optional[typing.List[HeaderEntry]] = None,
-        binary_response_headers: typing.Optional[str] = None,
+    request_id: RequestId,
+    response_code: typing.Optional[int] = None,
+    response_phrase: typing.Optional[str] = None,
+    response_headers: typing.Optional[typing.List[HeaderEntry]] = None,
+    binary_response_headers: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     r"""
     Continues loading of the paused response, optionally modifying the
@@ -374,7 +374,7 @@ def continue_response(
 
 
 def get_response_body(
-        request_id: RequestId,
+    request_id: RequestId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[str, bool]]:
     """
     Causes the body of the response to be received from the server and
@@ -405,7 +405,7 @@ def get_response_body(
 
 
 def take_response_body_as_stream(
-        request_id: RequestId,
+    request_id: RequestId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, io.StreamHandle]:
     """
     Returns a handle to the stream representing the response body.

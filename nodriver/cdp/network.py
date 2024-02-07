@@ -2509,7 +2509,7 @@ class LoadNetworkResourceOptions:
 
 
 def set_accepted_encodings(
-        encodings: typing.List[ContentEncoding],
+    encodings: typing.List[ContentEncoding],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets a list of content encodings that will be accepted. Empty list means no encoding is accepted.
@@ -2528,7 +2528,7 @@ def set_accepted_encodings(
 
 
 def clear_accepted_encodings_override() -> (
-        typing.Generator[T_JSON_DICT, T_JSON_DICT, None]
+    typing.Generator[T_JSON_DICT, T_JSON_DICT, None]
 ):
     """
     Clears accepted encodings set by setAcceptedEncodings
@@ -2575,7 +2575,7 @@ def can_clear_browser_cookies() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, bo
 
 @deprecated(version="1.3")
 def can_emulate_network_conditions() -> (
-        typing.Generator[T_JSON_DICT, T_JSON_DICT, bool]
+    typing.Generator[T_JSON_DICT, T_JSON_DICT, bool]
 ):
     """
     Tells whether emulation of network conditions is supported.
@@ -2613,14 +2613,14 @@ def clear_browser_cookies() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 @deprecated(version="1.3")
 def continue_intercepted_request(
-        interception_id: InterceptionId,
-        error_reason: typing.Optional[ErrorReason] = None,
-        raw_response: typing.Optional[str] = None,
-        url: typing.Optional[str] = None,
-        method: typing.Optional[str] = None,
-        post_data: typing.Optional[str] = None,
-        headers: typing.Optional[Headers] = None,
-        auth_challenge_response: typing.Optional[AuthChallengeResponse] = None,
+    interception_id: InterceptionId,
+    error_reason: typing.Optional[ErrorReason] = None,
+    raw_response: typing.Optional[str] = None,
+    url: typing.Optional[str] = None,
+    method: typing.Optional[str] = None,
+    post_data: typing.Optional[str] = None,
+    headers: typing.Optional[Headers] = None,
+    auth_challenge_response: typing.Optional[AuthChallengeResponse] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Response to Network.requestIntercepted which either modifies the request to continue with any
@@ -2666,10 +2666,10 @@ def continue_intercepted_request(
 
 
 def delete_cookies(
-        name: str,
-        url: typing.Optional[str] = None,
-        domain: typing.Optional[str] = None,
-        path: typing.Optional[str] = None,
+    name: str,
+    url: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    path: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Deletes browser cookies with matching name and url or domain/path pair.
@@ -2705,11 +2705,11 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def emulate_network_conditions(
-        offline: bool,
-        latency: float,
-        download_throughput: float,
-        upload_throughput: float,
-        connection_type: typing.Optional[ConnectionType] = None,
+    offline: bool,
+    latency: float,
+    download_throughput: float,
+    upload_throughput: float,
+    connection_type: typing.Optional[ConnectionType] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Activates emulation of network conditions.
@@ -2735,9 +2735,9 @@ def emulate_network_conditions(
 
 
 def enable(
-        max_total_buffer_size: typing.Optional[int] = None,
-        max_resource_buffer_size: typing.Optional[int] = None,
-        max_post_data_size: typing.Optional[int] = None,
+    max_total_buffer_size: typing.Optional[int] = None,
+    max_resource_buffer_size: typing.Optional[int] = None,
+    max_post_data_size: typing.Optional[int] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enables network tracking, network events will now be delivered to the client.
@@ -2762,7 +2762,7 @@ def enable(
 
 @deprecated(version="1.3")
 def get_all_cookies() -> (
-        typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[Cookie]]
+    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[Cookie]]
 ):
     """
     Returns all browser cookies. Depending on the backend support, will return detailed cookie
@@ -2781,7 +2781,7 @@ def get_all_cookies() -> (
 
 
 def get_certificate(
-        origin: str,
+    origin: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[str]]:
     """
     Returns the DER-encoded certificate.
@@ -2802,7 +2802,7 @@ def get_certificate(
 
 
 def get_cookies(
-        urls: typing.Optional[typing.List[str]] = None,
+    urls: typing.Optional[typing.List[str]] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[Cookie]]:
     """
     Returns all browser cookies for the current URL. Depending on the backend support, will return
@@ -2823,7 +2823,7 @@ def get_cookies(
 
 
 def get_response_body(
-        request_id: RequestId,
+    request_id: RequestId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[str, bool]]:
     """
     Returns content served for the given request.
@@ -2845,7 +2845,7 @@ def get_response_body(
 
 
 def get_request_post_data(
-        request_id: RequestId,
+    request_id: RequestId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
     """
     Returns post data sent with the request. Returns an error when no data was sent with the request.
@@ -2864,7 +2864,7 @@ def get_request_post_data(
 
 
 def get_response_body_for_interception(
-        interception_id: InterceptionId,
+    interception_id: InterceptionId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[str, bool]]:
     """
     Returns content served for the given currently intercepted request.
@@ -2888,7 +2888,7 @@ def get_response_body_for_interception(
 
 
 def take_response_body_for_interception_as_stream(
-        interception_id: InterceptionId,
+    interception_id: InterceptionId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, io.StreamHandle]:
     """
     Returns a handle to the stream representing the response body. Note that after this command,
@@ -2912,7 +2912,7 @@ def take_response_body_for_interception_as_stream(
 
 
 def replay_xhr(
-        request_id: RequestId,
+    request_id: RequestId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     This method sends a new XMLHttpRequest which is identical to the original one. The following
@@ -2933,10 +2933,10 @@ def replay_xhr(
 
 
 def search_in_response_body(
-        request_id: RequestId,
-        query: str,
-        case_sensitive: typing.Optional[bool] = None,
-        is_regex: typing.Optional[bool] = None,
+    request_id: RequestId,
+    query: str,
+    case_sensitive: typing.Optional[bool] = None,
+    is_regex: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[debugger.SearchMatch]]:
     """
     Searches for given string in response content.
@@ -2965,7 +2965,7 @@ def search_in_response_body(
 
 
 def set_blocked_ur_ls(
-        urls: typing.List[str],
+    urls: typing.List[str],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Blocks URLs from loading.
@@ -2984,7 +2984,7 @@ def set_blocked_ur_ls(
 
 
 def set_bypass_service_worker(
-        bypass: bool,
+    bypass: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Toggles ignoring of service worker for each request.
@@ -3001,7 +3001,7 @@ def set_bypass_service_worker(
 
 
 def set_cache_disabled(
-        cache_disabled: bool,
+    cache_disabled: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Toggles ignoring cache for each request. If ``true``, cache will not be used.
@@ -3018,20 +3018,20 @@ def set_cache_disabled(
 
 
 def set_cookie(
-        name: str,
-        value: str,
-        url: typing.Optional[str] = None,
-        domain: typing.Optional[str] = None,
-        path: typing.Optional[str] = None,
-        secure: typing.Optional[bool] = None,
-        http_only: typing.Optional[bool] = None,
-        same_site: typing.Optional[CookieSameSite] = None,
-        expires: typing.Optional[TimeSinceEpoch] = None,
-        priority: typing.Optional[CookiePriority] = None,
-        same_party: typing.Optional[bool] = None,
-        source_scheme: typing.Optional[CookieSourceScheme] = None,
-        source_port: typing.Optional[int] = None,
-        partition_key: typing.Optional[str] = None,
+    name: str,
+    value: str,
+    url: typing.Optional[str] = None,
+    domain: typing.Optional[str] = None,
+    path: typing.Optional[str] = None,
+    secure: typing.Optional[bool] = None,
+    http_only: typing.Optional[bool] = None,
+    same_site: typing.Optional[CookieSameSite] = None,
+    expires: typing.Optional[TimeSinceEpoch] = None,
+    priority: typing.Optional[CookiePriority] = None,
+    same_party: typing.Optional[bool] = None,
+    source_scheme: typing.Optional[CookieSourceScheme] = None,
+    source_port: typing.Optional[int] = None,
+    partition_key: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, bool]:
     """
     Sets a cookie with the given cookie data; may overwrite equivalent cookies if they exist.
@@ -3088,7 +3088,7 @@ def set_cookie(
 
 
 def set_cookies(
-        cookies: typing.List[CookieParam],
+    cookies: typing.List[CookieParam],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets given cookies.
@@ -3105,7 +3105,7 @@ def set_cookies(
 
 
 def set_extra_http_headers(
-        headers: Headers,
+    headers: Headers,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Specifies whether to always send extra HTTP headers with the requests from this page.
@@ -3122,7 +3122,7 @@ def set_extra_http_headers(
 
 
 def set_attach_debug_stack(
-        enabled: bool,
+    enabled: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Specifies whether to attach a page script stack id in requests
@@ -3142,7 +3142,7 @@ def set_attach_debug_stack(
 
 @deprecated(version="1.3")
 def set_request_interception(
-        patterns: typing.List[RequestPattern],
+    patterns: typing.List[RequestPattern],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets the requests to intercept that match the provided patterns and optionally resource types.
@@ -3164,10 +3164,10 @@ def set_request_interception(
 
 
 def set_user_agent_override(
-        user_agent: str,
-        accept_language: typing.Optional[str] = None,
-        platform: typing.Optional[str] = None,
-        user_agent_metadata: typing.Optional[emulation.UserAgentMetadata] = None,
+    user_agent: str,
+    accept_language: typing.Optional[str] = None,
+    platform: typing.Optional[str] = None,
+    user_agent_metadata: typing.Optional[emulation.UserAgentMetadata] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Allows overriding user agent with the given string.
@@ -3193,7 +3193,7 @@ def set_user_agent_override(
 
 
 def stream_resource_content(
-        request_id: RequestId,
+    request_id: RequestId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
     """
     Enables streaming of the response for the given requestId.
@@ -3215,7 +3215,7 @@ def stream_resource_content(
 
 
 def get_security_isolation_status(
-        frame_id: typing.Optional[page.FrameId] = None,
+    frame_id: typing.Optional[page.FrameId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, SecurityIsolationStatus]:
     """
     Returns information about the COEP/COOP isolation status.
@@ -3237,7 +3237,7 @@ def get_security_isolation_status(
 
 
 def enable_reporting_api(
-        enable: bool,
+    enable: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enables tracking for the Reporting API, events generated by the Reporting API will now be delivered to the client.
@@ -3257,9 +3257,9 @@ def enable_reporting_api(
 
 
 def load_network_resource(
-        url: str,
-        options: LoadNetworkResourceOptions,
-        frame_id: typing.Optional[page.FrameId] = None,
+    url: str,
+    options: LoadNetworkResourceOptions,
+    frame_id: typing.Optional[page.FrameId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, LoadNetworkResourcePageResult]:
     """
     Fetches the resource and returns the content.

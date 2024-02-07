@@ -15,8 +15,8 @@ async def main():
         urls.add(the_url)
 
     browser = await start()
-    browser.active_page.add_handler(cdp.network.RequestWillBeSent, on_request_sent_handler)
-    await browser.active_page.set_download_path(dl_path)
+    browser.main_tab.add_handler(cdp.network.RequestWillBeSent, on_request_sent_handler)
+    await browser.main_tab.set_download_path(dl_path)
 
     page = await browser.get(url)
 

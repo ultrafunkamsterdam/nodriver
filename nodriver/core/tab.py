@@ -3,8 +3,9 @@ import http.cookiejar
 import logging
 import pathlib
 import types
+import typing
 import warnings
-from typing import List, Union, Optional
+from typing import List, Union, Optional, Tuple
 
 import nodriver.core.browser
 from . import element
@@ -16,7 +17,7 @@ from .. import cdp
 logger = logging.getLogger(__name__)
 
 
-class Page(Connection):
+class Tab(Connection):
     """
     The Page object is every Tab, Window or Page you are controlling.
     This is the main object you will use in your project.
@@ -218,6 +219,8 @@ class Page(Connection):
             node = util.filter_recurse(doc, lambda n: n.node_id == nid)
             # we pass along the retrieved document tree,
             # to improve performance
+            if not node:
+                continue
             elem = element.create(node, self, doc)
             results.append(elem)
 
@@ -377,16 +380,16 @@ class Page(Connection):
         if self.target and self.target.target_id:
             await self.send(cdp.target.close_target(target_id=self.target.target_id))
 
-    async def get_window(self) -> cdp.browser.Bounds:
+    async def get_window(self) -> Tuple[cdp.browser.WindowID, cdp.browser.Bounds]:
         """
         get the window Bounds
         :return:
         :rtype:
         """
-        self._window_id, bounds = await self.send(
+        window_id, bounds = await self.send(
             cdp.browser.get_window_for_target(self.target_id)
         )
-        return bounds
+        return window_id, bounds
 
     async def get_all_cookies(
         self, requests_cookie_format: bool = False
@@ -444,13 +447,22 @@ class Page(Connection):
         """
         maximize page/tab/window
         """
-        return await self.set_window_state(state_name="maximize")
+        return await self.set_window_state(state="maximize")
 
     async def minimize(self):
         """
         minimize page/tab/window
         """
-        return await self.set_window_state(state_name="minimize")
+        return await self.set_window_state(state="minimize")
+
+    async def fullscreen(self):
+        """
+        minimize page/tab/window
+        """
+        return await self.set_window_state(state="fullscreen")
+
+    async def medimize(self):
+        return await self.set_window_state(state="normal")
 
     async def set_window_size(self, left=0, top=0, width=1280, height=1024):
         """
@@ -515,8 +527,9 @@ class Page(Connection):
 
         """
         available_states = ["minimized", "maximized", "fullscreen", "normal"]
-        if not self._window_id:
-            await self.get_window()
+        window_id: cdp.browser.WindowID
+        bounds: cdp.browser.Bounds
+        (window_id, bounds) = await self.get_window()
 
         for state_name in available_states:
             if all(x in state_name for x in state.lower()):
@@ -532,14 +545,14 @@ class Page(Connection):
         if window_state == cdp.browser.WindowState.NORMAL:
             bounds = cdp.browser.Bounds(left, top, width, height, window_state)
         else:
-            current_bounds = await self.get_window()
+            window_id, current_bounds = await self.get_window()
             if current_bounds.window_state != cdp.browser.WindowState.NORMAL:
                 # min, max, full can only be used when current state == NORMAL
                 # therefore we first switch to NORMAL
-                await self.set_window_size(state="normal")
+                await self.set_window_state(state="normal")
             bounds = cdp.browser.Bounds(window_state=window_state)
 
-        await self.send(cdp.browser.set_window_bounds(self._window_id, bounds=bounds))
+        await self.send(cdp.browser.set_window_bounds(window_id, bounds=bounds))
 
     async def scroll_down(self, amount=25):
         """
@@ -550,8 +563,9 @@ class Page(Connection):
         :return:
         :rtype:
         """
-
-        bounds: cdp.browser.Bounds = await self.get_window()
+        window_id: cdp.browser.WindowID
+        bounds: cdp.browser.Bounds
+        (window_id, bounds) = await self.get_window()
 
         await self.send(
             cdp.input_.synthesize_scroll_gesture(
@@ -576,8 +590,9 @@ class Page(Connection):
         :return:
         :rtype:
         """
-
-        bounds: cdp.browser.Bounds = await self.get_window()
+        window_id: cdp.browser.WindowID
+        bounds: cdp.browser.Bounds
+        (window_id, bounds) = await self.get_window()
 
         await self.send(
             cdp.input_.synthesize_scroll_gesture(
@@ -596,7 +611,7 @@ class Page(Connection):
         text: Optional[str] = "",
         selector: Optional[str] = "",
         timeout: Optional[Union[int, float]] = 5,
-    ):
+    ) -> element.Element:
         """
         variant on query_selector_all and find_elements_by_text
         this variant takes either selector or text, and will block until
@@ -612,7 +627,8 @@ class Page(Connection):
         :param timeout:
         :type timeout:
         :return:
-        :rtype:
+        :rtype: Element
+        :raises: asyncio.TimeoutError
         """
         loop = asyncio.get_running_loop()
         now = loop.time()
@@ -813,7 +829,7 @@ class Page(Connection):
 
 
 class WaitFor:
-    def __init__(self, page: Page):
+    def __init__(self, page: Tab):
         self.page = page
 
     async def __call__(self, text: str = None, selector: str = None, timeout: int = 5):

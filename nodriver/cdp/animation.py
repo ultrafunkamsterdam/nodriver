@@ -262,7 +262,7 @@ def get_playback_rate() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, float]:
 
 
 def release_animations(
-        animations: typing.List[str],
+    animations: typing.List[str],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Releases a set of animations to no longer be manipulated.
@@ -279,7 +279,7 @@ def release_animations(
 
 
 def resolve_animation(
-        animation_id: str,
+    animation_id: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, runtime.RemoteObject]:
     """
     Gets the remote object of the Animation.
@@ -298,7 +298,7 @@ def resolve_animation(
 
 
 def seek_animations(
-        animations: typing.List[str], current_time: float
+    animations: typing.List[str], current_time: float
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Seek a set of animations to a particular time within each animation.
@@ -317,7 +317,7 @@ def seek_animations(
 
 
 def set_paused(
-        animations: typing.List[str], paused: bool
+    animations: typing.List[str], paused: bool
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets the paused state of a set of animations.
@@ -336,7 +336,7 @@ def set_paused(
 
 
 def set_playback_rate(
-        playback_rate: float,
+    playback_rate: float,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets the playback rate of the document timeline.
@@ -353,7 +353,7 @@ def set_playback_rate(
 
 
 def set_timing(
-        animation_id: str, duration: float, delay: float
+    animation_id: str, duration: float, delay: float
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets the timing of an animation node.

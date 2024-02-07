@@ -52,7 +52,7 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def enable(
-        time_domain: typing.Optional[str] = None,
+    time_domain: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enable collecting and reporting metrics.
@@ -71,7 +71,7 @@ def enable(
 
 @deprecated(version="1.3")
 def set_time_domain(
-        time_domain: str,
+    time_domain: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets time domain to use for collecting and reporting duration metrics.

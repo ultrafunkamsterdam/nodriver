@@ -13,7 +13,7 @@ from .util import T_JSON_DICT
 
 
 def set_instrumentation_breakpoint(
-        event_name: str,
+    event_name: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets breakpoint on particular native event.
@@ -30,7 +30,7 @@ def set_instrumentation_breakpoint(
 
 
 def remove_instrumentation_breakpoint(
-        event_name: str,
+    event_name: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Removes breakpoint on particular native event.
