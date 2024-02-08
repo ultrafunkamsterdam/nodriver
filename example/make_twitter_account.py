@@ -13,8 +13,18 @@ logging.basicConfig(level=30)
 import nodriver as uc
 
 months = [
-    "january", "february", "march", "april", "may", "june", "july", "august", "september",
-    "october", "november", "december"
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
 ]
 
 
@@ -27,13 +37,11 @@ async def main():
     # wait for text to appear instead of a static number of seconds to wait
     # this does not always work as expected, due to speed.
     print('finding the "create account" button')
-    create_account = await page.find_element_by_text(
-        "create account"
-    )
+    create_account = await page.find_element_by_text("create account")
     print('"create account" => click')
     await create_account.click()
 
-    print('finding the email input field')
+    print("finding the email input field")
     email = await page(selector="input[type=email]")
 
     # sometimes, email field is not shown, because phone is being asked instead
@@ -53,7 +61,7 @@ async def main():
     await email.send_keys("".join([randstr(8), "@", randstr(8), ".com"]))
 
     # find the name input field
-    print('finding the name input field')
+    print("finding the name input field")
     name = await page.query_selector("input[type=text]")
 
     # again, send random text
@@ -88,11 +96,11 @@ async def main():
 
     await page.sleep(1)
 
-    next_btns = await page.find_elements_by_text(text="next", tag_hint='div')
+    next_btns = await page.find_elements_by_text(text="next", tag_hint="div")
     # for btn in reversed(next_btns):
     await next_btns[-1].mouse_click()
 
-    print('sleeping 2 seconds')
+    print("sleeping 2 seconds")
     await page.sleep(2)  # visually see what part we're actually in
 
     print('finding "next" button')
@@ -104,9 +112,7 @@ async def main():
     await page.wait_for(selector="[role=button]")
 
     print('finding "sign up"  button')
-    sign_up_btns = await page.find_elements_by_text(
-        "Sign up"
-    )
+    sign_up_btns = await page.find_elements_by_text("Sign up")
     # we need the second one
     sign_up_btn = sign_up_btns[1]
     print('clicking "sign up"  button')
@@ -121,7 +127,6 @@ async def main():
 
 
 if __name__ == "__main__":
-
     # since asyncio.run never worked (for me)
     # i use
     uc.loop().run_until_complete(main())

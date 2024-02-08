@@ -3,19 +3,23 @@ import asyncio
 from nodriver import start, cdp, util
 from pathlib import Path
 import logging
+
 # logging.basicConfig(level=10)
-dl_path = Path('c:\\temp\\downloads3')
+dl_path = Path("c:\\temp\\downloads3")
 import urllib.parse
+
 
 def get_filename(url):
     u = urllib.parse.urlparse(url)
-    split2 = u.path.rsplit('/', 1)
+    split2 = u.path.rsplit("/", 1)
     return split2[-1]
+
 
 def filename_from_url(url: str):
     import urllib.parse
+
     p = urllib.parse.urlsplit(url)
-    path_split = p.path.rsplit('/')
+    path_split = p.path.rsplit("/")
     if not path_split or len(path_split) <= 1:
         return
     last = path_split[-1]
@@ -61,35 +65,30 @@ async def main(url):
     # page._handlers.clear()
     # print('done waiting')
 
-
-
-
-    print('events:')
+    print("events:")
     for ev in events:
         print(ev)
 
-    await page.download_file(page.url, 'index.html')
+    await page.download_file(page.url, "index.html")
 
     for ev in events:
         try:
             await page.download_alt(ev, events[ev])
-            await page.sleep(.5)
+            await page.sleep(0.5)
         except Exception as e:
             print(e)
 
-    allfiles = list(dl_path.glob('*'))
+    allfiles = list(dl_path.glob("*"))
     for ev in events:
         fn = Path(get_filename(ev))
         if fn not in allfiles:
-            print('missing ', fn, 'from', ev)
+            print("missing ", fn, "from", ev)
             fnfu = Path(filename_from_url(ev))
             if fnfu not in allfiles:
-                print('also when using filename_from_url', fnfu)
-
-
-
+                print("also when using filename_from_url", fnfu)
 
     await page.sleep(60)
 
-if __name__ == '__main__':
-    asyncio.run(main('https://trustpilot.com/review/lostempireherbs.com'))
+
+if __name__ == "__main__":
+    asyncio.run(main("https://trustpilot.com/review/lostempireherbs.com"))
