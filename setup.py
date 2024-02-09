@@ -37,22 +37,12 @@ description = (
 setup(
     name="nodriver",
     version=version,
-    packages=[
-        "nodriver",
-        "nodriver.core",
-        "nodriver.cdp"
-
-
-    ],
+    packages=["nodriver", "nodriver.core", "nodriver.cdp"],
     install_requires=[
         "mss",
         "websockets>=11",
     ],
-    package_data={
-        "nodriver":
-            ["example/*"]
-    },
-
+    package_data={"nodriver": ["example/*"]},
     url="https://github.com/ultrafunkamsterdam/undetected-chromedriver",
     license="GPL-3.0",
     author="UltrafunkAmsterdam",

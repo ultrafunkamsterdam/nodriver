@@ -326,7 +326,7 @@ class Browser:
                 "In that case you need to pass no_sandbox=True.\n\n"
             )
 
-        self.connection = await Connection.create(
+        self.connection = Connection(
             self.info.webSocketDebuggerUrl, _owner=self
         )
 

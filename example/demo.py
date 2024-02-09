@@ -2,11 +2,8 @@
 # coding: utf-8
 
 import asyncio
-
-import time
-import logging
 import logging.handlers
-
+import time
 
 logging.basicConfig(level=20)
 
@@ -69,7 +66,7 @@ async def main():
 
         await tab.medimize()
         for elem in elems:
-            await elem.flash(duration=3)
+            await elem.flash(duration=0.25)
             await elem.scroll_into_view()
 
     b365pages = [tab for tab in driver.tabs if "bet365" in tab.url]
@@ -82,8 +79,12 @@ async def main():
     )
 
     async def scroll_task(tab):
-        await tab.scroll_down(100)
-        await tab.scroll_up(100)
+        tabIndex = driver.tabs.index(tab)
+        [
+            await tab.scroll_down(n)
+            or print("tab %d scrolling down : %d" % (tabIndex, n))
+            for n in range(0, 100, 10)
+        ]
 
     await driver.tile_windows(max_columns=8)
     await asyncio.gather(*[scroll_task(tab) for tab in driver.tabs])

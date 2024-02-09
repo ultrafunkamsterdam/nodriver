@@ -248,11 +248,6 @@ class Connection(metaclass=CantTouchThis):
             return
         self.handlers[event_type_or_domain].append(handler)
 
-    @classmethod
-    async def create(cls, websocket_url: str, **kwargs):
-        instance = cls(websocket_url, **kwargs)
-        return instance
-
     async def aopen(self, **kw):
         """
         :param kw:
@@ -337,9 +332,11 @@ class Connection(metaclass=CantTouchThis):
 
         # send out
         await self.websocket.send(tx.message)
-
-        return await tx
-
+        try:
+            return await tx
+        except ProtocolException as e:
+            e.message += f"\ncommand:{tx.method}\nparams:{tx.params}"
+            raise e
     async def _register_handlers(self):
         """
         ensure that for current (event) handlers, the corresponding
