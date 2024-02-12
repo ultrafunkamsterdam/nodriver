@@ -172,7 +172,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../classes/browser.html">Browser class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../classes/element.html">Element class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../classes/others_and_helpers.html">Other classes and Helper classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../classes/page.html">Page class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/tab.html"><code class="docutils literal notranslate"><span class="pre">Tab</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
 <ul class="current">
@@ -288,12 +288,9 @@ arguments to other commands.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SerializationOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">serialization</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">additional_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/runtime.html#SerializationOptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.runtime.SerializationOptions" title="Link to this definition">#</a></dt>
 <dd><p>Represents options for serialization. Overrides <code class="docutils literal notranslate"><span class="pre">generatePreview</span></code> and <code class="docutils literal notranslate"><span class="pre">returnByValue</span></code>.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.SerializationOptions.additional_parameters">
-<span class="sig-name descname"><span class="pre">additional_parameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.SerializationOptions.additional_parameters" title="Link to this definition">#</a></dt>
-<dd><p>Embedder-specific parameters. For example if connected to V8 in Chrome these control DOM
-serialization via <code class="docutils literal notranslate"><span class="pre">maxNodeDepth:</span> <span class="pre">integer</span></code> and <code class="docutils literal notranslate"><span class="pre">includeShadowTree:</span> <span class="pre">&quot;none&quot;</span> <span class="pre">``</span> <span class="pre">&quot;open&quot;</span> <span class="pre">``</span> <span class="pre">&quot;all&quot;</span></code>.
-Values can be only of type string or integer.</p>
-</dd></dl>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.SerializationOptions.serialization">
+<span class="sig-name descname"><span class="pre">serialization</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.SerializationOptions.serialization" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.SerializationOptions.max_depth">
@@ -302,9 +299,12 @@ Values can be only of type string or integer.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.SerializationOptions.serialization">
-<span class="sig-name descname"><span class="pre">serialization</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.SerializationOptions.serialization" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.SerializationOptions.additional_parameters">
+<span class="sig-name descname"><span class="pre">additional_parameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.SerializationOptions.additional_parameters" title="Link to this definition">#</a></dt>
+<dd><p>Embedder-specific parameters. For example if connected to V8 in Chrome these control DOM
+serialization via <code class="docutils literal notranslate"><span class="pre">maxNodeDepth:</span> <span class="pre">integer</span></code> and <code class="docutils literal notranslate"><span class="pre">includeShadowTree:</span> <span class="pre">&quot;none&quot;</span> <span class="pre">``</span> <span class="pre">&quot;open&quot;</span> <span class="pre">``</span> <span class="pre">&quot;all&quot;</span></code>.
+Values can be only of type string or integer.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -313,11 +313,6 @@ Values can be only of type string or integer.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DeepSerializedValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weak_local_object_reference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/runtime.html#DeepSerializedValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.runtime.DeepSerializedValue" title="Link to this definition">#</a></dt>
 <dd><p>Represents deep serialized value.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.DeepSerializedValue.object_id">
-<span class="sig-name descname"><span class="pre">object_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.DeepSerializedValue.object_id" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.DeepSerializedValue.type_">
 <span class="sig-name descname"><span class="pre">type_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.DeepSerializedValue.type_" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -325,6 +320,11 @@ Values can be only of type string or integer.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.DeepSerializedValue.value">
 <span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.DeepSerializedValue.value" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.DeepSerializedValue.object_id">
+<span class="sig-name descname"><span class="pre">object_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.DeepSerializedValue.object_id" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -355,26 +355,48 @@ per value in the scope of one CDP call.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RemoteObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unserializable_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deep_serialized_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_preview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/runtime.html#RemoteObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject" title="Link to this definition">#</a></dt>
 <dd><p>Mirror object referencing original JavaScript object.</p>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.RemoteObject.type_">
+<span class="sig-name descname"><span class="pre">type_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject.type_" title="Link to this definition">#</a></dt>
+<dd><p>Object type.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.RemoteObject.subtype">
+<span class="sig-name descname"><span class="pre">subtype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject.subtype" title="Link to this definition">#</a></dt>
+<dd><p>Object subtype hint. Specified for <code class="docutils literal notranslate"><span class="pre">object</span></code> type values only.
+NOTE: If you change anything here, make sure to also update
+<code class="docutils literal notranslate"><span class="pre">subtype</span></code> in <code class="docutils literal notranslate"><span class="pre">ObjectPreview</span></code> and <code class="docutils literal notranslate"><span class="pre">PropertyPreview</span></code> below.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.RemoteObject.class_name">
 <span class="sig-name descname"><span class="pre">class_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject.class_name" title="Link to this definition">#</a></dt>
 <dd><p>Object class (constructor) name. Specified for <code class="docutils literal notranslate"><span class="pre">object</span></code> type values only.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.RemoteObject.custom_preview">
-<span class="sig-name descname"><span class="pre">custom_preview</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.CustomPreview" title="nodriver.cdp.runtime.CustomPreview"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomPreview</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject.custom_preview" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.RemoteObject.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject.value" title="Link to this definition">#</a></dt>
+<dd><p>Remote object value in case of primitive values or JSON values (if it was requested).</p>
+</dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.RemoteObject.deep_serialized_value">
-<span class="sig-name descname"><span class="pre">deep_serialized_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.DeepSerializedValue" title="nodriver.cdp.runtime.DeepSerializedValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeepSerializedValue</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject.deep_serialized_value" title="Link to this definition">#</a></dt>
-<dd><p>Deep serialized value.</p>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.RemoteObject.unserializable_value">
+<span class="sig-name descname"><span class="pre">unserializable_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.UnserializableValue" title="nodriver.cdp.runtime.UnserializableValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnserializableValue</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject.unserializable_value" title="Link to this definition">#</a></dt>
+<dd><p>Primitive value which can not be JSON-stringified does not have <code class="docutils literal notranslate"><span class="pre">value</span></code>, but gets this
+property.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.RemoteObject.description">
 <span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject.description" title="Link to this definition">#</a></dt>
 <dd><p>String representation of the object.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.RemoteObject.deep_serialized_value">
+<span class="sig-name descname"><span class="pre">deep_serialized_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.DeepSerializedValue" title="nodriver.cdp.runtime.DeepSerializedValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeepSerializedValue</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject.deep_serialized_value" title="Link to this definition">#</a></dt>
+<dd><p>Deep serialized value.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -390,31 +412,9 @@ per value in the scope of one CDP call.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.RemoteObject.subtype">
-<span class="sig-name descname"><span class="pre">subtype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject.subtype" title="Link to this definition">#</a></dt>
-<dd><p>Object subtype hint. Specified for <code class="docutils literal notranslate"><span class="pre">object</span></code> type values only.
-NOTE: If you change anything here, make sure to also update
-<code class="docutils literal notranslate"><span class="pre">subtype</span></code> in <code class="docutils literal notranslate"><span class="pre">ObjectPreview</span></code> and <code class="docutils literal notranslate"><span class="pre">PropertyPreview</span></code> below.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.RemoteObject.type_">
-<span class="sig-name descname"><span class="pre">type_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject.type_" title="Link to this definition">#</a></dt>
-<dd><p>Object type.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.RemoteObject.unserializable_value">
-<span class="sig-name descname"><span class="pre">unserializable_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.UnserializableValue" title="nodriver.cdp.runtime.UnserializableValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnserializableValue</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject.unserializable_value" title="Link to this definition">#</a></dt>
-<dd><p>Primitive value which can not be JSON-stringified does not have <code class="docutils literal notranslate"><span class="pre">value</span></code>, but gets this
-property.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.RemoteObject.value">
-<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject.value" title="Link to this definition">#</a></dt>
-<dd><p>Remote object value in case of primitive values or JSON values (if it was requested).</p>
-</dd></dl>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.RemoteObject.custom_preview">
+<span class="sig-name descname"><span class="pre">custom_preview</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.CustomPreview" title="nodriver.cdp.runtime.CustomPreview"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomPreview</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.RemoteObject.custom_preview" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -422,18 +422,18 @@ property.</p>
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.CustomPreview">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CustomPreview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body_getter_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/runtime.html#CustomPreview"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.runtime.CustomPreview" title="Link to this definition">#</a></dt>
 <dd><dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.CustomPreview.header">
+<span class="sig-name descname"><span class="pre">header</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.CustomPreview.header" title="Link to this definition">#</a></dt>
+<dd><p>The JSON-stringified result of formatter.header(object, config) call.
+It contains json ML array that represents RemoteObject.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.CustomPreview.body_getter_id">
 <span class="sig-name descname"><span class="pre">body_getter_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObjectId" title="nodriver.cdp.runtime.RemoteObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObjectId</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.CustomPreview.body_getter_id" title="Link to this definition">#</a></dt>
 <dd><p>If formatter returns true as a result of formatter.hasBody call then bodyGetterId will
 contain RemoteObjectId for the function that returns result of formatter.body(object, config) call.
 The result value is json ML array.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.CustomPreview.header">
-<span class="sig-name descname"><span class="pre">header</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.CustomPreview.header" title="Link to this definition">#</a></dt>
-<dd><p>The JSON-stringified result of formatter.header(object, config) call.
-It contains json ML array that represents RemoteObject.</p>
 </dd></dl>
 
 </dd></dl>
@@ -443,15 +443,9 @@ It contains json ML array that represents RemoteObject.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ObjectPreview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/runtime.html#ObjectPreview"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.runtime.ObjectPreview" title="Link to this definition">#</a></dt>
 <dd><p>Object containing abbreviated remote object value.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ObjectPreview.description">
-<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ObjectPreview.description" title="Link to this definition">#</a></dt>
-<dd><p>String representation of the object.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ObjectPreview.entries">
-<span class="sig-name descname"><span class="pre">entries</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.EntryPreview" title="nodriver.cdp.runtime.EntryPreview"><code class="xref py py-class docutils literal notranslate"><span class="pre">EntryPreview</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ObjectPreview.entries" title="Link to this definition">#</a></dt>
-<dd><p>List of the entries. Specified for <code class="docutils literal notranslate"><span class="pre">map</span></code> and <code class="docutils literal notranslate"><span class="pre">set</span></code> subtype values only.</p>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ObjectPreview.type_">
+<span class="sig-name descname"><span class="pre">type_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ObjectPreview.type_" title="Link to this definition">#</a></dt>
+<dd><p>Object type.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -473,9 +467,15 @@ It contains json ML array that represents RemoteObject.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ObjectPreview.type_">
-<span class="sig-name descname"><span class="pre">type_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ObjectPreview.type_" title="Link to this definition">#</a></dt>
-<dd><p>Object type.</p>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ObjectPreview.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ObjectPreview.description" title="Link to this definition">#</a></dt>
+<dd><p>String representation of the object.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ObjectPreview.entries">
+<span class="sig-name descname"><span class="pre">entries</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.EntryPreview" title="nodriver.cdp.runtime.EntryPreview"><code class="xref py py-class docutils literal notranslate"><span class="pre">EntryPreview</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ObjectPreview.entries" title="Link to this definition">#</a></dt>
+<dd><p>List of the entries. Specified for <code class="docutils literal notranslate"><span class="pre">map</span></code> and <code class="docutils literal notranslate"><span class="pre">set</span></code> subtype values only.</p>
 </dd></dl>
 
 </dd></dl>
@@ -487,12 +487,6 @@ It contains json ML array that represents RemoteObject.</p>
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyPreview.name">
 <span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyPreview.name" title="Link to this definition">#</a></dt>
 <dd><p>Property name.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyPreview.subtype">
-<span class="sig-name descname"><span class="pre">subtype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyPreview.subtype" title="Link to this definition">#</a></dt>
-<dd><p>Object subtype hint. Specified for <code class="docutils literal notranslate"><span class="pre">object</span></code> type values only.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -513,21 +507,27 @@ It contains json ML array that represents RemoteObject.</p>
 <dd><p>Nested value preview.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyPreview.subtype">
+<span class="sig-name descname"><span class="pre">subtype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyPreview.subtype" title="Link to this definition">#</a></dt>
+<dd><p>Object subtype hint. Specified for <code class="docutils literal notranslate"><span class="pre">object</span></code> type values only.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.EntryPreview">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EntryPreview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/runtime.html#EntryPreview"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.runtime.EntryPreview" title="Link to this definition">#</a></dt>
 <dd><dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.EntryPreview.key">
-<span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.ObjectPreview" title="nodriver.cdp.runtime.ObjectPreview"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectPreview</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.EntryPreview.key" title="Link to this definition">#</a></dt>
-<dd><p>Preview of the key. Specified for map-like collection entries.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.EntryPreview.value">
 <span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.runtime.ObjectPreview" title="nodriver.cdp.runtime.ObjectPreview"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectPreview</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.EntryPreview.value" title="Link to this definition">#</a></dt>
 <dd><p>Preview of the value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.EntryPreview.key">
+<span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.ObjectPreview" title="nodriver.cdp.runtime.ObjectPreview"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectPreview</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.EntryPreview.key" title="Link to this definition">#</a></dt>
+<dd><p>Preview of the key. Specified for map-like collection entries.</p>
 </dd></dl>
 
 </dd></dl>
@@ -536,6 +536,12 @@ It contains json ML array that represents RemoteObject.</p>
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyDescriptor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PropertyDescriptor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configurable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enumerable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">writable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">was_thrown</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_own</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/runtime.html#PropertyDescriptor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.runtime.PropertyDescriptor" title="Link to this definition">#</a></dt>
 <dd><p>Object property descriptor.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyDescriptor.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyDescriptor.name" title="Link to this definition">#</a></dt>
+<dd><p>Property name or symbol description.</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyDescriptor.configurable">
 <span class="sig-name descname"><span class="pre">configurable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyDescriptor.configurable" title="Link to this definition">#</a></dt>
@@ -551,22 +557,22 @@ object.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyDescriptor.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyDescriptor.value" title="Link to this definition">#</a></dt>
+<dd><p>The value associated with the property.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyDescriptor.writable">
+<span class="sig-name descname"><span class="pre">writable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyDescriptor.writable" title="Link to this definition">#</a></dt>
+<dd><p>True if the value associated with the property may be changed (data descriptors only).</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyDescriptor.get">
 <span class="sig-name descname"><span class="pre">get</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyDescriptor.get" title="Link to this definition">#</a></dt>
 <dd><p>A function which serves as a getter for the property, or <code class="docutils literal notranslate"><span class="pre">undefined</span></code> if there is no getter
 (accessor descriptors only).</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyDescriptor.is_own">
-<span class="sig-name descname"><span class="pre">is_own</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyDescriptor.is_own" title="Link to this definition">#</a></dt>
-<dd><p>True if the property is owned for the object.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyDescriptor.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyDescriptor.name" title="Link to this definition">#</a></dt>
-<dd><p>Property name or symbol description.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -577,27 +583,21 @@ object.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyDescriptor.symbol">
-<span class="sig-name descname"><span class="pre">symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyDescriptor.symbol" title="Link to this definition">#</a></dt>
-<dd><p>Property symbol object, if the property is of the <code class="docutils literal notranslate"><span class="pre">symbol</span></code> type.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyDescriptor.value">
-<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyDescriptor.value" title="Link to this definition">#</a></dt>
-<dd><p>The value associated with the property.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyDescriptor.was_thrown">
 <span class="sig-name descname"><span class="pre">was_thrown</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyDescriptor.was_thrown" title="Link to this definition">#</a></dt>
 <dd><p>True if the result was thrown during the evaluation.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyDescriptor.writable">
-<span class="sig-name descname"><span class="pre">writable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyDescriptor.writable" title="Link to this definition">#</a></dt>
-<dd><p>True if the value associated with the property may be changed (data descriptors only).</p>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyDescriptor.is_own">
+<span class="sig-name descname"><span class="pre">is_own</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyDescriptor.is_own" title="Link to this definition">#</a></dt>
+<dd><p>True if the property is owned for the object.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.PropertyDescriptor.symbol">
+<span class="sig-name descname"><span class="pre">symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PropertyDescriptor.symbol" title="Link to this definition">#</a></dt>
+<dd><p>Property symbol object, if the property is of the <code class="docutils literal notranslate"><span class="pre">symbol</span></code> type.</p>
 </dd></dl>
 
 </dd></dl>
@@ -625,6 +625,18 @@ object.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrivatePropertyDescriptor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/runtime.html#PrivatePropertyDescriptor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.runtime.PrivatePropertyDescriptor" title="Link to this definition">#</a></dt>
 <dd><p>Object private field descriptor.</p>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.PrivatePropertyDescriptor.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.PrivatePropertyDescriptor.name" title="Link to this definition">#</a></dt>
+<dd><p>Private property name.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.PrivatePropertyDescriptor.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PrivatePropertyDescriptor.value" title="Link to this definition">#</a></dt>
+<dd><p>The value associated with the private property.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.PrivatePropertyDescriptor.get">
 <span class="sig-name descname"><span class="pre">get</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PrivatePropertyDescriptor.get" title="Link to this definition">#</a></dt>
 <dd><p>A function which serves as a getter for the private property,
@@ -632,22 +644,10 @@ or <code class="docutils literal notranslate"><span class="pre">undefined</span>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.PrivatePropertyDescriptor.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.PrivatePropertyDescriptor.name" title="Link to this definition">#</a></dt>
-<dd><p>Private property name.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.PrivatePropertyDescriptor.set_">
 <span class="sig-name descname"><span class="pre">set_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PrivatePropertyDescriptor.set_" title="Link to this definition">#</a></dt>
 <dd><p>A function which serves as a setter for the private property,
 or <code class="docutils literal notranslate"><span class="pre">undefined</span></code> if there is no setter (accessor descriptors only).</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.PrivatePropertyDescriptor.value">
-<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.PrivatePropertyDescriptor.value" title="Link to this definition">#</a></dt>
-<dd><p>The value associated with the private property.</p>
 </dd></dl>
 
 </dd></dl>
@@ -658,9 +658,9 @@ or <code class="docutils literal notranslate"><span class="pre">undefined</span>
 <dd><p>Represents function call argument. Either remote object id <code class="docutils literal notranslate"><span class="pre">objectId</span></code>, primitive <code class="docutils literal notranslate"><span class="pre">value</span></code>,
 unserializable primitive value or neither of (for undefined) them should be specified.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.CallArgument.object_id">
-<span class="sig-name descname"><span class="pre">object_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObjectId" title="nodriver.cdp.runtime.RemoteObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObjectId</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.CallArgument.object_id" title="Link to this definition">#</a></dt>
-<dd><p>Remote object handle.</p>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.CallArgument.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.CallArgument.value" title="Link to this definition">#</a></dt>
+<dd><p>Primitive value or serializable javascript object.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -670,9 +670,9 @@ unserializable primitive value or neither of (for undefined) them should be spec
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.CallArgument.value">
-<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.CallArgument.value" title="Link to this definition">#</a></dt>
-<dd><p>Primitive value or serializable javascript object.</p>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.CallArgument.object_id">
+<span class="sig-name descname"><span class="pre">object_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObjectId" title="nodriver.cdp.runtime.RemoteObjectId"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObjectId</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.CallArgument.object_id" title="Link to this definition">#</a></dt>
+<dd><p>Remote object handle.</p>
 </dd></dl>
 
 </dd></dl>
@@ -688,6 +688,33 @@ unserializable primitive value or neither of (for undefined) them should be spec
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ExecutionContextDescription</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aux_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/runtime.html#ExecutionContextDescription"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.runtime.ExecutionContextDescription" title="Link to this definition">#</a></dt>
 <dd><p>Description of an isolated world.</p>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExecutionContextDescription.id_">
+<span class="sig-name descname"><span class="pre">id_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextId" title="nodriver.cdp.runtime.ExecutionContextId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExecutionContextId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExecutionContextDescription.id_" title="Link to this definition">#</a></dt>
+<dd><p>Unique id of the execution context. It can be used to specify in which execution context
+script evaluation should be performed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExecutionContextDescription.origin">
+<span class="sig-name descname"><span class="pre">origin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExecutionContextDescription.origin" title="Link to this definition">#</a></dt>
+<dd><p>Execution context origin.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExecutionContextDescription.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExecutionContextDescription.name" title="Link to this definition">#</a></dt>
+<dd><p>Human readable name describing given context.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExecutionContextDescription.unique_id">
+<span class="sig-name descname"><span class="pre">unique_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExecutionContextDescription.unique_id" title="Link to this definition">#</a></dt>
+<dd><p>A system-unique execution context identifier. Unlike the id, this is unique across
+multiple processes, so can be reliably used to identify specific context while backend
+performs a cross-process navigation.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.ExecutionContextDescription.aux_data">
 <span class="sig-name descname"><span class="pre">aux_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ExecutionContextDescription.aux_data" title="Link to this definition">#</a></dt>
 <dd><p>‘default’``’isolated’``’worker’, frameId: string}</p>
@@ -701,33 +728,6 @@ unserializable primitive value or neither of (for undefined) them should be spec
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExecutionContextDescription.id_">
-<span class="sig-name descname"><span class="pre">id_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextId" title="nodriver.cdp.runtime.ExecutionContextId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExecutionContextId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExecutionContextDescription.id_" title="Link to this definition">#</a></dt>
-<dd><p>Unique id of the execution context. It can be used to specify in which execution context
-script evaluation should be performed.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExecutionContextDescription.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExecutionContextDescription.name" title="Link to this definition">#</a></dt>
-<dd><p>Human readable name describing given context.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExecutionContextDescription.origin">
-<span class="sig-name descname"><span class="pre">origin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExecutionContextDescription.origin" title="Link to this definition">#</a></dt>
-<dd><p>Execution context origin.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExecutionContextDescription.unique_id">
-<span class="sig-name descname"><span class="pre">unique_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExecutionContextDescription.unique_id" title="Link to this definition">#</a></dt>
-<dd><p>A system-unique execution context identifier. Unlike the id, this is unique across
-multiple processes, so can be reliably used to identify specific context while backend
-performs a cross-process navigation.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -736,53 +736,9 @@ performs a cross-process navigation.</p>
 <dd><p>Detailed information about exception (or error) that was thrown during script compilation or
 execution.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.column_number">
-<span class="sig-name descname"><span class="pre">column_number</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.column_number" title="Link to this definition">#</a></dt>
-<dd><p>Column number of the exception location (0-based).</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.exception">
-<span class="sig-name descname"><span class="pre">exception</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.exception" title="Link to this definition">#</a></dt>
-<dd><p>Exception object if available.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.exception_id">
 <span class="sig-name descname"><span class="pre">exception_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.exception_id" title="Link to this definition">#</a></dt>
 <dd><p>Exception id.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.exception_meta_data">
-<span class="sig-name descname"><span class="pre">exception_meta_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.exception_meta_data" title="Link to this definition">#</a></dt>
-<dd><p>Dictionary with entries of meta data that the client associated
-with this exception, such as information about associated network
-requests, etc.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.execution_context_id">
-<span class="sig-name descname"><span class="pre">execution_context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextId" title="nodriver.cdp.runtime.ExecutionContextId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExecutionContextId</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.execution_context_id" title="Link to this definition">#</a></dt>
-<dd><p>Identifier of the context where exception happened.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.line_number">
-<span class="sig-name descname"><span class="pre">line_number</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.line_number" title="Link to this definition">#</a></dt>
-<dd><p>Line number of the exception location (0-based).</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.script_id">
-<span class="sig-name descname"><span class="pre">script_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.ScriptId" title="nodriver.cdp.runtime.ScriptId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScriptId</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.script_id" title="Link to this definition">#</a></dt>
-<dd><p>Script ID of the exception location.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.stack_trace">
-<span class="sig-name descname"><span class="pre">stack_trace</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.StackTrace" title="nodriver.cdp.runtime.StackTrace"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackTrace</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.stack_trace" title="Link to this definition">#</a></dt>
-<dd><p>JavaScript stack trace if available.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -792,9 +748,53 @@ requests, etc.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.line_number">
+<span class="sig-name descname"><span class="pre">line_number</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.line_number" title="Link to this definition">#</a></dt>
+<dd><p>Line number of the exception location (0-based).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.column_number">
+<span class="sig-name descname"><span class="pre">column_number</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.column_number" title="Link to this definition">#</a></dt>
+<dd><p>Column number of the exception location (0-based).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.script_id">
+<span class="sig-name descname"><span class="pre">script_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.ScriptId" title="nodriver.cdp.runtime.ScriptId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScriptId</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.script_id" title="Link to this definition">#</a></dt>
+<dd><p>Script ID of the exception location.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.url">
 <span class="sig-name descname"><span class="pre">url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.url" title="Link to this definition">#</a></dt>
 <dd><p>URL of the exception location, to be used when the script was not reported.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.stack_trace">
+<span class="sig-name descname"><span class="pre">stack_trace</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.StackTrace" title="nodriver.cdp.runtime.StackTrace"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackTrace</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.stack_trace" title="Link to this definition">#</a></dt>
+<dd><p>JavaScript stack trace if available.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.exception">
+<span class="sig-name descname"><span class="pre">exception</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.exception" title="Link to this definition">#</a></dt>
+<dd><p>Exception object if available.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.execution_context_id">
+<span class="sig-name descname"><span class="pre">execution_context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextId" title="nodriver.cdp.runtime.ExecutionContextId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExecutionContextId</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.execution_context_id" title="Link to this definition">#</a></dt>
+<dd><p>Identifier of the context where exception happened.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionDetails.exception_meta_data">
+<span class="sig-name descname"><span class="pre">exception_meta_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionDetails.exception_meta_data" title="Link to this definition">#</a></dt>
+<dd><p>Dictionary with entries of meta data that the client associated
+with this exception, such as information about associated network
+requests, etc.</p>
 </dd></dl>
 
 </dd></dl>
@@ -816,21 +816,9 @@ requests, etc.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CallFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">script_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/runtime.html#CallFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.runtime.CallFrame" title="Link to this definition">#</a></dt>
 <dd><p>Stack entry for runtime errors and assertions.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.CallFrame.column_number">
-<span class="sig-name descname"><span class="pre">column_number</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.CallFrame.column_number" title="Link to this definition">#</a></dt>
-<dd><p>JavaScript script column number (0-based).</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.CallFrame.function_name">
 <span class="sig-name descname"><span class="pre">function_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.CallFrame.function_name" title="Link to this definition">#</a></dt>
 <dd><p>JavaScript function name.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.CallFrame.line_number">
-<span class="sig-name descname"><span class="pre">line_number</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.CallFrame.line_number" title="Link to this definition">#</a></dt>
-<dd><p>JavaScript script line number (0-based).</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -843,6 +831,18 @@ requests, etc.</p>
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.CallFrame.url">
 <span class="sig-name descname"><span class="pre">url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.CallFrame.url" title="Link to this definition">#</a></dt>
 <dd><p>JavaScript script name or url.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.CallFrame.line_number">
+<span class="sig-name descname"><span class="pre">line_number</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.CallFrame.line_number" title="Link to this definition">#</a></dt>
+<dd><p>JavaScript script line number (0-based).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.CallFrame.column_number">
+<span class="sig-name descname"><span class="pre">column_number</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.CallFrame.column_number" title="Link to this definition">#</a></dt>
+<dd><p>JavaScript script column number (0-based).</p>
 </dd></dl>
 
 </dd></dl>
@@ -890,13 +890,13 @@ initiated the async call.</p>
 <dd><p>If <code class="docutils literal notranslate"><span class="pre">debuggerId</span></code> is set stack trace comes from another debugger and can be resolved there. This
 allows to track cross-debugger calls. See <code class="docutils literal notranslate"><span class="pre">Runtime.StackTrace</span></code> and <code class="docutils literal notranslate"><span class="pre">Debugger.paused</span></code> for usages.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.StackTraceId.debugger_id">
-<span class="sig-name descname"><span class="pre">debugger_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.UniqueDebuggerId" title="nodriver.cdp.runtime.UniqueDebuggerId"><code class="xref py py-class docutils literal notranslate"><span class="pre">UniqueDebuggerId</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.StackTraceId.debugger_id" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.StackTraceId.id_">
+<span class="sig-name descname"><span class="pre">id_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.StackTraceId.id_" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.StackTraceId.id_">
-<span class="sig-name descname"><span class="pre">id_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.StackTraceId.id_" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.StackTraceId.debugger_id">
+<span class="sig-name descname"><span class="pre">debugger_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.UniqueDebuggerId" title="nodriver.cdp.runtime.UniqueDebuggerId"><code class="xref py py-class docutils literal notranslate"><span class="pre">UniqueDebuggerId</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.runtime.StackTraceId.debugger_id" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1376,12 +1376,6 @@ you use the event’s attributes.</p>
 <dd><p><strong>EXPERIMENTAL</strong></p>
 <p>Notification is issued every time when binding is called.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.BindingCalled.execution_context_id">
-<span class="sig-name descname"><span class="pre">execution_context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextId" title="nodriver.cdp.runtime.ExecutionContextId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExecutionContextId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.BindingCalled.execution_context_id" title="Link to this definition">#</a></dt>
-<dd><p>Identifier of the context where the call was made.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.BindingCalled.name">
 <span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.BindingCalled.name" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -1391,6 +1385,12 @@ you use the event’s attributes.</p>
 <span class="sig-name descname"><span class="pre">payload</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.BindingCalled.payload" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.BindingCalled.execution_context_id">
+<span class="sig-name descname"><span class="pre">execution_context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextId" title="nodriver.cdp.runtime.ExecutionContextId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExecutionContextId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.BindingCalled.execution_context_id" title="Link to this definition">#</a></dt>
+<dd><p>Identifier of the context where the call was made.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -1398,23 +1398,27 @@ you use the event’s attributes.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConsoleAPICalled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">execution_context_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stack_trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/runtime.html#ConsoleAPICalled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.runtime.ConsoleAPICalled" title="Link to this definition">#</a></dt>
 <dd><p>Issued when console API was called.</p>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ConsoleAPICalled.type_">
+<span class="sig-name descname"><span class="pre">type_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ConsoleAPICalled.type_" title="Link to this definition">#</a></dt>
+<dd><p>Type of the call.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.ConsoleAPICalled.args">
 <span class="sig-name descname"><span class="pre">args</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ConsoleAPICalled.args" title="Link to this definition">#</a></dt>
 <dd><p>Call arguments.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ConsoleAPICalled.context">
-<span class="sig-name descname"><span class="pre">context</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ConsoleAPICalled.context" title="Link to this definition">#</a></dt>
-<dd><p>Console context descriptor for calls on non-default console context (not console.*):
-‘anonymous#unique-logger-id’ for call on unnamed context, ‘name#unique-logger-id’ for call
-on named context.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.ConsoleAPICalled.execution_context_id">
 <span class="sig-name descname"><span class="pre">execution_context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextId" title="nodriver.cdp.runtime.ExecutionContextId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExecutionContextId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ConsoleAPICalled.execution_context_id" title="Link to this definition">#</a></dt>
 <dd><p>Identifier of the context where the call was made.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ConsoleAPICalled.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.runtime.Timestamp" title="nodriver.cdp.runtime.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ConsoleAPICalled.timestamp" title="Link to this definition">#</a></dt>
+<dd><p>Call timestamp.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1426,15 +1430,11 @@ chain can be retrieved using <code class="docutils literal notranslate"><span cl
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ConsoleAPICalled.timestamp">
-<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.runtime.Timestamp" title="nodriver.cdp.runtime.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ConsoleAPICalled.timestamp" title="Link to this definition">#</a></dt>
-<dd><p>Call timestamp.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ConsoleAPICalled.type_">
-<span class="sig-name descname"><span class="pre">type_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ConsoleAPICalled.type_" title="Link to this definition">#</a></dt>
-<dd><p>Type of the call.</p>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ConsoleAPICalled.context">
+<span class="sig-name descname"><span class="pre">context</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.runtime.ConsoleAPICalled.context" title="Link to this definition">#</a></dt>
+<dd><p>Console context descriptor for calls on non-default console context (not console.*):
+‘anonymous#unique-logger-id’ for call on unnamed context, ‘name#unique-logger-id’ for call
+on named context.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1444,15 +1444,15 @@ chain can be retrieved using <code class="docutils literal notranslate"><span cl
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ExceptionRevoked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reason</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exception_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/runtime.html#ExceptionRevoked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionRevoked" title="Link to this definition">#</a></dt>
 <dd><p>Issued when unhandled exception was revoked.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionRevoked.exception_id">
-<span class="sig-name descname"><span class="pre">exception_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionRevoked.exception_id" title="Link to this definition">#</a></dt>
-<dd><p>The id of revoked exception, as reported in <code class="docutils literal notranslate"><span class="pre">exceptionThrown</span></code>.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionRevoked.reason">
 <span class="sig-name descname"><span class="pre">reason</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionRevoked.reason" title="Link to this definition">#</a></dt>
 <dd><p>Reason describing why exception was revoked.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionRevoked.exception_id">
+<span class="sig-name descname"><span class="pre">exception_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionRevoked.exception_id" title="Link to this definition">#</a></dt>
+<dd><p>The id of revoked exception, as reported in <code class="docutils literal notranslate"><span class="pre">exceptionThrown</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1462,15 +1462,15 @@ chain can be retrieved using <code class="docutils literal notranslate"><span cl
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ExceptionThrown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exception_details</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/runtime.html#ExceptionThrown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionThrown" title="Link to this definition">#</a></dt>
 <dd><p>Issued when exception was thrown and unhandled.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionThrown.exception_details">
-<span class="sig-name descname"><span class="pre">exception_details</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails" title="nodriver.cdp.runtime.ExceptionDetails"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExceptionDetails</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionThrown.exception_details" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionThrown.timestamp">
 <span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.runtime.Timestamp" title="nodriver.cdp.runtime.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionThrown.timestamp" title="Link to this definition">#</a></dt>
 <dd><p>Timestamp of the exception.</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.ExceptionThrown.exception_details">
+<span class="sig-name descname"><span class="pre">exception_details</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails" title="nodriver.cdp.runtime.ExceptionDetails"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExceptionDetails</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.ExceptionThrown.exception_details" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1516,10 +1516,9 @@ chain can be retrieved using <code class="docutils literal notranslate"><span cl
 <dd><p>Issued when object should be inspected (for example, as a result of inspect() command line API
 call).</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.InspectRequested.execution_context_id">
-<span class="sig-name descname"><span class="pre">execution_context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextId" title="nodriver.cdp.runtime.ExecutionContextId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExecutionContextId</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.runtime.InspectRequested.execution_context_id" title="Link to this definition">#</a></dt>
-<dd><p>Identifier of the context where the call was made.</p>
-</dd></dl>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.InspectRequested.object_">
+<span class="sig-name descname"><span class="pre">object_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.InspectRequested.object_" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.runtime.InspectRequested.hints">
@@ -1527,9 +1526,10 @@ call).</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.runtime.InspectRequested.object_">
-<span class="sig-name descname"><span class="pre">object_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a></em><a class="headerlink" href="#nodriver.cdp.runtime.InspectRequested.object_" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="nodriver.cdp.runtime.InspectRequested.execution_context_id">
+<span class="sig-name descname"><span class="pre">execution_context_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextId" title="nodriver.cdp.runtime.ExecutionContextId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExecutionContextId</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.runtime.InspectRequested.execution_context_id" title="Link to this definition">#</a></dt>
+<dd><p>Identifier of the context where the call was made.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1595,71 +1595,71 @@ call).</p>
 <li><a class="reference internal" href="#types">Types</a><ul>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ScriptId"><code class="docutils literal notranslate"><span class="pre">ScriptId</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.SerializationOptions"><code class="docutils literal notranslate"><span class="pre">SerializationOptions</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.SerializationOptions.additional_parameters"><code class="docutils literal notranslate"><span class="pre">SerializationOptions.additional_parameters</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.SerializationOptions.max_depth"><code class="docutils literal notranslate"><span class="pre">SerializationOptions.max_depth</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.SerializationOptions.serialization"><code class="docutils literal notranslate"><span class="pre">SerializationOptions.serialization</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.SerializationOptions.max_depth"><code class="docutils literal notranslate"><span class="pre">SerializationOptions.max_depth</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.SerializationOptions.additional_parameters"><code class="docutils literal notranslate"><span class="pre">SerializationOptions.additional_parameters</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.DeepSerializedValue"><code class="docutils literal notranslate"><span class="pre">DeepSerializedValue</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.DeepSerializedValue.object_id"><code class="docutils literal notranslate"><span class="pre">DeepSerializedValue.object_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.DeepSerializedValue.type_"><code class="docutils literal notranslate"><span class="pre">DeepSerializedValue.type_</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.DeepSerializedValue.value"><code class="docutils literal notranslate"><span class="pre">DeepSerializedValue.value</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.DeepSerializedValue.object_id"><code class="docutils literal notranslate"><span class="pre">DeepSerializedValue.object_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.DeepSerializedValue.weak_local_object_reference"><code class="docutils literal notranslate"><span class="pre">DeepSerializedValue.weak_local_object_reference</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObjectId"><code class="docutils literal notranslate"><span class="pre">RemoteObjectId</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.UnserializableValue"><code class="docutils literal notranslate"><span class="pre">UnserializableValue</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject"><code class="docutils literal notranslate"><span class="pre">RemoteObject</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.type_"><code class="docutils literal notranslate"><span class="pre">RemoteObject.type_</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.subtype"><code class="docutils literal notranslate"><span class="pre">RemoteObject.subtype</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.class_name"><code class="docutils literal notranslate"><span class="pre">RemoteObject.class_name</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.custom_preview"><code class="docutils literal notranslate"><span class="pre">RemoteObject.custom_preview</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.deep_serialized_value"><code class="docutils literal notranslate"><span class="pre">RemoteObject.deep_serialized_value</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.value"><code class="docutils literal notranslate"><span class="pre">RemoteObject.value</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.unserializable_value"><code class="docutils literal notranslate"><span class="pre">RemoteObject.unserializable_value</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.description"><code class="docutils literal notranslate"><span class="pre">RemoteObject.description</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.deep_serialized_value"><code class="docutils literal notranslate"><span class="pre">RemoteObject.deep_serialized_value</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.object_id"><code class="docutils literal notranslate"><span class="pre">RemoteObject.object_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.preview"><code class="docutils literal notranslate"><span class="pre">RemoteObject.preview</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.subtype"><code class="docutils literal notranslate"><span class="pre">RemoteObject.subtype</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.type_"><code class="docutils literal notranslate"><span class="pre">RemoteObject.type_</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.unserializable_value"><code class="docutils literal notranslate"><span class="pre">RemoteObject.unserializable_value</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.value"><code class="docutils literal notranslate"><span class="pre">RemoteObject.value</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.RemoteObject.custom_preview"><code class="docutils literal notranslate"><span class="pre">RemoteObject.custom_preview</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.CustomPreview"><code class="docutils literal notranslate"><span class="pre">CustomPreview</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.CustomPreview.body_getter_id"><code class="docutils literal notranslate"><span class="pre">CustomPreview.body_getter_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.CustomPreview.header"><code class="docutils literal notranslate"><span class="pre">CustomPreview.header</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.CustomPreview.body_getter_id"><code class="docutils literal notranslate"><span class="pre">CustomPreview.body_getter_id</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ObjectPreview"><code class="docutils literal notranslate"><span class="pre">ObjectPreview</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ObjectPreview.description"><code class="docutils literal notranslate"><span class="pre">ObjectPreview.description</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ObjectPreview.entries"><code class="docutils literal notranslate"><span class="pre">ObjectPreview.entries</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ObjectPreview.type_"><code class="docutils literal notranslate"><span class="pre">ObjectPreview.type_</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ObjectPreview.overflow"><code class="docutils literal notranslate"><span class="pre">ObjectPreview.overflow</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ObjectPreview.properties"><code class="docutils literal notranslate"><span class="pre">ObjectPreview.properties</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ObjectPreview.subtype"><code class="docutils literal notranslate"><span class="pre">ObjectPreview.subtype</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ObjectPreview.type_"><code class="docutils literal notranslate"><span class="pre">ObjectPreview.type_</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ObjectPreview.description"><code class="docutils literal notranslate"><span class="pre">ObjectPreview.description</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ObjectPreview.entries"><code class="docutils literal notranslate"><span class="pre">ObjectPreview.entries</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyPreview"><code class="docutils literal notranslate"><span class="pre">PropertyPreview</span></code></a><ul>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyPreview.name"><code class="docutils literal notranslate"><span class="pre">PropertyPreview.name</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyPreview.subtype"><code class="docutils literal notranslate"><span class="pre">PropertyPreview.subtype</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyPreview.type_"><code class="docutils literal notranslate"><span class="pre">PropertyPreview.type_</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyPreview.value"><code class="docutils literal notranslate"><span class="pre">PropertyPreview.value</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyPreview.value_preview"><code class="docutils literal notranslate"><span class="pre">PropertyPreview.value_preview</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyPreview.subtype"><code class="docutils literal notranslate"><span class="pre">PropertyPreview.subtype</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.EntryPreview"><code class="docutils literal notranslate"><span class="pre">EntryPreview</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.EntryPreview.key"><code class="docutils literal notranslate"><span class="pre">EntryPreview.key</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.EntryPreview.value"><code class="docutils literal notranslate"><span class="pre">EntryPreview.value</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.EntryPreview.key"><code class="docutils literal notranslate"><span class="pre">EntryPreview.key</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.name"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.name</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.configurable"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.configurable</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.enumerable"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.enumerable</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.get"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.get</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.is_own"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.is_own</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.name"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.name</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.set_"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.set_</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.symbol"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.symbol</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.value"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.value</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.was_thrown"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.was_thrown</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.writable"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.writable</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.get"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.get</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.set_"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.set_</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.was_thrown"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.was_thrown</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.is_own"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.is_own</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.PropertyDescriptor.symbol"><code class="docutils literal notranslate"><span class="pre">PropertyDescriptor.symbol</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.InternalPropertyDescriptor"><code class="docutils literal notranslate"><span class="pre">InternalPropertyDescriptor</span></code></a><ul>
@@ -1668,48 +1668,48 @@ call).</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.PrivatePropertyDescriptor"><code class="docutils literal notranslate"><span class="pre">PrivatePropertyDescriptor</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.PrivatePropertyDescriptor.get"><code class="docutils literal notranslate"><span class="pre">PrivatePropertyDescriptor.get</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.PrivatePropertyDescriptor.name"><code class="docutils literal notranslate"><span class="pre">PrivatePropertyDescriptor.name</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.PrivatePropertyDescriptor.set_"><code class="docutils literal notranslate"><span class="pre">PrivatePropertyDescriptor.set_</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.PrivatePropertyDescriptor.value"><code class="docutils literal notranslate"><span class="pre">PrivatePropertyDescriptor.value</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.PrivatePropertyDescriptor.get"><code class="docutils literal notranslate"><span class="pre">PrivatePropertyDescriptor.get</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.PrivatePropertyDescriptor.set_"><code class="docutils literal notranslate"><span class="pre">PrivatePropertyDescriptor.set_</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.CallArgument"><code class="docutils literal notranslate"><span class="pre">CallArgument</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.CallArgument.object_id"><code class="docutils literal notranslate"><span class="pre">CallArgument.object_id</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.CallArgument.unserializable_value"><code class="docutils literal notranslate"><span class="pre">CallArgument.unserializable_value</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.CallArgument.value"><code class="docutils literal notranslate"><span class="pre">CallArgument.value</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.CallArgument.unserializable_value"><code class="docutils literal notranslate"><span class="pre">CallArgument.unserializable_value</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.CallArgument.object_id"><code class="docutils literal notranslate"><span class="pre">CallArgument.object_id</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextId"><code class="docutils literal notranslate"><span class="pre">ExecutionContextId</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextDescription"><code class="docutils literal notranslate"><span class="pre">ExecutionContextDescription</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextDescription.aux_data"><code class="docutils literal notranslate"><span class="pre">ExecutionContextDescription.aux_data</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextDescription.id_"><code class="docutils literal notranslate"><span class="pre">ExecutionContextDescription.id_</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextDescription.name"><code class="docutils literal notranslate"><span class="pre">ExecutionContextDescription.name</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextDescription.origin"><code class="docutils literal notranslate"><span class="pre">ExecutionContextDescription.origin</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextDescription.name"><code class="docutils literal notranslate"><span class="pre">ExecutionContextDescription.name</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextDescription.unique_id"><code class="docutils literal notranslate"><span class="pre">ExecutionContextDescription.unique_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextDescription.aux_data"><code class="docutils literal notranslate"><span class="pre">ExecutionContextDescription.aux_data</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.column_number"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.column_number</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.exception"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.exception</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.exception_id"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.exception_id</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.exception_meta_data"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.exception_meta_data</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.execution_context_id"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.execution_context_id</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.line_number"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.line_number</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.script_id"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.script_id</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.stack_trace"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.stack_trace</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.text"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.text</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.line_number"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.line_number</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.column_number"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.column_number</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.script_id"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.script_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.url"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.url</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.stack_trace"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.stack_trace</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.exception"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.exception</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.execution_context_id"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.execution_context_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionDetails.exception_meta_data"><code class="docutils literal notranslate"><span class="pre">ExceptionDetails.exception_meta_data</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.Timestamp"><code class="docutils literal notranslate"><span class="pre">Timestamp</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.TimeDelta"><code class="docutils literal notranslate"><span class="pre">TimeDelta</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.CallFrame"><code class="docutils literal notranslate"><span class="pre">CallFrame</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.CallFrame.column_number"><code class="docutils literal notranslate"><span class="pre">CallFrame.column_number</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.CallFrame.function_name"><code class="docutils literal notranslate"><span class="pre">CallFrame.function_name</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.CallFrame.line_number"><code class="docutils literal notranslate"><span class="pre">CallFrame.line_number</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.CallFrame.script_id"><code class="docutils literal notranslate"><span class="pre">CallFrame.script_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.CallFrame.url"><code class="docutils literal notranslate"><span class="pre">CallFrame.url</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.CallFrame.line_number"><code class="docutils literal notranslate"><span class="pre">CallFrame.line_number</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.CallFrame.column_number"><code class="docutils literal notranslate"><span class="pre">CallFrame.column_number</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.StackTrace"><code class="docutils literal notranslate"><span class="pre">StackTrace</span></code></a><ul>
@@ -1721,8 +1721,8 @@ call).</p>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.UniqueDebuggerId"><code class="docutils literal notranslate"><span class="pre">UniqueDebuggerId</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.StackTraceId"><code class="docutils literal notranslate"><span class="pre">StackTraceId</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.StackTraceId.debugger_id"><code class="docutils literal notranslate"><span class="pre">StackTraceId.debugger_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.StackTraceId.id_"><code class="docutils literal notranslate"><span class="pre">StackTraceId.id_</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.StackTraceId.debugger_id"><code class="docutils literal notranslate"><span class="pre">StackTraceId.debugger_id</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1755,28 +1755,28 @@ call).</p>
 </li>
 <li><a class="reference internal" href="#events">Events</a><ul>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.BindingCalled"><code class="docutils literal notranslate"><span class="pre">BindingCalled</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.BindingCalled.execution_context_id"><code class="docutils literal notranslate"><span class="pre">BindingCalled.execution_context_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.BindingCalled.name"><code class="docutils literal notranslate"><span class="pre">BindingCalled.name</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.BindingCalled.payload"><code class="docutils literal notranslate"><span class="pre">BindingCalled.payload</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.BindingCalled.execution_context_id"><code class="docutils literal notranslate"><span class="pre">BindingCalled.execution_context_id</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ConsoleAPICalled"><code class="docutils literal notranslate"><span class="pre">ConsoleAPICalled</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ConsoleAPICalled.args"><code class="docutils literal notranslate"><span class="pre">ConsoleAPICalled.args</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ConsoleAPICalled.context"><code class="docutils literal notranslate"><span class="pre">ConsoleAPICalled.context</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ConsoleAPICalled.execution_context_id"><code class="docutils literal notranslate"><span class="pre">ConsoleAPICalled.execution_context_id</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ConsoleAPICalled.stack_trace"><code class="docutils literal notranslate"><span class="pre">ConsoleAPICalled.stack_trace</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ConsoleAPICalled.timestamp"><code class="docutils literal notranslate"><span class="pre">ConsoleAPICalled.timestamp</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ConsoleAPICalled.type_"><code class="docutils literal notranslate"><span class="pre">ConsoleAPICalled.type_</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ConsoleAPICalled.args"><code class="docutils literal notranslate"><span class="pre">ConsoleAPICalled.args</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ConsoleAPICalled.execution_context_id"><code class="docutils literal notranslate"><span class="pre">ConsoleAPICalled.execution_context_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ConsoleAPICalled.timestamp"><code class="docutils literal notranslate"><span class="pre">ConsoleAPICalled.timestamp</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ConsoleAPICalled.stack_trace"><code class="docutils literal notranslate"><span class="pre">ConsoleAPICalled.stack_trace</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ConsoleAPICalled.context"><code class="docutils literal notranslate"><span class="pre">ConsoleAPICalled.context</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionRevoked"><code class="docutils literal notranslate"><span class="pre">ExceptionRevoked</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionRevoked.exception_id"><code class="docutils literal notranslate"><span class="pre">ExceptionRevoked.exception_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionRevoked.reason"><code class="docutils literal notranslate"><span class="pre">ExceptionRevoked.reason</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionRevoked.exception_id"><code class="docutils literal notranslate"><span class="pre">ExceptionRevoked.exception_id</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionThrown"><code class="docutils literal notranslate"><span class="pre">ExceptionThrown</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionThrown.exception_details"><code class="docutils literal notranslate"><span class="pre">ExceptionThrown.exception_details</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionThrown.timestamp"><code class="docutils literal notranslate"><span class="pre">ExceptionThrown.timestamp</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.ExceptionThrown.exception_details"><code class="docutils literal notranslate"><span class="pre">ExceptionThrown.exception_details</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextCreated"><code class="docutils literal notranslate"><span class="pre">ExecutionContextCreated</span></code></a><ul>
@@ -1790,9 +1790,9 @@ call).</p>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.ExecutionContextsCleared"><code class="docutils literal notranslate"><span class="pre">ExecutionContextsCleared</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.InspectRequested"><code class="docutils literal notranslate"><span class="pre">InspectRequested</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.InspectRequested.execution_context_id"><code class="docutils literal notranslate"><span class="pre">InspectRequested.execution_context_id</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.runtime.InspectRequested.hints"><code class="docutils literal notranslate"><span class="pre">InspectRequested.hints</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.runtime.InspectRequested.object_"><code class="docutils literal notranslate"><span class="pre">InspectRequested.object_</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.InspectRequested.hints"><code class="docutils literal notranslate"><span class="pre">InspectRequested.hints</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.runtime.InspectRequested.execution_context_id"><code class="docutils literal notranslate"><span class="pre">InspectRequested.execution_context_id</span></code></a></li>
 </ul>
 </li>
 </ul>

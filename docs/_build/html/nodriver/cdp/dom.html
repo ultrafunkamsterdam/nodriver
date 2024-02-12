@@ -172,7 +172,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../classes/browser.html">Browser class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../classes/element.html">Element class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../classes/others_and_helpers.html">Other classes and Helper classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../classes/page.html">Page class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/tab.html"><code class="docutils literal notranslate"><span class="pre">Tab</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
 <ul class="current">
@@ -262,11 +262,11 @@
           <section id="dom">
 <h1>DOM<a class="headerlink" href="#dom" title="Link to this heading">#</a></h1>
 <p>This domain exposes DOM read/write operations. Each DOM Node is represented with its mirror object
-that has an <a class="reference external" href="https://docs.python.org/3/library/functions.html#id" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span></code></a>. This <a class="reference external" href="https://docs.python.org/3/library/functions.html#id" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span></code></a> can be used to get additional information on the Node, resolve it into
+that has an <a class="reference external" href="https://docs.python.org/3/library/functions.html#id" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">id</span></code></a>. This <a class="reference external" href="https://docs.python.org/3/library/functions.html#id" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">id</span></code></a> can be used to get additional information on the Node, resolve it into
 the JavaScript object wrapper, etc. It is important that client receives DOM events only for the
 nodes that are known to the client. Backend keeps track of the nodes that were sent to the client
 and never sends the same node twice. It is client’s responsibility to collect information about
-the nodes that were sent to the client. Note that <code class="xref py py-obj docutils literal notranslate"><span class="pre">iframe</span></code> owner elements will return
+the nodes that were sent to the client. Note that <code class="xref any docutils literal notranslate"><span class="pre">iframe</span></code> owner elements will return
 corresponding document elements as their child nodes.</p>
 <ul class="simple" id="module-nodriver.cdp.dom">
 <li><p><a class="reference internal" href="#types">Types</a></p></li>
@@ -297,9 +297,10 @@ front-end.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BackendNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend_node_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#BackendNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.BackendNode" title="Link to this definition">#</a></dt>
 <dd><p>Backend node with a friendly name.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.BackendNode.backend_node_id">
-<span class="sig-name descname"><span class="pre">backend_node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.BackendNodeId" title="nodriver.cdp.dom.BackendNodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendNodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.BackendNode.backend_node_id" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.BackendNode.node_type">
+<span class="sig-name descname"><span class="pre">node_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.BackendNode.node_type" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Node</span></code>’s nodeType.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.BackendNode.node_name">
@@ -308,10 +309,9 @@ front-end.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.BackendNode.node_type">
-<span class="sig-name descname"><span class="pre">node_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.BackendNode.node_type" title="Link to this definition">#</a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">Node</span></code>’s nodeType.</p>
-</dd></dl>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.BackendNode.backend_node_id">
+<span class="sig-name descname"><span class="pre">backend_node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.BackendNodeId" title="nodriver.cdp.dom.BackendNodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendNodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.BackendNode.backend_node_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -320,18 +320,8 @@ front-end.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PseudoType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#PseudoType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.PseudoType" title="Link to this definition">#</a></dt>
 <dd><p>Pseudo element type.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.AFTER">
-<span class="sig-name descname"><span class="pre">AFTER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'after'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.AFTER" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.BACKDROP">
-<span class="sig-name descname"><span class="pre">BACKDROP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'backdrop'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.BACKDROP" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.BEFORE">
-<span class="sig-name descname"><span class="pre">BEFORE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'before'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.BEFORE" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.FIRST_LINE">
+<span class="sig-name descname"><span class="pre">FIRST_LINE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'first-line'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.FIRST_LINE" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -340,13 +330,38 @@ front-end.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.FIRST_LINE">
-<span class="sig-name descname"><span class="pre">FIRST_LINE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'first-line'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.FIRST_LINE" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.BEFORE">
+<span class="sig-name descname"><span class="pre">BEFORE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'before'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.BEFORE" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.FIRST_LINE_INHERITED">
-<span class="sig-name descname"><span class="pre">FIRST_LINE_INHERITED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'first-line-inherited'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.FIRST_LINE_INHERITED" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.AFTER">
+<span class="sig-name descname"><span class="pre">AFTER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'after'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.AFTER" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.MARKER">
+<span class="sig-name descname"><span class="pre">MARKER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'marker'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.MARKER" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.BACKDROP">
+<span class="sig-name descname"><span class="pre">BACKDROP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'backdrop'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.BACKDROP" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.SELECTION">
+<span class="sig-name descname"><span class="pre">SELECTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'selection'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.SELECTION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.TARGET_TEXT">
+<span class="sig-name descname"><span class="pre">TARGET_TEXT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'target-text'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.TARGET_TEXT" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.SPELLING_ERROR">
+<span class="sig-name descname"><span class="pre">SPELLING_ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'spelling-error'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.SPELLING_ERROR" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -360,18 +375,8 @@ front-end.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.INPUT_LIST_BUTTON">
-<span class="sig-name descname"><span class="pre">INPUT_LIST_BUTTON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'input-list-button'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.INPUT_LIST_BUTTON" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.MARKER">
-<span class="sig-name descname"><span class="pre">MARKER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'marker'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.MARKER" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.RESIZER">
-<span class="sig-name descname"><span class="pre">RESIZER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'resizer'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.RESIZER" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.FIRST_LINE_INHERITED">
+<span class="sig-name descname"><span class="pre">FIRST_LINE_INHERITED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'first-line-inherited'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.FIRST_LINE_INHERITED" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -380,18 +385,13 @@ front-end.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.SCROLLBAR_BUTTON">
-<span class="sig-name descname"><span class="pre">SCROLLBAR_BUTTON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'scrollbar-button'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR_BUTTON" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.SCROLLBAR_CORNER">
-<span class="sig-name descname"><span class="pre">SCROLLBAR_CORNER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'scrollbar-corner'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR_CORNER" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.SCROLLBAR_THUMB">
 <span class="sig-name descname"><span class="pre">SCROLLBAR_THUMB</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'scrollbar-thumb'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR_THUMB" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.SCROLLBAR_BUTTON">
+<span class="sig-name descname"><span class="pre">SCROLLBAR_BUTTON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'scrollbar-button'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR_BUTTON" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -405,18 +405,18 @@ front-end.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.SELECTION">
-<span class="sig-name descname"><span class="pre">SELECTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'selection'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.SELECTION" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.SCROLLBAR_CORNER">
+<span class="sig-name descname"><span class="pre">SCROLLBAR_CORNER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'scrollbar-corner'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR_CORNER" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.SPELLING_ERROR">
-<span class="sig-name descname"><span class="pre">SPELLING_ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'spelling-error'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.SPELLING_ERROR" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.RESIZER">
+<span class="sig-name descname"><span class="pre">RESIZER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'resizer'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.RESIZER" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.TARGET_TEXT">
-<span class="sig-name descname"><span class="pre">TARGET_TEXT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'target-text'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.TARGET_TEXT" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.INPUT_LIST_BUTTON">
+<span class="sig-name descname"><span class="pre">INPUT_LIST_BUTTON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'input-list-button'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.INPUT_LIST_BUTTON" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -435,13 +435,13 @@ front-end.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.VIEW_TRANSITION_NEW">
-<span class="sig-name descname"><span class="pre">VIEW_TRANSITION_NEW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'view-transition-new'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.VIEW_TRANSITION_NEW" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.VIEW_TRANSITION_OLD">
+<span class="sig-name descname"><span class="pre">VIEW_TRANSITION_OLD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'view-transition-old'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.VIEW_TRANSITION_OLD" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.VIEW_TRANSITION_OLD">
-<span class="sig-name descname"><span class="pre">VIEW_TRANSITION_OLD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'view-transition-old'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.VIEW_TRANSITION_OLD" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.VIEW_TRANSITION_NEW">
+<span class="sig-name descname"><span class="pre">VIEW_TRANSITION_NEW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'view-transition-new'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.VIEW_TRANSITION_NEW" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -451,8 +451,8 @@ front-end.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ShadowRootType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#ShadowRootType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.ShadowRootType" title="Link to this definition">#</a></dt>
 <dd><p>Shadow root type.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.ShadowRootType.CLOSED">
-<span class="sig-name descname"><span class="pre">CLOSED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'closed'</span></em><a class="headerlink" href="#nodriver.cdp.dom.ShadowRootType.CLOSED" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.ShadowRootType.USER_AGENT">
+<span class="sig-name descname"><span class="pre">USER_AGENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'user-agent'</span></em><a class="headerlink" href="#nodriver.cdp.dom.ShadowRootType.USER_AGENT" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -461,8 +461,8 @@ front-end.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.ShadowRootType.USER_AGENT">
-<span class="sig-name descname"><span class="pre">USER_AGENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'user-agent'</span></em><a class="headerlink" href="#nodriver.cdp.dom.ShadowRootType.USER_AGENT" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.ShadowRootType.CLOSED">
+<span class="sig-name descname"><span class="pre">CLOSED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'closed'</span></em><a class="headerlink" href="#nodriver.cdp.dom.ShadowRootType.CLOSED" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -471,6 +471,11 @@ front-end.</p>
 <dt class="sig sig-object py" id="nodriver.cdp.dom.CompatibilityMode">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CompatibilityMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#CompatibilityMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.CompatibilityMode" title="Link to this definition">#</a></dt>
 <dd><p>Document compatibility mode.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.CompatibilityMode.QUIRKS_MODE">
+<span class="sig-name descname"><span class="pre">QUIRKS_MODE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'QuirksMode'</span></em><a class="headerlink" href="#nodriver.cdp.dom.CompatibilityMode.QUIRKS_MODE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.CompatibilityMode.LIMITED_QUIRKS_MODE">
 <span class="sig-name descname"><span class="pre">LIMITED_QUIRKS_MODE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'LimitedQuirksMode'</span></em><a class="headerlink" href="#nodriver.cdp.dom.CompatibilityMode.LIMITED_QUIRKS_MODE" title="Link to this definition">#</a></dt>
@@ -481,22 +486,12 @@ front-end.</p>
 <span class="sig-name descname"><span class="pre">NO_QUIRKS_MODE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'NoQuirksMode'</span></em><a class="headerlink" href="#nodriver.cdp.dom.CompatibilityMode.NO_QUIRKS_MODE" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.CompatibilityMode.QUIRKS_MODE">
-<span class="sig-name descname"><span class="pre">QUIRKS_MODE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'QuirksMode'</span></em><a class="headerlink" href="#nodriver.cdp.dom.CompatibilityMode.QUIRKS_MODE" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.PhysicalAxes">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PhysicalAxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#PhysicalAxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.PhysicalAxes" title="Link to this definition">#</a></dt>
 <dd><p>ContainerSelector physical axes</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PhysicalAxes.BOTH">
-<span class="sig-name descname"><span class="pre">BOTH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Both'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PhysicalAxes.BOTH" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.PhysicalAxes.HORIZONTAL">
 <span class="sig-name descname"><span class="pre">HORIZONTAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Horizontal'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PhysicalAxes.HORIZONTAL" title="Link to this definition">#</a></dt>
@@ -507,12 +502,22 @@ front-end.</p>
 <span class="sig-name descname"><span class="pre">VERTICAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Vertical'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PhysicalAxes.VERTICAL" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PhysicalAxes.BOTH">
+<span class="sig-name descname"><span class="pre">BOTH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Both'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PhysicalAxes.BOTH" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.LogicalAxes">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LogicalAxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#LogicalAxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.LogicalAxes" title="Link to this definition">#</a></dt>
 <dd><p>ContainerSelector logical axes</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.LogicalAxes.INLINE">
+<span class="sig-name descname"><span class="pre">INLINE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Inline'</span></em><a class="headerlink" href="#nodriver.cdp.dom.LogicalAxes.INLINE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.LogicalAxes.BLOCK">
 <span class="sig-name descname"><span class="pre">BLOCK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Block'</span></em><a class="headerlink" href="#nodriver.cdp.dom.LogicalAxes.BLOCK" title="Link to this definition">#</a></dt>
@@ -523,11 +528,6 @@ front-end.</p>
 <span class="sig-name descname"><span class="pre">BOTH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Both'</span></em><a class="headerlink" href="#nodriver.cdp.dom.LogicalAxes.BOTH" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.LogicalAxes.INLINE">
-<span class="sig-name descname"><span class="pre">INLINE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Inline'</span></em><a class="headerlink" href="#nodriver.cdp.dom.LogicalAxes.INLINE" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -535,102 +535,6 @@ front-end.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend_node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">child_node_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">document_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_subset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xml_version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pseudo_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pseudo_identifier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shadow_root_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_document</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shadow_roots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template_content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pseudo_elements</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imported_document</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distributed_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_svg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compatibility_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assigned_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#Node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.Node" title="Link to this definition">#</a></dt>
 <dd><p>DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes.
 DOMNode is a base node mirror type.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.assigned_slot">
-<span class="sig-name descname"><span class="pre">assigned_slot</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.BackendNode" title="nodriver.cdp.dom.BackendNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendNode</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.assigned_slot" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.attributes">
-<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.attributes" title="Link to this definition">#</a></dt>
-<dd><p>Attributes of the <code class="docutils literal notranslate"><span class="pre">Element</span></code> node in the form of flat array <code class="docutils literal notranslate"><span class="pre">[name1,</span> <span class="pre">value1,</span> <span class="pre">name2,</span> <span class="pre">value2]</span></code>.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.backend_node_id">
-<span class="sig-name descname"><span class="pre">backend_node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.BackendNodeId" title="nodriver.cdp.dom.BackendNodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendNodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.Node.backend_node_id" title="Link to this definition">#</a></dt>
-<dd><p>The BackendNodeId for this node.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.base_url">
-<span class="sig-name descname"><span class="pre">base_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.base_url" title="Link to this definition">#</a></dt>
-<dd><p>Base URL that <code class="docutils literal notranslate"><span class="pre">Document</span></code> or <code class="docutils literal notranslate"><span class="pre">FrameOwner</span></code> node uses for URL completion.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.child_node_count">
-<span class="sig-name descname"><span class="pre">child_node_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.child_node_count" title="Link to this definition">#</a></dt>
-<dd><p>Child count for <code class="docutils literal notranslate"><span class="pre">Container</span></code> nodes.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.children">
-<span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.Node" title="nodriver.cdp.dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.children" title="Link to this definition">#</a></dt>
-<dd><p>Child nodes of this node when requested with children.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.compatibility_mode">
-<span class="sig-name descname"><span class="pre">compatibility_mode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.CompatibilityMode" title="nodriver.cdp.dom.CompatibilityMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompatibilityMode</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.compatibility_mode" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.content_document">
-<span class="sig-name descname"><span class="pre">content_document</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.Node" title="nodriver.cdp.dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.content_document" title="Link to this definition">#</a></dt>
-<dd><p>Content document for frame owner elements.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.distributed_nodes">
-<span class="sig-name descname"><span class="pre">distributed_nodes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.BackendNode" title="nodriver.cdp.dom.BackendNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendNode</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.distributed_nodes" title="Link to this definition">#</a></dt>
-<dd><p>Distributed nodes for given insertion point.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.document_url">
-<span class="sig-name descname"><span class="pre">document_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.document_url" title="Link to this definition">#</a></dt>
-<dd><p>Document URL that <code class="docutils literal notranslate"><span class="pre">Document</span></code> or <code class="docutils literal notranslate"><span class="pre">FrameOwner</span></code> node points to.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.frame_id">
-<span class="sig-name descname"><span class="pre">frame_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="page.html#nodriver.cdp.page.FrameId" title="nodriver.cdp.page.FrameId"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrameId</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.frame_id" title="Link to this definition">#</a></dt>
-<dd><p>Frame ID for frame owner elements.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.imported_document">
-<span class="sig-name descname"><span class="pre">imported_document</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.Node" title="nodriver.cdp.dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.imported_document" title="Link to this definition">#</a></dt>
-<dd><p>Deprecated, as the HTML Imports API has been removed (crbug.com/937746).
-This property used to return the imported document for the HTMLImport links.
-The property is always undefined now.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.internal_subset">
-<span class="sig-name descname"><span class="pre">internal_subset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.internal_subset" title="Link to this definition">#</a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">DocumentType</span></code>’s internalSubset.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.is_svg">
-<span class="sig-name descname"><span class="pre">is_svg</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.is_svg" title="Link to this definition">#</a></dt>
-<dd><p>Whether the node is SVG.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.local_name">
-<span class="sig-name descname"><span class="pre">local_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.Node.local_name" title="Link to this definition">#</a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">Node</span></code>’s localName.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.name" title="Link to this definition">#</a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">Attr</span></code>’s name.</p>
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.Node.node_id">
 <span class="sig-name descname"><span class="pre">node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.NodeId" title="nodriver.cdp.dom.NodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.Node.node_id" title="Link to this definition">#</a></dt>
@@ -640,15 +544,27 @@ fire DOM events for nodes known to the client.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.node_name">
-<span class="sig-name descname"><span class="pre">node_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.Node.node_name" title="Link to this definition">#</a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">Node</span></code>’s nodeName.</p>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.backend_node_id">
+<span class="sig-name descname"><span class="pre">backend_node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.BackendNodeId" title="nodriver.cdp.dom.BackendNodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendNodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.Node.backend_node_id" title="Link to this definition">#</a></dt>
+<dd><p>The BackendNodeId for this node.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.Node.node_type">
 <span class="sig-name descname"><span class="pre">node_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.Node.node_type" title="Link to this definition">#</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">Node</span></code>’s nodeType.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.node_name">
+<span class="sig-name descname"><span class="pre">node_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.Node.node_name" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Node</span></code>’s nodeName.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.local_name">
+<span class="sig-name descname"><span class="pre">local_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.Node.local_name" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Node</span></code>’s localName.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -664,9 +580,75 @@ fire DOM events for nodes known to the client.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.pseudo_elements">
-<span class="sig-name descname"><span class="pre">pseudo_elements</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.Node" title="nodriver.cdp.dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.pseudo_elements" title="Link to this definition">#</a></dt>
-<dd><p>Pseudo elements associated with this node.</p>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.child_node_count">
+<span class="sig-name descname"><span class="pre">child_node_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.child_node_count" title="Link to this definition">#</a></dt>
+<dd><p>Child count for <code class="docutils literal notranslate"><span class="pre">Container</span></code> nodes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.children">
+<span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.Node" title="nodriver.cdp.dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.children" title="Link to this definition">#</a></dt>
+<dd><p>Child nodes of this node when requested with children.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.attributes">
+<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.attributes" title="Link to this definition">#</a></dt>
+<dd><p>Attributes of the <code class="docutils literal notranslate"><span class="pre">Element</span></code> node in the form of flat array <code class="docutils literal notranslate"><span class="pre">[name1,</span> <span class="pre">value1,</span> <span class="pre">name2,</span> <span class="pre">value2]</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.document_url">
+<span class="sig-name descname"><span class="pre">document_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.document_url" title="Link to this definition">#</a></dt>
+<dd><p>Document URL that <code class="docutils literal notranslate"><span class="pre">Document</span></code> or <code class="docutils literal notranslate"><span class="pre">FrameOwner</span></code> node points to.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.base_url">
+<span class="sig-name descname"><span class="pre">base_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.base_url" title="Link to this definition">#</a></dt>
+<dd><p>Base URL that <code class="docutils literal notranslate"><span class="pre">Document</span></code> or <code class="docutils literal notranslate"><span class="pre">FrameOwner</span></code> node uses for URL completion.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.public_id">
+<span class="sig-name descname"><span class="pre">public_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.public_id" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">DocumentType</span></code>’s publicId.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.system_id">
+<span class="sig-name descname"><span class="pre">system_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.system_id" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">DocumentType</span></code>’s systemId.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.internal_subset">
+<span class="sig-name descname"><span class="pre">internal_subset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.internal_subset" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">DocumentType</span></code>’s internalSubset.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.xml_version">
+<span class="sig-name descname"><span class="pre">xml_version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.xml_version" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Document</span></code>’s XML version in case of XML documents.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.name" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Attr</span></code>’s name.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.value" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Attr</span></code>’s value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.pseudo_type">
+<span class="sig-name descname"><span class="pre">pseudo_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.PseudoType" title="nodriver.cdp.dom.PseudoType"><code class="xref py py-class docutils literal notranslate"><span class="pre">PseudoType</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.pseudo_type" title="Link to this definition">#</a></dt>
+<dd><p>Pseudo element type for this node.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -677,21 +659,21 @@ valid pseudoType.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.pseudo_type">
-<span class="sig-name descname"><span class="pre">pseudo_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.PseudoType" title="nodriver.cdp.dom.PseudoType"><code class="xref py py-class docutils literal notranslate"><span class="pre">PseudoType</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.pseudo_type" title="Link to this definition">#</a></dt>
-<dd><p>Pseudo element type for this node.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.public_id">
-<span class="sig-name descname"><span class="pre">public_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.public_id" title="Link to this definition">#</a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">DocumentType</span></code>’s publicId.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.Node.shadow_root_type">
 <span class="sig-name descname"><span class="pre">shadow_root_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.ShadowRootType" title="nodriver.cdp.dom.ShadowRootType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShadowRootType</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.shadow_root_type" title="Link to this definition">#</a></dt>
 <dd><p>Shadow root type.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.frame_id">
+<span class="sig-name descname"><span class="pre">frame_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="page.html#nodriver.cdp.page.FrameId" title="nodriver.cdp.page.FrameId"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrameId</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.frame_id" title="Link to this definition">#</a></dt>
+<dd><p>Frame ID for frame owner elements.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.content_document">
+<span class="sig-name descname"><span class="pre">content_document</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.Node" title="nodriver.cdp.dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.content_document" title="Link to this definition">#</a></dt>
+<dd><p>Content document for frame owner elements.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -701,28 +683,46 @@ valid pseudoType.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.system_id">
-<span class="sig-name descname"><span class="pre">system_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.system_id" title="Link to this definition">#</a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">DocumentType</span></code>’s systemId.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.Node.template_content">
 <span class="sig-name descname"><span class="pre">template_content</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.Node" title="nodriver.cdp.dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.template_content" title="Link to this definition">#</a></dt>
 <dd><p>Content document fragment for template elements.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.value">
-<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.value" title="Link to this definition">#</a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">Attr</span></code>’s value.</p>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.pseudo_elements">
+<span class="sig-name descname"><span class="pre">pseudo_elements</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.Node" title="nodriver.cdp.dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.pseudo_elements" title="Link to this definition">#</a></dt>
+<dd><p>Pseudo elements associated with this node.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.xml_version">
-<span class="sig-name descname"><span class="pre">xml_version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.xml_version" title="Link to this definition">#</a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">Document</span></code>’s XML version in case of XML documents.</p>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.imported_document">
+<span class="sig-name descname"><span class="pre">imported_document</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.Node" title="nodriver.cdp.dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.imported_document" title="Link to this definition">#</a></dt>
+<dd><p>Deprecated, as the HTML Imports API has been removed (crbug.com/937746).
+This property used to return the imported document for the HTMLImport links.
+The property is always undefined now.</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.distributed_nodes">
+<span class="sig-name descname"><span class="pre">distributed_nodes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.BackendNode" title="nodriver.cdp.dom.BackendNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendNode</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.distributed_nodes" title="Link to this definition">#</a></dt>
+<dd><p>Distributed nodes for given insertion point.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.is_svg">
+<span class="sig-name descname"><span class="pre">is_svg</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.is_svg" title="Link to this definition">#</a></dt>
+<dd><p>Whether the node is SVG.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.compatibility_mode">
+<span class="sig-name descname"><span class="pre">compatibility_mode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.CompatibilityMode" title="nodriver.cdp.dom.CompatibilityMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompatibilityMode</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.compatibility_mode" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Node.assigned_slot">
+<span class="sig-name descname"><span class="pre">assigned_slot</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.BackendNode" title="nodriver.cdp.dom.BackendNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendNode</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.Node.assigned_slot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -731,20 +731,9 @@ valid pseudoType.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RGBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#RGBA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.RGBA" title="Link to this definition">#</a></dt>
 <dd><p>A structure holding an RGBA color.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.RGBA.a">
-<span class="sig-name descname"><span class="pre">a</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.RGBA.a" title="Link to this definition">#</a></dt>
-<dd><p>1).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The alpha component, in the [0-1] <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#range" title="(in Python v3.12)">range</a> (default</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.RGBA.b">
-<span class="sig-name descname"><span class="pre">b</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.RGBA.b" title="Link to this definition">#</a></dt>
-<dd><p>The blue component, in the [0-255] range.</p>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.RGBA.r">
+<span class="sig-name descname"><span class="pre">r</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.RGBA.r" title="Link to this definition">#</a></dt>
+<dd><p>The red component, in the [0-255] range.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -754,9 +743,20 @@ valid pseudoType.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.RGBA.r">
-<span class="sig-name descname"><span class="pre">r</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.RGBA.r" title="Link to this definition">#</a></dt>
-<dd><p>The red component, in the [0-255] range.</p>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.RGBA.b">
+<span class="sig-name descname"><span class="pre">b</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.RGBA.b" title="Link to this definition">#</a></dt>
+<dd><p>The blue component, in the [0-255] range.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.RGBA.a">
+<span class="sig-name descname"><span class="pre">a</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.RGBA.a" title="Link to this definition">#</a></dt>
+<dd><p>1).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The alpha component, in the [0-1] <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#range" title="(in Python v3.12)">range</a> (default</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -772,27 +772,9 @@ valid pseudoType.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BoxModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">border</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape_outside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#BoxModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.BoxModel" title="Link to this definition">#</a></dt>
 <dd><p>Box model.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.BoxModel.border">
-<span class="sig-name descname"><span class="pre">border</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.Quad" title="nodriver.cdp.dom.Quad"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quad</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.BoxModel.border" title="Link to this definition">#</a></dt>
-<dd><p>Border box</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.BoxModel.content">
 <span class="sig-name descname"><span class="pre">content</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.Quad" title="nodriver.cdp.dom.Quad"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quad</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.BoxModel.content" title="Link to this definition">#</a></dt>
 <dd><p>Content box</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.BoxModel.height">
-<span class="sig-name descname"><span class="pre">height</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.BoxModel.height" title="Link to this definition">#</a></dt>
-<dd><p>Node height</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.BoxModel.margin">
-<span class="sig-name descname"><span class="pre">margin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.Quad" title="nodriver.cdp.dom.Quad"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quad</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.BoxModel.margin" title="Link to this definition">#</a></dt>
-<dd><p>Margin box</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -802,15 +784,33 @@ valid pseudoType.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.BoxModel.shape_outside">
-<span class="sig-name descname"><span class="pre">shape_outside</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.ShapeOutsideInfo" title="nodriver.cdp.dom.ShapeOutsideInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeOutsideInfo</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.BoxModel.shape_outside" title="Link to this definition">#</a></dt>
-<dd><p>Shape outside coordinates</p>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.BoxModel.border">
+<span class="sig-name descname"><span class="pre">border</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.Quad" title="nodriver.cdp.dom.Quad"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quad</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.BoxModel.border" title="Link to this definition">#</a></dt>
+<dd><p>Border box</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.BoxModel.margin">
+<span class="sig-name descname"><span class="pre">margin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.Quad" title="nodriver.cdp.dom.Quad"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quad</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.BoxModel.margin" title="Link to this definition">#</a></dt>
+<dd><p>Margin box</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.BoxModel.width">
 <span class="sig-name descname"><span class="pre">width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.BoxModel.width" title="Link to this definition">#</a></dt>
 <dd><p>Node width</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.BoxModel.height">
+<span class="sig-name descname"><span class="pre">height</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.BoxModel.height" title="Link to this definition">#</a></dt>
+<dd><p>Node height</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.BoxModel.shape_outside">
+<span class="sig-name descname"><span class="pre">shape_outside</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.ShapeOutsideInfo" title="nodriver.cdp.dom.ShapeOutsideInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeOutsideInfo</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.dom.BoxModel.shape_outside" title="Link to this definition">#</a></dt>
+<dd><p>Shape outside coordinates</p>
 </dd></dl>
 
 </dd></dl>
@@ -826,15 +826,15 @@ valid pseudoType.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.ShapeOutsideInfo.margin_shape">
-<span class="sig-name descname"><span class="pre">margin_shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.dom.ShapeOutsideInfo.margin_shape" title="Link to this definition">#</a></dt>
-<dd><p>Margin shape bounds</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.ShapeOutsideInfo.shape">
 <span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.dom.ShapeOutsideInfo.shape" title="Link to this definition">#</a></dt>
 <dd><p>Shape coordinate details</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.ShapeOutsideInfo.margin_shape">
+<span class="sig-name descname"><span class="pre">margin_shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.dom.ShapeOutsideInfo.margin_shape" title="Link to this definition">#</a></dt>
+<dd><p>Margin shape bounds</p>
 </dd></dl>
 
 </dd></dl>
@@ -843,18 +843,6 @@ valid pseudoType.</p>
 <dt class="sig sig-object py" id="nodriver.cdp.dom.Rect">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Rect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#Rect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.Rect" title="Link to this definition">#</a></dt>
 <dd><p>Rectangle.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Rect.height">
-<span class="sig-name descname"><span class="pre">height</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.Rect.height" title="Link to this definition">#</a></dt>
-<dd><p>Rectangle height</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.Rect.width">
-<span class="sig-name descname"><span class="pre">width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.Rect.width" title="Link to this definition">#</a></dt>
-<dd><p>Rectangle width</p>
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.Rect.x">
 <span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.Rect.x" title="Link to this definition">#</a></dt>
@@ -865,6 +853,18 @@ valid pseudoType.</p>
 <dt class="sig sig-object py" id="nodriver.cdp.dom.Rect.y">
 <span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.Rect.y" title="Link to this definition">#</a></dt>
 <dd><p>Y coordinate</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Rect.width">
+<span class="sig-name descname"><span class="pre">width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.Rect.width" title="Link to this definition">#</a></dt>
+<dd><p>Rectangle width</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.Rect.height">
+<span class="sig-name descname"><span class="pre">height</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.Rect.height" title="Link to this definition">#</a></dt>
+<dd><p>Rectangle height</p>
 </dd></dl>
 
 </dd></dl>
@@ -1824,15 +1824,15 @@ you use the event’s attributes.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AttributeModified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#AttributeModified"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.AttributeModified" title="Link to this definition">#</a></dt>
 <dd><p>Fired when <code class="docutils literal notranslate"><span class="pre">Element</span></code>’s attribute is modified.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.AttributeModified.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.AttributeModified.name" title="Link to this definition">#</a></dt>
-<dd><p>Attribute name.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.AttributeModified.node_id">
 <span class="sig-name descname"><span class="pre">node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.NodeId" title="nodriver.cdp.dom.NodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.AttributeModified.node_id" title="Link to this definition">#</a></dt>
 <dd><p>Id of the node that has changed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.AttributeModified.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.AttributeModified.name" title="Link to this definition">#</a></dt>
+<dd><p>Attribute name.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1848,15 +1848,15 @@ you use the event’s attributes.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AttributeRemoved</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#AttributeRemoved"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.AttributeRemoved" title="Link to this definition">#</a></dt>
 <dd><p>Fired when <code class="docutils literal notranslate"><span class="pre">Element</span></code>’s attribute is removed.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.AttributeRemoved.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.AttributeRemoved.name" title="Link to this definition">#</a></dt>
-<dd><p>A ttribute name.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.AttributeRemoved.node_id">
 <span class="sig-name descname"><span class="pre">node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.NodeId" title="nodriver.cdp.dom.NodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.AttributeRemoved.node_id" title="Link to this definition">#</a></dt>
 <dd><p>Id of the node that has changed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.AttributeRemoved.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.AttributeRemoved.name" title="Link to this definition">#</a></dt>
+<dd><p>A ttribute name.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1866,15 +1866,15 @@ you use the event’s attributes.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CharacterDataModified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#CharacterDataModified"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.CharacterDataModified" title="Link to this definition">#</a></dt>
 <dd><p>Mirrors <code class="docutils literal notranslate"><span class="pre">DOMCharacterDataModified</span></code> event.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.CharacterDataModified.character_data">
-<span class="sig-name descname"><span class="pre">character_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.CharacterDataModified.character_data" title="Link to this definition">#</a></dt>
-<dd><p>New text value.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.CharacterDataModified.node_id">
 <span class="sig-name descname"><span class="pre">node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.NodeId" title="nodriver.cdp.dom.NodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.CharacterDataModified.node_id" title="Link to this definition">#</a></dt>
 <dd><p>Id of the node that has changed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.CharacterDataModified.character_data">
+<span class="sig-name descname"><span class="pre">character_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.CharacterDataModified.character_data" title="Link to this definition">#</a></dt>
+<dd><p>New text value.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1884,15 +1884,15 @@ you use the event’s attributes.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ChildNodeCountUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">child_node_count</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#ChildNodeCountUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.ChildNodeCountUpdated" title="Link to this definition">#</a></dt>
 <dd><p>Fired when <code class="docutils literal notranslate"><span class="pre">Container</span></code>’s child node count has changed.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.ChildNodeCountUpdated.child_node_count">
-<span class="sig-name descname"><span class="pre">child_node_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.ChildNodeCountUpdated.child_node_count" title="Link to this definition">#</a></dt>
-<dd><p>New node count.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.ChildNodeCountUpdated.node_id">
 <span class="sig-name descname"><span class="pre">node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.NodeId" title="nodriver.cdp.dom.NodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.ChildNodeCountUpdated.node_id" title="Link to this definition">#</a></dt>
 <dd><p>Id of the node that has changed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.ChildNodeCountUpdated.child_node_count">
+<span class="sig-name descname"><span class="pre">child_node_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.ChildNodeCountUpdated.child_node_count" title="Link to this definition">#</a></dt>
+<dd><p>New node count.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1901,12 +1901,6 @@ you use the event’s attributes.</p>
 <dt class="sig sig-object py" id="nodriver.cdp.dom.ChildNodeInserted">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ChildNodeInserted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">previous_node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#ChildNodeInserted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.ChildNodeInserted" title="Link to this definition">#</a></dt>
 <dd><p>Mirrors <code class="docutils literal notranslate"><span class="pre">DOMNodeInserted</span></code> event.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.ChildNodeInserted.node">
-<span class="sig-name descname"><span class="pre">node</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.Node" title="nodriver.cdp.dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.ChildNodeInserted.node" title="Link to this definition">#</a></dt>
-<dd><p>Inserted node data.</p>
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.ChildNodeInserted.parent_node_id">
 <span class="sig-name descname"><span class="pre">parent_node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.NodeId" title="nodriver.cdp.dom.NodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.ChildNodeInserted.parent_node_id" title="Link to this definition">#</a></dt>
@@ -1919,6 +1913,12 @@ you use the event’s attributes.</p>
 <dd><p>Id of the previous sibling.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.ChildNodeInserted.node">
+<span class="sig-name descname"><span class="pre">node</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.Node" title="nodriver.cdp.dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.ChildNodeInserted.node" title="Link to this definition">#</a></dt>
+<dd><p>Inserted node data.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -1926,15 +1926,15 @@ you use the event’s attributes.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ChildNodeRemoved</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/dom.html#ChildNodeRemoved"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.dom.ChildNodeRemoved" title="Link to this definition">#</a></dt>
 <dd><p>Mirrors <code class="docutils literal notranslate"><span class="pre">DOMNodeRemoved</span></code> event.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.ChildNodeRemoved.node_id">
-<span class="sig-name descname"><span class="pre">node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.NodeId" title="nodriver.cdp.dom.NodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.ChildNodeRemoved.node_id" title="Link to this definition">#</a></dt>
-<dd><p>Id of the node that has been removed.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.ChildNodeRemoved.parent_node_id">
 <span class="sig-name descname"><span class="pre">parent_node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.NodeId" title="nodriver.cdp.dom.NodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.ChildNodeRemoved.parent_node_id" title="Link to this definition">#</a></dt>
 <dd><p>Parent id.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.ChildNodeRemoved.node_id">
+<span class="sig-name descname"><span class="pre">node_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.NodeId" title="nodriver.cdp.dom.NodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.ChildNodeRemoved.node_id" title="Link to this definition">#</a></dt>
+<dd><p>Id of the node that has been removed.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1945,15 +1945,15 @@ you use the event’s attributes.</p>
 <dd><p><strong>EXPERIMENTAL</strong></p>
 <p>Called when distribution is changed.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.DistributedNodesUpdated.distributed_nodes">
-<span class="sig-name descname"><span class="pre">distributed_nodes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.BackendNode" title="nodriver.cdp.dom.BackendNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendNode</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.dom.DistributedNodesUpdated.distributed_nodes" title="Link to this definition">#</a></dt>
-<dd><p>Distributed nodes for given insertion point.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.DistributedNodesUpdated.insertion_point_id">
 <span class="sig-name descname"><span class="pre">insertion_point_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.NodeId" title="nodriver.cdp.dom.NodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.DistributedNodesUpdated.insertion_point_id" title="Link to this definition">#</a></dt>
 <dd><p>Insertion point where distributed nodes were updated.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.DistributedNodesUpdated.distributed_nodes">
+<span class="sig-name descname"><span class="pre">distributed_nodes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.BackendNode" title="nodriver.cdp.dom.BackendNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendNode</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.dom.DistributedNodesUpdated.distributed_nodes" title="Link to this definition">#</a></dt>
+<dd><p>Distributed nodes for given insertion point.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2028,15 +2028,15 @@ you use the event’s attributes.</p>
 <dd><p>Fired when backend wants to provide client with the missing DOM structure. This happens upon
 most of the calls requesting node ids.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.SetChildNodes.nodes">
-<span class="sig-name descname"><span class="pre">nodes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.Node" title="nodriver.cdp.dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.dom.SetChildNodes.nodes" title="Link to this definition">#</a></dt>
-<dd><p>Child nodes array.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.dom.SetChildNodes.parent_id">
 <span class="sig-name descname"><span class="pre">parent_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.dom.NodeId" title="nodriver.cdp.dom.NodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.dom.SetChildNodes.parent_id" title="Link to this definition">#</a></dt>
 <dd><p>Parent node id to populate with children.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.dom.SetChildNodes.nodes">
+<span class="sig-name descname"><span class="pre">nodes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.dom.Node" title="nodriver.cdp.dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.dom.SetChildNodes.nodes" title="Link to this definition">#</a></dt>
+<dd><p>Child nodes array.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2142,126 +2142,126 @@ most of the calls requesting node ids.</p>
 <li><a class="reference internal" href="#nodriver.cdp.dom.NodeId"><code class="docutils literal notranslate"><span class="pre">NodeId</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.BackendNodeId"><code class="docutils literal notranslate"><span class="pre">BackendNodeId</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.BackendNode"><code class="docutils literal notranslate"><span class="pre">BackendNode</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.BackendNode.backend_node_id"><code class="docutils literal notranslate"><span class="pre">BackendNode.backend_node_id</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.BackendNode.node_name"><code class="docutils literal notranslate"><span class="pre">BackendNode.node_name</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.BackendNode.node_type"><code class="docutils literal notranslate"><span class="pre">BackendNode.node_type</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.BackendNode.node_name"><code class="docutils literal notranslate"><span class="pre">BackendNode.node_name</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.BackendNode.backend_node_id"><code class="docutils literal notranslate"><span class="pre">BackendNode.backend_node_id</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType"><code class="docutils literal notranslate"><span class="pre">PseudoType</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.AFTER"><code class="docutils literal notranslate"><span class="pre">PseudoType.AFTER</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.BACKDROP"><code class="docutils literal notranslate"><span class="pre">PseudoType.BACKDROP</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.BEFORE"><code class="docutils literal notranslate"><span class="pre">PseudoType.BEFORE</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.FIRST_LETTER"><code class="docutils literal notranslate"><span class="pre">PseudoType.FIRST_LETTER</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.FIRST_LINE"><code class="docutils literal notranslate"><span class="pre">PseudoType.FIRST_LINE</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.FIRST_LINE_INHERITED"><code class="docutils literal notranslate"><span class="pre">PseudoType.FIRST_LINE_INHERITED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.FIRST_LETTER"><code class="docutils literal notranslate"><span class="pre">PseudoType.FIRST_LETTER</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.BEFORE"><code class="docutils literal notranslate"><span class="pre">PseudoType.BEFORE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.AFTER"><code class="docutils literal notranslate"><span class="pre">PseudoType.AFTER</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.MARKER"><code class="docutils literal notranslate"><span class="pre">PseudoType.MARKER</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.BACKDROP"><code class="docutils literal notranslate"><span class="pre">PseudoType.BACKDROP</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SELECTION"><code class="docutils literal notranslate"><span class="pre">PseudoType.SELECTION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.TARGET_TEXT"><code class="docutils literal notranslate"><span class="pre">PseudoType.TARGET_TEXT</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SPELLING_ERROR"><code class="docutils literal notranslate"><span class="pre">PseudoType.SPELLING_ERROR</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.GRAMMAR_ERROR"><code class="docutils literal notranslate"><span class="pre">PseudoType.GRAMMAR_ERROR</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.HIGHLIGHT"><code class="docutils literal notranslate"><span class="pre">PseudoType.HIGHLIGHT</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.INPUT_LIST_BUTTON"><code class="docutils literal notranslate"><span class="pre">PseudoType.INPUT_LIST_BUTTON</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.MARKER"><code class="docutils literal notranslate"><span class="pre">PseudoType.MARKER</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.RESIZER"><code class="docutils literal notranslate"><span class="pre">PseudoType.RESIZER</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.FIRST_LINE_INHERITED"><code class="docutils literal notranslate"><span class="pre">PseudoType.FIRST_LINE_INHERITED</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLLBAR</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR_BUTTON"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLLBAR_BUTTON</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR_CORNER"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLLBAR_CORNER</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR_THUMB"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLLBAR_THUMB</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR_BUTTON"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLLBAR_BUTTON</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR_TRACK"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLLBAR_TRACK</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR_TRACK_PIECE"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLLBAR_TRACK_PIECE</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SELECTION"><code class="docutils literal notranslate"><span class="pre">PseudoType.SELECTION</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SPELLING_ERROR"><code class="docutils literal notranslate"><span class="pre">PseudoType.SPELLING_ERROR</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.TARGET_TEXT"><code class="docutils literal notranslate"><span class="pre">PseudoType.TARGET_TEXT</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR_CORNER"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLLBAR_CORNER</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.RESIZER"><code class="docutils literal notranslate"><span class="pre">PseudoType.RESIZER</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.INPUT_LIST_BUTTON"><code class="docutils literal notranslate"><span class="pre">PseudoType.INPUT_LIST_BUTTON</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.VIEW_TRANSITION"><code class="docutils literal notranslate"><span class="pre">PseudoType.VIEW_TRANSITION</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.VIEW_TRANSITION_GROUP"><code class="docutils literal notranslate"><span class="pre">PseudoType.VIEW_TRANSITION_GROUP</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.VIEW_TRANSITION_IMAGE_PAIR"><code class="docutils literal notranslate"><span class="pre">PseudoType.VIEW_TRANSITION_IMAGE_PAIR</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.VIEW_TRANSITION_NEW"><code class="docutils literal notranslate"><span class="pre">PseudoType.VIEW_TRANSITION_NEW</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.VIEW_TRANSITION_OLD"><code class="docutils literal notranslate"><span class="pre">PseudoType.VIEW_TRANSITION_OLD</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.VIEW_TRANSITION_NEW"><code class="docutils literal notranslate"><span class="pre">PseudoType.VIEW_TRANSITION_NEW</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.ShadowRootType"><code class="docutils literal notranslate"><span class="pre">ShadowRootType</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.ShadowRootType.CLOSED"><code class="docutils literal notranslate"><span class="pre">ShadowRootType.CLOSED</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.ShadowRootType.OPEN_"><code class="docutils literal notranslate"><span class="pre">ShadowRootType.OPEN_</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.ShadowRootType.USER_AGENT"><code class="docutils literal notranslate"><span class="pre">ShadowRootType.USER_AGENT</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.ShadowRootType.OPEN_"><code class="docutils literal notranslate"><span class="pre">ShadowRootType.OPEN_</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.ShadowRootType.CLOSED"><code class="docutils literal notranslate"><span class="pre">ShadowRootType.CLOSED</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.CompatibilityMode"><code class="docutils literal notranslate"><span class="pre">CompatibilityMode</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.dom.CompatibilityMode.QUIRKS_MODE"><code class="docutils literal notranslate"><span class="pre">CompatibilityMode.QUIRKS_MODE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.CompatibilityMode.LIMITED_QUIRKS_MODE"><code class="docutils literal notranslate"><span class="pre">CompatibilityMode.LIMITED_QUIRKS_MODE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.CompatibilityMode.NO_QUIRKS_MODE"><code class="docutils literal notranslate"><span class="pre">CompatibilityMode.NO_QUIRKS_MODE</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.CompatibilityMode.QUIRKS_MODE"><code class="docutils literal notranslate"><span class="pre">CompatibilityMode.QUIRKS_MODE</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PhysicalAxes"><code class="docutils literal notranslate"><span class="pre">PhysicalAxes</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PhysicalAxes.BOTH"><code class="docutils literal notranslate"><span class="pre">PhysicalAxes.BOTH</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PhysicalAxes.HORIZONTAL"><code class="docutils literal notranslate"><span class="pre">PhysicalAxes.HORIZONTAL</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PhysicalAxes.VERTICAL"><code class="docutils literal notranslate"><span class="pre">PhysicalAxes.VERTICAL</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PhysicalAxes.BOTH"><code class="docutils literal notranslate"><span class="pre">PhysicalAxes.BOTH</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.LogicalAxes"><code class="docutils literal notranslate"><span class="pre">LogicalAxes</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.dom.LogicalAxes.INLINE"><code class="docutils literal notranslate"><span class="pre">LogicalAxes.INLINE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.LogicalAxes.BLOCK"><code class="docutils literal notranslate"><span class="pre">LogicalAxes.BLOCK</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.LogicalAxes.BOTH"><code class="docutils literal notranslate"><span class="pre">LogicalAxes.BOTH</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.LogicalAxes.INLINE"><code class="docutils literal notranslate"><span class="pre">LogicalAxes.INLINE</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.Node"><code class="docutils literal notranslate"><span class="pre">Node</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.assigned_slot"><code class="docutils literal notranslate"><span class="pre">Node.assigned_slot</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.attributes"><code class="docutils literal notranslate"><span class="pre">Node.attributes</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.backend_node_id"><code class="docutils literal notranslate"><span class="pre">Node.backend_node_id</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.base_url"><code class="docutils literal notranslate"><span class="pre">Node.base_url</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.child_node_count"><code class="docutils literal notranslate"><span class="pre">Node.child_node_count</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.children"><code class="docutils literal notranslate"><span class="pre">Node.children</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.compatibility_mode"><code class="docutils literal notranslate"><span class="pre">Node.compatibility_mode</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.content_document"><code class="docutils literal notranslate"><span class="pre">Node.content_document</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.distributed_nodes"><code class="docutils literal notranslate"><span class="pre">Node.distributed_nodes</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.document_url"><code class="docutils literal notranslate"><span class="pre">Node.document_url</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.frame_id"><code class="docutils literal notranslate"><span class="pre">Node.frame_id</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.imported_document"><code class="docutils literal notranslate"><span class="pre">Node.imported_document</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.internal_subset"><code class="docutils literal notranslate"><span class="pre">Node.internal_subset</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.is_svg"><code class="docutils literal notranslate"><span class="pre">Node.is_svg</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.local_name"><code class="docutils literal notranslate"><span class="pre">Node.local_name</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.name"><code class="docutils literal notranslate"><span class="pre">Node.name</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.Node.node_id"><code class="docutils literal notranslate"><span class="pre">Node.node_id</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.node_name"><code class="docutils literal notranslate"><span class="pre">Node.node_name</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.backend_node_id"><code class="docutils literal notranslate"><span class="pre">Node.backend_node_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.Node.node_type"><code class="docutils literal notranslate"><span class="pre">Node.node_type</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.node_name"><code class="docutils literal notranslate"><span class="pre">Node.node_name</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.local_name"><code class="docutils literal notranslate"><span class="pre">Node.local_name</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.Node.node_value"><code class="docutils literal notranslate"><span class="pre">Node.node_value</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.Node.parent_id"><code class="docutils literal notranslate"><span class="pre">Node.parent_id</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.pseudo_elements"><code class="docutils literal notranslate"><span class="pre">Node.pseudo_elements</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.pseudo_identifier"><code class="docutils literal notranslate"><span class="pre">Node.pseudo_identifier</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.pseudo_type"><code class="docutils literal notranslate"><span class="pre">Node.pseudo_type</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.child_node_count"><code class="docutils literal notranslate"><span class="pre">Node.child_node_count</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.children"><code class="docutils literal notranslate"><span class="pre">Node.children</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.attributes"><code class="docutils literal notranslate"><span class="pre">Node.attributes</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.document_url"><code class="docutils literal notranslate"><span class="pre">Node.document_url</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.base_url"><code class="docutils literal notranslate"><span class="pre">Node.base_url</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.Node.public_id"><code class="docutils literal notranslate"><span class="pre">Node.public_id</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.shadow_root_type"><code class="docutils literal notranslate"><span class="pre">Node.shadow_root_type</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.shadow_roots"><code class="docutils literal notranslate"><span class="pre">Node.shadow_roots</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.Node.system_id"><code class="docutils literal notranslate"><span class="pre">Node.system_id</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.template_content"><code class="docutils literal notranslate"><span class="pre">Node.template_content</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Node.value"><code class="docutils literal notranslate"><span class="pre">Node.value</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.internal_subset"><code class="docutils literal notranslate"><span class="pre">Node.internal_subset</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.Node.xml_version"><code class="docutils literal notranslate"><span class="pre">Node.xml_version</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.name"><code class="docutils literal notranslate"><span class="pre">Node.name</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.value"><code class="docutils literal notranslate"><span class="pre">Node.value</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.pseudo_type"><code class="docutils literal notranslate"><span class="pre">Node.pseudo_type</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.pseudo_identifier"><code class="docutils literal notranslate"><span class="pre">Node.pseudo_identifier</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.shadow_root_type"><code class="docutils literal notranslate"><span class="pre">Node.shadow_root_type</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.frame_id"><code class="docutils literal notranslate"><span class="pre">Node.frame_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.content_document"><code class="docutils literal notranslate"><span class="pre">Node.content_document</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.shadow_roots"><code class="docutils literal notranslate"><span class="pre">Node.shadow_roots</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.template_content"><code class="docutils literal notranslate"><span class="pre">Node.template_content</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.pseudo_elements"><code class="docutils literal notranslate"><span class="pre">Node.pseudo_elements</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.imported_document"><code class="docutils literal notranslate"><span class="pre">Node.imported_document</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.distributed_nodes"><code class="docutils literal notranslate"><span class="pre">Node.distributed_nodes</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.is_svg"><code class="docutils literal notranslate"><span class="pre">Node.is_svg</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.compatibility_mode"><code class="docutils literal notranslate"><span class="pre">Node.compatibility_mode</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Node.assigned_slot"><code class="docutils literal notranslate"><span class="pre">Node.assigned_slot</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.RGBA"><code class="docutils literal notranslate"><span class="pre">RGBA</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.RGBA.a"><code class="docutils literal notranslate"><span class="pre">RGBA.a</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.RGBA.b"><code class="docutils literal notranslate"><span class="pre">RGBA.b</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.RGBA.g"><code class="docutils literal notranslate"><span class="pre">RGBA.g</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.RGBA.r"><code class="docutils literal notranslate"><span class="pre">RGBA.r</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.RGBA.g"><code class="docutils literal notranslate"><span class="pre">RGBA.g</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.RGBA.b"><code class="docutils literal notranslate"><span class="pre">RGBA.b</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.RGBA.a"><code class="docutils literal notranslate"><span class="pre">RGBA.a</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.Quad"><code class="docutils literal notranslate"><span class="pre">Quad</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.BoxModel"><code class="docutils literal notranslate"><span class="pre">BoxModel</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.BoxModel.border"><code class="docutils literal notranslate"><span class="pre">BoxModel.border</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.BoxModel.content"><code class="docutils literal notranslate"><span class="pre">BoxModel.content</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.BoxModel.height"><code class="docutils literal notranslate"><span class="pre">BoxModel.height</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.BoxModel.margin"><code class="docutils literal notranslate"><span class="pre">BoxModel.margin</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.BoxModel.padding"><code class="docutils literal notranslate"><span class="pre">BoxModel.padding</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.BoxModel.shape_outside"><code class="docutils literal notranslate"><span class="pre">BoxModel.shape_outside</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.BoxModel.border"><code class="docutils literal notranslate"><span class="pre">BoxModel.border</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.BoxModel.margin"><code class="docutils literal notranslate"><span class="pre">BoxModel.margin</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.BoxModel.width"><code class="docutils literal notranslate"><span class="pre">BoxModel.width</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.BoxModel.height"><code class="docutils literal notranslate"><span class="pre">BoxModel.height</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.BoxModel.shape_outside"><code class="docutils literal notranslate"><span class="pre">BoxModel.shape_outside</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.ShapeOutsideInfo"><code class="docutils literal notranslate"><span class="pre">ShapeOutsideInfo</span></code></a><ul>
 <li><a class="reference internal" href="#nodriver.cdp.dom.ShapeOutsideInfo.bounds"><code class="docutils literal notranslate"><span class="pre">ShapeOutsideInfo.bounds</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.ShapeOutsideInfo.margin_shape"><code class="docutils literal notranslate"><span class="pre">ShapeOutsideInfo.margin_shape</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.ShapeOutsideInfo.shape"><code class="docutils literal notranslate"><span class="pre">ShapeOutsideInfo.shape</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.ShapeOutsideInfo.margin_shape"><code class="docutils literal notranslate"><span class="pre">ShapeOutsideInfo.margin_shape</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.Rect"><code class="docutils literal notranslate"><span class="pre">Rect</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Rect.height"><code class="docutils literal notranslate"><span class="pre">Rect.height</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.Rect.width"><code class="docutils literal notranslate"><span class="pre">Rect.width</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.Rect.x"><code class="docutils literal notranslate"><span class="pre">Rect.x</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.Rect.y"><code class="docutils literal notranslate"><span class="pre">Rect.y</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Rect.width"><code class="docutils literal notranslate"><span class="pre">Rect.width</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.Rect.height"><code class="docutils literal notranslate"><span class="pre">Rect.height</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.CSSComputedStyleProperty"><code class="docutils literal notranslate"><span class="pre">CSSComputedStyleProperty</span></code></a><ul>
@@ -2325,40 +2325,40 @@ most of the calls requesting node ids.</p>
 </li>
 <li><a class="reference internal" href="#events">Events</a><ul>
 <li><a class="reference internal" href="#nodriver.cdp.dom.AttributeModified"><code class="docutils literal notranslate"><span class="pre">AttributeModified</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.AttributeModified.name"><code class="docutils literal notranslate"><span class="pre">AttributeModified.name</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.AttributeModified.node_id"><code class="docutils literal notranslate"><span class="pre">AttributeModified.node_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.AttributeModified.name"><code class="docutils literal notranslate"><span class="pre">AttributeModified.name</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.AttributeModified.value"><code class="docutils literal notranslate"><span class="pre">AttributeModified.value</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.AttributeRemoved"><code class="docutils literal notranslate"><span class="pre">AttributeRemoved</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.AttributeRemoved.name"><code class="docutils literal notranslate"><span class="pre">AttributeRemoved.name</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.AttributeRemoved.node_id"><code class="docutils literal notranslate"><span class="pre">AttributeRemoved.node_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.AttributeRemoved.name"><code class="docutils literal notranslate"><span class="pre">AttributeRemoved.name</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.CharacterDataModified"><code class="docutils literal notranslate"><span class="pre">CharacterDataModified</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.CharacterDataModified.character_data"><code class="docutils literal notranslate"><span class="pre">CharacterDataModified.character_data</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.CharacterDataModified.node_id"><code class="docutils literal notranslate"><span class="pre">CharacterDataModified.node_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.CharacterDataModified.character_data"><code class="docutils literal notranslate"><span class="pre">CharacterDataModified.character_data</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.ChildNodeCountUpdated"><code class="docutils literal notranslate"><span class="pre">ChildNodeCountUpdated</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.ChildNodeCountUpdated.child_node_count"><code class="docutils literal notranslate"><span class="pre">ChildNodeCountUpdated.child_node_count</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.ChildNodeCountUpdated.node_id"><code class="docutils literal notranslate"><span class="pre">ChildNodeCountUpdated.node_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.ChildNodeCountUpdated.child_node_count"><code class="docutils literal notranslate"><span class="pre">ChildNodeCountUpdated.child_node_count</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.ChildNodeInserted"><code class="docutils literal notranslate"><span class="pre">ChildNodeInserted</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.ChildNodeInserted.node"><code class="docutils literal notranslate"><span class="pre">ChildNodeInserted.node</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.ChildNodeInserted.parent_node_id"><code class="docutils literal notranslate"><span class="pre">ChildNodeInserted.parent_node_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.ChildNodeInserted.previous_node_id"><code class="docutils literal notranslate"><span class="pre">ChildNodeInserted.previous_node_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.ChildNodeInserted.node"><code class="docutils literal notranslate"><span class="pre">ChildNodeInserted.node</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.ChildNodeRemoved"><code class="docutils literal notranslate"><span class="pre">ChildNodeRemoved</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.ChildNodeRemoved.node_id"><code class="docutils literal notranslate"><span class="pre">ChildNodeRemoved.node_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.ChildNodeRemoved.parent_node_id"><code class="docutils literal notranslate"><span class="pre">ChildNodeRemoved.parent_node_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.ChildNodeRemoved.node_id"><code class="docutils literal notranslate"><span class="pre">ChildNodeRemoved.node_id</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.DistributedNodesUpdated"><code class="docutils literal notranslate"><span class="pre">DistributedNodesUpdated</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.DistributedNodesUpdated.distributed_nodes"><code class="docutils literal notranslate"><span class="pre">DistributedNodesUpdated.distributed_nodes</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.DistributedNodesUpdated.insertion_point_id"><code class="docutils literal notranslate"><span class="pre">DistributedNodesUpdated.insertion_point_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.DistributedNodesUpdated.distributed_nodes"><code class="docutils literal notranslate"><span class="pre">DistributedNodesUpdated.distributed_nodes</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.DocumentUpdated"><code class="docutils literal notranslate"><span class="pre">DocumentUpdated</span></code></a></li>
@@ -2378,8 +2378,8 @@ most of the calls requesting node ids.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.SetChildNodes"><code class="docutils literal notranslate"><span class="pre">SetChildNodes</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.dom.SetChildNodes.nodes"><code class="docutils literal notranslate"><span class="pre">SetChildNodes.nodes</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.SetChildNodes.parent_id"><code class="docutils literal notranslate"><span class="pre">SetChildNodes.parent_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.SetChildNodes.nodes"><code class="docutils literal notranslate"><span class="pre">SetChildNodes.nodes</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.ShadowRootPopped"><code class="docutils literal notranslate"><span class="pre">ShadowRootPopped</span></code></a><ul>

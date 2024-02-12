@@ -171,7 +171,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/element.html">Element class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/others_and_helpers.html">Other classes and Helper classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/tab.html">Tab class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/page.html">Page class</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
 <ul>
@@ -260,25 +260,23 @@
           <h1>Source code for nodriver.core.browser</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">import</span> <span class="nn">urllib.request</span>
-<span class="kn">import</span> <span class="nn">urllib.parse</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">atexit</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">operator</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">urllib.parse</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">weakref</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">cdp</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
+<span class="kn">from</span> <span class="nn">._contradict</span> <span class="kn">import</span> <span class="n">ContraDict</span>
 <span class="kn">from</span> <span class="nn">.config</span> <span class="kn">import</span> <span class="n">PathLike</span><span class="p">,</span> <span class="n">Config</span><span class="p">,</span> <span class="n">is_posix</span>
 <span class="kn">from</span> <span class="nn">.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
-<span class="kn">from</span> <span class="nn">._contradict</span> <span class="kn">import</span> <span class="n">ContraDict</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">cdp</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -385,17 +383,17 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">webSocketDebuggerUrl</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">active_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">main_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;returns the target which was launched with the browser&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s2">&quot;page&quot;</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">pages</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">tabs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;returns the current targets which are of type &quot;page&quot;</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">pages</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s2">&quot;page&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>
+        <span class="n">tabs</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s2">&quot;page&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">tabs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">stopped</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -432,48 +430,48 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfoChanged</span><span class="p">):</span>
             <span class="n">target_info</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">target_info</span>
 
-            <span class="n">current_page</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="n">current_tab</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
                 <span class="nb">filter</span><span class="p">(</span>
                     <span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">target_id</span> <span class="o">==</span> <span class="n">target_info</span><span class="o">.</span><span class="n">target_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-            <span class="n">current_target</span> <span class="o">=</span> <span class="n">current_page</span><span class="o">.</span><span class="n">target</span>
+            <span class="n">current_target</span> <span class="o">=</span> <span class="n">current_tab</span><span class="o">.</span><span class="n">target</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
                 <span class="s2">&quot;target for #</span><span class="si">%d</span><span class="s2"> to target changed from </span><span class="si">%s</span><span class="s2"> to: </span><span class="si">%s</span><span class="s2">&quot;</span>
                 <span class="o">%</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">current_page</span><span class="p">),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">current_tab</span><span class="p">),</span>
                     <span class="n">current_target</span><span class="o">.</span><span class="n">target_id</span><span class="p">,</span>
                     <span class="n">target_info</span><span class="o">.</span><span class="n">target_id</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target_info</span>
+            <span class="n">current_tab</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target_info</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetCreated</span><span class="p">):</span>
             <span class="n">target_info</span><span class="p">:</span> <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfo</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">target_info</span>
-            <span class="kn">from</span> <span class="nn">.page</span> <span class="kn">import</span> <span class="n">Page</span>
+            <span class="kn">from</span> <span class="nn">.tab</span> <span class="kn">import</span> <span class="n">Tab</span>
 
-            <span class="n">new_target</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
+            <span class="n">new_target</span> <span class="o">=</span> <span class="n">Tab</span><span class="p">(</span>
                 <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;ws://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;/devtools/</span><span class="si">{</span><span class="n">target_info</span><span class="o">.</span><span class="n">type_</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">target_info</span><span class="o">.</span><span class="n">target_id</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">),</span>
                 <span class="n">target</span><span class="o">=</span><span class="n">target_info</span><span class="p">,</span>
-                <span class="n">browser</span><span class="o">=</span><span class="bp">self</span>
+                <span class="n">browser</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_target</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;target #</span><span class="si">%d</span><span class="s2"> created =&gt; </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">),</span> <span class="n">new_target</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;target #</span><span class="si">%d</span><span class="s2"> created =&gt; </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">),</span> <span class="n">new_target</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetDestroyed</span><span class="p">):</span>
-            <span class="n">current_target</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="n">current_tab</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
                 <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">target_id</span> <span class="o">==</span> <span class="n">event</span><span class="o">.</span><span class="n">target_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
                 <span class="s2">&quot;target removed. id # </span><span class="si">%d</span><span class="s2"> =&gt; </span><span class="si">%s</span><span class="s2">&quot;</span>
-                <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">current_target</span><span class="p">),</span> <span class="n">current_target</span><span class="p">)</span>
+                <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">current_tab</span><span class="p">),</span> <span class="n">current_tab</span><span class="p">)</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">current_target</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">current_tab</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Browser.get">
 <a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.get">[docs]</a>
@@ -525,187 +523,6 @@
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">tab</span></div>
 
-
-    <span class="c1"># async def get(</span>
-    <span class="c1">#         self, url=&quot;chrome://welcome&quot;, new_tab: bool = False, new_window: bool = False</span>
-    <span class="c1"># ):</span>
-    <span class="c1">#     &quot;&quot;&quot;top level get. utilizes the first tab to retrieve given url.</span>
-    <span class="c1">#</span>
-    <span class="c1">#     convenience function known from selenium.</span>
-    <span class="c1">#     this function handles waits/sleeps and detects when DOM events fired, so it&#39;s the safest</span>
-    <span class="c1">#     way of navigating.</span>
-    <span class="c1">#</span>
-    <span class="c1">#     :param url: the url to navigate to</span>
-    <span class="c1">#     :param new_tab: open new tab</span>
-    <span class="c1">#     :param new_window:  open new window</span>
-    <span class="c1">#     :return: Page</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     from .target import Target</span>
-    <span class="c1">#     if new_window and not new_tab:</span>
-    <span class="c1">#         new_tab = True</span>
-    <span class="c1">#</span>
-    <span class="c1">#     # get first tab</span>
-    <span class="c1">#     try:</span>
-    <span class="c1">#         tab = next(filter(lambda item: item.type_ == &#39;page&#39;, self.targets))</span>
-    <span class="c1">#     except StopIteration:</span>
-    <span class="c1">#         print(&#39; stopiteration&#39;)</span>
-    <span class="c1">#</span>
-    <span class="c1">#         targets_http = await self._http.get(&#39;list&#39;)</span>
-    <span class="c1">#         pages = [t for t in targets_http if t[&#39;type&#39;] == &#39;page&#39;]</span>
-    <span class="c1">#         _t = pages[0]  # dict</span>
-    <span class="c1">#         # remap keys</span>
-    <span class="c1">#         target_info = cdp.target.TargetInfo(**{</span>
-    <span class="c1">#             &#39;target_id&#39;: cdp.target.TargetID(_t.pop(&#39;id&#39;)),</span>
-    <span class="c1">#             &#39;type_&#39;: _t.pop(&#39;type&#39;),</span>
-    <span class="c1">#             &#39;url&#39;: _t.pop(&#39;url&#39;),</span>
-    <span class="c1">#             &#39;title&#39;: _t.pop(&#39;title&#39;),</span>
-    <span class="c1">#             &#39;attached&#39;: True,</span>
-    <span class="c1">#             &#39;can_access_opener&#39;: True</span>
-    <span class="c1">#         })</span>
-    <span class="c1">#         tab = Target((</span>
-    <span class="c1">#             f&quot;ws://{self.config.host}:{self.config.port}&quot;</span>
-    <span class="c1">#             f&quot;/devtools/{target_info.type_.lower()}&quot;</span>
-    <span class="c1">#             f&quot;/{target_info.target_id}&quot;)</span>
-    <span class="c1">#             , target=target_info)</span>
-    <span class="c1">#         await tab.open()</span>
-    <span class="c1">#         self.targets.append(tab)</span>
-    <span class="c1">#         return await self.get(url, new_tab=new_tab, new_window=new_window)</span>
-    <span class="c1">#     if new_tab:</span>
-    <span class="c1">#         if not self.config.autodiscover_targets:</span>
-    <span class="c1">#             _t = await self._http._request(method=&#39;put&#39;, endpoint=f&#39;new/?{url}&#39;)</span>
-    <span class="c1">#             target_info = cdp.target.TargetInfo(**{</span>
-    <span class="c1">#                 &#39;target_id&#39;: cdp.target.TargetID(_t.pop(&#39;id&#39;)),</span>
-    <span class="c1">#                 &#39;type_&#39;: _t.pop(&#39;type&#39;),</span>
-    <span class="c1">#                 &#39;url&#39;: _t.pop(&#39;url&#39;),</span>
-    <span class="c1">#                 &#39;title&#39;: _t.pop(&#39;title&#39;),</span>
-    <span class="c1">#                 &#39;attached&#39;: False,</span>
-    <span class="c1">#                 &#39;can_access_opener&#39;: False</span>
-    <span class="c1">#             })</span>
-    <span class="c1">#             tab = Target((</span>
-    <span class="c1">#                 f&quot;ws://{self.config.host}:{self.config.port}&quot;</span>
-    <span class="c1">#                 f&quot;/devtools/{target_info.type_.lower()}&quot;</span>
-    <span class="c1">#                 f&quot;/{target_info.target_id}&quot;)</span>
-    <span class="c1">#                 , target=target_info)</span>
-    <span class="c1">#</span>
-    <span class="c1">#             self.targets.append(tab)</span>
-    <span class="c1">#         else:</span>
-    <span class="c1">#</span>
-    <span class="c1">#             target_id = await self.connection.send(</span>
-    <span class="c1">#                 cdp.target.create_target(</span>
-    <span class="c1">#                     url, new_window=new_window,</span>
-    <span class="c1">#                     enable_begin_frame_control=True</span>
-    <span class="c1">#                 )</span>
-    <span class="c1">#             )</span>
-    <span class="c1">#             if not self.config.autodiscover_targets:</span>
-    <span class="c1">#                 target_info = cdp.target.TargetInfo(**{</span>
-    <span class="c1">#                     &#39;target_id&#39;: target_id,</span>
-    <span class="c1">#                     &#39;type_&#39;: &#39;page&#39;,</span>
-    <span class="c1">#                     &#39;url&#39;: url,</span>
-    <span class="c1">#                     &#39;title&#39;: None,</span>
-    <span class="c1">#                     &#39;attached&#39;: False,</span>
-    <span class="c1">#                     &#39;can_access_opener&#39;: False</span>
-    <span class="c1">#                 })</span>
-    <span class="c1">#                 tab = Target((</span>
-    <span class="c1">#                     f&quot;ws://{self.config.host}:{self.config.port}&quot;</span>
-    <span class="c1">#                     f&quot;/devtools/{target_info.type_.lower()}&quot;</span>
-    <span class="c1">#                     f&quot;/{target_info.target_id}&quot;)</span>
-    <span class="c1">#                     , target=target_info)</span>
-    <span class="c1">#             else:</span>
-    <span class="c1">#                 tab = next(filter(lambda item: item.type_ == &#39;page&#39; and item.target_id == target_id, self.targets))</span>
-    <span class="c1">#             while not tab:</span>
-    <span class="c1">#                 await self.wait()</span>
-    <span class="c1">#                 tab = next(filter(lambda item: item.type_ == &#39;page&#39; and item.target_id == target_id, self.targets))</span>
-    <span class="c1">#         return tab</span>
-    <span class="c1">#</span>
-    <span class="c1">#     else:</span>
-    <span class="c1">#         frame_id, loader_id, *_ = await tab.send(cdp.page.navigate(url))</span>
-    <span class="c1">#         tab.frame_id = frame_id</span>
-    <span class="c1">#         await self.wait()</span>
-    <span class="c1">#         return tab</span>
-
-    <span class="c1">#     &quot;&quot;&quot;top level get. utilizes the first tab to retrieve given url.</span>
-    <span class="c1">#</span>
-    <span class="c1">#     convenience function known from selenium.</span>
-    <span class="c1">#     this function handles waits/sleeps and detects when DOM events fired, so it&#39;s the safest</span>
-    <span class="c1">#     way of navigating.</span>
-    <span class="c1">#</span>
-    <span class="c1">#     :param url: the url to navigate to</span>
-    <span class="c1">#     :param new_tab: open new tab</span>
-    <span class="c1">#     :param new_window:  open new window</span>
-    <span class="c1">#     :return: Page</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#</span>
-    <span class="c1">#     if new_window and not new_tab:</span>
-    <span class="c1">#         new_tab = True</span>
-    <span class="c1">#     # get first tab</span>
-    <span class="c1">#     try:</span>
-    <span class="c1">#         tab = next(filter(lambda item: item.type_ == &#39;page&#39;, self.targets))</span>
-    <span class="c1">#     except StopIteration:</span>
-    <span class="c1">#         from .target import Target</span>
-    <span class="c1">#         targets_http = await self._http.get(&#39;list&#39;)</span>
-    <span class="c1">#         pages = [t for t in targets_http if t[&#39;type&#39;] == &#39;page&#39;]</span>
-    <span class="c1">#         _t = pages[0] # dict</span>
-    <span class="c1">#         # remap keys</span>
-    <span class="c1">#         target_info = cdp.target.TargetInfo(**{</span>
-    <span class="c1">#             &#39;target_id&#39;: cdp.target.TargetID(_t.pop(&#39;id&#39;)),</span>
-    <span class="c1">#             &#39;type_&#39;: _t.pop(&#39;type&#39;),</span>
-    <span class="c1">#             &#39;url&#39;: _t.pop(&#39;url&#39;),</span>
-    <span class="c1">#             &#39;title&#39;: _t.pop(&#39;title&#39;),</span>
-    <span class="c1">#             &#39;attached&#39;: None,</span>
-    <span class="c1">#             &#39;can_access_opener&#39;: None</span>
-    <span class="c1">#         })</span>
-    <span class="c1">#</span>
-    <span class="c1">#         tab = Target((</span>
-    <span class="c1">#             f&quot;ws://{self.config.host}:{self.config.port}&quot;</span>
-    <span class="c1">#             f&quot;/devtools/{target_info.type_.lower()}&quot;</span>
-    <span class="c1">#             f&quot;/{target_info.target_id}&quot;)</span>
-    <span class="c1">#             , target=target_info)</span>
-    <span class="c1">#         await tab.open()</span>
-    <span class="c1">#</span>
-    <span class="c1">#         self.targets.append(tab)</span>
-    <span class="c1">#</span>
-    <span class="c1">#     if new_tab:</span>
-    <span class="c1">#         target_id = await self.connection.send(</span>
-    <span class="c1">#             cdp.target.create_target(</span>
-    <span class="c1">#                 url, new_window=new_window,</span>
-    <span class="c1">#                 enable_begin_frame_control=True</span>
-    <span class="c1">#             )</span>
-    <span class="c1">#         )</span>
-    <span class="c1">#         if not tab:</span>
-    <span class="c1">#             tab = next(filter(lambda item: item.type_ == &#39;page&#39; and item.target_id == target_id, self.targets))</span>
-    <span class="c1">#</span>
-    <span class="c1">#         while not tab:</span>
-    <span class="c1">#             await self.wait()</span>
-    <span class="c1">#             tab = next(filter(lambda item: item.type_ == &#39;page&#39; and item.target_id == target_id, self.targets))</span>
-    <span class="c1">#</span>
-    <span class="c1">#         return tab</span>
-    <span class="c1">#     else:</span>
-    <span class="c1">#         if not tab:</span>
-    <span class="c1">#             print(&#39; creating tab&#39;)</span>
-    <span class="c1">#             await self.update_targets()</span>
-    <span class="c1">#             tab = next(filter(lambda item: item.type_ == &#39;page&#39;, self.targets))</span>
-    <span class="c1">#             #</span>
-    <span class="c1">#             # target_id = await self.connection.send(</span>
-    <span class="c1">#             #     cdp.target.create_target(</span>
-    <span class="c1">#             #         url,</span>
-    <span class="c1">#             #         new_window=False,</span>
-    <span class="c1">#             #         enable_begin_frame_control=True</span>
-    <span class="c1">#             #     )</span>
-    <span class="c1">#             # )</span>
-    <span class="c1">#             # target_info = await self.connection.send(</span>
-    <span class="c1">#             #     cdp.target.get_target_info(target_id)</span>
-    <span class="c1">#             # )</span>
-    <span class="c1">#             # tab = SimpleConnection((</span>
-    <span class="c1">#             #     f&quot;ws://{self.config.host}:{self.config.port}&quot;</span>
-    <span class="c1">#             #     f&quot;/devtools/{target_info.type_.lower()}&quot;</span>
-    <span class="c1">#             #     f&quot;/{target_info.target_id}&quot;))</span>
-    <span class="c1">#         if isinstance(tab, list):</span>
-    <span class="c1">#             print(&#39; tab is a list&#39;, tab)</span>
-    <span class="c1">#             tab = tab[-1]</span>
-    <span class="c1">#         frame_id, loader_id, *_ = await tab.send(cdp.page.navigate(url))</span>
-    <span class="c1">#         tab.frame_id = frame_id</span>
-    <span class="c1">#         await self.wait()</span>
-    <span class="c1">#         return tab</span>
 
 <div class="viewcode-block" id="Browser.start">
 <a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.start">[docs]</a>
@@ -782,7 +599,7 @@
                 <span class="s2">&quot;In that case you need to pass no_sandbox=True.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Connection</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">webSocketDebuggerUrl</span><span class="p">,</span> <span class="n">_owner</span><span class="o">=</span><span class="bp">self</span>
         <span class="p">)</span>
 
@@ -806,28 +623,78 @@
 
         <span class="c1"># await self</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">tile_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">tile_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_columns</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">mss</span>
         <span class="kn">import</span> <span class="nn">math</span>
 
         <span class="n">m</span> <span class="o">=</span> <span class="n">mss</span><span class="o">.</span><span class="n">mss</span><span class="p">()</span>
-
+        <span class="n">screen</span><span class="p">,</span> <span class="n">screen_width</span><span class="p">,</span> <span class="n">screen_height</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="kc">None</span><span class="p">,)</span>
         <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">monitors</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">monitors</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">screen</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">monitors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">width</span> <span class="o">=</span> <span class="n">screen</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]</span>
-            <span class="n">height</span> <span class="o">=</span> <span class="n">screen</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">]</span>
+            <span class="n">screen_width</span> <span class="o">=</span> <span class="n">screen</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]</span>
+            <span class="n">screen_height</span> <span class="o">=</span> <span class="n">screen</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">screen</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">screen_width</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">screen_height</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;no monitors detected&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
         <span class="k">await</span> <span class="bp">self</span>
+        <span class="n">distinct_windows</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">tab</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="p">:</span>
+            <span class="n">window_id</span><span class="p">,</span> <span class="n">bounds</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span>
+            <span class="n">distinct_windows</span><span class="p">[</span><span class="n">window_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span>
 
-        <span class="n">ntabs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span>  <span class="c1"># number of actual browser windows</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">ntabs</span><span class="p">)</span>
-        <span class="n">cols</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">ntabs</span> <span class="o">/</span> <span class="n">rows</span><span class="p">)</span>
-        <span class="k">while</span> <span class="p">(</span><span class="n">cols</span> <span class="o">*</span> <span class="n">rows</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">ntabs</span><span class="p">:</span>
-            <span class="n">cols</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">_rows</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">ntabs</span> <span class="o">/</span> <span class="n">columns</span><span class="p">)</span>
-        <span class="k">while</span> <span class="p">(</span><span class="n">cols</span> <span class="o">*</span> <span class="n">_rows</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">ntabs</span><span class="p">:</span>
-            <span class="n">_rows</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">num_windows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">distinct_windows</span><span class="p">)</span>
+        <span class="n">req_cols</span> <span class="o">=</span> <span class="n">max_columns</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_windows</span> <span class="o">*</span> <span class="p">(</span><span class="mi">19</span> <span class="o">/</span> <span class="mi">6</span><span class="p">))</span>
+        <span class="n">req_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_windows</span> <span class="o">/</span> <span class="n">req_cols</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">_rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">screen</span>
+        <span class="k">while</span> <span class="n">req_cols</span> <span class="o">*</span> <span class="n">req_rows</span> <span class="o">&lt;</span> <span class="n">num_windows</span><span class="p">:</span>
+            <span class="n">req_rows</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># print(num_windows)</span>
+        <span class="c1"># print(req_cols, req_rows, max_columns)</span>
+        <span class="c1"># # req_rows = math.ceil(num_windows / max_columns)</span>
+        <span class="c1"># # req_cols = math.ceil(num_windows / req_rows)</span>
+        <span class="c1"># # req_cols = math.floor(num_windows / max_columns)</span>
+        <span class="c1"># # while (req_rows * req_cols) &lt; num_windows:</span>
+        <span class="c1"># #     columns += 1</span>
+        <span class="c1"># # while (req_cols * rows) &lt; num_windows:</span>
+        <span class="c1"># #     req_cols += 1</span>
+        <span class="c1"># # req_rows = math.floor(num_windows / columns)</span>
+        <span class="c1"># # while (req_rows * req_cols) &lt; num_windows:</span>
+        <span class="c1"># #     req_rows += 1</span>
+
+        <span class="n">box_w</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">screen_width</span> <span class="o">/</span> <span class="n">req_cols</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">box_h</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">screen_height</span> <span class="o">/</span> <span class="n">req_rows</span><span class="p">)</span>
+
+        <span class="n">distinct_windows_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">distinct_windows</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">req_cols</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">req_rows</span><span class="p">):</span>
+                <span class="n">num</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">tabs</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">distinct_windows_iter</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">tabs</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">tab</span> <span class="o">=</span> <span class="n">tabs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="n">box_w</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="n">box_h</span><span class="p">,</span> <span class="n">box_w</span><span class="p">,</span> <span class="n">box_h</span><span class="p">]</span>
+                    <span class="n">grid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+                    <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">set_window_size</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                        <span class="s2">&quot;could not set window size. exception =&gt; &quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+                    <span class="k">continue</span>
+        <span class="k">return</span> <span class="n">grid</span>
+        <span class="c1"># yield tab</span>
+        <span class="c1"># yield (</span>
+        <span class="c1">#     x * box_w,</span>
+        <span class="c1">#     y * box_h,</span>
+        <span class="c1">#     box_w,</span>
+        <span class="c1">#     box_h )</span>
+        <span class="c1"># return req_rows, req_cols, screen</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_get_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfo</span><span class="p">]:</span>
         <span class="n">info</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">get_targets</span><span class="p">(),</span> <span class="n">_is_update</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -855,10 +722,6 @@
                 <span class="p">)</span>
 
         <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="c1"># asyncio.get_running_loop().call_later(</span>
-        <span class="c1">#     2,</span>
-        <span class="c1">#     lambda: asyncio.create_task(self._update_targets())</span>
-        <span class="c1"># )</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
@@ -869,12 +732,12 @@
             <span class="k">raise</span> <span class="n">exc_type</span><span class="p">(</span><span class="n">exc_val</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_tab</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_i</span><span class="p">]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_i</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i</span>
             <span class="k">raise</span> <span class="ne">StopIteration</span>
@@ -882,8 +745,8 @@
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i</span>
             <span class="k">raise</span> <span class="ne">StopIteration</span>
         <span class="k">finally</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_i&#39;</span><span class="p">):</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_i&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i</span>
@@ -950,36 +813,6 @@
     <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
-
-        <span class="c1"># Close connection when this object is destroyed</span>
-        <span class="c1">#</span>
-        <span class="c1"># try:</span>
-        <span class="c1">#     loop = asyncio.get_running_loop()</span>
-        <span class="c1">#     logger.debug(&#39;%s __del__ =&gt; scheduling websocket cleanup to existing running loop&#39;,</span>
-        <span class="c1">#                  self.__class__.__name__)</span>
-        <span class="c1">#     loop.create_task(self.connection.send(cdp.browser.close()))</span>
-        <span class="c1">#</span>
-        <span class="c1">#     # if loop.is_running():</span>
-        <span class="c1">#     #</span>
-        <span class="c1">#     #     loop.create_task(self.connection.send(cdp.browser.close()))</span>
-
-        <span class="c1"># except RuntimeError:</span>
-        <span class="c1">#     logger.debug(&#39;%s __del__ =&gt; scheduling websocket cleanup to new loop&#39;,</span>
-        <span class="c1">#                  self.__class__.__name__)</span>
-        <span class="c1">#     asyncio.run(self.connection.send(cdp.browser.close()))</span>
-        <span class="c1"># except Exception:  # noqa</span>
-        <span class="c1">#     raise</span>
-
-    <span class="c1"># def __del__(self):</span>
-    <span class="c1">#     try:</span>
-    <span class="c1">#         loop = asyncio.get_running_loop()</span>
-    <span class="c1">#     except RuntimeError:</span>
-    <span class="c1">#         return</span>
-    <span class="c1">#     coro = self.connection.send(cdp.browser.close())</span>
-    <span class="c1">#     if loop.is_running():</span>
-    <span class="c1">#         loop.create_task(coro)</span>
-    <span class="c1">#     else:</span>
-    <span class="c1">#         loop.run_until_complete(coro)</span>
 
 
 <span class="k">class</span> <span class="nc">HTTPApi</span><span class="p">:</span>

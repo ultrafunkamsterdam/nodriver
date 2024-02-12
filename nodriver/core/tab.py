@@ -19,14 +19,39 @@ logger = logging.getLogger(__name__)
 
 class Tab(Connection):
     """
-    The Page object is every Tab, Window or Page you are controlling.
-    This is the main object you will use in your project.
+    :ref:`tab` is the controlling mechanism/connection to a 'target',
+    for most of us 'target' can be read as 'tab'. however it could also
+    be an iframe, serviceworker or background script for example,
+    although there isn't much to control for those.
 
-    Page controls a tab, or a window, and does not change when you navigate
-    to another url. So advised is to keep a reference to it!
+    if you open a new window by using :py:meth:`browser.get(..., new_window=True)`
+    your url will open a new window. this window is a 'tab'.
+    When you browse to another page, the tab will be the same (it is an browser view).
 
-    some useful methods
-    ============================================
+    So it's important to keep some reference to tab objects, in case you're
+    done interacting with elements and want to operate on the page level again.
+
+    Tab object provide many useful and often-used methods. It is also
+    possible to utilize the included cdp classes to to something totally custom.
+
+    the cdp package is a set of so-called "domains" with each having methods, events and types.
+    to send a cdp method, for example :py:obj:`cdp.page.navigate`, you'll have to check
+    whether the method accepts any parameters and whether they are required or not.
+
+    you can use
+
+    ```python
+    await tab.send(cdp.page.navigate(url='https://yoururlhere'))
+    ```
+
+    so tab.send() accepts a generator object, which is created by calling a cdp method.
+    this way you can build very detailed and customized commands.
+    (note: finding correct command combo's can be a time consuming task, luckily i added a whole bunch
+    of useful methods, preferably having the same api's or lookalikes, as in selenium)
+
+
+    some useful, often needed and simply required methods
+    ===================================================================
 
     :py:meth:`~query_selector_all`
     ----------------------------------------
@@ -64,10 +89,6 @@ class Tab(Connection):
     you can act upon.
 
 
-    :py:meth:`~add_handler`
-    -----------------------------
-
-
     """
 
     browser: nodriver.core.browser.Browser
@@ -92,6 +113,70 @@ class Tab(Connection):
             raise AttributeError(
                 f'"{self.__class__.__name__}" has no attribute "%s"' % item
             )
+
+    async def find(
+        self,
+        text: Optional[str] = "",
+        selector: Optional[str] = "",
+        timeout: Union[int, float] = 5,
+    ):
+        loop = asyncio.get_running_loop()
+        now = loop.time()
+        if selector:
+            item = await self.query_selector(selector)
+            while not item:
+                await self
+                item = await self.query_selector(selector)
+                if loop.time() - now > timeout:
+                    raise asyncio.TimeoutError(
+                        "time ran out while waiting for %s" % selector
+                    )
+                await self.sleep(0.5)
+            return item
+        if text:
+            item = await self.find_element_by_text(text)
+            while not item:
+                await self
+                item = await self.find_element_by_text(text)
+                if loop.time() - now > timeout:
+                    raise asyncio.TimeoutError(
+                        "time ran out while waiting for text: %s" % text
+                    )
+                await self.sleep(0.5)
+            return item
+
+    async def find_all(
+        self,
+        text: Optional[str] = "",
+        selector: Optional[str] = "",
+        timeout: Union[int, float] = 5,
+    ):
+        loop = asyncio.get_running_loop()
+        now = loop.time()
+        results = []
+        if selector:
+            items = await self.query_selector_all(selector)
+            while not items:
+                await self
+                items = await self.query_selector_all(selector)
+                if loop.time() - now > timeout:
+                    raise asyncio.TimeoutError(
+                        "time ran out while waiting for %s" % selector
+                    )
+                await self.sleep(0.5)
+            results.extend(items)
+        if text:
+            items = await self.find_elements_by_text(text)
+            while not items:
+                await self
+                items = await self.find_elements_by_text(text)
+                if loop.time() - now > timeout:
+                    raise asyncio.TimeoutError(
+                        "time ran out while waiting for text: %s" % text
+                    )
+                await self.sleep(0.5)
+            results.extend(items)
+        return results
 
     def __call__(
         self,
@@ -276,6 +361,7 @@ class Tab(Connection):
         if nresult == 0:
             return []
         node_ids = await self.send(cdp.dom.get_search_results(search_id, 0, nresult))
+
         results = []
         for nid in node_ids:
             node = util.filter_recurse(doc, lambda n: n.node_id == nid)
@@ -288,10 +374,25 @@ class Tab(Connection):
                 except:
                     continue
                 if return_enclosing_element:
-                    await elem.update()
+                    if not elem.parent:
+                        await elem.update()
                     elem = elem.parent
-                results.append(elem)
 
+                results.append(elem)
+        iframes = util.filter_recurse_all(doc, lambda n: n.node_name == "IFRAME")
+        if iframes:
+            iframes = [element.create(iframe, self, doc) for iframe in iframes]
+            for iframe in iframes:
+                iframe_text_elems = util.filter_recurse_all(
+                    iframe,
+                    lambda n: n.node_type == 3 and text.lower() in n.node_value.lower(),
+                )
+                if return_enclosing_element:
+                    if not iframe.parent:
+                        await iframe.update()
+                    results.extend(elem.parent for elem in iframe_text_elems)
+                else:
+                    results.extend(iframe_text_elems)
         return results
 
     async def find_element_by_text(
@@ -322,7 +423,8 @@ class Tab(Connection):
         elem = element.create(node, self, doc)
         if return_enclosing_element:
             if elem.node_type == 3:  # apply only if is text node
-                await elem.update()
+                if not elem.parent:
+                    await elem.update()
                 elem = elem.parent
                 return elem
         await self.send(cdp.dom.discard_search_results(search_id))

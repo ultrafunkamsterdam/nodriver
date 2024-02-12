@@ -172,7 +172,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../classes/browser.html">Browser class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../classes/element.html">Element class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../classes/others_and_helpers.html">Other classes and Helper classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../classes/page.html">Page class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/tab.html"><code class="docutils literal notranslate"><span class="pre">Tab</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
 <ul class="current">
@@ -365,11 +365,9 @@ NOTE: file and line are from chromium c++ implementation code, not js.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlayerError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stack</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cause</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/media.html#PlayerError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.media.PlayerError" title="Link to this definition">#</a></dt>
 <dd><p>Corresponds to kMediaError</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerError.cause">
-<span class="sig-name descname"><span class="pre">cause</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.media.PlayerError" title="nodriver.cdp.media.PlayerError"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerError</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.media.PlayerError.cause" title="Link to this definition">#</a></dt>
-<dd><p>Errors potentially have a root cause error, ie, a DecoderError might be
-caused by an WindowsError</p>
-</dd></dl>
+<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerError.error_type">
+<span class="sig-name descname"><span class="pre">error_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.media.PlayerError.error_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.media.PlayerError.code">
@@ -379,20 +377,22 @@ as PipelineStatusCodes in media/base/pipeline_status.h</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerError.data">
-<span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></em><a class="headerlink" href="#nodriver.cdp.media.PlayerError.data" title="Link to this definition">#</a></dt>
-<dd><p>Extra data attached to an error, such as an HRESULT, Video Codec, etc.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerError.error_type">
-<span class="sig-name descname"><span class="pre">error_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.media.PlayerError.error_type" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.media.PlayerError.stack">
 <span class="sig-name descname"><span class="pre">stack</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.media.PlayerErrorSourceLocation" title="nodriver.cdp.media.PlayerErrorSourceLocation"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerErrorSourceLocation</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.media.PlayerError.stack" title="Link to this definition">#</a></dt>
 <dd><p>A trace of where this error was caused / where it passed through.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerError.cause">
+<span class="sig-name descname"><span class="pre">cause</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.media.PlayerError" title="nodriver.cdp.media.PlayerError"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerError</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.media.PlayerError.cause" title="Link to this definition">#</a></dt>
+<dd><p>Errors potentially have a root cause error, ie, a DecoderError might be
+caused by an WindowsError</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerError.data">
+<span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></em><a class="headerlink" href="#nodriver.cdp.media.PlayerError.data" title="Link to this definition">#</a></dt>
+<dd><p>Extra data attached to an error, such as an HRESULT, Video Codec, etc.</p>
 </dd></dl>
 
 </dd></dl>
@@ -459,13 +459,13 @@ remove player properties. A null propValue indicates removal.</p>
 <dd><p>Send events as a list, allowing them to be batched on the browser for less
 congestion. If batched, events must ALWAYS be in chronological order.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerEventsAdded.events">
-<span class="sig-name descname"><span class="pre">events</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.media.PlayerEvent" title="nodriver.cdp.media.PlayerEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerEvent</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.media.PlayerEventsAdded.events" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerEventsAdded.player_id">
+<span class="sig-name descname"><span class="pre">player_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.media.PlayerId" title="nodriver.cdp.media.PlayerId"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.media.PlayerEventsAdded.player_id" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerEventsAdded.player_id">
-<span class="sig-name descname"><span class="pre">player_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.media.PlayerId" title="nodriver.cdp.media.PlayerId"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.media.PlayerEventsAdded.player_id" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerEventsAdded.events">
+<span class="sig-name descname"><span class="pre">events</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.media.PlayerEvent" title="nodriver.cdp.media.PlayerEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerEvent</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.media.PlayerEventsAdded.events" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -475,13 +475,13 @@ congestion. If batched, events must ALWAYS be in chronological order.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlayerMessagesLogged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">player_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">messages</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/media.html#PlayerMessagesLogged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.media.PlayerMessagesLogged" title="Link to this definition">#</a></dt>
 <dd><p>Send a list of any messages that need to be delivered.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerMessagesLogged.messages">
-<span class="sig-name descname"><span class="pre">messages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.media.PlayerMessage" title="nodriver.cdp.media.PlayerMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerMessage</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.media.PlayerMessagesLogged.messages" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerMessagesLogged.player_id">
+<span class="sig-name descname"><span class="pre">player_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.media.PlayerId" title="nodriver.cdp.media.PlayerId"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.media.PlayerMessagesLogged.player_id" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerMessagesLogged.player_id">
-<span class="sig-name descname"><span class="pre">player_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.media.PlayerId" title="nodriver.cdp.media.PlayerId"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.media.PlayerMessagesLogged.player_id" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerMessagesLogged.messages">
+<span class="sig-name descname"><span class="pre">messages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.media.PlayerMessage" title="nodriver.cdp.media.PlayerMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerMessage</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.media.PlayerMessagesLogged.messages" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -491,13 +491,13 @@ congestion. If batched, events must ALWAYS be in chronological order.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlayerErrorsRaised</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">player_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/media.html#PlayerErrorsRaised"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.media.PlayerErrorsRaised" title="Link to this definition">#</a></dt>
 <dd><p>Send a list of any errors that need to be delivered.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerErrorsRaised.errors">
-<span class="sig-name descname"><span class="pre">errors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.media.PlayerError" title="nodriver.cdp.media.PlayerError"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerError</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.media.PlayerErrorsRaised.errors" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerErrorsRaised.player_id">
+<span class="sig-name descname"><span class="pre">player_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.media.PlayerId" title="nodriver.cdp.media.PlayerId"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.media.PlayerErrorsRaised.player_id" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerErrorsRaised.player_id">
-<span class="sig-name descname"><span class="pre">player_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.media.PlayerId" title="nodriver.cdp.media.PlayerId"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.media.PlayerErrorsRaised.player_id" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.media.PlayerErrorsRaised.errors">
+<span class="sig-name descname"><span class="pre">errors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.media.PlayerError" title="nodriver.cdp.media.PlayerError"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlayerError</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.media.PlayerErrorsRaised.errors" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -598,11 +598,11 @@ list of player ids and all events again.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.media.PlayerError"><code class="docutils literal notranslate"><span class="pre">PlayerError</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.media.PlayerError.cause"><code class="docutils literal notranslate"><span class="pre">PlayerError.cause</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.media.PlayerError.code"><code class="docutils literal notranslate"><span class="pre">PlayerError.code</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.media.PlayerError.data"><code class="docutils literal notranslate"><span class="pre">PlayerError.data</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.media.PlayerError.error_type"><code class="docutils literal notranslate"><span class="pre">PlayerError.error_type</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.media.PlayerError.code"><code class="docutils literal notranslate"><span class="pre">PlayerError.code</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.media.PlayerError.stack"><code class="docutils literal notranslate"><span class="pre">PlayerError.stack</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.media.PlayerError.cause"><code class="docutils literal notranslate"><span class="pre">PlayerError.cause</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.media.PlayerError.data"><code class="docutils literal notranslate"><span class="pre">PlayerError.data</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -619,18 +619,18 @@ list of player ids and all events again.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.media.PlayerEventsAdded"><code class="docutils literal notranslate"><span class="pre">PlayerEventsAdded</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.media.PlayerEventsAdded.events"><code class="docutils literal notranslate"><span class="pre">PlayerEventsAdded.events</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.media.PlayerEventsAdded.player_id"><code class="docutils literal notranslate"><span class="pre">PlayerEventsAdded.player_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.media.PlayerEventsAdded.events"><code class="docutils literal notranslate"><span class="pre">PlayerEventsAdded.events</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.media.PlayerMessagesLogged"><code class="docutils literal notranslate"><span class="pre">PlayerMessagesLogged</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.media.PlayerMessagesLogged.messages"><code class="docutils literal notranslate"><span class="pre">PlayerMessagesLogged.messages</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.media.PlayerMessagesLogged.player_id"><code class="docutils literal notranslate"><span class="pre">PlayerMessagesLogged.player_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.media.PlayerMessagesLogged.messages"><code class="docutils literal notranslate"><span class="pre">PlayerMessagesLogged.messages</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.media.PlayerErrorsRaised"><code class="docutils literal notranslate"><span class="pre">PlayerErrorsRaised</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.media.PlayerErrorsRaised.errors"><code class="docutils literal notranslate"><span class="pre">PlayerErrorsRaised.errors</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.media.PlayerErrorsRaised.player_id"><code class="docutils literal notranslate"><span class="pre">PlayerErrorsRaised.player_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.media.PlayerErrorsRaised.errors"><code class="docutils literal notranslate"><span class="pre">PlayerErrorsRaised.errors</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.media.PlayersCreated"><code class="docutils literal notranslate"><span class="pre">PlayersCreated</span></code></a><ul>

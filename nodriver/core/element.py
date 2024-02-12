@@ -72,6 +72,15 @@ class Element:
         self._make_attrs()
 
     @property
+    def tag(self):
+        if self.node_name:
+            return self.node_name.lower()
+
+    @property
+    def tag_name(self):
+        return self.tag
+
+    @property
     def node_id(self):
         return self.node.node_id
 
@@ -438,11 +447,12 @@ class Element:
             return result[1]
 
     async def get_position(self, abs=False) -> Position:
-        await self.update()
-        quads = await self._tab.send(
-            cdp.dom.get_content_quads(object_id=self.remote_object.object_id)
-        )
+        if not self.parent or not self.object_id:
+            await self.update()
         try:
+            quads = await self.tab.send(
+                cdp.dom.get_content_quads(object_id=self.remote_object.object_id)
+            )
             pos = Position(quads[0])
             if abs:
                 scroll_y = (await self.conn.evaluate("window.scrollY")).value
@@ -509,6 +519,10 @@ class Element:
                 )
             ),
         )
+        try:
+            await self.flash()
+        except:  # noqa
+            pass
 
     async def mouse_move(self):
         """moves mouse (not click), to element position. when an element has an

@@ -26,8 +26,8 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 add_module_names = False
 language = "en"
 
-default_role = "py:obj"
-
+default_role = "any"
+autodoc_member_order = "bysource"
 # autodoc_typehints = "none"
 # autoclass_content = "both"
 # Don't show class signature with the class' name.

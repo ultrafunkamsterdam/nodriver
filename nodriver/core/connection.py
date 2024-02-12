@@ -337,6 +337,7 @@ class Connection(metaclass=CantTouchThis):
         except ProtocolException as e:
             e.message += f"\ncommand:{tx.method}\nparams:{tx.params}"
             raise e
+
     async def _register_handlers(self):
         """
         ensure that for current (event) handlers, the corresponding

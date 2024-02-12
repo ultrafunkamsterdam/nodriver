@@ -172,7 +172,7 @@
 <li class="toctree-l1"><a class="reference internal" href="browser.html">Browser class</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Element class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="others_and_helpers.html">Other classes and Helper classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="page.html">Page class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tab.html"><code class="docutils literal notranslate"><span class="pre">Tab</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
 <ul>
@@ -264,8 +264,31 @@
 <p>Some words about the Element class</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="nodriver.Element">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element" title="Link to this definition">#</a></dt>
-<dd><dl class="py property">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tab</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element" title="Link to this definition">#</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Element.update">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.update" title="Link to this definition">#</a></dt>
+<dd><p>updates element to retrieve more properties. for example this enables
+<a class="reference internal" href="#nodriver.Element.children" title="nodriver.Element.children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code></a> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code> attributes.</p>
+<p>also resolves js opbject which is stored object in <code class="xref py py-obj docutils literal notranslate"><span class="pre">remote_object</span></code></p>
+<p>usually you will get element nodes by the usage of</p>
+<p><a class="reference internal" href="tab.html#nodriver.Tab.query_selector_all" title="nodriver.Tab.query_selector_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Tab.query_selector_all()</span></code></a></p>
+<p><a class="reference internal" href="tab.html#nodriver.Tab.find_elements_by_text" title="nodriver.Tab.find_elements_by_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Tab.find_elements_by_text()</span></code></a></p>
+<p>those elements are already updated and you can browse through children directly.</p>
+<p>The reason for a seperate call instead of doing it at initialization,
+is because when you are retrieving 100+ elements this becomes quite expensive.</p>
+<p>therefore, it is not advised to call this method on a bunch of blocks (100+) at the same time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="nodriver.Element.attrs">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">attrs</span></span><a class="headerlink" href="#nodriver.Element.attrs" title="Link to this definition">#</a></dt>
 <dd><p>attributes are stored here, however, you can set them directly on the element object as well.
@@ -283,12 +306,6 @@ so you can browse through the entire tree as well.
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="nodriver.Element.clear_input">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clear_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_until_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.clear_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.clear_input" title="Link to this definition">#</a></dt>
-<dd><p>clears an input field</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Element.click">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">click</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.click"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.click" title="Link to this definition">#</a></dt>
 <dd><p>Click the element.</p>
@@ -300,32 +317,6 @@ so you can browse through the entire tree as well.
 <dd class="field-even"><p></p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="nodriver.Element.flash">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.flash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.flash" title="Link to this definition">#</a></dt>
-<dd><p>displays for a short time a red dot on the element (only if the element itself is visible)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>coords</strong> (<em>x</em><em>,</em><em>y</em>) – x,y</p></li>
-<li><p><strong>duration</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>) – seconds (default 0.5)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="nodriver.Element.focus">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">focus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.focus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.focus" title="Link to this definition">#</a></dt>
-<dd><p>focus the current element. often useful in form (select) fields</p>
 </dd></dl>
 
 <dl class="py method">
@@ -356,74 +347,15 @@ hover/mouseover effect, this would trigger it</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="nodriver.Element.record_video">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">record_video</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.record_video"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.record_video" title="Link to this definition">#</a></dt>
-<dd><p>experimental option.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – the desired filename</p></li>
-<li><p><strong>folder</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – the download folder path</p></li>
-<li><p><strong>duration</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – record for this many seconds and then download</p></li>
-</ul>
-</dd>
-</dl>
-<p>on html5 video nodes, you can call this method to start recording of the video.</p>
-<p>when any of the follow happens:</p>
-<ul class="simple">
-<li><p>video ends</p></li>
-<li><p>calling videoelement(‘pause’)</p></li>
-<li><p>video stops</p></li>
-</ul>
-<p>the video recorded will be downloaded.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="nodriver.Element.save_screenshot">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save_screenshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jpeg'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.save_screenshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.save_screenshot" title="Link to this definition">#</a></dt>
-<dd><p>Saves a screenshot of this element (only)
-This is not the same as <a class="reference internal" href="page.html#nodriver.Page.save_screenshot" title="nodriver.Page.save_screenshot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Page.save_screenshot</span></code></a>, which saves a “regular” screenshot</p>
-<p>When the element is hidden, or has no size, or is otherwise not capturable, a RuntimeError is raised</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>PathLike</em>) – uses this as the save path</p></li>
-<li><p><strong>format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – jpeg or png (defaults to jpeg)</p></li>
-<li><p><strong>scale</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – the scale of the screenshot, eg: 1 = size as is, 2 = double, 0.5 is half</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the path/filename of saved screenshot</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Element.scroll_into_view">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scroll_into_view</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.scroll_into_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.scroll_into_view" title="Link to this definition">#</a></dt>
 <dd><p>scrolls element into view</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="nodriver.Element.select_option">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">select_option</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.select_option"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.select_option" title="Link to this definition">#</a></dt>
-<dd><p>for form (select) fields. when you have queried the options you can call this method on the option object</p>
-<p>calling <code class="xref py py-func docutils literal notranslate"><span class="pre">option.select_option()</span></code> will use that option as selected value.
-does not work in all cases.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="nodriver.Element.send_file">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">file_paths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.send_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.send_file" title="Link to this definition">#</a></dt>
-<dd><p>some form input require a file (upload).
-this method sends 1 or more file(s) to the input field.</p>
-<p>needles to say, but make sure the field accepts multiple files if you want to send more files.
-otherwise the browser might crash.</p>
-<p>example :
-<cite>await fileinputElement.send_file(‘c:/temp/image.png’, ‘c:/users/myuser/lol.gif’)</cite></p>
+<dt class="sig sig-object py" id="nodriver.Element.clear_input">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clear_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_until_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.clear_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.clear_input" title="Link to this definition">#</a></dt>
+<dd><p>clears an input field</p>
 </dd></dl>
 
 <dl class="py method">
@@ -440,6 +372,31 @@ does not work, sending the keystroke n or rn or a spacebar work wonders!</p>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Element.send_file">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">file_paths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.send_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.send_file" title="Link to this definition">#</a></dt>
+<dd><p>some form input require a file (upload).
+this method sends 1 or more file(s) to the input field.</p>
+<p>needles to say, but make sure the field accepts multiple files if you want to send more files.
+otherwise the browser might crash.</p>
+<p>example :
+<cite>await fileinputElement.send_file(‘c:/temp/image.png’, ‘c:/users/myuser/lol.gif’)</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Element.focus">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">focus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.focus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.focus" title="Link to this definition">#</a></dt>
+<dd><p>focus the current element. often useful in form (select) fields</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Element.select_option">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">select_option</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.select_option"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.select_option" title="Link to this definition">#</a></dt>
+<dd><p>for form (select) fields. when you have queried the options you can call this method on the option object</p>
+<p>calling <code class="xref py py-func docutils literal notranslate"><span class="pre">option.select_option()</span></code> will use that option as selected value.
+does not work in all cases.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -467,26 +424,69 @@ note: this includes text in the form of script content, as those are also just �
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="nodriver.Element.update">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.update" title="Link to this definition">#</a></dt>
-<dd><p>updates element to retrieve more properties. for example this enables
-<a class="reference internal" href="#nodriver.Element.children" title="nodriver.Element.children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code></a> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code> attributes.</p>
-<p>also resolves js opbject which is stored object in <code class="xref py py-obj docutils literal notranslate"><span class="pre">remote_object</span></code></p>
-<p>usually you will get element nodes by the usage of</p>
-<p><a class="reference internal" href="page.html#nodriver.Page.query_selector_all" title="nodriver.Page.query_selector_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Page.query_selector_all()</span></code></a></p>
-<p><a class="reference internal" href="page.html#nodriver.Page.find_elements_by_text" title="nodriver.Page.find_elements_by_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Page.find_elements_by_text()</span></code></a></p>
-<p>those elements are already updated and you can browse through children directly.</p>
-<p>The reason for a seperate call instead of doing it at initialization,
-is because when you are retrieving 100+ elements this becomes quite expensive.</p>
-<p>therefore, it is not advised to call this method on a bunch of blocks (100+) at the same time.</p>
+<dt class="sig sig-object py" id="nodriver.Element.save_screenshot">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save_screenshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jpeg'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.save_screenshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.save_screenshot" title="Link to this definition">#</a></dt>
+<dd><p>Saves a screenshot of this element (only)
+This is not the same as <a class="reference internal" href="tab.html#nodriver.Tab.save_screenshot" title="nodriver.Tab.save_screenshot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tab.save_screenshot</span></code></a>, which saves a “regular” screenshot</p>
+<p>When the element is hidden, or has no size, or is otherwise not capturable, a RuntimeError is raised</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>PathLike</em>) – uses this as the save path</p></li>
+<li><p><strong>format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – jpeg or png (defaults to jpeg)</p></li>
+<li><p><strong>scale</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – the scale of the screenshot, eg: 1 = size as is, 2 = double, 0.5 is half</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the path/filename of saved screenshot</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Element.flash">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.flash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.flash" title="Link to this definition">#</a></dt>
+<dd><p>displays for a short time a red dot on the element (only if the element itself is visible)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coords</strong> (<em>x</em><em>,</em><em>y</em>) – x,y</p></li>
+<li><p><strong>duration</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>) – seconds (default 0.5)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Element.record_video">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">record_video</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/element.html#Element.record_video"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Element.record_video" title="Link to this definition">#</a></dt>
+<dd><p>experimental option.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – the desired filename</p></li>
+<li><p><strong>folder</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – the download folder path</p></li>
+<li><p><strong>duration</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – record for this many seconds and then download</p></li>
+</ul>
+</dd>
+</dl>
+<p>on html5 video nodes, you can call this method to start recording of the video.</p>
+<p>when any of the follow happens:</p>
+<ul class="simple">
+<li><p>video ends</p></li>
+<li><p>calling videoelement(‘pause’)</p></li>
+<li><p>video stops</p></li>
+</ul>
+<p>the video recorded will be downloaded.</p>
 </dd></dl>
 
 </dd></dl>
@@ -550,23 +550,23 @@ is because when you are retrieving 100+ elements this becomes quite expensive.</
             <ul>
 <li><a class="reference internal" href="#">Element class</a><ul>
 <li><a class="reference internal" href="#nodriver.Element"><code class="docutils literal notranslate"><span class="pre">Element</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.Element.update"><code class="docutils literal notranslate"><span class="pre">Element.update()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Element.attrs"><code class="docutils literal notranslate"><span class="pre">Element.attrs</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Element.children"><code class="docutils literal notranslate"><span class="pre">Element.children</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Element.clear_input"><code class="docutils literal notranslate"><span class="pre">Element.clear_input()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Element.click"><code class="docutils literal notranslate"><span class="pre">Element.click()</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Element.flash"><code class="docutils literal notranslate"><span class="pre">Element.flash()</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Element.focus"><code class="docutils literal notranslate"><span class="pre">Element.focus()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Element.mouse_click"><code class="docutils literal notranslate"><span class="pre">Element.mouse_click()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Element.mouse_move"><code class="docutils literal notranslate"><span class="pre">Element.mouse_move()</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Element.record_video"><code class="docutils literal notranslate"><span class="pre">Element.record_video()</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Element.save_screenshot"><code class="docutils literal notranslate"><span class="pre">Element.save_screenshot()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Element.scroll_into_view"><code class="docutils literal notranslate"><span class="pre">Element.scroll_into_view()</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Element.select_option"><code class="docutils literal notranslate"><span class="pre">Element.select_option()</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Element.send_file"><code class="docutils literal notranslate"><span class="pre">Element.send_file()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Element.clear_input"><code class="docutils literal notranslate"><span class="pre">Element.clear_input()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Element.send_keys"><code class="docutils literal notranslate"><span class="pre">Element.send_keys()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Element.send_file"><code class="docutils literal notranslate"><span class="pre">Element.send_file()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Element.focus"><code class="docutils literal notranslate"><span class="pre">Element.focus()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Element.select_option"><code class="docutils literal notranslate"><span class="pre">Element.select_option()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Element.text"><code class="docutils literal notranslate"><span class="pre">Element.text</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Element.text_all"><code class="docutils literal notranslate"><span class="pre">Element.text_all</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Element.update"><code class="docutils literal notranslate"><span class="pre">Element.update()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Element.save_screenshot"><code class="docutils literal notranslate"><span class="pre">Element.save_screenshot()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Element.flash"><code class="docutils literal notranslate"><span class="pre">Element.flash()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Element.record_video"><code class="docutils literal notranslate"><span class="pre">Element.record_video()</span></code></a></li>
 </ul>
 </li>
 </ul>

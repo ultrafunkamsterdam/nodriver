@@ -1,11 +1,6 @@
-.. _page:
+.. _tab:
 
-Page class
------------------------
-
-some words about page connection
-
-.. autoclass::  nodriver.Page
+.. autoclass::  nodriver.Tab
     :members:
     :inherited-members:
     :member-order: alphabetical

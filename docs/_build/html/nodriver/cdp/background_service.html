@@ -172,7 +172,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../classes/browser.html">Browser class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../classes/element.html">Element class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../classes/others_and_helpers.html">Other classes and Helper classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../classes/page.html">Page class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/tab.html"><code class="docutils literal notranslate"><span class="pre">Tab</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
 <ul class="current">
@@ -291,6 +291,11 @@ API.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.background_service.ServiceName.PUSH_MESSAGING">
+<span class="sig-name descname"><span class="pre">PUSH_MESSAGING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'pushMessaging'</span></em><a class="headerlink" href="#nodriver.cdp.background_service.ServiceName.PUSH_MESSAGING" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.background_service.ServiceName.NOTIFICATIONS">
 <span class="sig-name descname"><span class="pre">NOTIFICATIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'notifications'</span></em><a class="headerlink" href="#nodriver.cdp.background_service.ServiceName.NOTIFICATIONS" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -303,11 +308,6 @@ API.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.background_service.ServiceName.PERIODIC_BACKGROUND_SYNC">
 <span class="sig-name descname"><span class="pre">PERIODIC_BACKGROUND_SYNC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'periodicBackgroundSync'</span></em><a class="headerlink" href="#nodriver.cdp.background_service.ServiceName.PERIODIC_BACKGROUND_SYNC" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.background_service.ServiceName.PUSH_MESSAGING">
-<span class="sig-name descname"><span class="pre">PUSH_MESSAGING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'pushMessaging'</span></em><a class="headerlink" href="#nodriver.cdp.background_service.ServiceName.PUSH_MESSAGING" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -332,9 +332,27 @@ API.</p>
 <dt class="sig sig-object py" id="nodriver.cdp.background_service.BackgroundServiceEvent">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BackgroundServiceEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service_worker_registration_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_metadata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage_key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/background_service.html#BackgroundServiceEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.background_service.BackgroundServiceEvent" title="Link to this definition">#</a></dt>
 <dd><dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.background_service.BackgroundServiceEvent.event_metadata">
-<span class="sig-name descname"><span class="pre">event_metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.background_service.EventMetadata" title="nodriver.cdp.background_service.EventMetadata"><code class="xref py py-class docutils literal notranslate"><span class="pre">EventMetadata</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.background_service.BackgroundServiceEvent.event_metadata" title="Link to this definition">#</a></dt>
-<dd><p>A list of event-specific information.</p>
+<dt class="sig sig-object py" id="nodriver.cdp.background_service.BackgroundServiceEvent.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="network.html#nodriver.cdp.network.TimeSinceEpoch" title="nodriver.cdp.network.TimeSinceEpoch"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSinceEpoch</span></code></a></em><a class="headerlink" href="#nodriver.cdp.background_service.BackgroundServiceEvent.timestamp" title="Link to this definition">#</a></dt>
+<dd><p>Timestamp of the event (in seconds).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.background_service.BackgroundServiceEvent.origin">
+<span class="sig-name descname"><span class="pre">origin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.background_service.BackgroundServiceEvent.origin" title="Link to this definition">#</a></dt>
+<dd><p>The origin this event belongs to.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.background_service.BackgroundServiceEvent.service_worker_registration_id">
+<span class="sig-name descname"><span class="pre">service_worker_registration_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="service_worker.html#nodriver.cdp.service_worker.RegistrationID" title="nodriver.cdp.service_worker.RegistrationID"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegistrationID</span></code></a></em><a class="headerlink" href="#nodriver.cdp.background_service.BackgroundServiceEvent.service_worker_registration_id" title="Link to this definition">#</a></dt>
+<dd><p>The Service Worker ID that initiated the event.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.background_service.BackgroundServiceEvent.service">
+<span class="sig-name descname"><span class="pre">service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.background_service.ServiceName" title="nodriver.cdp.background_service.ServiceName"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceName</span></code></a></em><a class="headerlink" href="#nodriver.cdp.background_service.BackgroundServiceEvent.service" title="Link to this definition">#</a></dt>
+<dd><p>The Background Service this event belongs to.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -350,33 +368,15 @@ API.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.background_service.BackgroundServiceEvent.origin">
-<span class="sig-name descname"><span class="pre">origin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.background_service.BackgroundServiceEvent.origin" title="Link to this definition">#</a></dt>
-<dd><p>The origin this event belongs to.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.background_service.BackgroundServiceEvent.service">
-<span class="sig-name descname"><span class="pre">service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.background_service.ServiceName" title="nodriver.cdp.background_service.ServiceName"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceName</span></code></a></em><a class="headerlink" href="#nodriver.cdp.background_service.BackgroundServiceEvent.service" title="Link to this definition">#</a></dt>
-<dd><p>The Background Service this event belongs to.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.background_service.BackgroundServiceEvent.service_worker_registration_id">
-<span class="sig-name descname"><span class="pre">service_worker_registration_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="service_worker.html#nodriver.cdp.service_worker.RegistrationID" title="nodriver.cdp.service_worker.RegistrationID"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegistrationID</span></code></a></em><a class="headerlink" href="#nodriver.cdp.background_service.BackgroundServiceEvent.service_worker_registration_id" title="Link to this definition">#</a></dt>
-<dd><p>The Service Worker ID that initiated the event.</p>
+<dt class="sig sig-object py" id="nodriver.cdp.background_service.BackgroundServiceEvent.event_metadata">
+<span class="sig-name descname"><span class="pre">event_metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.background_service.EventMetadata" title="nodriver.cdp.background_service.EventMetadata"><code class="xref py py-class docutils literal notranslate"><span class="pre">EventMetadata</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.background_service.BackgroundServiceEvent.event_metadata" title="Link to this definition">#</a></dt>
+<dd><p>A list of event-specific information.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.background_service.BackgroundServiceEvent.storage_key">
 <span class="sig-name descname"><span class="pre">storage_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.background_service.BackgroundServiceEvent.storage_key" title="Link to this definition">#</a></dt>
 <dd><p>Storage key this event belongs to.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.background_service.BackgroundServiceEvent.timestamp">
-<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="network.html#nodriver.cdp.network.TimeSinceEpoch" title="nodriver.cdp.network.TimeSinceEpoch"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSinceEpoch</span></code></a></em><a class="headerlink" href="#nodriver.cdp.background_service.BackgroundServiceEvent.timestamp" title="Link to this definition">#</a></dt>
-<dd><p>Timestamp of the event (in seconds).</p>
 </dd></dl>
 
 </dd></dl>
@@ -548,10 +548,10 @@ events afterwards if enabled and recording.</p>
 <li><a class="reference internal" href="#nodriver.cdp.background_service.ServiceName"><code class="docutils literal notranslate"><span class="pre">ServiceName</span></code></a><ul>
 <li><a class="reference internal" href="#nodriver.cdp.background_service.ServiceName.BACKGROUND_FETCH"><code class="docutils literal notranslate"><span class="pre">ServiceName.BACKGROUND_FETCH</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.background_service.ServiceName.BACKGROUND_SYNC"><code class="docutils literal notranslate"><span class="pre">ServiceName.BACKGROUND_SYNC</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.background_service.ServiceName.PUSH_MESSAGING"><code class="docutils literal notranslate"><span class="pre">ServiceName.PUSH_MESSAGING</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.background_service.ServiceName.NOTIFICATIONS"><code class="docutils literal notranslate"><span class="pre">ServiceName.NOTIFICATIONS</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.background_service.ServiceName.PAYMENT_HANDLER"><code class="docutils literal notranslate"><span class="pre">ServiceName.PAYMENT_HANDLER</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.background_service.ServiceName.PERIODIC_BACKGROUND_SYNC"><code class="docutils literal notranslate"><span class="pre">ServiceName.PERIODIC_BACKGROUND_SYNC</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.background_service.ServiceName.PUSH_MESSAGING"><code class="docutils literal notranslate"><span class="pre">ServiceName.PUSH_MESSAGING</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.background_service.EventMetadata"><code class="docutils literal notranslate"><span class="pre">EventMetadata</span></code></a><ul>
@@ -560,14 +560,14 @@ events afterwards if enabled and recording.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.background_service.BackgroundServiceEvent"><code class="docutils literal notranslate"><span class="pre">BackgroundServiceEvent</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.background_service.BackgroundServiceEvent.event_metadata"><code class="docutils literal notranslate"><span class="pre">BackgroundServiceEvent.event_metadata</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.background_service.BackgroundServiceEvent.timestamp"><code class="docutils literal notranslate"><span class="pre">BackgroundServiceEvent.timestamp</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.background_service.BackgroundServiceEvent.origin"><code class="docutils literal notranslate"><span class="pre">BackgroundServiceEvent.origin</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.background_service.BackgroundServiceEvent.service_worker_registration_id"><code class="docutils literal notranslate"><span class="pre">BackgroundServiceEvent.service_worker_registration_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.background_service.BackgroundServiceEvent.service"><code class="docutils literal notranslate"><span class="pre">BackgroundServiceEvent.service</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.background_service.BackgroundServiceEvent.event_name"><code class="docutils literal notranslate"><span class="pre">BackgroundServiceEvent.event_name</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.background_service.BackgroundServiceEvent.instance_id"><code class="docutils literal notranslate"><span class="pre">BackgroundServiceEvent.instance_id</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.background_service.BackgroundServiceEvent.origin"><code class="docutils literal notranslate"><span class="pre">BackgroundServiceEvent.origin</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.background_service.BackgroundServiceEvent.service"><code class="docutils literal notranslate"><span class="pre">BackgroundServiceEvent.service</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.background_service.BackgroundServiceEvent.service_worker_registration_id"><code class="docutils literal notranslate"><span class="pre">BackgroundServiceEvent.service_worker_registration_id</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.background_service.BackgroundServiceEvent.event_metadata"><code class="docutils literal notranslate"><span class="pre">BackgroundServiceEvent.event_metadata</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.background_service.BackgroundServiceEvent.storage_key"><code class="docutils literal notranslate"><span class="pre">BackgroundServiceEvent.storage_key</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.background_service.BackgroundServiceEvent.timestamp"><code class="docutils literal notranslate"><span class="pre">BackgroundServiceEvent.timestamp</span></code></a></li>
 </ul>
 </li>
 </ul>

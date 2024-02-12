@@ -71,16 +71,9 @@ Browser
 seen as "root"
 
 
-Page
+Tab
 ---------------------------------
-:ref:`page` is the connection to each 'target',
-for most of us this would read 'tab' but could also be
-an iframe for example.
-
-the page object will stay the same for each tab and window and
-will not close when you navigate to another url.
-So it's important to keep some reference to page, in case you're
-done interacting with elements and want to operate on the page level again.
+:ref:`_tab`
 
 
 Element

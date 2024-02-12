@@ -326,9 +326,7 @@ class Browser:
                 "In that case you need to pass no_sandbox=True.\n\n"
             )
 
-        self.connection = Connection(
-            self.info.webSocketDebuggerUrl, _owner=self
-        )
+        self.connection = Connection(self.info.webSocketDebuggerUrl, _owner=self)
 
         self.connection.handlers[cdp.inspector.Detached] = [self.stop]
 
