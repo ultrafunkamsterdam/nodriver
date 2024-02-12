@@ -1,15 +1,21 @@
-"""
+__ascii_art = ("""
+##################################################################################################
 
-         888                                                  888         d8b
-         888                                                  888         Y8P
-         888                                                  888
- .d8888b 88888b.  888d888 .d88b.  88888b.d88b.   .d88b.   .d88888 888d888 888 888  888  .d88b.  888d888
-d88P"    888 "88b 888P"  d88""88b 888 "888 "88b d8P  Y8b d88" 888 888P"   888 888  888 d8P  Y8b 888P"
-888      888  888 888    888  888 888  888  888 88888888 888  888 888     888 Y88  88P 88888888 888
-Y88b.    888  888 888    Y88..88P 888  888  888 Y8b.     Y88b 888 888     888  Y8bd8P  Y8b.     888
- "Y8888P 888  888 888     "Y88P"  888  888  888  "Y8888   "Y88888 888     888   Y88P    "Y8888  888   88888888
+          888b    888              8888888b.             d8b
+          8888b   888              888  "Y88b            Y8P
+          88888b  888              888    888
+          888Y88b 888    .d88b.    888    888   888d888  888   888  888   .d88b.   888d888
+          888 Y88b888   d88""88b   888    888   888P"    888   888  888  d8P  Y8b  888P"
+          888  Y88888   888  888   888    888   888      888   Y88  88P  88888888  888
+          888   Y8888   Y88..88P   888  .d88P   888      888    Y8bd8P   Y8b.      888
+          888    Y888    "Y88P"    8888888P"    888      888     Y88P     "Y8888   888
 
-BY ULTRAFUNKAMSTERDAM (https://github.com/ultrafunkamsterdam)"""
+               BY ULTRAFUNKAMSTERDAM (https://github.com/ultrafunkamsterdam)
+
+
+##################################################################################################
+""")
+
 
 import codecs
 import os
@@ -28,11 +34,38 @@ with codecs.open(
     version = fp.read().strip()
 
 description = (
-    "1 module as Selenium replacement module optimized to bypass anti-bot systems.",
-    "1 module as blazing fast driverless alternative utilizing async and cdp",
-    "Not triggered by CloudFlare/Imperva/hCaptcha and such.",
-    "NOTE: results may vary due to many factors. No guarantees are given, except for ongoing efforts in understanding detection algorithms.",
-)
+    __ascii_art +
+    """
+    * Official successor of Undetected Chromedriver
+    * Can be made to work for for all chromium based browsers.
+    * Dropped selenium and chromedriver binary requirements.
+    * fully asynchronous == bizarre performance gains, and more granular control
+    
+    Part of undetected-chromedriver, or merely the successor of it, this library is a full rewrite, providing a
+    fast framework for web automation, webscraping, bots and any other creative ideas which are normally 
+    hindered by annoying anti bot systems like Captcha / CloudFlare / Imperva / hCaptcha and other 
+    big corp "ai" money machines using your input to make even more $$ (http://tinyurl.com/bigcorp-ai-inputs)
+    
+    The webdriver/selenium requirement is dropped entirely, since this library communicates directly to the browser.
+    Being fully asynchronous, this adds massive performance improvements and more detailed control possibilities.
+    
+    As usual ( like undetected chromedriver) all config details and best practices are built-in, which means 
+    up and running with just a line of code.
+    
+    This makes it simple to use for quick prototyping, and perfect for interactive interpreter use (eg: IPython).
+    
+
+    WARNING:
+       - results may vary due to many factors. No guarantees are given whatsoever.
+       - Running from bad IP or datacenter may still cause captcha's and/or other problems.
+       - With great power comes ... etc etc etc
+         no but SERIOUS: for your own benefit, make sure "they" have no reason for upscaling anti-bot measurements.
+         there might be one day it would not be feasible anymore to work up against big corp, and provide upgrades 
+         and free libraries. 
+        
+    """)
+
+
 
 setup(
     name="nodriver",

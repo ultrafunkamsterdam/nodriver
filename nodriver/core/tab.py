@@ -95,11 +95,11 @@ class Tab(Connection):
     _download_behavior: List[str] = None
 
     def __init__(
-        self,
-        websocket_url: str,
-        target: cdp.target.TargetInfo,
-        browser: Optional["nodriver.Browser"] = None,
-        **kwargs,
+            self,
+            websocket_url: str,
+            target: cdp.target.TargetInfo,
+            browser: Optional["nodriver.Browser"] = None,
+            **kwargs,
     ):
         super().__init__(websocket_url, target, **kwargs)
         self.browser = browser
@@ -115,10 +115,10 @@ class Tab(Connection):
             )
 
     async def find(
-        self,
-        text: Optional[str] = "",
-        selector: Optional[str] = "",
-        timeout: Union[int, float] = 5,
+            self,
+            text: Optional[str] = "",
+            selector: Optional[str] = "",
+            timeout: Union[int, float] = 5,
     ):
         loop = asyncio.get_running_loop()
         now = loop.time()
@@ -146,10 +146,10 @@ class Tab(Connection):
             return item
 
     async def find_all(
-        self,
-        text: Optional[str] = "",
-        selector: Optional[str] = "",
-        timeout: Union[int, float] = 5,
+            self,
+            text: Optional[str] = "",
+            selector: Optional[str] = "",
+            timeout: Union[int, float] = 5,
     ):
         loop = asyncio.get_running_loop()
         now = loop.time()
@@ -179,10 +179,10 @@ class Tab(Connection):
         return results
 
     def __call__(
-        self,
-        text: Optional[str] = "",
-        selector: Optional[str] = "",
-        timeout: Optional[Union[int, float]] = 5,
+            self,
+            text: Optional[str] = "",
+            selector: Optional[str] = "",
+            timeout: Optional[Union[int, float]] = 5,
     ):
         """
         alias to query_selector_all or find_elements_by_text, depending
@@ -200,7 +200,7 @@ class Tab(Connection):
         return s
 
     async def get(
-        self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
+            self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
     ):
         """top level get. utilizes the first tab to retrieve given url.
 
@@ -242,7 +242,7 @@ class Tab(Connection):
                 tab = next(
                     filter(
                         lambda item: item.type_ == "page"
-                        and item.target_id == target_id,
+                                     and item.target_id == target_id,
                         self.browser.targets,
                     )
                 )
@@ -255,9 +255,9 @@ class Tab(Connection):
             return tab
 
     async def query_selector_all(
-        self,
-        selector: str,
-        _node: Optional[Union[cdp.dom.Node, "element.Element"]] = None,
+            self,
+            selector: str,
+            _node: Optional[Union[cdp.dom.Node, "element.Element"]] = None,
     ):
         """
         equivalent of javascripts document.querySelectorAll.
@@ -312,9 +312,9 @@ class Tab(Connection):
         return results
 
     async def query_selector(
-        self,
-        selector: str,
-        _node: Optional[Union[cdp.dom.Node, element.Element]] = None,
+            self,
+            selector: str,
+            _node: Optional[Union[cdp.dom.Node, element.Element]] = None,
     ):
         """
         find single element based on css selector string
@@ -340,10 +340,10 @@ class Tab(Connection):
         return element.create(node, self, doc)
 
     async def find_elements_by_text(
-        self,
-        text: str,
-        tag_hint: Optional[str] = None,
-        return_enclosing_element: Optional[bool] = True,
+            self,
+            text: str,
+            tag_hint: Optional[str] = None,
+            return_enclosing_element: Optional[bool] = True,
     ) -> List[element.Element]:
         """
 
@@ -379,24 +379,30 @@ class Tab(Connection):
                     elem = elem.parent
 
                 results.append(elem)
-        iframes = util.filter_recurse_all(doc, lambda n: n.node_name == "IFRAME")
+        iframes = util.filter_recurse_all(doc, lambda node: node.node_name == "IFRAME")
         if iframes:
+
+            # create nodriver.Element objects from the cdp.dom.Node objects
             iframes = [element.create(iframe, self, doc) for iframe in iframes]
+
             for iframe in iframes:
+
                 iframe_text_elems = util.filter_recurse_all(
                     iframe,
-                    lambda n: n.node_type == 3 and text.lower() in n.node_value.lower(),
+                    lambda node: node.node_type == 3 and text.lower() in node.node_value.lower(),
                 )
+
                 if return_enclosing_element:
                     if not iframe.parent:
                         await iframe.update()
                     results.extend(elem.parent for elem in iframe_text_elems)
                 else:
                     results.extend(iframe_text_elems)
+
         return results
 
     async def find_element_by_text(
-        self, text: str, return_enclosing_element: Optional[bool] = True
+            self, text: str, return_enclosing_element: Optional[bool] = True
     ) -> element.Element:
         """
 
@@ -428,15 +434,6 @@ class Tab(Connection):
                 elem = elem.parent
                 return elem
         await self.send(cdp.dom.discard_search_results(search_id))
-        await self.send(cdp.dom.disable())
-        for event_type in self.handlers.copy():
-            if isinstance(event_type, types.ModuleType):
-                if "cdp.dom" in event_type.__name__:
-                    if event_type in self.handlers:
-                        self.handlers.pop(event_type)
-            else:
-                if event_type in self.handlers:
-                    self.handlers.pop(event_type)
         return elem
 
     async def back(self):
@@ -452,9 +449,9 @@ class Tab(Connection):
         await self.send(cdp.runtime.evaluate("window.history.forward()"))
 
     async def reload(
-        self,
-        ignore_cache: Optional[bool] = True,
-        script_to_evaluate_on_load: Optional[str] = None,
+            self,
+            ignore_cache: Optional[bool] = True,
+            script_to_evaluate_on_load: Optional[str] = None,
     ):
         """
         Reloads the page
@@ -494,7 +491,7 @@ class Tab(Connection):
         return window_id, bounds
 
     async def get_all_cookies(
-        self, requests_cookie_format: bool = False
+            self, requests_cookie_format: bool = False
     ) -> List[Union[cdp.network.Cookie, "http.cookiejar.Cookie"]]:
         """
         get all cookies
@@ -596,7 +593,7 @@ class Tab(Connection):
         await self.activate()
 
     async def set_window_state(
-        self, left=0, top=0, width=1280, height=720, state="normal"
+            self, left=0, top=0, width=1280, height=720, state="normal"
     ):
         """
         sets the window size and state.
@@ -709,10 +706,10 @@ class Tab(Connection):
         )
 
     async def wait_for(
-        self,
-        text: Optional[str] = "",
-        selector: Optional[str] = "",
-        timeout: Optional[Union[int, float]] = 5,
+            self,
+            text: Optional[str] = "",
+            selector: Optional[str] = "",
+            timeout: Optional[Union[int, float]] = 5,
     ) -> element.Element:
         """
         variant on query_selector_all and find_elements_by_text
@@ -817,10 +814,10 @@ class Tab(Connection):
         )
 
     async def save_screenshot(
-        self,
-        filename: Optional[PathLike] = "auto",
-        format: Optional[str] = "jpeg",
-        full_page: Optional[bool] = False,
+            self,
+            filename: Optional[PathLike] = "auto",
+            format: Optional[str] = "jpeg",
+            full_page: Optional[bool] = False,
     ) -> str:
         """
         Saves a screenshot of the page.
