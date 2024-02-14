@@ -171,7 +171,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/element.html">Element class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/others_and_helpers.html">Other classes and Helper classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/tab.html">Tab class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/tab.html"><code class="docutils literal notranslate"><span class="pre">Tab</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
 <ul>
@@ -260,6 +260,7 @@
           <h1>Source code for nodriver.core.tab</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">http.cookiejar</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">types</span>
@@ -357,11 +358,11 @@
     <span class="n">_download_behavior</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">websocket_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">target</span><span class="p">:</span> <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfo</span><span class="p">,</span>
-        <span class="n">browser</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;nodriver.Browser&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">websocket_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">target</span><span class="p">:</span> <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfo</span><span class="p">,</span>
+            <span class="n">browser</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;nodriver.Browser&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">websocket_url</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">browser</span> <span class="o">=</span> <span class="n">browser</span>
@@ -376,11 +377,81 @@
                 <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&quot; has no attribute &quot;%s&quot;&#39;</span> <span class="o">%</span> <span class="n">item</span>
             <span class="p">)</span>
 
+<div class="viewcode-block" id="Tab.find">
+<a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.find">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">find</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">selector</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">selector</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">now</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span>
+                        <span class="s2">&quot;time ran out while waiting for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">selector</span>
+                    <span class="p">)</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">item</span>
+        <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_element_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_element_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">now</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span>
+                        <span class="s2">&quot;time ran out while waiting for text: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">text</span>
+                    <span class="p">)</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">item</span></div>
+
+
+<div class="viewcode-block" id="Tab.find_all">
+<a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.find_all">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">find_all</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">selector</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">selector</span><span class="p">:</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">items</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span>
+                <span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">now</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span>
+                        <span class="s2">&quot;time ran out while waiting for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">selector</span>
+                    <span class="p">)</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">items</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span>
+                <span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">now</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span>
+                        <span class="s2">&quot;time ran out while waiting for text: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">text</span>
+                    <span class="p">)</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">results</span></div>
+
+
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">selector</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">selector</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        alias to query_selector_all or find_elements_by_text, depending</span>
@@ -400,7 +471,7 @@
 <div class="viewcode-block" id="Tab.get">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.get">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;chrome://welcome&quot;</span><span class="p">,</span> <span class="n">new_tab</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">new_window</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;chrome://welcome&quot;</span><span class="p">,</span> <span class="n">new_tab</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">new_window</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;top level get. utilizes the first tab to retrieve given url.</span>
 
@@ -442,7 +513,7 @@
                 <span class="n">tab</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
                     <span class="nb">filter</span><span class="p">(</span>
                         <span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s2">&quot;page&quot;</span>
-                        <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">target_id</span> <span class="o">==</span> <span class="n">target_id</span><span class="p">,</span>
+                                     <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">target_id</span> <span class="o">==</span> <span class="n">target_id</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
@@ -458,9 +529,9 @@
 <div class="viewcode-block" id="Tab.query_selector_all">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.query_selector_all">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">query_selector_all</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">selector</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">Node</span><span class="p">,</span> <span class="s2">&quot;element.Element&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">selector</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">Node</span><span class="p">,</span> <span class="s2">&quot;element.Element&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        equivalent of javascripts document.querySelectorAll.</span>
@@ -499,6 +570,8 @@
                         <span class="kc">True</span>  <span class="c1"># make sure this isn&#39;t turned into infinite loop</span>
                     <span class="p">)</span>
                     <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">,</span> <span class="n">_node</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">node_ids</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
@@ -518,9 +591,9 @@
 <div class="viewcode-block" id="Tab.query_selector">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.query_selector">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">query_selector</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">selector</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">Node</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">Element</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">selector</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">Node</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">Element</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        find single element based on css selector string</span>
@@ -549,10 +622,10 @@
 <div class="viewcode-block" id="Tab.find_elements_by_text">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.find_elements_by_text">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">find_elements_by_text</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">tag_hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">return_enclosing_element</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">tag_hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">return_enclosing_element</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">element</span><span class="o">.</span><span class="n">Element</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
@@ -570,7 +643,7 @@
         <span class="k">if</span> <span class="n">nresult</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
         <span class="n">node_ids</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">get_search_results</span><span class="p">(</span><span class="n">search_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nresult</span><span class="p">))</span>
-
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">discard_search_results</span><span class="p">(</span><span class="n">search_id</span><span class="p">))</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">nid</span> <span class="ow">in</span> <span class="n">node_ids</span><span class="p">:</span>
             <span class="n">node</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">filter_recurse</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">node_id</span> <span class="o">==</span> <span class="n">nid</span><span class="p">)</span>
@@ -583,26 +656,38 @@
                 <span class="k">except</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">return_enclosing_element</span><span class="p">:</span>
-                    <span class="k">await</span> <span class="n">elem</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">elem</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+                        <span class="k">await</span> <span class="n">elem</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
                     <span class="n">elem</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">parent</span>
+
                 <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
-        <span class="n">iframes</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">filter_recurse_all</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">node_name</span> <span class="o">==</span> <span class="s1">&#39;IFRAME&#39;</span><span class="p">)</span>
+        <span class="n">iframes</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">filter_recurse_all</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">node</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">node_name</span> <span class="o">==</span> <span class="s2">&quot;IFRAME&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">iframes</span><span class="p">:</span>
+
+            <span class="c1"># create nodriver.Element objects from the cdp.dom.Node objects</span>
             <span class="n">iframes</span> <span class="o">=</span> <span class="p">[</span><span class="n">element</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">iframe</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">iframe</span> <span class="ow">in</span> <span class="n">iframes</span><span class="p">]</span>
+
             <span class="k">for</span> <span class="n">iframe</span> <span class="ow">in</span> <span class="n">iframes</span><span class="p">:</span>
+
                 <span class="n">iframe_text_elems</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">filter_recurse_all</span><span class="p">(</span>
-                    <span class="n">iframe</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">node_type</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">n</span><span class="o">.</span><span class="n">node_value</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+                    <span class="n">iframe</span><span class="p">,</span>
+                    <span class="k">lambda</span> <span class="n">node</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">node_type</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">node_value</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                <span class="p">)</span>
+
                 <span class="k">if</span> <span class="n">return_enclosing_element</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">iframe</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+                        <span class="k">await</span> <span class="n">iframe</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
                     <span class="n">results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">parent</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">iframe_text_elems</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">iframe_text_elems</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">results</span></div>
 
 
 <div class="viewcode-block" id="Tab.find_element_by_text">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.find_element_by_text">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">find_element_by_text</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">return_enclosing_element</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">return_enclosing_element</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">element</span><span class="o">.</span><span class="n">Element</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
@@ -615,11 +700,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">doc</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">get_document</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
         <span class="n">search_id</span><span class="p">,</span> <span class="n">nresult</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">perform_search</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+
         <span class="k">if</span> <span class="n">nresult</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="n">node_ids</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
             <span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">get_search_results</span><span class="p">(</span><span class="n">search_id</span><span class="p">,</span> <span class="n">nresult</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nresult</span><span class="p">)</span>
         <span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">discard_search_results</span><span class="p">(</span><span class="n">search_id</span><span class="p">))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">node_ids</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="n">node_id</span> <span class="o">=</span> <span class="n">node_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -629,19 +716,11 @@
         <span class="n">elem</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">return_enclosing_element</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">node_type</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># apply only if is text node</span>
-                <span class="k">await</span> <span class="n">elem</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">elem</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+                    <span class="k">await</span> <span class="n">elem</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
                 <span class="n">elem</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">parent</span>
                 <span class="k">return</span> <span class="n">elem</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">discard_search_results</span><span class="p">(</span><span class="n">search_id</span><span class="p">))</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">disable</span><span class="p">())</span>
-        <span class="k">for</span> <span class="n">event_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">handlers</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event_type</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">):</span>
-                <span class="k">if</span> <span class="s2">&quot;cdp.dom&quot;</span> <span class="ow">in</span> <span class="n">event_type</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">event_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">handlers</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">handlers</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">event_type</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">event_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">handlers</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">handlers</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">event_type</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">elem</span></div>
 
 
@@ -663,12 +742,13 @@
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="s2">&quot;window.history.forward()&quot;</span><span class="p">))</span></div>
 
 
+
 <div class="viewcode-block" id="Tab.reload">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.reload">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">ignore_cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">script_to_evaluate_on_load</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">ignore_cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">script_to_evaluate_on_load</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reloads the page</span>
@@ -686,6 +766,65 @@
                 <span class="n">script_to_evaluate_on_load</span><span class="o">=</span><span class="n">script_to_evaluate_on_load</span><span class="p">,</span>
             <span class="p">),</span>
         <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Tab.evaluate">
+<a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.evaluate">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expression</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">await_promise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_by_value</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">remote_object</span><span class="p">,</span> <span class="o">*</span><span class="n">exc</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+            <span class="n">expression</span><span class="o">=</span><span class="n">expression</span><span class="p">,</span>
+            <span class="n">user_gesture</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">await_promise</span><span class="o">=</span><span class="n">await_promise</span><span class="p">,</span>
+            <span class="n">return_by_value</span><span class="o">=</span><span class="n">return_by_value</span><span class="p">,</span>
+        <span class="p">))</span>
+        <span class="k">if</span> <span class="n">remote_object</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">remote_object</span><span class="p">,</span> <span class="s1">&#39;subtype&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">remote_object</span><span class="o">.</span><span class="n">description</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="n">val</span><span class="p">,</span> <span class="s2">&quot;stack&quot;</span><span class="p">:</span> <span class="n">exc</span><span class="p">}</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">remote_object</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">remote_object</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">exc</span></div>
+
+
+<div class="viewcode-block" id="Tab.js_dumps">
+<a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.js_dumps">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">js_dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get properties of a js variable.</span>
+<span class="sd">        since data is transferred in JSON, expect</span>
+<span class="sd">        complex objects to not have all properties.</span>
+<span class="sd">        functions for example are hard to serialize.</span>
+
+<span class="sd">        example</span>
+<span class="sd">        ------</span>
+
+<span class="sd">        &gt;&gt;&gt; x = await self.js_dumps(&#39;window&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; x</span>
+<span class="sd">        &#39;...{</span>
+<span class="sd">        &#39;pageYOffset&#39;: 0,</span>
+<span class="sd">        &#39;visualViewport&#39;: {},</span>
+<span class="sd">        &#39;screenX&#39;: 10,</span>
+<span class="sd">        &#39;screenY&#39;: 10,</span>
+<span class="sd">        &#39;outerWidth&#39;: 1050,</span>
+<span class="sd">        &#39;outerHeight&#39;: 832,</span>
+<span class="sd">        &#39;devicePixelRatio&#39;: 1,</span>
+<span class="sd">        &#39;screenLeft&#39;: 10,</span>
+<span class="sd">        &#39;screenTop&#39;: 10,</span>
+<span class="sd">        &#39;styleMedia&#39;: {},</span>
+<span class="sd">        &#39;onsearch&#39;: None,</span>
+<span class="sd">        &#39;isSecureContext&#39;: True,</span>
+<span class="sd">        &#39;trustedTypes&#39;: {},</span>
+<span class="sd">        &#39;performance&#39;: {&#39;timeOrigin&#39;: 1707823094767.9,</span>
+<span class="sd">        &#39;timing&#39;: {&#39;connectStart&#39;: 0,</span>
+<span class="sd">        &#39;navigationStart&#39;: 1707823094768,</span>
+<span class="sd">        ]...&#39;</span>
+
+<span class="sd">        :param obj: the object to fetch</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">js_helpers</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="Tab.close">
@@ -714,38 +853,6 @@
         <span class="k">return</span> <span class="n">window_id</span><span class="p">,</span> <span class="n">bounds</span></div>
 
 
-<div class="viewcode-block" id="Tab.get_all_cookies">
-<a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.get_all_cookies">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_all_cookies</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">requests_cookie_format</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">Cookie</span><span class="p">,</span> <span class="s2">&quot;http.cookiejar.Cookie&quot;</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        get all cookies</span>
-
-<span class="sd">        :param requests_cookie_format: when True, returns python http.cookiejar.Cookie objects, compatible  with requests library and many others.</span>
-<span class="sd">        :type requests_cookie_format: bool</span>
-<span class="sd">        :return:</span>
-<span class="sd">        :rtype:</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">cookies</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get_cookies</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">requests_cookie_format</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">requests.cookies</span>
-
-            <span class="k">return</span> <span class="p">[</span>
-                <span class="n">requests</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">create_cookie</span><span class="p">(</span>
-                    <span class="n">name</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                    <span class="n">value</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                    <span class="n">domain</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span>
-                    <span class="n">path</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                    <span class="n">expires</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">expires</span><span class="p">,</span>
-                    <span class="n">secure</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">secure</span><span class="p">,</span>
-                <span class="p">)</span>
-                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cookies</span>
-            <span class="p">]</span>
-        <span class="k">return</span> <span class="n">cookies</span></div>
-
 
 <div class="viewcode-block" id="Tab.get_content">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.get_content">[docs]</a>
@@ -760,19 +867,6 @@
             <span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">get_outer_html</span><span class="p">(</span><span class="n">backend_node_id</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">backend_node_id</span><span class="p">)</span>
         <span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="Tab.set_all_cookies">
-<a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.set_all_cookies">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_all_cookies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cookies</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">CookieParam</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        set cookies</span>
-
-<span class="sd">        :param cookies: list of cookies</span>
-<span class="sd">        :type cookies:</span>
-<span class="sd">        :return:</span>
-<span class="sd">        :rtype:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">set_cookies</span><span class="p">(</span><span class="n">cookies</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="Tab.maximize">
@@ -849,7 +943,7 @@
 <div class="viewcode-block" id="Tab.set_window_state">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.set_window_state">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">set_window_state</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1280</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">720</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1280</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">720</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        sets the window size and state.</span>
@@ -971,10 +1065,10 @@
 <div class="viewcode-block" id="Tab.wait_for">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.wait_for">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">wait_for</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">selector</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">selector</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">element</span><span class="o">.</span><span class="n">Element</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        variant on query_selector_all and find_elements_by_text</span>
@@ -999,24 +1093,25 @@
         <span class="k">if</span> <span class="n">selector</span><span class="p">:</span>
             <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
             <span class="k">while</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
-                <span class="k">await</span> <span class="bp">self</span>
+
                 <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">now</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span>
                         <span class="s2">&quot;time ran out while waiting for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">selector</span>
                     <span class="p">)</span>
-                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+                <span class="k">await</span> <span class="bp">self</span>
+                <span class="c1"># await self.sleep(0.5)</span>
             <span class="k">return</span> <span class="n">item</span>
         <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
             <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_element_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
             <span class="k">while</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
-                <span class="k">await</span> <span class="bp">self</span>
+
                 <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_element_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">now</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span>
                         <span class="s2">&quot;time ran out while waiting for text: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">text</span>
                     <span class="p">)</span>
-                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+                <span class="k">await</span> <span class="bp">self</span>
             <span class="k">return</span> <span class="n">item</span></div>
 
 
@@ -1085,10 +1180,10 @@
 <div class="viewcode-block" id="Tab.save_screenshot">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.save_screenshot">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">save_screenshot</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PathLike</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
-        <span class="nb">format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;jpeg&quot;</span><span class="p">,</span>
-        <span class="n">full_page</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PathLike</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="nb">format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;jpeg&quot;</span><span class="p">,</span>
+            <span class="n">full_page</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Saves a screenshot of the page.</span>
@@ -1205,6 +1300,29 @@
                             <span class="k">continue</span>
                         <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">abs_url</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span></div>
+
+
+<div class="viewcode-block" id="Tab.verify_cf">
+<a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.verify_cf">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">verify_cf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">iframes</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="o">=</span><span class="s1">&#39;iframe&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">iframe</span> <span class="ow">in</span> <span class="n">iframes</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">iframe</span><span class="o">.</span><span class="n">mouse_click</span><span class="p">()</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">break</span>
+        <span class="k">await</span> <span class="bp">self</span>
+        <span class="n">elems</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="o">=</span><span class="s1">&#39;iframe&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">elems</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">s</span><span class="o">.</span><span class="n">mouse_move</span><span class="p">()</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">break</span>
+        <span class="k">await</span> <span class="bp">self</span></div>
 </div>
 
 

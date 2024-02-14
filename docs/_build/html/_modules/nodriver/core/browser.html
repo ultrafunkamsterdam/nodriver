@@ -171,7 +171,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/element.html">Element class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/others_and_helpers.html">Other classes and Helper classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/page.html">Page class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/tab.html"><code class="docutils literal notranslate"><span class="pre">Tab</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
 <ul>
@@ -265,18 +265,21 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">import</span> <span class="nn">urllib.parse</span>
 <span class="kn">import</span> <span class="nn">urllib.request</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
 
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">cdp</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tab</span>
 <span class="kn">from</span> <span class="nn">._contradict</span> <span class="kn">import</span> <span class="n">ContraDict</span>
 <span class="kn">from</span> <span class="nn">.config</span> <span class="kn">import</span> <span class="n">PathLike</span><span class="p">,</span> <span class="n">Config</span><span class="p">,</span> <span class="n">is_posix</span>
 <span class="kn">from</span> <span class="nn">.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">cdp</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -313,6 +316,7 @@
     <span class="n">_process</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">Process</span>
     <span class="n">_process_pid</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">_http</span><span class="p">:</span> <span class="n">HTTPApi</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_cookies</span><span class="p">:</span> <span class="n">CookieJar</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">config</span><span class="p">:</span> <span class="n">Config</span>
     <span class="n">connection</span><span class="p">:</span> <span class="n">Connection</span>
@@ -321,15 +325,15 @@
 <a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.create">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span>
-        <span class="n">config</span><span class="p">:</span> <span class="n">Config</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">user_data_dir</span><span class="p">:</span> <span class="n">PathLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">headless</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">browser_executable_path</span><span class="p">:</span> <span class="n">PathLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">browser_args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">sandbox</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="bp">cls</span><span class="p">,</span>
+            <span class="n">config</span><span class="p">:</span> <span class="n">Config</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">*</span><span class="p">,</span>
+            <span class="n">user_data_dir</span><span class="p">:</span> <span class="n">PathLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">headless</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">browser_executable_path</span><span class="p">:</span> <span class="n">PathLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">browser_args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">sandbox</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Browser</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        entry point for creating an instance</span>
@@ -383,17 +387,23 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">webSocketDebuggerUrl</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">main_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">main_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tab</span><span class="o">.</span><span class="n">Tab</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;returns the target which was launched with the browser&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s2">&quot;page&quot;</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">tabs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">tabs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">tab</span><span class="o">.</span><span class="n">Tab</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;returns the current targets which are of type &quot;page&quot;</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tabs</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s2">&quot;page&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">tabs</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cookies</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CookieJar</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cookies</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cookies</span> <span class="o">=</span> <span class="n">CookieJar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cookies</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">stopped</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -417,13 +427,13 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;alias for wait&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_handle_target_update</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">event</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
-            <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfoChanged</span><span class="p">,</span>
-            <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetDestroyed</span><span class="p">,</span>
-            <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetCreated</span><span class="p">,</span>
-            <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetCrashed</span><span class="p">,</span>
-        <span class="p">],</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">event</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfoChanged</span><span class="p">,</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetDestroyed</span><span class="p">,</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetCreated</span><span class="p">,</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetCrashed</span><span class="p">,</span>
+            <span class="p">],</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;this is an internal handler which updates the targets when chrome emits the corresponding event&quot;&quot;&quot;</span>
 
@@ -476,8 +486,8 @@
 <div class="viewcode-block" id="Browser.get">
 <a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.get">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;chrome://welcome&quot;</span><span class="p">,</span> <span class="n">new_tab</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">new_window</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">):</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;chrome://welcome&quot;</span><span class="p">,</span> <span class="n">new_tab</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">new_window</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tab</span><span class="o">.</span><span class="n">Tab</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;top level get. utilizes the first tab to retrieve given url.</span>
 
 <span class="sd">        convenience function known from selenium.</span>
@@ -507,26 +517,33 @@
                 <span class="p">)</span>
             <span class="p">)</span>
             <span class="k">while</span> <span class="ow">not</span> <span class="n">tab</span><span class="p">:</span>
-                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">.1</span><span class="p">)</span>
                 <span class="n">tab</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
                     <span class="nb">filter</span><span class="p">(</span>
                         <span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s2">&quot;page&quot;</span>
-                        <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">target_id</span> <span class="o">==</span> <span class="n">target_id</span><span class="p">,</span>
+                                     <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">target_id</span> <span class="o">==</span> <span class="n">target_id</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="s1">&#39;cloudflare&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">verify_cf</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">tab</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">frame_id</span><span class="p">,</span> <span class="n">loader_id</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">navigate</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="s1">&#39;cloudflare&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">verify_cf</span><span class="p">()</span>
+
             <span class="n">tab</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="n">frame_id</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+
             <span class="k">return</span> <span class="n">tab</span></div>
 
 
 <div class="viewcode-block" id="Browser.start">
 <a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.start">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Browser</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;launches the actual browser&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;use ``await Browser.create()`` to create a new instance&quot;</span><span class="p">)</span>
@@ -575,6 +592,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_process_pid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">pid</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;created process with pid </span><span class="si">%d</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_pid</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_http</span> <span class="o">=</span> <span class="n">HTTPApi</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">port</span><span class="p">))</span>
 
         <span class="n">util</span><span class="o">.</span><span class="n">get_registered_instances</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -599,11 +617,7 @@
                 <span class="s2">&quot;In that case you need to pass no_sandbox=True.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">webSocketDebuggerUrl</span><span class="p">,</span> <span class="n">_owner</span><span class="o">=</span><span class="bp">self</span>
-        <span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">inspector</span><span class="o">.</span><span class="n">Detached</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">webSocketDebuggerUrl</span><span class="p">,</span> <span class="n">_owner</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">autodiscover_targets</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfoChanged</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
@@ -621,7 +635,49 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;enabling autodiscover targets&quot;</span><span class="p">)</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">set_discover_targets</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span></div>
 
-        <span class="c1"># await self</span>
+
+        <span class="c1"># self.connection.handlers[cdp.inspector.Detached] = [self.stop]</span>
+        <span class="c1"># return self</span>
+
+<div class="viewcode-block" id="Browser.grant_all_permissions">
+<a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.grant_all_permissions">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">grant_all_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        grant permissions for:</span>
+<span class="sd">            accessibilityEvents</span>
+<span class="sd">            audioCapture</span>
+<span class="sd">            backgroundSync</span>
+<span class="sd">            backgroundFetch</span>
+<span class="sd">            clipboardReadWrite</span>
+<span class="sd">            clipboardSanitizedWrite</span>
+<span class="sd">            displayCapture</span>
+<span class="sd">            durableStorage</span>
+<span class="sd">            geolocation</span>
+<span class="sd">            idleDetection</span>
+<span class="sd">            localFonts</span>
+<span class="sd">            midi</span>
+<span class="sd">            midiSysex</span>
+<span class="sd">            nfc</span>
+<span class="sd">            notifications</span>
+<span class="sd">            paymentHandler</span>
+<span class="sd">            periodicBackgroundSync</span>
+<span class="sd">            protectedMediaIdentifier</span>
+<span class="sd">            sensors</span>
+<span class="sd">            storageAccess</span>
+<span class="sd">            topLevelStorageAccess</span>
+<span class="sd">            videoCapture</span>
+<span class="sd">            videoCapturePanTiltZoom</span>
+<span class="sd">            wakeLockScreen</span>
+<span class="sd">            wakeLockSystem</span>
+<span class="sd">            windowManagement</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">permissions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">PermissionType</span><span class="p">)</span>
+        <span class="n">permissions</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">PermissionType</span><span class="o">.</span><span class="n">FLASH</span><span class="p">)</span>
+        <span class="n">permissions</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">PermissionType</span><span class="o">.</span><span class="n">CAPTURED_SURFACE_CONTROL</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+            <span class="n">cdp</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">grant_permissions</span><span class="p">(</span><span class="n">permissions</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">tile_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_columns</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">mss</span>
@@ -813,6 +869,131 @@
     <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
+
+
+<span class="k">class</span> <span class="nc">CookieJar</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">:</span> <span class="n">Connection</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_all</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">requests_cookie_format</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">Cookie</span><span class="p">,</span> <span class="s2">&quot;http.cookiejar.Cookie&quot;</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get all cookies</span>
+
+<span class="sd">        :param requests_cookie_format: when True, returns python http.cookiejar.Cookie objects, compatible  with requests library and many others.</span>
+<span class="sd">        :type requests_cookie_format: bool</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cookies</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get_cookies</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">requests_cookie_format</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">requests.cookies</span>
+            <span class="k">return</span> <span class="p">[</span>
+                <span class="n">requests</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">create_cookie</span><span class="p">(</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                    <span class="n">domain</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span>
+                    <span class="n">path</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                    <span class="n">expires</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">expires</span><span class="p">,</span>
+                    <span class="n">secure</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">secure</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cookies</span>
+            <span class="p">]</span>
+        <span class="k">return</span> <span class="n">cookies</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cookies</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">CookieParam</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        set cookies</span>
+
+<span class="sd">        :param cookies: list of cookies</span>
+<span class="sd">        :type cookies:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">set_cookies</span><span class="p">(</span><span class="n">cookies</span><span class="p">))</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">PathLike</span> <span class="o">=</span> <span class="s1">&#39;.session.dat&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.*&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        save all cookies (or a subset, controlled by `pattern`) to a file to be restored later</span>
+
+<span class="sd">        :param file:</span>
+<span class="sd">        :type file:</span>
+<span class="sd">        :param pattern: regex style pattern string.</span>
+<span class="sd">               any cookie that has a  domain, key or value field which matches the pattern will be included.</span>
+<span class="sd">               default = &quot;.*&quot;  (all)</span>
+
+<span class="sd">               eg: the pattern &quot;(cf|.com|nowsecure)&quot; will include those cookies which:</span>
+<span class="sd">                    - have a string &quot;cf&quot; (cloudflare)</span>
+<span class="sd">                    - have &quot;.com&quot; in them, in either domain, key or value field.</span>
+<span class="sd">                    - contain &quot;nowsecure&quot;</span>
+<span class="sd">        :type pattern: str</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">re</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+        <span class="n">save_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">websocket</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">websocket</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">cookies</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span><span class="n">requests_cookie_format</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">included_cookies</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">cookie</span> <span class="ow">in</span> <span class="n">cookies</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">pattern</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cookie</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;saved cookie for matching pattern &#39;</span><span class="si">%s</span><span class="s2">&#39; =&gt; (</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+                             <span class="n">pattern</span><span class="o">.</span><span class="n">pattern</span><span class="p">,</span> <span class="n">cookie</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">cookie</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">included_cookies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cookie</span><span class="p">)</span>
+                <span class="k">break</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">cookies</span><span class="p">,</span> <span class="n">save_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w+b&#39;</span><span class="p">))</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">PathLike</span> <span class="o">=</span> <span class="s1">&#39;.session.dat&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.*&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        load all cookies (or a subset, controlled by `pattern`) from a file created by :py:meth:`~save_cookies`.</span>
+
+<span class="sd">        :param file:</span>
+<span class="sd">        :type file:</span>
+<span class="sd">        :param pattern: regex style pattern string.</span>
+<span class="sd">               any cookie that has a  domain, key or value field which matches the pattern will be included.</span>
+<span class="sd">               default = &quot;.*&quot;  (all)</span>
+
+<span class="sd">               eg: the pattern &quot;(cf|.com|nowsecure)&quot; will include those cookies which:</span>
+<span class="sd">                    - have a string &quot;cf&quot; (cloudflare)</span>
+<span class="sd">                    - have &quot;.com&quot; in them, in either domain, key or value field.</span>
+<span class="sd">                    - contain &quot;nowsecure&quot;</span>
+<span class="sd">        :type pattern: str</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">re</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+        <span class="n">save_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="n">cookies</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">save_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;r+b&#39;</span><span class="p">))</span>
+        <span class="n">included_cookies</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">cookie</span> <span class="ow">in</span> <span class="n">cookies</span><span class="p">:</span>
+
+            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">pattern</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cookie</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;loaded cookie for matching pattern &#39;</span><span class="si">%s</span><span class="s2">&#39; =&gt; (</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+                             <span class="n">pattern</span><span class="o">.</span><span class="n">pattern</span><span class="p">,</span> <span class="n">cookie</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">cookie</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">included_cookies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cookie</span><span class="p">)</span>
+                <span class="k">break</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">set_cookies</span><span class="p">(</span><span class="n">included_cookies</span><span class="p">))</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        clear current cookies</span>
+
+<span class="sd">        note: this includes all open tabs/windows for this browser</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">clear_cookies</span><span class="p">())</span>
 
 
 <span class="k">class</span> <span class="nc">HTTPApi</span><span class="p">:</span>

@@ -1,5 +1,6 @@
 import asyncio
 import http.cookiejar
+import json
 import logging
 import pathlib
 import types
@@ -296,6 +297,8 @@ class Tab(Connection):
                         True  # make sure this isn't turned into infinite loop
                     )
                     return await self.query_selector_all(selector, _node)
+            else:
+                raise
         if not node_ids:
             return []
         results = []
@@ -361,7 +364,7 @@ class Tab(Connection):
         if nresult == 0:
             return []
         node_ids = await self.send(cdp.dom.get_search_results(search_id, 0, nresult))
-
+        await self.send(cdp.dom.discard_search_results(search_id))
         results = []
         for nid in node_ids:
             node = util.filter_recurse(doc, lambda n: n.node_id == nid)
@@ -415,11 +418,13 @@ class Tab(Connection):
         """
         doc = await self.send(cdp.dom.get_document(-1, True))
         search_id, nresult = await self.send(cdp.dom.perform_search(text, True))
+
         if nresult == 0:
             return
         node_ids = await self.send(
             cdp.dom.get_search_results(search_id, nresult - 1, nresult)
         )
+        await self.send(cdp.dom.discard_search_results(search_id))
         if not node_ids:
             return
         node_id = node_ids[0]
@@ -433,7 +438,7 @@ class Tab(Connection):
                     await elem.update()
                 elem = elem.parent
                 return elem
-        await self.send(cdp.dom.discard_search_results(search_id))
+
         return elem
 
     async def back(self):
@@ -447,6 +452,7 @@ class Tab(Connection):
         history forward
         """
         await self.send(cdp.runtime.evaluate("window.history.forward()"))
+
 
     async def reload(
             self,
@@ -470,6 +476,59 @@ class Tab(Connection):
             ),
         )
 
+    async def evaluate(self, expression: str, await_promise=False, return_by_value=False):
+        remote_object, *exc = await self.send(cdp.runtime.evaluate(
+            expression=expression,
+            user_gesture=True,
+            await_promise=await_promise,
+            return_by_value=return_by_value,
+        ))
+        if remote_object:
+            if getattr(remote_object, 'subtype', None) == 'error':
+                val = remote_object.description
+                return {"error": val, "stack": exc}
+            try:
+                return json.loads(remote_object.value)
+            except:
+                return remote_object.value
+        if exc:
+            return exc
+
+    async def js_dumps(self, obj: str):
+        """
+        get properties of a js variable.
+        since data is transferred in JSON, expect
+        complex objects to not have all properties.
+        functions for example are hard to serialize.
+
+        example
+        ------
+
+        >>> x = await self.js_dumps('window')
+        >>> x
+        '...{
+        'pageYOffset': 0,
+        'visualViewport': {},
+        'screenX': 10,
+        'screenY': 10,
+        'outerWidth': 1050,
+        'outerHeight': 832,
+        'devicePixelRatio': 1,
+        'screenLeft': 10,
+        'screenTop': 10,
+        'styleMedia': {},
+        'onsearch': None,
+        'isSecureContext': True,
+        'trustedTypes': {},
+        'performance': {'timeOrigin': 1707823094767.9,
+        'timing': {'connectStart': 0,
+        'navigationStart': 1707823094768,
+        ]...'
+
+        :param obj: the object to fetch
+        """
+        return await self.evaluate(util.js_helpers.dumps(obj))
+
     async def close(self):
         """
         close the current target (ie: tab,window,page)
@@ -490,35 +549,6 @@ class Tab(Connection):
         )
         return window_id, bounds
 
-    async def get_all_cookies(
-            self, requests_cookie_format: bool = False
-    ) -> List[Union[cdp.network.Cookie, "http.cookiejar.Cookie"]]:
-        """
-        get all cookies
-
-        :param requests_cookie_format: when True, returns python http.cookiejar.Cookie objects, compatible  with requests library and many others.
-        :type requests_cookie_format: bool
-        :return:
-        :rtype:
-
-        """
-
-        cookies = await self.send(cdp.storage.get_cookies())
-        if requests_cookie_format:
-            import requests.cookies
-
-            return [
-                requests.cookies.create_cookie(
-                    name=c.name,
-                    value=c.value,
-                    domain=c.domain,
-                    path=c.path,
-                    expires=c.expires,
-                    secure=c.secure,
-                )
-                for c in cookies
-            ]
-        return cookies
 
     async def get_content(self):
         """
@@ -531,16 +561,6 @@ class Tab(Connection):
             cdp.dom.get_outer_html(backend_node_id=doc.backend_node_id)
         )
 
-    async def set_all_cookies(self, cookies: List[cdp.network.CookieParam]):
-        """
-        set cookies
-
-        :param cookies: list of cookies
-        :type cookies:
-        :return:
-        :rtype:
-        """
-        await self.send(cdp.storage.set_cookies(cookies))
 
     async def maximize(self):
         """
@@ -734,24 +754,25 @@ class Tab(Connection):
         if selector:
             item = await self.query_selector(selector)
             while not item:
-                await self
+
                 item = await self.query_selector(selector)
                 if loop.time() - now > timeout:
                     raise asyncio.TimeoutError(
                         "time ran out while waiting for %s" % selector
                     )
-                await self.sleep(0.5)
+                await self
+                # await self.sleep(0.5)
             return item
         if text:
             item = await self.find_element_by_text(text)
             while not item:
-                await self
+
                 item = await self.find_element_by_text(text)
                 if loop.time() - now > timeout:
                     raise asyncio.TimeoutError(
                         "time ran out while waiting for text: %s" % text
                     )
-                await self.sleep(0.5)
+                await self
             return item
 
     async def download_file(self, url: str, filename: Optional[PathLike] = None):
@@ -925,6 +946,26 @@ class Tab(Connection):
                             continue
                         res.append(abs_url)
         return res
+
+    async def verify_cf(self):
+
+        iframes = await self.query_selector_all(selector='iframe')
+        for iframe in iframes:
+            try:
+                await iframe.mouse_click()
+            except:
+                logger.exception("", exc_info=True)
+                break
+        await self
+        elems = await self.query_selector_all(selector='iframe')
+        for s in elems:
+            try:
+                await s.mouse_move()
+
+            except Exception:
+                logger.exception("",exc_info=True)
+                break
+        await self
 
 
 class WaitFor:

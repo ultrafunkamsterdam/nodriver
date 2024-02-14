@@ -448,7 +448,10 @@ class Element:
 
     async def get_position(self, abs=False) -> Position:
         if not self.parent or not self.object_id:
-            await self.update()
+            self._remote_object = await self._tab.send(
+                cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
+            )
+            # await self.update()
         try:
             quads = await self.tab.send(
                 cdp.dom.get_content_quads(object_id=self.remote_object.object_id)
@@ -538,16 +541,20 @@ class Element:
         await self._tab.send(
             cdp.input_.dispatch_mouse_event("mouseMoved", x=center[0], y=center[1])
         )
-        await self._tab
+        await self._tab.sleep(.05)
         await self._tab.send(
             cdp.input_.dispatch_mouse_event("mouseReleased", x=center[0], y=center[1])
         )
 
     async def scroll_into_view(self):
         """scrolls element into view"""
-        await self.tab.send(
-            cdp.dom.scroll_into_view_if_needed(backend_node_id=self.backend_node_id)
-        )
+        try:
+            await self.tab.send(
+                cdp.dom.scroll_into_view_if_needed(backend_node_id=self.backend_node_id)
+            )
+        except Exception as e:
+            logger.debug("could not scroll into view: %s" , e)
+            return
 
         # await self.apply("""(el) => el.scrollIntoView(false)""")
 

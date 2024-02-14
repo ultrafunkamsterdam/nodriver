@@ -226,3 +226,102 @@ def cdp_get_module(domain: Union[str, types.ModuleType]):
                     "could not find cdp module from input '%s'" % domain
                 )
     return domain_mod
+
+
+class js_helpers:
+
+    @staticmethod
+    def dumps(obj: str, indent: int = 4):
+        return """
+        (
+           (value, space) => {
+               var cache = [];
+               var output = JSON.stringify(value, function(key, value) {
+                   if (key && key.length > 0 && (key.charAt(0) == "$" || key.charAt(0) == "_")) {
+                       return;
+                   }
+                   if (typeof value === 'object' && value !== null) {
+                       if (cache.indexOf(value) !== -1) {
+                           // Circular reference found, discard key
+                           return;
+                       }
+                       // Store value in our collection
+                       cache.push(value);
+                   }
+                   return value;
+               }, space)
+               cache = null; // Enable garbage collection
+               return output;
+           }
+    )(%s, %d)
+    """ % (obj, indent)
+
+
+from . import _contradict
+
+class Register:
+    def __init__(self):
+        self._data = set()
+
+    def add(self, *obj):
+        print(obj)
+        if any(map(lambda _: isinstance(_, int), obj)):
+            raise ValueError('ints cannot be added')
+        elif len(obj) == 1:
+            self._data.update(obj[0])
+        else:
+            for x in obj:
+                self._data.add(x)
+
+    def update(self, objs):
+        self._data.update(objs)
+    def get(self):
+        return self._data
+
+    def remove(self, obj):
+        for o in self._data.copy():
+            if o == obj:
+                return self._data.discard(o)
+
+    def clear(self):
+        self._data.clear()
+
+    def pop(self):
+        self._data.pop()
+
+    def __iter__(self):
+        self.__idx__ = 0
+        return self
+    def __getitem__(self, idx):
+        if isinstance(idx, int):
+            return list(self._data)[idx]
+        else:
+            return list(self._data).index(idx)
+
+    def __index__(self):
+        return len(self._data)
+    def __next__(self):
+        print(self.__idx__)
+        try:
+            item = list(self._data)[self.__idx__]
+            self.__idx__ += 1
+            return item
+        except:
+            del self.__idx__
+            raise StopIteration
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}\n%s' % '\n\t'.join(map(str, list(self._data)))
+
+
+async def create_js_object_representation(object_id: cdp.runtime.RemoteObjectId, tab: 'Tab'):
+    props = await tab.send(cdp.runtime.get_properties(object_id=object_id))
+    return props
+
+class JSObjectRepr(_contradict.ContraDict):
+    def __init__(self, name):
+        super().__init__()
+
+        self.name = name
+
+

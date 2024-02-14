@@ -171,7 +171,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/element.html">Element class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/others_and_helpers.html">Other classes and Helper classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/page.html">Page class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/tab.html"><code class="docutils literal notranslate"><span class="pre">Tab</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
 <ul>
@@ -332,6 +332,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_remote_object</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span> <span class="o">=</span> <span class="n">ContraDict</span><span class="p">(</span><span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_make_attrs</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tag_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">node_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -706,11 +715,15 @@
             <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">get_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">abs</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Position</span><span class="p">:</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
-        <span class="n">quads</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
-            <span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">get_content_quads</span><span class="p">(</span><span class="n">object_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">remote_object</span><span class="o">.</span><span class="n">object_id</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_id</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_remote_object</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">resolve_node</span><span class="p">(</span><span class="n">backend_node_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_node_id</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="c1"># await self.update()</span>
         <span class="k">try</span><span class="p">:</span>
+            <span class="n">quads</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">get_content_quads</span><span class="p">(</span><span class="n">object_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">remote_object</span><span class="o">.</span><span class="n">object_id</span><span class="p">)</span>
+            <span class="p">)</span>
             <span class="n">pos</span> <span class="o">=</span> <span class="n">Position</span><span class="p">(</span><span class="n">quads</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">if</span> <span class="nb">abs</span><span class="p">:</span>
                 <span class="n">scroll_y</span> <span class="o">=</span> <span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="s2">&quot;window.scrollY&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
@@ -778,7 +791,11 @@
                     <span class="n">click_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">),</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">flash</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>  <span class="c1"># noqa</span>
+            <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="Element.mouse_move">
@@ -797,7 +814,7 @@
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
             <span class="n">cdp</span><span class="o">.</span><span class="n">input_</span><span class="o">.</span><span class="n">dispatch_mouse_event</span><span class="p">(</span><span class="s2">&quot;mouseMoved&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="p">)</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tab</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tab</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">.05</span><span class="p">)</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
             <span class="n">cdp</span><span class="o">.</span><span class="n">input_</span><span class="o">.</span><span class="n">dispatch_mouse_event</span><span class="p">(</span><span class="s2">&quot;mouseReleased&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="p">)</span></div>
@@ -807,9 +824,13 @@
 <a class="viewcode-back" href="../../../nodriver/classes/element.html#nodriver.Element.scroll_into_view">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">scroll_into_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;scrolls element into view&quot;&quot;&quot;</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
-            <span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">scroll_into_view_if_needed</span><span class="p">(</span><span class="n">backend_node_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_node_id</span><span class="p">)</span>
-        <span class="p">)</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">scroll_into_view_if_needed</span><span class="p">(</span><span class="n">backend_node_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_node_id</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;could not scroll into view: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span></div>
 
 
         <span class="c1"># await self.apply(&quot;&quot;&quot;(el) =&gt; el.scrollIntoView(false)&quot;&quot;&quot;)</span>

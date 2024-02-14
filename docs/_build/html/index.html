@@ -261,42 +261,82 @@
         <article role="main">
           <section id="nodriver">
 <h1>NODRIVER<a class="headerlink" href="#nodriver" title="Link to this heading">#</a></h1>
-<section id="features">
-<h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
-<table class="hlist"><tr><td><ul class="simple">
-<li><p>A blazing fast undetected chrome (-ish) automation tool (without the use of an webdriver binary)</p></li>
-</ul>
-</td><td><ul class="simple">
-<li><p>No chromedriver binary or Selenium dependency</p></li>
-</ul>
-</td><td><ul class="simple">
-<li><p>this equals bizarre performance increase and less detections!</p></li>
-</ul>
-</td></tr></table>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>those who landed here who never used undetected-chromedriver (or whatever webdriver)
-might be confused by the use of “driver” all around here while there is no driver.</p>
-<p>Don’t worry. The term driver can be replaced with “browser”, but since most users
-are accustomed to “driver” and the abbreviation “uc” for undetected-chromedriver, it’s convenient to
-keep using it, although to prevent confusion, i’ll use nd as abbr for nodriver.</p>
-</div>
-</section>
-<section id="welcome">
-<h2>Welcome<a class="headerlink" href="#welcome" title="Link to this heading">#</a></h2>
-<p><strong>this package provides next level webscraping and browser automation
+<p><strong>This package provides next level webscraping and browser automation
 using a relatively simple interface.</strong></p>
-<p>This is the official follow up on the <a class="reference external" href="https://github.com/ultrafunkamsterdam/undetected-chromedriver/">Undetected-Chromedriver</a> python package.</p>
-<p>It stepped away from selenium/webdriver, which have had their best
-time by now in terms of webscraping and browser automation.
-Direct communication provides even better resistance against web applicatinon firewalls (WAF’s), while
+<ul class="simple">
+<li><p><strong>This is the official successor of the</strong> <a class="reference external" href="https://github.com/ultrafunkamsterdam/undetected-chromedriver/">Undetected-Chromedriver</a> <strong>python package.</strong></p></li>
+<li><p><strong>No more webdriver, no more selenium</strong></p></li>
+</ul>
+<p>Direct communication provides even better resistance against web applicatinon firewalls (WAF’s), while
 performance gets a massive boost.
 This module is, contrary to undetected-chromedriver, fully asynchronous.</p>
 <p>What makes this package different from other known packages,
 is the optimization to stay undetected for most anti-bot solutions.</p>
-<p>another focus point is usability and quick prototyping, so expect batteries included.
+<p>Another focus point is usability and quick prototyping, so expect a lot to work <code class="xref any docutils literal notranslate"><span class="pre">-as</span> <span class="pre">is-</span></code> ,
+with most method parameters having <code class="xref any docutils literal notranslate"><span class="pre">best</span> <span class="pre">practice</span></code> defaults.
 Using 1 or 2 lines, this is up and running, providing best practice config
 by default.</p>
+<p>While usability and convenience is important. It’s also easy
+to fully customizable everything using the entire array of
+<a class="reference external" href="https://chromedevtools.github.io/devtools-protocol/">CDP</a> domains, methods and events available.</p>
+<section id="some-features">
+<h2>Some features<a class="headerlink" href="#some-features" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>A blazing fast undetected chrome (-ish) automation library</p></li>
+<li><p>No chromedriver binary or Selenium dependency</p></li>
+<li><p>This equals bizarre performance increase and less detections!</p></li>
+<li><p>Up and running in 1 line of code*</p></li>
+<li><p>uses fresh profile on each run, cleans up on exit</p></li>
+<li><p>save and load cookies to file to not repeat tedious login steps</p></li>
+<li><p>fast element lookup, by selector or text. also searches embedded iframes.</p></li>
+<li><p>descriptive __repr__ for elements, which represent the element as html</p></li>
+<li><p>packed with helpers and utility methods for most used and important operations</p></li>
+</ul>
+<section id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h3>
+<p>Since it’s a part of undetected-chromedriver, installation goes via</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">undetected</span><span class="o">-</span><span class="n">chromedriver</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="usage-example">
+<span id="getting-started-commands"></span><h3>usage example<a class="headerlink" href="#usage-example" title="Link to this heading">#</a></h3>
+<p>The aim of this project (just like undetected-chromedriver, somewhere long ago)
+is to keep it short and simple, so you can quickly open an editor or interactive session,
+type or paste a few lines and off you go.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">nodriver</span> <span class="k">as</span> <span class="nn">uc</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">browser</span> <span class="o">=</span> <span class="k">await</span> <span class="n">uc</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://www.nowsecure.nl&#39;</span><span class="p">)</span>
+
+    <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">()</span>
+    <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span>
+    <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">scroll_down</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
+    <span class="n">elems</span> <span class="o">=</span> <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="s1">&#39;*[src]&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elems</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">elem</span><span class="o">.</span><span class="n">highlight_position</span><span class="p">()</span>
+
+    <span class="n">page2</span> <span class="o">=</span> <span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://twitter.com&#39;</span><span class="p">,</span> <span class="n">new_tab</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">page3</span> <span class="o">=</span> <span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://pornhub.com&#39;</span><span class="p">,</span> <span class="n">new_window</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">page2</span><span class="p">,</span> <span class="n">page3</span><span class="p">):</span>
+       <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">bring_to_front</span><span class="p">()</span>
+       <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">scroll_down</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+       <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+       <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+       <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="n">page3</span><span class="p">:</span>
+           <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="c1"># since asyncio.run never worked (for me)</span>
+    <span class="n">uc</span><span class="o">.</span><span class="n">loop</span><span class="p">()</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">getting started</span></p>
 <ul>
@@ -371,6 +411,7 @@ by default.</p>
 </div>
 </section>
 </section>
+</section>
 
         </article>
       </div>
@@ -418,8 +459,11 @@ by default.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">NODRIVER</a><ul>
-<li><a class="reference internal" href="#features">Features</a></li>
-<li><a class="reference internal" href="#welcome">Welcome</a><ul>
+<li><a class="reference internal" href="#some-features">Some features</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#usage-example">usage example</a><ul>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

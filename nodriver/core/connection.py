@@ -32,7 +32,7 @@ PING_TIMEOUT: int = 900  # 15 minutes
 TargetType = Union[cdp.target.TargetInfo, cdp.target.TargetID]
 
 logger = logging.getLogger("uc.connection")
-tx_logger = logging.getLogger("uc.transaction")
+
 
 
 class ProtocolException(ValueError):
@@ -53,7 +53,7 @@ class SettingClassVarNotAllowedException(PermissionError):
 
 
 class Transaction(asyncio.Future):
-    __counter__ = itertools.count(0)
+
     __cdp_obj__: Generator = None
 
     method: str = None
@@ -68,7 +68,6 @@ class Transaction(asyncio.Future):
         super().__init__()
         self.__cdp_obj__ = cdp_obj
         self.connection = None
-        self.id = next(self.__counter__)
         self.method, *params = next(self.__cdp_obj__).values()
         if params:
             params = params.pop()
@@ -164,6 +163,7 @@ class CantTouchThis(type):
 
 
 class Connection(metaclass=CantTouchThis):
+
     attached: bool = None
     websocket: websockets.WebSocketClientProtocol
     _target: cdp.target.TargetInfo
@@ -175,6 +175,7 @@ class Connection(metaclass=CantTouchThis):
         _owner: "Browser" = None,
         **kwargs,
     ):
+
         super().__init__()
         self._target = target
         self.__count__ = itertools.count(0)
@@ -324,6 +325,9 @@ class Connection(metaclass=CantTouchThis):
 
         tx = Transaction(cdp_obj)
         tx.connection = self
+        if not self.mapper:
+            self.__count__ = itertools.count(0)
+        tx.id = next(self.__count__)
         self.mapper.update({tx.id: tx})
 
         if not _is_update:
@@ -362,6 +366,7 @@ class Connection(metaclass=CantTouchThis):
                 try:
                     # we add this before sending the request, because it will
                     # loop indefinite
+                    logger.debug("registered %s", domain_mod)
                     self.enabled_domains.append(domain_mod)
 
                     await self.send(domain_mod.enable(), _is_update=True)
@@ -460,6 +465,9 @@ class Listener:
                                 exc_info=True,
                             )
                             raise
+                except asyncio.CancelledError:
+                    print('listener loop cancelled')
+                    break
                 except Exception:
                     raise
 

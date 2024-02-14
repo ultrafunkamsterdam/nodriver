@@ -5,18 +5,21 @@ import atexit
 import json
 import logging
 import os
+import pickle
 import pathlib
+import typing
 import urllib.parse
 import urllib.request
 import warnings
 from collections import defaultdict
 from typing import List, Union, Tuple
 
+from .. import cdp
 from . import util
+from . import tab
 from ._contradict import ContraDict
 from .config import PathLike, Config, is_posix
 from .connection import Connection
-from .. import cdp
 
 logger = logging.getLogger(__name__)
 
@@ -51,21 +54,22 @@ class Browser:
     _process: asyncio.subprocess.Process
     _process_pid: int
     _http: HTTPApi = None
+    _cookies: CookieJar = None
 
     config: Config
     connection: Connection
 
     @classmethod
     async def create(
-        cls,
-        config: Config = None,
-        *,
-        user_data_dir: PathLike = None,
-        headless: bool = False,
-        browser_executable_path: PathLike = None,
-        browser_args: List[str] = None,
-        sandbox: bool = True,
-        **kwargs,
+            cls,
+            config: Config = None,
+            *,
+            user_data_dir: PathLike = None,
+            headless: bool = False,
+            browser_executable_path: PathLike = None,
+            browser_args: List[str] = None,
+            sandbox: bool = True,
+            **kwargs,
     ) -> Browser:
         """
         entry point for creating an instance
@@ -118,17 +122,23 @@ class Browser:
         return self.info.webSocketDebuggerUrl
 
     @property
-    def main_tab(self):
+    def main_tab(self) -> tab.Tab:
         """returns the target which was launched with the browser"""
         return sorted(self.targets, key=lambda x: x.type_ == "page", reverse=True)[0]
 
     @property
-    def tabs(self) -> List:
+    def tabs(self) -> List[tab.Tab]:
         """returns the current targets which are of type "page"
         :return:
         """
         tabs = filter(lambda item: item.type_ == "page", self.targets)
         return list(tabs)
+
+    @property
+    def cookies(self) -> CookieJar:
+        if not self._cookies:
+            self._cookies = CookieJar(self.connection)
+        return self._cookies
 
     @property
     def stopped(self):
@@ -149,13 +159,13 @@ class Browser:
     """alias for wait"""
 
     def _handle_target_update(
-        self,
-        event: Union[
-            cdp.target.TargetInfoChanged,
-            cdp.target.TargetDestroyed,
-            cdp.target.TargetCreated,
-            cdp.target.TargetCrashed,
-        ],
+            self,
+            event: Union[
+                cdp.target.TargetInfoChanged,
+                cdp.target.TargetDestroyed,
+                cdp.target.TargetCreated,
+                cdp.target.TargetCrashed,
+            ],
     ):
         """this is an internal handler which updates the targets when chrome emits the corresponding event"""
 
@@ -206,8 +216,8 @@ class Browser:
             self.targets.remove(current_tab)
 
     async def get(
-        self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
-    ):
+            self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
+    ) -> tab.Tab:
         """top level get. utilizes the first tab to retrieve given url.
 
         convenience function known from selenium.
@@ -237,23 +247,30 @@ class Browser:
                 )
             )
             while not tab:
-                await self.wait()
+                await self.sleep(.1)
                 tab = next(
                     filter(
                         lambda item: item.type_ == "page"
-                        and item.target_id == target_id,
+                                     and item.target_id == target_id,
                         self.targets,
                     )
                 )
+            body = await tab.find_elements_by_text('cloudflare')
+            if len(body) > 1:
+                await tab.verify_cf()
             return tab
 
         else:
             frame_id, loader_id, *_ = await tab.send(cdp.page.navigate(url))
+            body = await tab.find_elements_by_text('cloudflare')
+            if len(body) > 1:
+                await tab.verify_cf()
+
             tab.frame_id = frame_id
-            await self.wait()
+
             return tab
 
-    async def start(self=None):
+    async def start(self=None) -> Browser:
         """launches the actual browser"""
         if not self:
             warnings.warn("use ``await Browser.create()`` to create a new instance")
@@ -271,13 +288,15 @@ class Browser:
 
         logger.debug("BROWSER EXECUTABLE PATH: %s", self.config.browser_executable_path)
         if not pathlib.Path(self.config.browser_executable_path).exists():
-            raise FileNotFoundError(
-                "\n---------------------\n"
-                "Could not determine browser executable."
-                "\n---------------------\n"
-                "Make sure your browser is installed in the default location (path).\n"
-                "If you are sure about the browser executable, you can specify it using\n"
-                "the `browser_executable_path='{}` parameter.\n\n".format(
+            raise FileNotFoundError((
+                """
+                ---------------------
+                Could not determine browser executable.
+                ---------------------
+                Make sure your browser is installed in the default location (path).
+                If you are sure about the browser executable, you can specify it using
+                the `browser_executable_path='{}` parameter."""
+            ).format(
                     "/path/to/browser/executable"
                     if is_posix
                     else "c:/path/to/your/browser.exe"
@@ -302,6 +321,7 @@ class Browser:
 
         self._process_pid = self._process.pid
         logger.info("created process with pid %d " % self._process_pid)
+
         self._http = HTTPApi((self.config.host, self.config.port))
 
         util.get_registered_instances().add(self)
@@ -318,17 +338,17 @@ class Browser:
                 break
 
         if not self.info:
-            raise Exception(
-                "\n---------------------\n"
-                "Failed to connect to browser"
-                "\n---------------------\n"
-                "One of the causes could be when you are running as root.\n"
-                "In that case you need to pass no_sandbox=True.\n\n"
-            )
+            raise Exception((
+                """
+                ---------------------
+                Failed to connect to browser
+                ---------------------
+                One of the causes could be when you are running as root.
+                In that case you need to pass no_sandbox=True 
+                """
+            ))
 
         self.connection = Connection(self.info.webSocketDebuggerUrl, _owner=self)
-
-        self.connection.handlers[cdp.inspector.Detached] = [self.stop]
 
         if self.config.autodiscover_targets:
             self.connection.handlers[cdp.target.TargetInfoChanged] = [
@@ -345,7 +365,46 @@ class Browser:
             ]
             logger.info("enabling autodiscover targets")
             await self.connection.send(cdp.target.set_discover_targets(True))
-        # await self
+
+        # self.connection.handlers[cdp.inspector.Detached] = [self.stop]
+        # return self
+
+    async def grant_all_permissions(self):
+        """
+        grant permissions for:
+            accessibilityEvents
+            audioCapture
+            backgroundSync
+            backgroundFetch
+            clipboardReadWrite
+            clipboardSanitizedWrite
+            displayCapture
+            durableStorage
+            geolocation
+            idleDetection
+            localFonts
+            midi
+            midiSysex
+            nfc
+            notifications
+            paymentHandler
+            periodicBackgroundSync
+            protectedMediaIdentifier
+            sensors
+            storageAccess
+            topLevelStorageAccess
+            videoCapture
+            videoCapturePanTiltZoom
+            wakeLockScreen
+            wakeLockSystem
+            windowManagement
+        """
+        permissions = list(cdp.browser.PermissionType)
+        permissions.remove(cdp.browser.PermissionType.FLASH)
+        permissions.remove(cdp.browser.PermissionType.CAPTURED_SURFACE_CONTROL)
+        await self.connection.send(
+            cdp.browser.grant_permissions(permissions)
+        )
 
     async def tile_windows(self, max_columns: int = 0):
         import mss
@@ -536,6 +595,131 @@ class Browser:
 
     def __del__(self):
         pass
+
+
+class CookieJar:
+
+    def __init__(self, connection: Connection):
+        self._connection = connection
+
+    async def get_all(
+            self, requests_cookie_format: bool = False
+    ) -> List[Union[cdp.network.Cookie, "http.cookiejar.Cookie"]]:
+        """
+        get all cookies
+
+        :param requests_cookie_format: when True, returns python http.cookiejar.Cookie objects, compatible  with requests library and many others.
+        :type requests_cookie_format: bool
+        :return:
+        :rtype:
+
+        """
+        cookies = await self._connection.send(cdp.storage.get_cookies())
+        if requests_cookie_format:
+            import requests.cookies
+            return [
+                requests.cookies.create_cookie(
+                    name=c.name,
+                    value=c.value,
+                    domain=c.domain,
+                    path=c.path,
+                    expires=c.expires,
+                    secure=c.secure,
+                )
+                for c in cookies
+            ]
+        return cookies
+
+    async def set_all(self, cookies: List[cdp.network.CookieParam]):
+        """
+        set cookies
+
+        :param cookies: list of cookies
+        :type cookies:
+        :return:
+        :rtype:
+        """
+        await self._connection.send(cdp.storage.set_cookies(cookies))
+
+    async def save(self, file: PathLike = '.session.dat', pattern: str = '.*'):
+        """
+        save all cookies (or a subset, controlled by `pattern`) to a file to be restored later
+
+        :param file:
+        :type file:
+        :param pattern: regex style pattern string.
+               any cookie that has a  domain, key or value field which matches the pattern will be included.
+               default = ".*"  (all)
+
+               eg: the pattern "(cf|.com|nowsecure)" will include those cookies which:
+                    - have a string "cf" (cloudflare)
+                    - have ".com" in them, in either domain, key or value field.
+                    - contain "nowsecure"
+        :type pattern: str
+        :return:
+        :rtype:
+        """
+        import re
+        pattern = re.compile(pattern)
+        save_path = pathlib.Path(file).resolve()
+        if not self._connection:
+            return
+        if not self._connection.websocket:
+            return
+        if self._connection.websocket.closed:
+            return
+        cookies = await self.get_all(requests_cookie_format=False)
+        included_cookies = []
+        for cookie in cookies:
+            for match in pattern.finditer(str(cookie.__dict__)):
+                logger.debug("saved cookie for matching pattern '%s' => (%s: %s)",
+                             pattern.pattern, cookie.name, cookie.value)
+                included_cookies.append(cookie)
+                break
+        pickle.dump(cookies, save_path.open('w+b'))
+
+    async def load(self, file: PathLike = '.session.dat', pattern: str = '.*'):
+        """
+        load all cookies (or a subset, controlled by `pattern`) from a file created by :py:meth:`~save_cookies`.
+
+        :param file:
+        :type file:
+        :param pattern: regex style pattern string.
+               any cookie that has a  domain, key or value field which matches the pattern will be included.
+               default = ".*"  (all)
+
+               eg: the pattern "(cf|.com|nowsecure)" will include those cookies which:
+                    - have a string "cf" (cloudflare)
+                    - have ".com" in them, in either domain, key or value field.
+                    - contain "nowsecure"
+        :type pattern: str
+        :return:
+        :rtype:
+        """
+        import re
+        pattern = re.compile(pattern)
+        save_path = pathlib.Path(file).resolve()
+        cookies = pickle.load(save_path.open('r+b'))
+        included_cookies = []
+        for cookie in cookies:
+
+            for match in pattern.finditer(str(cookie.__dict__)):
+                logger.debug("loaded cookie for matching pattern '%s' => (%s: %s)",
+                             pattern.pattern, cookie.name, cookie.value)
+                included_cookies.append(cookie)
+                break
+        await self._connection.send(cdp.storage.set_cookies(included_cookies))
+
+    async def clear(self):
+        """
+        clear current cookies
+
+        note: this includes all open tabs/windows for this browser
+
+        :return:
+        :rtype:
+        """
+        await self._connection.send(cdp.storage.clear_cookies())
 
 
 class HTTPApi:

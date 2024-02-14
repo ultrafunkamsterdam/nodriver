@@ -22,16 +22,12 @@ from .core.util import loop
 
 __all__ = [
     "loop",
-    "browser",
     "Browser",
-    "tab",
     "Tab",
     "cdp",
     "Config",
-    "config",
     "start",
     "util",
     "Element",
-    "element",
     "ContraDict",
 ]
