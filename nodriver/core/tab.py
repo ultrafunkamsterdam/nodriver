@@ -1,3 +1,4 @@
+from __future__ import annotations
 import asyncio
 import http.cookiejar
 import json
@@ -117,66 +118,119 @@ class Tab(Connection):
 
     async def find(
             self,
-            text: Optional[str] = "",
-            selector: Optional[str] = "",
+            text: str,
             timeout: Union[int, float] = 5,
     ):
+        """
+       find single element by text
+       can also be used to wait for such element to appear.
+
+       :param text: text to search for. note: script contents are also considered text
+       :type text: str
+
+       :param timeout: raise timeout exception when after this many seconds nothing is found.
+       :type timeout: float,int
+        """
         loop = asyncio.get_running_loop()
         now = loop.time()
-        if selector:
-            item = await self.query_selector(selector)
-            while not item:
-                await self
-                item = await self.query_selector(selector)
-                if loop.time() - now > timeout:
-                    raise asyncio.TimeoutError(
-                        "time ran out while waiting for %s" % selector
-                    )
-                await self.sleep(0.5)
-            return item
-        if text:
+
+        item = await self.find_element_by_text(text)
+        while not item:
+            await self
             item = await self.find_element_by_text(text)
-            while not item:
-                await self
-                item = await self.find_element_by_text(text)
-                if loop.time() - now > timeout:
-                    raise asyncio.TimeoutError(
-                        "time ran out while waiting for text: %s" % text
-                    )
-                await self.sleep(0.5)
-            return item
+            if loop.time() - now > timeout:
+                raise asyncio.TimeoutError(
+                    "time ran out while waiting for text: %s" % text
+                )
+            await self.sleep(0.5)
+        return item
+
+    async def select(
+            self,
+            selector: str,
+            timeout: Union[int, float] = 5,
+    ) -> nodriver.Element:
+        """
+        find single element by css selector.
+        can also be used to wait for such element to appear.
+
+        :param selector: css selector, eg a[href], button[class*=close], a > img[src]
+        :type selector: str
+
+        :param timeout: raise timeout exception when after this many seconds nothing is found.
+        :type timeout: float,int
+
+        """
+        loop = asyncio.get_running_loop()
+        now = loop.time()
+
+        item = await self.query_selector(selector)
+        while not item:
+            await self
+            item = await self.query_selector(selector)
+            if loop.time() - now > timeout:
+                raise asyncio.TimeoutError(
+                    "time ran out while waiting for %s" % selector
+                )
+            await self.sleep(0.5)
+        return item
+
 
     async def find_all(
             self,
-            text: Optional[str] = "",
-            selector: Optional[str] = "",
-            timeout: Union[int, float] = 5,
-    ):
+            text: str,
+            timeout: Union[int, float] = 10,
+    ) -> List[nodriver.Element]:
+        """
+        find multiple elements by text
+        can also be used to wait for such element to appear.
+
+        :param text: text to search for. note: script contents are also considered text
+        :type text: str
+
+        :param timeout: raise timeout exception when after this many seconds nothing is found.
+        :type timeout: float,int
+        """
         loop = asyncio.get_running_loop()
         now = loop.time()
-        results = []
-        if selector:
-            items = await self.query_selector_all(selector)
-            while not items:
-                await self
-                items = await self.query_selector_all(selector)
-                if loop.time() - now > timeout:
-                    raise asyncio.TimeoutError(
-                        "time ran out while waiting for %s" % selector
-                    )
-                await self.sleep(0.5)
-            results.extend(items)
-        if text:
+
+        results = await self.find_elements_by_text(text)
+        while not results:
+            await self
             items = await self.find_elements_by_text(text)
-            while not items:
-                await self
-                items = await self.find_elements_by_text(text)
-                if loop.time() - now > timeout:
-                    raise asyncio.TimeoutError(
-                        "time ran out while waiting for text: %s" % text
-                    )
-                await self.sleep(0.5)
-            results.extend(items)
+            if loop.time() - now > timeout:
+                raise asyncio.TimeoutError(
+                    "time ran out while waiting for text: %s" % text
+                )
+            await self.sleep(0.5)
+        return results
+
+    async def select_all(
+            self,
+            selector: str,
+            timeout: Union[int, float] = 5,
+    ) -> List[nodriver.Element]:
+        """
+        find multiple elements by css selector.
+        can also be used to wait for such element to appear.
+
+        :param selector: css selector, eg a[href], button[class*=close], a > img[src]
+        :type selector: str
+        :param timeout: raise timeout exception when after this many seconds nothing is found.
+        :type timeout: float,int
+        """
+
+        loop = asyncio.get_running_loop()
+        now = loop.time()
+        results  = await self.query_selector_all(selector)
+        while not results:
+            await self
+            items = await self.query_selector_all(selector)
+            if loop.time() - now > timeout:
+                raise asyncio.TimeoutError(
+                    "time ran out while waiting for %s" % selector
+                )
+            await self.sleep(0.5)
         return results
 
     def __call__(
@@ -280,6 +334,7 @@ class Tab(Connection):
             doc = _node
             if _node.node_name == "IFRAME":
                 doc = _node.content_document
+        node_ids = []
         try:
             node_ids = await self.send(
                 cdp.dom.query_selector_all(doc.node_id, selector)
@@ -352,13 +407,14 @@ class Tab(Connection):
 
         :param text:
         :type text:
+        :param tag_hint: when provided, narrows down search to only elements which match given tag eg: a, div, script, span
+        :type tag_hint: str
         :param return_enclosing_element: if False, it returns the textual element,
                 but usually one needs the element containing the text, like a button. default = True
         :type return_enclosing_element: bool
         :return:
         :rtype:
         """
-
         doc = await self.send(cdp.dom.get_document(-1, True))
         search_id, nresult = await self.send(cdp.dom.perform_search(text, True))
         if nresult == 0:
@@ -368,49 +424,51 @@ class Tab(Connection):
         results = []
         for nid in node_ids:
             node = util.filter_recurse(doc, lambda n: n.node_id == nid)
-            if node:
-                try:
-                    elem = element.create(node, self, doc)
-                    if tag_hint:
-                        if elem.node_name.lower() != tag_hint.lower():
-                            continue
-                except:
-                    continue
-                if return_enclosing_element:
-                    if not elem.parent:
-                        await elem.update()
-                    elem = elem.parent
-
-                results.append(elem)
+            try:
+                elem = element.create(node, self, doc)
+            except:  # noqa
+                continue
+            if return_enclosing_element:
+                if not elem.parent:
+                    await elem.update()
+                elem = elem.parent
+            results.append(elem)
+        # since we already fetched the entire doc, including shadow and frames
+        # let's also search through the iframes
         iframes = util.filter_recurse_all(doc, lambda node: node.node_name == "IFRAME")
         if iframes:
-
-            # create nodriver.Element objects from the cdp.dom.Node objects
-            iframes = [element.create(iframe, self, doc) for iframe in iframes]
-
-            for iframe in iframes:
-
+            iframes_elems = [element.create(iframe, self, doc) for iframe in iframes]
+            for iframe_elem in iframes_elems:
                 iframe_text_elems = util.filter_recurse_all(
-                    iframe,
+                    iframe_elem,
                     lambda node: node.node_type == 3 and text.lower() in node.node_value.lower(),
                 )
-
                 if return_enclosing_element:
-                    if not iframe.parent:
-                        await iframe.update()
+                    # if not iframe_elem.parent:
+                    #     await iframe_elem.update()
                     results.extend(elem.parent for elem in iframe_text_elems)
                 else:
                     results.extend(iframe_text_elems)
 
-        return results
+        return results or []
 
     async def find_element_by_text(
-            self, text: str, return_enclosing_element: Optional[bool] = True
-    ) -> element.Element:
+            self,
+            text: str,
+            best_match: Optional[bool] = False,
+            return_enclosing_element: Optional[bool] = True,
+    ) -> Union[element.Element, None]:
         """
+        finds and returns the first element containing <text>, or best match
 
         :param text:
         :type text:
+        :param best_match:  when True, which is MUCH more expensive (thus much slower),
+                            will find the closest match based on length.
+                            this could help tremendously, when for example you search for "login", you'd probably want the login button element,
+                            and not thousands of scripts,meta,headings containing a string of "login".
+
+        :type best_match: bool
         :param return_enclosing_element:
         :type return_enclosing_element:
         :return:
@@ -418,28 +476,52 @@ class Tab(Connection):
         """
         doc = await self.send(cdp.dom.get_document(-1, True))
         search_id, nresult = await self.send(cdp.dom.perform_search(text, True))
-
         if nresult == 0:
-            return
-        node_ids = await self.send(
-            cdp.dom.get_search_results(search_id, nresult - 1, nresult)
-        )
+            return []
+        node_ids = await self.send(cdp.dom.get_search_results(search_id, 0, nresult))
         await self.send(cdp.dom.discard_search_results(search_id))
-        if not node_ids:
-            return
-        node_id = node_ids[0]
-        node = util.filter_recurse(doc, lambda n: n.node_id == node_id)
-        if not node:
-            return
-        elem = element.create(node, self, doc)
-        if return_enclosing_element:
-            if elem.node_type == 3:  # apply only if is text node
+        results = []
+        for nid in node_ids:
+            node = util.filter_recurse(doc, lambda n: n.node_id == nid)
+            try:
+                elem = element.create(node, self, doc)
+            except: # noqa
+                continue
+            if return_enclosing_element:
                 if not elem.parent:
                     await elem.update()
                 elem = elem.parent
-                return elem
+            results.append(elem)
+        # since we already fetched the entire doc, including shadow and frames
+        # let's also search through the iframes
+        iframes = util.filter_recurse_all(doc, lambda node: node.node_name == "IFRAME")
+        if iframes:
+            iframes_elems = [element.create(iframe, self, doc) for iframe in iframes]
+            for iframe_elem in iframes_elems:
+                iframe_text_elems = util.filter_recurse_all(
+                    iframe_elem,
+                    lambda node: node.node_type == 3 and text.lower() in node.node_value.lower(),
+                )
+                if return_enclosing_element:
+                    # if not iframe_elem.parent:
+                    #     await iframe_elem.update()
+                    results.extend(elem.parent for elem in iframe_text_elems)
+                else:
+                    results.extend(iframe_text_elems)
 
-        return elem
+        if not results:
+            return
+        if best_match:
+            closest_by_length = min(
+                results, key=lambda el: abs(len(text) - len(el.text_all))
+            )
+            elem = closest_by_length or results[0]
+            return elem
+        else:
+            # naively just return the first result
+            for elem in results:
+                if elem:
+                    return elem
 
     async def back(self):
         """
@@ -727,9 +809,9 @@ class Tab(Connection):
 
     async def wait_for(
             self,
-            text: Optional[str] = "",
             selector: Optional[str] = "",
-            timeout: Optional[Union[int, float]] = 5,
+            text: Optional[str] = "",
+            timeout: Optional[Union[int, float]] = 10,
     ) -> element.Element:
         """
         variant on query_selector_all and find_elements_by_text
@@ -948,24 +1030,35 @@ class Tab(Connection):
         return res
 
     async def verify_cf(self):
+        checkbox = None
+        checkbox_sibling = await self.wait_for(text='verify you are human')
+        if checkbox_sibling:
+            parent = checkbox_sibling.parent
+            while parent:
+                checkbox = await parent.query_selector('input[type=checkbox]')
+                if checkbox:
+                    break
+                parent = parent.parent
+        await checkbox.mouse_move()
+        await checkbox.mouse_click()
 
-        iframes = await self.query_selector_all(selector='iframe')
-        for iframe in iframes:
-            try:
-                await iframe.mouse_click()
-            except:
-                logger.exception("", exc_info=True)
-                break
-        await self
-        elems = await self.query_selector_all(selector='iframe')
-        for s in elems:
-            try:
-                await s.mouse_move()
-
-            except Exception:
-                logger.exception("",exc_info=True)
-                break
-        await self
+        # iframes = await self.query_selector_all(selector='iframe')
+        # for iframe in iframes:
+        #     try:
+        #         await iframe.mouse_click()
+        #     except:
+        #         logger.exception("", exc_info=True)
+        #         break
+        # await self
+        # elems = await self.query_selector_all(selector='iframe')
+        # for s in elems:
+        #     try:
+        #         await s.mouse_move()
+        #
+        #     except Exception:
+        #         logger.exception("",exc_info=True)
+        #         break
+        # await self
 
 
 class WaitFor:

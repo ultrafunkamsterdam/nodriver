@@ -23,6 +23,8 @@ T = typing.TypeVar("T")
 
 
 async def start(
+    config: Optional[Config] = None,
+    *,
     user_data_dir: Optional[PathLike] = None,
     headless: Optional[bool] = False,
     browser_executable_path: Optional[PathLike] = None,
@@ -57,18 +59,17 @@ async def start(
     :type lang: str
     :return:
     """
-
-    config = Config(
-        user_data_dir,
-        headless,
-        browser_executable_path,
-        browser_args,
-        sandbox,
-        lang,
-        **kwargs,
-    )
+    if not config:
+        config = Config(
+            user_data_dir,
+            headless,
+            browser_executable_path,
+            browser_args,
+            sandbox,
+            lang,
+            **kwargs,
+        )
     from .browser import Browser
-
     return await Browser.create(config)
 
 

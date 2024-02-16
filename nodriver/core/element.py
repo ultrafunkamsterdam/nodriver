@@ -261,15 +261,19 @@ class Element:
         :rtype:
         """
         if _node:
-            self._node = _node
-        # self._children.clear()
-        self._parent = None
-        doc = await self._tab.send(cdp.dom.get_document(-1, True))
+            doc = _node
+            # self._node = _node
+            # self._children.clear()
+            self._parent = None
+        else:
+            doc = await self._tab.send(cdp.dom.get_document(-1, True))
+            self._parent = None
         # if self.node_name != "IFRAME":
         updated_node = util.filter_recurse(
             doc, lambda n: n.backend_node_id == self._node.backend_node_id
         )
-        self._node = updated_node
+        if updated_node:
+            self._node = updated_node
         self._tree = doc
 
         self._remote_object = await self._tab.send(
@@ -279,7 +283,7 @@ class Element:
         self._make_attrs()
         if self.node_name != "IFRAME":
             parent_node = util.filter_recurse(
-                doc, lambda n: n.node_id == updated_node.parent_id
+                doc, lambda n: n.node_id == self.node.parent_id
             )
             if not parent_node:
                 # could happen if node is for example <html>
@@ -660,14 +664,14 @@ class Element:
     async def query_selector_all(self, selector: str):
         if self.node_name == "IFRAME":
             return await self.tab.query_selector_all(selector, _node=self)
-        await self
+        # await self
         return await self._tab.query_selector_all(selector, self)
 
     async def query_selector(self, selector):
         if self.node_name == "IFRAME":
             return await self.tab.query_selector(selector, self)
 
-        await self
+        # await self
         return await self._tab.query_selector(selector, self)
 
     #

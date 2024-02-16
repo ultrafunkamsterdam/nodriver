@@ -262,9 +262,9 @@ class Browser:
 
         else:
             frame_id, loader_id, *_ = await tab.send(cdp.page.navigate(url))
-            body = await tab.find_elements_by_text('cloudflare')
-            if len(body) > 1:
-                await tab.verify_cf()
+            # body = await tab.find_elements_by_text('cloudflare')
+            # if len(body) > 1:
+            #     await tab.verify_cf()
 
             tab.frame_id = frame_id
 
