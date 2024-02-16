@@ -258,33 +258,17 @@ class Browser:
                         self.targets,
                     )
                 )
-
-            # wait until the page is loaded!
-            # future = asyncio.Future()
-            #
-            # def _waiter(event):
-            #     future.set_result(event)
-            #
-            # connection.add_handler(cdp.page.LoadEventFired, _waiter)
-            # await connection.reload()
-            # await future
-            # connection.handlers[cdp.page.LoadEventFired].clear()
-            # return connection
-            await self
-            await connection
+            await connection.sleep(.25)
             return connection
         else:
             # first tab from browser.tabs
-            tab = next(filter(lambda item: item.type_ == "page", self.targets))
+            connection = next(filter(lambda item: item.type_ == "page", self.targets))
             # use the tab to navigate to new url
-            frame_id, loader_id, *_ = await tab.send(cdp.page.navigate(url))
-            # update targets
-            await self
-
+            frame_id, loader_id, *_ = await connection.send(cdp.page.navigate(url))
             # update the frame_id on the tab
-            tab.frame_id = frame_id
-            await tab
-            return tab
+            connection.frame_id = frame_id
+            await connection.sleep(.25)
+            return connection
 
 
     async def start(self=None) -> Browser:

@@ -855,7 +855,7 @@ class Tab(Connection):
                     raise asyncio.TimeoutError(
                         "time ran out while waiting for %s" % selector
                     )
-                await self
+                await self.sleep(.5)
                 # await self.sleep(0.5)
             return item
         if text:
@@ -867,7 +867,7 @@ class Tab(Connection):
                     raise asyncio.TimeoutError(
                         "time ran out while waiting for text: %s" % text
                     )
-                await self
+                await self.sleep(.5)
             return item
 
     async def download_file(self, url: str, filename: Optional[PathLike] = None):
@@ -952,7 +952,7 @@ class Tab(Connection):
         import urllib.parse
         import datetime
 
-        await self  # update the target's url
+        await self.sleep()  # update the target's url
         path = None
 
         if not filename or filename == "auto":
@@ -1055,51 +1055,3 @@ class Tab(Connection):
         await checkbox.mouse_move()
         await checkbox.mouse_click()
 
-        # iframes = await self.query_selector_all(selector='iframe')
-        # for iframe in iframes:
-        #     try:
-        #         await iframe.mouse_click()
-        #     except:
-        #         logger.exception("", exc_info=True)
-        #         break
-        # await self
-        # elems = await self.query_selector_all(selector='iframe')
-        # for s in elems:
-        #     try:
-        #         await s.mouse_move()
-        #
-        #     except Exception:
-        #         logger.exception("",exc_info=True)
-        #         break
-        # await self
-
-
-class WaitFor:
-    def __init__(self, page: Tab):
-        self.page = page
-
-    async def __call__(self, text: str = None, selector: str = None, timeout: int = 5):
-        loop = asyncio.get_running_loop()
-        now = loop.time()
-        if selector:
-            item = await self.page.query_selector_all(selector)
-            while not item:
-                await self.page
-                item = await self.page.query_selector_all(selector)
-                if loop.time() - now > timeout:
-                    raise asyncio.TimeoutError(
-                        "time ran out while waiting for %s" % selector
-                    )
-                await self.page.sleep(0.5)
-            return item
-        if text:
-            item = await self.page.find_elements_by_text(text)
-            while not item:
-                await self.page
-                item = await self.page.find_elements_by_text(text)
-                if loop.time() - now > timeout:
-                    raise asyncio.TimeoutError(
-                        "time ran out while waiting for text: %s" % text
-                    )
-                await self.page.sleep(0.5)
-            return item

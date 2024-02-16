@@ -40,17 +40,22 @@ async def main():
 
     for i, tab in enumerate(driver):
         await tab.set_window_size(*grid[i])
-        await tab.sleep(.2)
+        await tab.sleep()
 
     b365pages = [tab for tab in driver.tabs if "bet365" in tab.url]
 
-    await driver.tile_windows(max_columns=10)
+    for tab in driver:
+        if tab not in b365pages:
+            await tab.minimize()
+        else:
+            await tab.medimize()
 
-    [await tab.sleep(.1) for tab in driver]
+    await driver.tile_windows(max_columns=12)
+
+    [await tab.sleep() for tab in driver]
 
 
     await asyncio.gather(*[flash_spans(tab, i) for (i, tab) in enumerate(b365pages[:4])])
-
 
     await driver.tile_windows(max_columns=12)
 
@@ -88,12 +93,11 @@ async def scroll_task(tab):
 
 async def flash_spans(tab, i):
     logger.info("flashing spans. i=%d , tab=%s, url=%s" % (i, tab, tab.url))
-
-    await tab.set_window_size(height=1280, top=0, left=i * 640, width=1024)
     await tab.fullscreen()
-    await tab.activate()
+
     elems = await tab.query_selector_all("span")
     await tab.medimize()
+    await tab.activate()
     for elem in elems:
         await elem.flash(duration=0.25)
         await elem.scroll_into_view()

@@ -707,7 +707,7 @@ class Element:
             )
         viewport = pos.to_viewport(scale)
         path = None
-        await self.tab
+        await self.tab.sleep()
         if not filename or filename == "auto":
             parsed = urllib.parse.urlparse(self.tab.target.url)
             parts = parsed.path.split("/")

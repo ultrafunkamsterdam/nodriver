@@ -473,7 +473,7 @@ class Listener:
             await self.connection.aopen()
         while True:
             try:
-                msg = await asyncio.wait_for(self.connection.websocket.recv(), .25)
+                msg = await asyncio.wait_for(self.connection.websocket.recv(), .5)
             except asyncio.TimeoutError:
                 await asyncio.sleep(0.05)
                 self.idle.set()
