@@ -663,13 +663,13 @@ class Element:
 
     async def query_selector_all(self, selector: str):
         if self.node_name == "IFRAME":
-            return await self.tab.query_selector_all(selector, _node=self)
+            return await self.tab.query_selector_all(selector, _node=self.tree)
         # await self
         return await self._tab.query_selector_all(selector, self)
 
     async def query_selector(self, selector):
         if self.node_name == "IFRAME":
-            return await self.tab.query_selector(selector, self)
+            return await self.tab.query_selector(selector, self.tree)
 
         # await self
         return await self._tab.query_selector(selector, self)
@@ -749,10 +749,15 @@ class Element:
         :return:
         :rtype:
         """
+        from .connection import ProtocolException
         if not self.remote_object:
-            self._remote_object = await self._tab.send(
-                cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
-            )
+            try:
+                self._remote_object = await self._tab.send(
+                    cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
+                )
+            except ProtocolException:
+                return
+
         style = (
             "position:absolute;z-index:99999999;padding:0;margin:0; left:50% ;"
             "transform: translate(-50%, -50%);"
@@ -903,6 +908,13 @@ class Element:
                     if sav:
                         self.attrs[sav] = a
 
+    def __eq__(self, other: Element) -> bool:
+        # if other.__dict__.values() == self.__dict__.values():
+        #     return True
+        if other.backend_node_id and self.backend_node_id:
+            return other.backend_node_id == self.backend_node_id
+
+        return False
     def __repr__(self):
         tag_name = self.node.node_name.lower()
         content = ""
@@ -962,6 +974,7 @@ class Position(cdp.dom.Quad):
         return cdp.page.Viewport(
             x=self.x, y=self.y, width=self.width, height=self.height, scale=scale
         )
+
 
     def __repr__(self):
         return f"<Position(x={self.left}, y={self.top}, width={self.width}, height={self.height})>"

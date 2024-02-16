@@ -111,7 +111,7 @@ class Config(ContraDict):
         args += ["--no-service-autorun"]
         args += ["--no-default-browser-check"]
 
-        args += ["--process-per-tab"]
+        # args += ["--process-per-tab"]
         args += ["--homepage=about:blank"]
         args += ["--no-pings"]
         args += ["--password-store=basic"]
@@ -123,7 +123,7 @@ class Config(ContraDict):
         args += ["--disable-background-networking"]
         args += ["--disable-dev-shm-usage"]
         args += ["--disable-features=IsolateOrigins"]
-        args += ["--disable-ipc-flooding-protection"]
+        # args += ["--disable-ipc-flooding-protection"]
         args += ["--disable-session-crashed-bubble"]
 
 

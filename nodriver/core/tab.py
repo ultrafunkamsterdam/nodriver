@@ -119,6 +119,7 @@ class Tab(Connection):
     async def find(
             self,
             text: str,
+            best_match: bool = False,
             timeout: Union[int, float] = 5,
     ):
         """
@@ -127,17 +128,22 @@ class Tab(Connection):
 
        :param text: text to search for. note: script contents are also considered text
        :type text: str
+       :param best_match:  when True, which is MUCH more expensive (thus much slower),
+                            will find the closest match based on length.
+                            this could help tremendously, when for example you search for "login", you'd probably want the login button element,
+                            and not thousands of scripts,meta,headings containing a string of "login".
 
+        :type best_match: bool
        :param timeout: raise timeout exception when after this many seconds nothing is found.
        :type timeout: float,int
         """
         loop = asyncio.get_running_loop()
         now = loop.time()
 
-        item = await self.find_element_by_text(text)
+        item = await self.find_element_by_text(text, best_match)
         while not item:
             await self
-            item = await self.find_element_by_text(text)
+            item = await self.find_element_by_text(text, best_match)
             if loop.time() - now > timeout:
                 raise asyncio.TimeoutError(
                     "time ran out while waiting for text: %s" % text
@@ -251,7 +257,10 @@ class Tab(Connection):
         return self.wait_for(text, selector, timeout)
 
     def __repr__(self):
-        s = f"<{type(self).__name__} [{self.target_id}] [{self.type_}]>"
+        extra = ""
+        if self.target.url:
+            extra = f"[url: {self.target.url}]"
+        s = f"<{type(self).__name__} [{self.target_id}] [{self.type_}] {extra}>"
         return s
 
     async def get(
@@ -339,6 +348,8 @@ class Tab(Connection):
             node_ids = await self.send(
                 cdp.dom.query_selector_all(doc.node_id, selector)
             )
+            await self.send(cdp.dom.disable())
+
         except ProtocolException as e:
             if _node is not None:
                 if "could not find node" in e.message.lower():
@@ -477,9 +488,10 @@ class Tab(Connection):
         doc = await self.send(cdp.dom.get_document(-1, True))
         search_id, nresult = await self.send(cdp.dom.perform_search(text, True))
         if nresult == 0:
-            return []
+            return
         node_ids = await self.send(cdp.dom.get_search_results(search_id, 0, nresult))
         await self.send(cdp.dom.discard_search_results(search_id))
+        await self.send(cdp.dom.disable())
         results = []
         for nid in node_ids:
             node = util.filter_recurse(doc, lambda n: n.node_id == nid)
@@ -516,6 +528,7 @@ class Tab(Connection):
                 results, key=lambda el: abs(len(text) - len(el.text_all))
             )
             elem = closest_by_length or results[0]
+            print('RETURNING ELEME', elem)
             return elem
         else:
             # naively just return the first result

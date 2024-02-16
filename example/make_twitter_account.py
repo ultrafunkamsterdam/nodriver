@@ -29,30 +29,32 @@ months = [
 
 
 async def main():
-    driver = await uc.start()
-    page = await driver.get("https://twitter.com")
-    # t = uc.loop().create_task(asyncio.sleep(2))
 
-    # print('t = ', t, 'loop = ', t.get_loop(), '/', uc.loop())
+    driver = await uc.start()
+
+    tab = await driver.get("https://twitter.com")
+
     # wait for text to appear instead of a static number of seconds to wait
     # this does not always work as expected, due to speed.
     print('finding the "create account" button')
-    create_account = await page.find_element_by_text("create account")
+    create_account = await tab.find("create account", best_match=True)
+
+
     print('"create account" => click')
     await create_account.click()
 
     print("finding the email input field")
-    email = await page(selector="input[type=email]")
+    email = await tab.select(selector="input[type=email]")
 
     # sometimes, email field is not shown, because phone is being asked instead
     # when this occurs, find the small text which says "use email instead"
     if not email:
-        use_mail_instead = await page.wait_for(text="use email instead")
+        use_mail_instead = await tab.wait_for(text="use email instead")
         # and click it
         await use_mail_instead.click()
 
         # now find the email field again
-        email = await page.wait_for(selector="input[type=email]")
+        email = await tab.select(selector="input[type=email]")
 
     randstr = lambda k: "".join(random.choices(string.ascii_letters, k=k))
 
@@ -62,16 +64,16 @@ async def main():
 
     # find the name input field
     print("finding the name input field")
-    name = await page.query_selector("input[type=text]")
+    name = await tab.query_selector("input[type=text]")
 
     # again, send random text
     print('filling in the "name" input field')
     await name.send_keys(randstr(8))
 
-    # since there are 3 select fields on the page, we can use unpacking
+    # since there are 3 select fields on the tab, we can use unpacking
     # to assign each field
     print('finding the "month" , "day" and "year" fields in 1 go')
-    sel_month, sel_day, sel_year = await page.query_selector_all("select")
+    sel_month, sel_day, sel_year = await tab.query_selector_all("select")
 
     # await sel_month.focus()
     print('filling in the "month" input field')
@@ -87,40 +89,40 @@ async def main():
     print('filling in the "year" input field')
     await sel_year.send_keys(str(random.randint(1980, 2005)))
 
-    await page
+    await tab
 
     # let's handle the cookie nag as well
-    cookie_bar_accept = await page.find_element_by_text("accept all")
+    cookie_bar_accept = await tab.find("accept all", best_match=True)
     if cookie_bar_accept:
         await cookie_bar_accept.click()
 
-    await page.sleep(1)
+    await tab.sleep(1)
 
-    next_btns = await page.find_elements_by_text(text="next", tag_hint="div")
+    next_btn = await tab.find(text="next", best_match=True)
     # for btn in reversed(next_btns):
-    await next_btns[-1].mouse_click()
+    await next_btn.mouse_click()
 
     print("sleeping 2 seconds")
-    await page.sleep(2)  # visually see what part we're actually in
+    await tab.sleep(2)  # visually see what part we're actually in
 
     print('finding "next" button')
-    next_btns = await page.find_elements_by_text(text="next", tag_hint="div")
+    next_btn = await tab.find(text="next", best_match=True)
     print('clicking "next" button')
-    await next_btns[-1].mouse_click()
+    await next_btn.mouse_click()
+
 
     # just wait for some button, before we continue
-    await page.wait_for(selector="[role=button]")
+    await tab.select("[role=button]")
 
     print('finding "sign up"  button')
-    sign_up_btns = await page.find_elements_by_text("Sign up")
+    sign_up_btn = await tab.find("Sign up", best_match=True)
     # we need the second one
-    sign_up_btn = sign_up_btns[1]
     print('clicking "sign up"  button')
     await sign_up_btn.click()
 
     print('the rest of the "implementation" is out of scope')
     # further implementation outside of scope
-    await page.sleep(10)
+    await tab.sleep(10)
     driver.stop()
 
     # verification code per mail

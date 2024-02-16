@@ -137,7 +137,7 @@ class Browser:
     @property
     def cookies(self) -> CookieJar:
         if not self._cookies:
-            self._cookies = CookieJar(self.connection)
+            self._cookies = CookieJar(self)
         return self._cookies
 
     @property
@@ -229,46 +229,63 @@ class Browser:
         :param new_window:  open new window
         :return: Page
         """
-
-        if new_window and not new_tab:
-            new_tab = True
-        # get first tab
-        tab = next(filter(lambda item: item.type_ == "page", self.targets))
-        if new_tab:
+        if new_tab or new_window:
+            # creat new target using the browser session
             target_id = await self.connection.send(
                 cdp.target.create_target(
                     url, new_window=new_window, enable_begin_frame_control=True
                 )
             )
-            tab = next(
+            # get the connection matching the new target_id from our inventory
+            connection = next(
                 filter(
                     lambda item: item.type_ == "page" and item.target_id == target_id,
                     self.targets,
                 )
             )
-            while not tab:
-                await self.sleep(.1)
-                tab = next(
+
+            # if for some reason the connection could not be found (not updated or too fast/slow),
+            # just loop until the connection matches the target id
+            while not connection:
+                print('while not tab')
+                # update targets
+                await self
+                # get the connection matching the new target_id from our inventory
+                connection = next(
                     filter(
                         lambda item: item.type_ == "page"
                                      and item.target_id == target_id,
                         self.targets,
                     )
                 )
-            body = await tab.find_elements_by_text('cloudflare')
-            if len(body) > 1:
-                await tab.verify_cf()
-            return tab
 
+            # wait until the page is loaded!
+            # future = asyncio.Future()
+            #
+            # def _waiter(event):
+            #     future.set_result(event)
+            #
+            # connection.add_handler(cdp.page.LoadEventFired, _waiter)
+            # await connection.reload()
+            # await future
+            # connection.handlers[cdp.page.LoadEventFired].clear()
+            # return connection
+            await self
+            await connection
+            return connection
         else:
+            # first tab from browser.tabs
+            tab = next(filter(lambda item: item.type_ == "page", self.targets))
+            # use the tab to navigate to new url
             frame_id, loader_id, *_ = await tab.send(cdp.page.navigate(url))
-            # body = await tab.find_elements_by_text('cloudflare')
-            # if len(body) > 1:
-            #     await tab.verify_cf()
+            # update targets
+            await self
 
+            # update the frame_id on the tab
             tab.frame_id = frame_id
-
+            await tab
             return tab
+
 
     async def start(self=None) -> Browser:
         """launches the actual browser"""
@@ -599,8 +616,9 @@ class Browser:
 
 class CookieJar:
 
-    def __init__(self, connection: Connection):
-        self._connection = connection
+    def __init__(self, browser: Browser):
+        self._browser = browser
+        # self._connection = connection
 
     async def get_all(
             self, requests_cookie_format: bool = False
@@ -614,7 +632,13 @@ class CookieJar:
         :rtype:
 
         """
-        cookies = await self._connection.send(cdp.storage.get_cookies())
+        connection = None
+        for tab in self._browser.tabs:
+            if tab.closed:
+                continue
+            connection = tab
+            break
+        cookies = await connection.send(cdp.storage.get_cookies())
         if requests_cookie_format:
             import requests.cookies
             return [
@@ -639,7 +663,14 @@ class CookieJar:
         :return:
         :rtype:
         """
-        await self._connection.send(cdp.storage.set_cookies(cookies))
+        connection = None
+        for tab in self._browser.tabs:
+            if tab.closed:
+                continue
+            connection = tab
+            break
+        cookies = await connection.send(cdp.storage.get_cookies())
+        await connection.send(cdp.storage.set_cookies(cookies))
 
     async def save(self, file: PathLike = '.session.dat', pattern: str = '.*'):
         """
@@ -662,12 +693,19 @@ class CookieJar:
         import re
         pattern = re.compile(pattern)
         save_path = pathlib.Path(file).resolve()
-        if not self._connection:
-            return
-        if not self._connection.websocket:
-            return
-        if self._connection.websocket.closed:
-            return
+        connection = None
+        for tab in self._browser.tabs:
+            if tab.closed:
+                continue
+            connection = tab
+            break
+        cookies = await connection.send(cdp.storage.get_cookies())
+        # if not connection:
+        #     return
+        # if not connection.websocket:
+        #     return
+        # if connection.websocket.closed:
+        #     return
         cookies = await self.get_all(requests_cookie_format=False)
         included_cookies = []
         for cookie in cookies:
@@ -701,6 +739,13 @@ class CookieJar:
         save_path = pathlib.Path(file).resolve()
         cookies = pickle.load(save_path.open('r+b'))
         included_cookies = []
+        connection = None
+        for tab in self._browser.tabs:
+            if tab.closed:
+                continue
+            connection = tab
+            break
+        cookies = await connection.send(cdp.storage.get_cookies())
         for cookie in cookies:
 
             for match in pattern.finditer(str(cookie.__dict__)):
@@ -708,7 +753,7 @@ class CookieJar:
                              pattern.pattern, cookie.name, cookie.value)
                 included_cookies.append(cookie)
                 break
-        await self._connection.send(cdp.storage.set_cookies(included_cookies))
+        await connection.send(cdp.storage.set_cookies(included_cookies))
 
     async def clear(self):
         """
@@ -719,7 +764,14 @@ class CookieJar:
         :return:
         :rtype:
         """
-        await self._connection.send(cdp.storage.clear_cookies())
+        connection = None
+        for tab in self._browser.tabs:
+            if tab.closed:
+                continue
+            connection = tab
+            break
+        cookies = await connection.send(cdp.storage.get_cookies())
+        await connection.send(cdp.storage.clear_cookies())
 
 
 class HTTPApi:

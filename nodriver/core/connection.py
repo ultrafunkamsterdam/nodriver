@@ -68,6 +68,7 @@ class Transaction(asyncio.Future):
         super().__init__()
         self.__cdp_obj__ = cdp_obj
         self.connection = None
+
         self.method, *params = next(self.__cdp_obj__).values()
         if params:
             params = params.pop()
@@ -104,7 +105,8 @@ class Transaction(asyncio.Future):
         else:
             status = "pending"
         fmt = (
-            f"<{self.__class__.__name__} [message id: {self.id}] method: {self.method}\n\t"
+            f"<{self.__class__.__name__}\n\t"
+            f"method: {self.method}\n\t"
             f"status: {status}\n\t"
             f"success: {success}>"
         )
@@ -112,18 +114,28 @@ class Transaction(asyncio.Future):
 
 
 class EventTransaction(Transaction):
-    def __init__(self, message):
+
+    event = None
+    value = None
+
+    def __init__(self, event_object):
         try:
             super().__init__(None)
         except:
             pass
-        self.response = message
+        self.set_result(event_object)
+        self.event = self.value = self.result()
 
     def __repr__(self):
         status = "finished"
-        success = False if self.exception else True
-
-        fmt = f"<{self.__class__.__name__}\n\t" f"event: {self.response.__class__}"
+        success = False if self.exception() else True
+        event_object = self.result()
+        fmt = (
+            f"{self.__class__.__name__}\n\t"
+            f"event: {event_object.__class__.__module__}.{event_object.__class__.__name__}\n\t"
+            f"status: {status}\n\t"
+            f"success: {success}>"
+        )
         return fmt
 
 
@@ -205,6 +217,13 @@ class Connection(metaclass=CantTouchThis):
             )
         self._target = target
 
+    @property
+    def closed(self):
+        if not self.websocket:
+            return True
+        return self.websocket.closed
+
+
     def add_handler(
         self,
         event_type_or_domain: Union[type, types.ModuleType],
@@ -264,21 +283,36 @@ class Connection(metaclass=CantTouchThis):
         if not self.listener or not self.listener.running:
             self.listener = Listener(self)
             logger.debug("\n✅  opened websocket connection to %s", self.websocket_url)
+        await self._register_handlers()
 
     async def aclose(self):
         if self.websocket and not self.websocket.closed:
             if self.listener and self.listener.running:
                 self.listener.cancel()
-
+                self.enabled_domains.clear()
             await self.websocket.close()
             logger.debug("\n❌ closed websocket connection to %s", self.websocket_url)
 
     async def sleep(self, t: Union[int, float] = 0.25):
+        await self.update_target()
         await asyncio.sleep(t)
 
     async def wait(self, t: Union[int, float] = None):
-        await self
-        await self.listener.busy.wait()
+        """
+        updates targets and
+        waits until the event listener reports idle (when no new events are received for 1 second)
+
+        :param t:
+        :type t:
+        :return:
+        :rtype:
+        """
+        await self.update_target()
+        try:
+            await self.listener.idle.wait()
+        except AttributeError:
+            # no listener created yet
+            pass
         if t:
             await self.sleep(t)
 
@@ -300,7 +334,13 @@ class Connection(metaclass=CantTouchThis):
             raise exc_type(exc_val)
 
     def __await__(self):
-        return self.update_target().__await__()
+        """
+        updates targets and wait for event listener to report idle.
+        idle is reported when no new events are received for the duration of 1 second
+        :return:
+        :rtype:
+        """
+        return self.wait().__await__()
 
     async def update_target(self):
         target_info: cdp.target.TargetInfo = await self.send(
@@ -312,11 +352,14 @@ class Connection(metaclass=CantTouchThis):
         self, cdp_obj: Generator[dict[str, Any], dict[str, Any], Any], _is_update=False
     ) -> Any:
         """
-        send a protocol command
+        send a protocol command. the commands are made using any of the cdp.<domain>.<method>()'s
+        and is used to send custom cdp commands as well.
 
-        :rtype: object
-        :param cdp_obj:
-        :param _is_update:
+        :param cdp_obj: the generator object created by a cdp method
+
+        :param _is_update: internal flag
+            prevents infinite loop by skipping the registeration of handlers
+            when multiple calls to connection.send() are made
         :return:
         """
         await self.aopen()
@@ -331,7 +374,6 @@ class Connection(metaclass=CantTouchThis):
         self.mapper.update({tx.id: tx})
 
         if not _is_update:
-            # pass
             await self._register_handlers()
 
         # send out
@@ -349,6 +391,14 @@ class Connection(metaclass=CantTouchThis):
 
         """
         seen = []
+
+        # save a copy of current enabled domains in a variable
+        # domains will be removed from this variable
+        # if it is still needed according to the set handlers
+        # so at the end this variable will hold the domains that
+        # are not represented by handlers, and can be removed
+        enabled_domains = self.enabled_domains.copy()
+
         for event_type in self.handlers.copy():
             domain_mod = None
             if len(self.handlers[event_type]) == 0:
@@ -356,8 +406,11 @@ class Connection(metaclass=CantTouchThis):
                 continue
             if isinstance(event_type, type):
                 domain_mod = util.cdp_get_module(event_type.__module__)
-
             if domain_mod in self.enabled_domains:
+                # at this point, the domain is being used by a handler
+                # so remove that domain from temp variable 'enabled_domains' if present
+                if domain_mod in enabled_domains:
+                    enabled_domains.remove(domain_mod)
                 continue
             elif domain_mod not in self.enabled_domains:
                 if domain_mod in (cdp.target, cdp.storage):
@@ -380,13 +433,25 @@ class Connection(metaclass=CantTouchThis):
                         continue
                 finally:
                     continue
+        for ed in enabled_domains:
+            # we started with a copy of self.enabled_domains and removed a domain from this
+            # temp variable when we registered it or saw handlers for it.
+            # items still present at this point are unused and need removal
+            print('remove ' , ed , 'from enabled domains')
+            self.enabled_domains.remove(ed)
+
 
 
 class Listener:
+
+
     def __init__(self, connection: Connection):
+
         self.connection = connection
+        self.history = collections.deque()
+        self.max_history = 1000
         self.task: asyncio.Future = None
-        self.busy = asyncio.Event()
+        self.idle = asyncio.Event()
         self.run()
 
     def run(self):
@@ -408,10 +473,10 @@ class Listener:
             await self.connection.aopen()
         while True:
             try:
-                msg = await asyncio.wait_for(self.connection.websocket.recv(), 1)
+                msg = await asyncio.wait_for(self.connection.websocket.recv(), .25)
             except asyncio.TimeoutError:
-                self.busy.clear()
-                await asyncio.sleep(0.1)
+                await asyncio.sleep(0.05)
+                self.idle.set()
                 continue
             except Exception:
                 break
@@ -419,7 +484,7 @@ class Listener:
             if not self.running:
                 print("not running")
                 break
-            self.busy.set()
+            self.idle.clear()
             message = json.loads(msg)
             if "id" in message:
                 # response to our command
@@ -430,6 +495,21 @@ class Listener:
                 # probably an event
                 try:
                     event = cdp.util.parse_json_event(message)
+                    # self.history.append(event)
+                    event_tx = EventTransaction(event)
+                    if not self.connection.mapper:
+                        self.connection.__count__ = itertools.count(0)
+                    event_tx.id = next(self.connection.__count__)
+                    self.connection.mapper[event_tx.id] = event_tx
+                    # while len(self.connection.mapper) > self.max_history:
+                    #     for k,v in self.connection.mapper.copy().items():
+                    #         # only remove old events
+                    #         if type(v) is not Transaction:
+                    #             self.connection.mapper.pop(k)
+
+
+                    # while len(self.history) >= self.max_history:
+                    #     self.history.popleft()
                 except Exception as e:
                     logger.info(
                         "%s: %s  during parsing of json from event : %s"
@@ -472,3 +552,10 @@ class Listener:
                     raise
 
                 continue
+
+    def __repr__(self):
+        s_idle = "[idle]" if self.idle.is_set() else "[busy]"
+        s_cache_length = f"[cache size: {len(self.history)}]"
+        s_running = f"[running: {self.running}]"
+        s = f"{self.__class__.__name__} {s_running} {s_idle} {s_cache_length}>"
+        return s
