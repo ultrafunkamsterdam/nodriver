@@ -34,7 +34,6 @@ TargetType = Union[cdp.target.TargetInfo, cdp.target.TargetID]
 logger = logging.getLogger("uc.connection")
 
 
-
 class ProtocolException(ValueError):
     def __init__(self, *args, **kwargs):  # real signature unknown
         self.message = None
@@ -53,7 +52,6 @@ class SettingClassVarNotAllowedException(PermissionError):
 
 
 class Transaction(asyncio.Future):
-
     __cdp_obj__: Generator = None
 
     method: str = None
@@ -114,7 +112,6 @@ class Transaction(asyncio.Future):
 
 
 class EventTransaction(Transaction):
-
     event = None
     value = None
 
@@ -175,7 +172,6 @@ class CantTouchThis(type):
 
 
 class Connection(metaclass=CantTouchThis):
-
     attached: bool = None
     websocket: websockets.WebSocketClientProtocol
     _target: cdp.target.TargetInfo
@@ -187,11 +183,10 @@ class Connection(metaclass=CantTouchThis):
         _owner: "Browser" = None,
         **kwargs,
     ):
-
         super().__init__()
         self._target = target
         self.__count__ = itertools.count(0)
-        # self._owner = _owner
+        self._owner = _owner
 
         self.websocket_url: str = websocket_url
         self.websocket = None
@@ -222,7 +217,6 @@ class Connection(metaclass=CantTouchThis):
         if not self.websocket:
             return True
         return self.websocket.closed
-
 
     def add_handler(
         self,
@@ -273,13 +267,25 @@ class Connection(metaclass=CantTouchThis):
         :param kw:
         :return:
         """
+
         if not self.websocket or self.websocket.closed:
-            self.websocket = await websockets.connect(
-                self.websocket_url,
-                ping_timeout=PING_TIMEOUT,
-                max_size=MAX_SIZE,
-            )
-            self.listener = Listener(self)
+            try:
+                self.websocket = await websockets.connect(
+                    self.websocket_url,
+                    ping_timeout=PING_TIMEOUT,
+                    max_size=MAX_SIZE,
+                )
+                self.listener = Listener(self)
+            except (Exception,) as e:
+                logger.debug(
+                    "exception during opening of websocket : %s", e, exc_info=True
+                )
+                from .util import print_exc_plus
+
+                print_exc_plus()
+                if self.listener:
+                    self.listener.cancel()
+                raise
         if not self.listener or not self.listener.running:
             self.listener = Listener(self)
             logger.debug("\n✅  opened websocket connection to %s", self.websocket_url)
@@ -363,26 +369,31 @@ class Connection(metaclass=CantTouchThis):
         :return:
         """
         await self.aopen()
+        if not self.websocket or self.closed:
+            return
         if not self.listener or not self.listener.running:
             self.listener = Listener(self)
-
-        tx = Transaction(cdp_obj)
-        tx.connection = self
-        if not self.mapper:
-            self.__count__ = itertools.count(0)
-        tx.id = next(self.__count__)
-        self.mapper.update({tx.id: tx})
-
-        if not _is_update:
-            await self._register_handlers()
-
-        # send out
-        await self.websocket.send(tx.message)
         try:
-            return await tx
-        except ProtocolException as e:
-            e.message += f"\ncommand:{tx.method}\nparams:{tx.params}"
-            raise e
+            tx = Transaction(cdp_obj)
+            tx.connection = self
+            if not self.mapper:
+                self.__count__ = itertools.count(0)
+            tx.id = next(self.__count__)
+            self.mapper.update({tx.id: tx})
+
+            if not _is_update:
+                await self._register_handlers()
+
+            # send out
+            await self.websocket.send(tx.message)
+            try:
+                return await tx
+            except ProtocolException as e:
+                e.message += f"\ncommand:{tx.method}\nparams:{tx.params}"
+                raise e
+
+        except Exception:
+            await self.aclose()
 
     async def _register_handlers(self):
         """
@@ -437,16 +448,12 @@ class Connection(metaclass=CantTouchThis):
             # we started with a copy of self.enabled_domains and removed a domain from this
             # temp variable when we registered it or saw handlers for it.
             # items still present at this point are unused and need removal
-            print('remove ' , ed , 'from enabled domains')
+            print("remove ", ed, "from enabled domains")
             self.enabled_domains.remove(ed)
 
 
-
 class Listener:
-
-
     def __init__(self, connection: Connection):
-
         self.connection = connection
         self.history = collections.deque()
         self.max_history = 1000
@@ -473,7 +480,7 @@ class Listener:
             await self.connection.aopen()
         while True:
             try:
-                msg = await asyncio.wait_for(self.connection.websocket.recv(), .5)
+                msg = await asyncio.wait_for(self.connection.websocket.recv(), 0.5)
             except asyncio.TimeoutError:
                 await asyncio.sleep(0.05)
                 self.idle.set()
@@ -506,7 +513,6 @@ class Listener:
                     #         # only remove old events
                     #         if type(v) is not Transaction:
                     #             self.connection.mapper.pop(k)
-
 
                     # while len(self.history) >= self.max_history:
                     #     self.history.popleft()
@@ -546,7 +552,7 @@ class Listener:
                             )
                             raise
                 except asyncio.CancelledError:
-                    print('listener loop cancelled')
+                    print("listener loop cancelled")
                     break
                 except Exception:
                     raise

@@ -201,28 +201,39 @@ class Element:
         return self._tab
 
     def __getattr__(self, item):
+        # if attribute is not found on the element python object
+        # check if it may be present in the element attributes (eg, href=, src=, alt=)
         # returns None when attribute is not found
         # instead of raising AttributeError
         x = getattr(self.attrs, item, None)
         if x:
             return x
-        x = getattr(self.node, item, None)
 
-        return x
+    #     x = getattr(self.node, item, None)
+    #
+    #     return x
 
     def __setattr__(self, key, value):
         if key[0] != "_":
             if key[1:] not in vars(self).keys():
+                # we probably deal with an attribute of
+                # the html element, so forward it
                 self.attrs.__setattr__(key, value)
                 return
+        # we probably deal with an attribute of
+        # the python object
         super().__setattr__(key, value)
 
     def __setitem__(self, key, value):
         if key[0] != "_":
             if key[1:] not in vars(self).keys():
+                # we probably deal with an attribute of
+                # the html element, so forward it
                 self.attrs[key] = value
 
     def __getitem__(self, item):
+        # we probably deal with an attribute of
+        # the html element, so forward it
         return self.attrs.get(item, None)
 
     async def save_to_dom(self):
@@ -233,9 +244,13 @@ class Element:
         await self.update()
 
     async def remove_from_dom(self):
-        if not self.tree:
-            self._tree = await self._tab.send(cdp.dom.get_document(-1, True))
-        self._tree = util.remove_from_tree(self.tree, self.node)
+        await self.update()  # ensure we have latest node_id
+        node = util.filter_recurse(
+            self._tree, lambda node: node.backend_node_id == self.backend_node_id
+        )
+        if node:
+            await self.tab.send(cdp.dom.remove_node(node.node_id))
+        # self._tree = util.remove_from_tree(self.tree, self.node)
 
     async def update(self, _node=None):
         """
@@ -273,11 +288,12 @@ class Element:
             doc, lambda n: n.backend_node_id == self._node.backend_node_id
         )
         if updated_node:
+            logger.debug("node seems changed, and has now been updated.")
             self._node = updated_node
         self._tree = doc
 
         self._remote_object = await self._tab.send(
-            cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
+            cdp.dom.resolve_node(backend_node_id=self._node.backend_node_id)
         )
         self.attrs.clear()
         self._make_attrs()
@@ -427,20 +443,37 @@ class Element:
         return self.apply(f"(e) => e['{js_method}']()")
 
     async def apply(self, js_function, return_by_value=True):
+        """
+        apply javascript to this element. the given js_function string should accept the js element as parameter,
+        and can be a arrow function, or function declaration.
+        eg:
+            - '(elem) => { elem.value = "blabla"; consolelog(elem); alert(JSON.stringify(elem); } '
+            - 'elem => elem.play()'
+            - function myFunction(elem) { alert(elem) }
+
+        :param js_function: the js function definition which received this element.
+        :type js_function: str
+        :param return_by_value:
+        :type return_by_value:
+        :return:
+        :rtype:
+        """
         self._remote_object = await self._tab.send(
             cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
         )
-        result: typing.Tuple[
-            cdp.runtime.RemoteObject, typing.Any
-        ] = await self._tab.send(
-            cdp.runtime.call_function_on(
-                js_function,
-                object_id=self._remote_object.object_id,
-                arguments=[
-                    cdp.runtime.CallArgument(object_id=self._remote_object.object_id)
-                ],
-                return_by_value=True,
-                user_gesture=True,
+        result: typing.Tuple[cdp.runtime.RemoteObject, typing.Any] = (
+            await self._tab.send(
+                cdp.runtime.call_function_on(
+                    js_function,
+                    object_id=self._remote_object.object_id,
+                    arguments=[
+                        cdp.runtime.CallArgument(
+                            object_id=self._remote_object.object_id
+                        )
+                    ],
+                    return_by_value=True,
+                    user_gesture=True,
+                )
             )
         )
         if result and result[0]:
@@ -545,7 +578,7 @@ class Element:
         await self._tab.send(
             cdp.input_.dispatch_mouse_event("mouseMoved", x=center[0], y=center[1])
         )
-        await self._tab.sleep(.05)
+        await self._tab.sleep(0.05)
         await self._tab.send(
             cdp.input_.dispatch_mouse_event("mouseReleased", x=center[0], y=center[1])
         )
@@ -557,7 +590,7 @@ class Element:
                 cdp.dom.scroll_into_view_if_needed(backend_node_id=self.backend_node_id)
             )
         except Exception as e:
-            logger.debug("could not scroll into view: %s" , e)
+            logger.debug("could not scroll into view: %s", e)
             return
 
         # await self.apply("""(el) => el.scrollIntoView(false)""")
@@ -582,9 +615,9 @@ class Element:
             for char in list(text)
         ]
 
-    async def send_file(self, *file_paths: str):
+    async def send_file(self, *file_paths: PathLike):
         """
-        some form input require a file (upload).
+        some form input require a file (upload), a full path needs to be provided.
         this method sends 1 or more file(s) to the input field.
 
         needles to say, but make sure the field accepts multiple files if you want to send more files.
@@ -594,6 +627,7 @@ class Element:
         `await fileinputElement.send_file('c:/temp/image.png', 'c:/users/myuser/lol.gif')`
 
         """
+        file_paths = [str(p) for p in file_paths]
         await self._tab.send(
             cdp.dom.set_file_input_files(
                 files=[*file_paths],
@@ -750,6 +784,7 @@ class Element:
         :rtype:
         """
         from .connection import ProtocolException
+
         if not self.remote_object:
             try:
                 self._remote_object = await self._tab.send(
@@ -915,6 +950,7 @@ class Element:
             return other.backend_node_id == self.backend_node_id
 
         return False
+
     def __repr__(self):
         tag_name = self.node.node_name.lower()
         content = ""
@@ -974,7 +1010,6 @@ class Position(cdp.dom.Quad):
         return cdp.page.Viewport(
             x=self.x, y=self.y, width=self.width, height=self.height, scale=scale
         )
-
 
     def __repr__(self):
         return f"<Position(x={self.left}, y={self.top}, width={self.width}, height={self.height})>"

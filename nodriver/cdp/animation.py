@@ -79,9 +79,11 @@ class Animation:
             start_time=float(json["startTime"]),
             current_time=float(json["currentTime"]),
             type_=str(json["type"]),
-            source=AnimationEffect.from_json(json["source"])
-            if json.get("source", None) is not None
-            else None,
+            source=(
+                AnimationEffect.from_json(json["source"])
+                if json.get("source", None) is not None
+                else None
+            ),
             css_id=str(json["cssId"]) if json.get("cssId", None) is not None else None,
         )
 
@@ -149,12 +151,16 @@ class AnimationEffect:
             direction=str(json["direction"]),
             fill=str(json["fill"]),
             easing=str(json["easing"]),
-            backend_node_id=dom.BackendNodeId.from_json(json["backendNodeId"])
-            if json.get("backendNodeId", None) is not None
-            else None,
-            keyframes_rule=KeyframesRule.from_json(json["keyframesRule"])
-            if json.get("keyframesRule", None) is not None
-            else None,
+            backend_node_id=(
+                dom.BackendNodeId.from_json(json["backendNodeId"])
+                if json.get("backendNodeId", None) is not None
+                else None
+            ),
+            keyframes_rule=(
+                KeyframesRule.from_json(json["keyframesRule"])
+                if json.get("keyframesRule", None) is not None
+                else None
+            ),
         )
 
 

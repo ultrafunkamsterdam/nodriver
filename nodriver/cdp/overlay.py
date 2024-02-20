@@ -158,66 +158,106 @@ class GridHighlightConfig:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> GridHighlightConfig:
         return cls(
-            show_grid_extension_lines=bool(json["showGridExtensionLines"])
-            if json.get("showGridExtensionLines", None) is not None
-            else None,
-            show_positive_line_numbers=bool(json["showPositiveLineNumbers"])
-            if json.get("showPositiveLineNumbers", None) is not None
-            else None,
-            show_negative_line_numbers=bool(json["showNegativeLineNumbers"])
-            if json.get("showNegativeLineNumbers", None) is not None
-            else None,
-            show_area_names=bool(json["showAreaNames"])
-            if json.get("showAreaNames", None) is not None
-            else None,
-            show_line_names=bool(json["showLineNames"])
-            if json.get("showLineNames", None) is not None
-            else None,
-            show_track_sizes=bool(json["showTrackSizes"])
-            if json.get("showTrackSizes", None) is not None
-            else None,
-            grid_border_color=dom.RGBA.from_json(json["gridBorderColor"])
-            if json.get("gridBorderColor", None) is not None
-            else None,
-            cell_border_color=dom.RGBA.from_json(json["cellBorderColor"])
-            if json.get("cellBorderColor", None) is not None
-            else None,
-            row_line_color=dom.RGBA.from_json(json["rowLineColor"])
-            if json.get("rowLineColor", None) is not None
-            else None,
-            column_line_color=dom.RGBA.from_json(json["columnLineColor"])
-            if json.get("columnLineColor", None) is not None
-            else None,
-            grid_border_dash=bool(json["gridBorderDash"])
-            if json.get("gridBorderDash", None) is not None
-            else None,
-            cell_border_dash=bool(json["cellBorderDash"])
-            if json.get("cellBorderDash", None) is not None
-            else None,
-            row_line_dash=bool(json["rowLineDash"])
-            if json.get("rowLineDash", None) is not None
-            else None,
-            column_line_dash=bool(json["columnLineDash"])
-            if json.get("columnLineDash", None) is not None
-            else None,
-            row_gap_color=dom.RGBA.from_json(json["rowGapColor"])
-            if json.get("rowGapColor", None) is not None
-            else None,
-            row_hatch_color=dom.RGBA.from_json(json["rowHatchColor"])
-            if json.get("rowHatchColor", None) is not None
-            else None,
-            column_gap_color=dom.RGBA.from_json(json["columnGapColor"])
-            if json.get("columnGapColor", None) is not None
-            else None,
-            column_hatch_color=dom.RGBA.from_json(json["columnHatchColor"])
-            if json.get("columnHatchColor", None) is not None
-            else None,
-            area_border_color=dom.RGBA.from_json(json["areaBorderColor"])
-            if json.get("areaBorderColor", None) is not None
-            else None,
-            grid_background_color=dom.RGBA.from_json(json["gridBackgroundColor"])
-            if json.get("gridBackgroundColor", None) is not None
-            else None,
+            show_grid_extension_lines=(
+                bool(json["showGridExtensionLines"])
+                if json.get("showGridExtensionLines", None) is not None
+                else None
+            ),
+            show_positive_line_numbers=(
+                bool(json["showPositiveLineNumbers"])
+                if json.get("showPositiveLineNumbers", None) is not None
+                else None
+            ),
+            show_negative_line_numbers=(
+                bool(json["showNegativeLineNumbers"])
+                if json.get("showNegativeLineNumbers", None) is not None
+                else None
+            ),
+            show_area_names=(
+                bool(json["showAreaNames"])
+                if json.get("showAreaNames", None) is not None
+                else None
+            ),
+            show_line_names=(
+                bool(json["showLineNames"])
+                if json.get("showLineNames", None) is not None
+                else None
+            ),
+            show_track_sizes=(
+                bool(json["showTrackSizes"])
+                if json.get("showTrackSizes", None) is not None
+                else None
+            ),
+            grid_border_color=(
+                dom.RGBA.from_json(json["gridBorderColor"])
+                if json.get("gridBorderColor", None) is not None
+                else None
+            ),
+            cell_border_color=(
+                dom.RGBA.from_json(json["cellBorderColor"])
+                if json.get("cellBorderColor", None) is not None
+                else None
+            ),
+            row_line_color=(
+                dom.RGBA.from_json(json["rowLineColor"])
+                if json.get("rowLineColor", None) is not None
+                else None
+            ),
+            column_line_color=(
+                dom.RGBA.from_json(json["columnLineColor"])
+                if json.get("columnLineColor", None) is not None
+                else None
+            ),
+            grid_border_dash=(
+                bool(json["gridBorderDash"])
+                if json.get("gridBorderDash", None) is not None
+                else None
+            ),
+            cell_border_dash=(
+                bool(json["cellBorderDash"])
+                if json.get("cellBorderDash", None) is not None
+                else None
+            ),
+            row_line_dash=(
+                bool(json["rowLineDash"])
+                if json.get("rowLineDash", None) is not None
+                else None
+            ),
+            column_line_dash=(
+                bool(json["columnLineDash"])
+                if json.get("columnLineDash", None) is not None
+                else None
+            ),
+            row_gap_color=(
+                dom.RGBA.from_json(json["rowGapColor"])
+                if json.get("rowGapColor", None) is not None
+                else None
+            ),
+            row_hatch_color=(
+                dom.RGBA.from_json(json["rowHatchColor"])
+                if json.get("rowHatchColor", None) is not None
+                else None
+            ),
+            column_gap_color=(
+                dom.RGBA.from_json(json["columnGapColor"])
+                if json.get("columnGapColor", None) is not None
+                else None
+            ),
+            column_hatch_color=(
+                dom.RGBA.from_json(json["columnHatchColor"])
+                if json.get("columnHatchColor", None) is not None
+                else None
+            ),
+            area_border_color=(
+                dom.RGBA.from_json(json["areaBorderColor"])
+                if json.get("areaBorderColor", None) is not None
+                else None
+            ),
+            grid_background_color=(
+                dom.RGBA.from_json(json["gridBackgroundColor"])
+                if json.get("gridBackgroundColor", None) is not None
+                else None
+            ),
         )
 
 
@@ -274,30 +314,46 @@ class FlexContainerHighlightConfig:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> FlexContainerHighlightConfig:
         return cls(
-            container_border=LineStyle.from_json(json["containerBorder"])
-            if json.get("containerBorder", None) is not None
-            else None,
-            line_separator=LineStyle.from_json(json["lineSeparator"])
-            if json.get("lineSeparator", None) is not None
-            else None,
-            item_separator=LineStyle.from_json(json["itemSeparator"])
-            if json.get("itemSeparator", None) is not None
-            else None,
-            main_distributed_space=BoxStyle.from_json(json["mainDistributedSpace"])
-            if json.get("mainDistributedSpace", None) is not None
-            else None,
-            cross_distributed_space=BoxStyle.from_json(json["crossDistributedSpace"])
-            if json.get("crossDistributedSpace", None) is not None
-            else None,
-            row_gap_space=BoxStyle.from_json(json["rowGapSpace"])
-            if json.get("rowGapSpace", None) is not None
-            else None,
-            column_gap_space=BoxStyle.from_json(json["columnGapSpace"])
-            if json.get("columnGapSpace", None) is not None
-            else None,
-            cross_alignment=LineStyle.from_json(json["crossAlignment"])
-            if json.get("crossAlignment", None) is not None
-            else None,
+            container_border=(
+                LineStyle.from_json(json["containerBorder"])
+                if json.get("containerBorder", None) is not None
+                else None
+            ),
+            line_separator=(
+                LineStyle.from_json(json["lineSeparator"])
+                if json.get("lineSeparator", None) is not None
+                else None
+            ),
+            item_separator=(
+                LineStyle.from_json(json["itemSeparator"])
+                if json.get("itemSeparator", None) is not None
+                else None
+            ),
+            main_distributed_space=(
+                BoxStyle.from_json(json["mainDistributedSpace"])
+                if json.get("mainDistributedSpace", None) is not None
+                else None
+            ),
+            cross_distributed_space=(
+                BoxStyle.from_json(json["crossDistributedSpace"])
+                if json.get("crossDistributedSpace", None) is not None
+                else None
+            ),
+            row_gap_space=(
+                BoxStyle.from_json(json["rowGapSpace"])
+                if json.get("rowGapSpace", None) is not None
+                else None
+            ),
+            column_gap_space=(
+                BoxStyle.from_json(json["columnGapSpace"])
+                if json.get("columnGapSpace", None) is not None
+                else None
+            ),
+            cross_alignment=(
+                LineStyle.from_json(json["crossAlignment"])
+                if json.get("crossAlignment", None) is not None
+                else None
+            ),
         )
 
 
@@ -329,15 +385,21 @@ class FlexItemHighlightConfig:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> FlexItemHighlightConfig:
         return cls(
-            base_size_box=BoxStyle.from_json(json["baseSizeBox"])
-            if json.get("baseSizeBox", None) is not None
-            else None,
-            base_size_border=LineStyle.from_json(json["baseSizeBorder"])
-            if json.get("baseSizeBorder", None) is not None
-            else None,
-            flexibility_arrow=LineStyle.from_json(json["flexibilityArrow"])
-            if json.get("flexibilityArrow", None) is not None
-            else None,
+            base_size_box=(
+                BoxStyle.from_json(json["baseSizeBox"])
+                if json.get("baseSizeBox", None) is not None
+                else None
+            ),
+            base_size_border=(
+                LineStyle.from_json(json["baseSizeBorder"])
+                if json.get("baseSizeBorder", None) is not None
+                else None
+            ),
+            flexibility_arrow=(
+                LineStyle.from_json(json["flexibilityArrow"])
+                if json.get("flexibilityArrow", None) is not None
+                else None
+            ),
         )
 
 
@@ -364,12 +426,14 @@ class LineStyle:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> LineStyle:
         return cls(
-            color=dom.RGBA.from_json(json["color"])
-            if json.get("color", None) is not None
-            else None,
-            pattern=str(json["pattern"])
-            if json.get("pattern", None) is not None
-            else None,
+            color=(
+                dom.RGBA.from_json(json["color"])
+                if json.get("color", None) is not None
+                else None
+            ),
+            pattern=(
+                str(json["pattern"]) if json.get("pattern", None) is not None else None
+            ),
         )
 
 
@@ -396,12 +460,16 @@ class BoxStyle:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> BoxStyle:
         return cls(
-            fill_color=dom.RGBA.from_json(json["fillColor"])
-            if json.get("fillColor", None) is not None
-            else None,
-            hatch_color=dom.RGBA.from_json(json["hatchColor"])
-            if json.get("hatchColor", None) is not None
-            else None,
+            fill_color=(
+                dom.RGBA.from_json(json["fillColor"])
+                if json.get("fillColor", None) is not None
+                else None
+            ),
+            hatch_color=(
+                dom.RGBA.from_json(json["hatchColor"])
+                if json.get("hatchColor", None) is not None
+                else None
+            ),
         )
 
 
@@ -470,9 +538,9 @@ class HighlightConfig:
     grid_highlight_config: typing.Optional[GridHighlightConfig] = None
 
     #: The flex container highlight configuration (default: all transparent).
-    flex_container_highlight_config: typing.Optional[
-        FlexContainerHighlightConfig
-    ] = None
+    flex_container_highlight_config: typing.Optional[FlexContainerHighlightConfig] = (
+        None
+    )
 
     #: The flex item highlight configuration (default: all transparent).
     flex_item_highlight_config: typing.Optional[FlexItemHighlightConfig] = None
@@ -518,87 +586,121 @@ class HighlightConfig:
         if self.grid_highlight_config is not None:
             json["gridHighlightConfig"] = self.grid_highlight_config.to_json()
         if self.flex_container_highlight_config is not None:
-            json[
-                "flexContainerHighlightConfig"
-            ] = self.flex_container_highlight_config.to_json()
+            json["flexContainerHighlightConfig"] = (
+                self.flex_container_highlight_config.to_json()
+            )
         if self.flex_item_highlight_config is not None:
             json["flexItemHighlightConfig"] = self.flex_item_highlight_config.to_json()
         if self.contrast_algorithm is not None:
             json["contrastAlgorithm"] = self.contrast_algorithm.to_json()
         if self.container_query_container_highlight_config is not None:
-            json[
-                "containerQueryContainerHighlightConfig"
-            ] = self.container_query_container_highlight_config.to_json()
+            json["containerQueryContainerHighlightConfig"] = (
+                self.container_query_container_highlight_config.to_json()
+            )
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> HighlightConfig:
         return cls(
-            show_info=bool(json["showInfo"])
-            if json.get("showInfo", None) is not None
-            else None,
-            show_styles=bool(json["showStyles"])
-            if json.get("showStyles", None) is not None
-            else None,
-            show_rulers=bool(json["showRulers"])
-            if json.get("showRulers", None) is not None
-            else None,
-            show_accessibility_info=bool(json["showAccessibilityInfo"])
-            if json.get("showAccessibilityInfo", None) is not None
-            else None,
-            show_extension_lines=bool(json["showExtensionLines"])
-            if json.get("showExtensionLines", None) is not None
-            else None,
-            content_color=dom.RGBA.from_json(json["contentColor"])
-            if json.get("contentColor", None) is not None
-            else None,
-            padding_color=dom.RGBA.from_json(json["paddingColor"])
-            if json.get("paddingColor", None) is not None
-            else None,
-            border_color=dom.RGBA.from_json(json["borderColor"])
-            if json.get("borderColor", None) is not None
-            else None,
-            margin_color=dom.RGBA.from_json(json["marginColor"])
-            if json.get("marginColor", None) is not None
-            else None,
-            event_target_color=dom.RGBA.from_json(json["eventTargetColor"])
-            if json.get("eventTargetColor", None) is not None
-            else None,
-            shape_color=dom.RGBA.from_json(json["shapeColor"])
-            if json.get("shapeColor", None) is not None
-            else None,
-            shape_margin_color=dom.RGBA.from_json(json["shapeMarginColor"])
-            if json.get("shapeMarginColor", None) is not None
-            else None,
-            css_grid_color=dom.RGBA.from_json(json["cssGridColor"])
-            if json.get("cssGridColor", None) is not None
-            else None,
-            color_format=ColorFormat.from_json(json["colorFormat"])
-            if json.get("colorFormat", None) is not None
-            else None,
-            grid_highlight_config=GridHighlightConfig.from_json(
-                json["gridHighlightConfig"]
-            )
-            if json.get("gridHighlightConfig", None) is not None
-            else None,
-            flex_container_highlight_config=FlexContainerHighlightConfig.from_json(
-                json["flexContainerHighlightConfig"]
-            )
-            if json.get("flexContainerHighlightConfig", None) is not None
-            else None,
-            flex_item_highlight_config=FlexItemHighlightConfig.from_json(
-                json["flexItemHighlightConfig"]
-            )
-            if json.get("flexItemHighlightConfig", None) is not None
-            else None,
-            contrast_algorithm=ContrastAlgorithm.from_json(json["contrastAlgorithm"])
-            if json.get("contrastAlgorithm", None) is not None
-            else None,
-            container_query_container_highlight_config=ContainerQueryContainerHighlightConfig.from_json(
-                json["containerQueryContainerHighlightConfig"]
-            )
-            if json.get("containerQueryContainerHighlightConfig", None) is not None
-            else None,
+            show_info=(
+                bool(json["showInfo"])
+                if json.get("showInfo", None) is not None
+                else None
+            ),
+            show_styles=(
+                bool(json["showStyles"])
+                if json.get("showStyles", None) is not None
+                else None
+            ),
+            show_rulers=(
+                bool(json["showRulers"])
+                if json.get("showRulers", None) is not None
+                else None
+            ),
+            show_accessibility_info=(
+                bool(json["showAccessibilityInfo"])
+                if json.get("showAccessibilityInfo", None) is not None
+                else None
+            ),
+            show_extension_lines=(
+                bool(json["showExtensionLines"])
+                if json.get("showExtensionLines", None) is not None
+                else None
+            ),
+            content_color=(
+                dom.RGBA.from_json(json["contentColor"])
+                if json.get("contentColor", None) is not None
+                else None
+            ),
+            padding_color=(
+                dom.RGBA.from_json(json["paddingColor"])
+                if json.get("paddingColor", None) is not None
+                else None
+            ),
+            border_color=(
+                dom.RGBA.from_json(json["borderColor"])
+                if json.get("borderColor", None) is not None
+                else None
+            ),
+            margin_color=(
+                dom.RGBA.from_json(json["marginColor"])
+                if json.get("marginColor", None) is not None
+                else None
+            ),
+            event_target_color=(
+                dom.RGBA.from_json(json["eventTargetColor"])
+                if json.get("eventTargetColor", None) is not None
+                else None
+            ),
+            shape_color=(
+                dom.RGBA.from_json(json["shapeColor"])
+                if json.get("shapeColor", None) is not None
+                else None
+            ),
+            shape_margin_color=(
+                dom.RGBA.from_json(json["shapeMarginColor"])
+                if json.get("shapeMarginColor", None) is not None
+                else None
+            ),
+            css_grid_color=(
+                dom.RGBA.from_json(json["cssGridColor"])
+                if json.get("cssGridColor", None) is not None
+                else None
+            ),
+            color_format=(
+                ColorFormat.from_json(json["colorFormat"])
+                if json.get("colorFormat", None) is not None
+                else None
+            ),
+            grid_highlight_config=(
+                GridHighlightConfig.from_json(json["gridHighlightConfig"])
+                if json.get("gridHighlightConfig", None) is not None
+                else None
+            ),
+            flex_container_highlight_config=(
+                FlexContainerHighlightConfig.from_json(
+                    json["flexContainerHighlightConfig"]
+                )
+                if json.get("flexContainerHighlightConfig", None) is not None
+                else None
+            ),
+            flex_item_highlight_config=(
+                FlexItemHighlightConfig.from_json(json["flexItemHighlightConfig"])
+                if json.get("flexItemHighlightConfig", None) is not None
+                else None
+            ),
+            contrast_algorithm=(
+                ContrastAlgorithm.from_json(json["contrastAlgorithm"])
+                if json.get("contrastAlgorithm", None) is not None
+                else None
+            ),
+            container_query_container_highlight_config=(
+                ContainerQueryContainerHighlightConfig.from_json(
+                    json["containerQueryContainerHighlightConfig"]
+                )
+                if json.get("containerQueryContainerHighlightConfig", None) is not None
+                else None
+            ),
         )
 
 
@@ -654,9 +756,9 @@ class FlexNodeHighlightConfig:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json[
-            "flexContainerHighlightConfig"
-        ] = self.flex_container_highlight_config.to_json()
+        json["flexContainerHighlightConfig"] = (
+            self.flex_container_highlight_config.to_json()
+        )
         json["nodeId"] = self.node_id.to_json()
         return json
 
@@ -699,18 +801,26 @@ class ScrollSnapContainerHighlightConfig:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ScrollSnapContainerHighlightConfig:
         return cls(
-            snapport_border=LineStyle.from_json(json["snapportBorder"])
-            if json.get("snapportBorder", None) is not None
-            else None,
-            snap_area_border=LineStyle.from_json(json["snapAreaBorder"])
-            if json.get("snapAreaBorder", None) is not None
-            else None,
-            scroll_margin_color=dom.RGBA.from_json(json["scrollMarginColor"])
-            if json.get("scrollMarginColor", None) is not None
-            else None,
-            scroll_padding_color=dom.RGBA.from_json(json["scrollPaddingColor"])
-            if json.get("scrollPaddingColor", None) is not None
-            else None,
+            snapport_border=(
+                LineStyle.from_json(json["snapportBorder"])
+                if json.get("snapportBorder", None) is not None
+                else None
+            ),
+            snap_area_border=(
+                LineStyle.from_json(json["snapAreaBorder"])
+                if json.get("snapAreaBorder", None) is not None
+                else None
+            ),
+            scroll_margin_color=(
+                dom.RGBA.from_json(json["scrollMarginColor"])
+                if json.get("scrollMarginColor", None) is not None
+                else None
+            ),
+            scroll_padding_color=(
+                dom.RGBA.from_json(json["scrollPaddingColor"])
+                if json.get("scrollPaddingColor", None) is not None
+                else None
+            ),
         )
 
 
@@ -724,9 +834,9 @@ class ScrollSnapHighlightConfig:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json[
-            "scrollSnapContainerHighlightConfig"
-        ] = self.scroll_snap_container_highlight_config.to_json()
+        json["scrollSnapContainerHighlightConfig"] = (
+            self.scroll_snap_container_highlight_config.to_json()
+        )
         json["nodeId"] = self.node_id.to_json()
         return json
 
@@ -768,12 +878,16 @@ class HingeConfig:
     def from_json(cls, json: T_JSON_DICT) -> HingeConfig:
         return cls(
             rect=dom.Rect.from_json(json["rect"]),
-            content_color=dom.RGBA.from_json(json["contentColor"])
-            if json.get("contentColor", None) is not None
-            else None,
-            outline_color=dom.RGBA.from_json(json["outlineColor"])
-            if json.get("outlineColor", None) is not None
-            else None,
+            content_color=(
+                dom.RGBA.from_json(json["contentColor"])
+                if json.get("contentColor", None) is not None
+                else None
+            ),
+            outline_color=(
+                dom.RGBA.from_json(json["outlineColor"])
+                if json.get("outlineColor", None) is not None
+                else None
+            ),
         )
 
 
@@ -818,9 +932,9 @@ class ContainerQueryHighlightConfig:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json[
-            "containerQueryContainerHighlightConfig"
-        ] = self.container_query_container_highlight_config.to_json()
+        json["containerQueryContainerHighlightConfig"] = (
+            self.container_query_container_highlight_config.to_json()
+        )
         json["nodeId"] = self.node_id.to_json()
         return json
 
@@ -853,12 +967,16 @@ class ContainerQueryContainerHighlightConfig:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ContainerQueryContainerHighlightConfig:
         return cls(
-            container_border=LineStyle.from_json(json["containerBorder"])
-            if json.get("containerBorder", None) is not None
-            else None,
-            descendant_border=LineStyle.from_json(json["descendantBorder"])
-            if json.get("descendantBorder", None) is not None
-            else None,
+            container_border=(
+                LineStyle.from_json(json["containerBorder"])
+                if json.get("containerBorder", None) is not None
+                else None
+            ),
+            descendant_border=(
+                LineStyle.from_json(json["descendantBorder"])
+                if json.get("descendantBorder", None) is not None
+                else None
+            ),
         )
 
 
@@ -872,9 +990,9 @@ class IsolatedElementHighlightConfig:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json[
-            "isolationModeHighlightConfig"
-        ] = self.isolation_mode_highlight_config.to_json()
+        json["isolationModeHighlightConfig"] = (
+            self.isolation_mode_highlight_config.to_json()
+        )
         json["nodeId"] = self.node_id.to_json()
         return json
 
@@ -912,15 +1030,21 @@ class IsolationModeHighlightConfig:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> IsolationModeHighlightConfig:
         return cls(
-            resizer_color=dom.RGBA.from_json(json["resizerColor"])
-            if json.get("resizerColor", None) is not None
-            else None,
-            resizer_handle_color=dom.RGBA.from_json(json["resizerHandleColor"])
-            if json.get("resizerHandleColor", None) is not None
-            else None,
-            mask_color=dom.RGBA.from_json(json["maskColor"])
-            if json.get("maskColor", None) is not None
-            else None,
+            resizer_color=(
+                dom.RGBA.from_json(json["resizerColor"])
+                if json.get("resizerColor", None) is not None
+                else None
+            ),
+            resizer_handle_color=(
+                dom.RGBA.from_json(json["resizerHandleColor"])
+                if json.get("resizerHandleColor", None) is not None
+                else None
+            ),
+            mask_color=(
+                dom.RGBA.from_json(json["maskColor"])
+                if json.get("maskColor", None) is not None
+                else None
+            ),
         )
 
 

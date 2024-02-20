@@ -22,6 +22,7 @@ is_posix = sys.platform.startswith(("darwin", "cygwin", "linux", "linux2"))
 PathLike = Union[str, pathlib.Path]
 AUTO = None
 
+
 class Config(ContraDict):
     """ """
 
@@ -126,8 +127,6 @@ class Config(ContraDict):
         # args += ["--disable-ipc-flooding-protection"]
         args += ["--disable-session-crashed-bubble"]
 
-
-
         if self.browser_args:
             args.extend([arg for arg in self.browser_args if arg not in args])
             # args.extend(self.browser_args)
@@ -164,7 +163,6 @@ class Config(ContraDict):
         d.pop("browser_args")
         d["browser_args"] = self()
         return ContraDict.__repr__(d)
-
 
 
 def is_root():

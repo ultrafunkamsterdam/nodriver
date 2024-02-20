@@ -1,65 +1,73 @@
 from nodriver import *
+from pathlib import Path
 
 # interesting, this is a typical site which runs completely on javascript, and that causes
-# this script to be faster than the js can present the elements, so we have to build in quite some
-# sleep/pauses
+# this script to be faster than the js can present the elements. This may be one of the downsides
+# of this fast beast. You have to carefully consider timing.
+
+DELAY = 2
 
 
 async def main():
-    browser = await start()
 
+    browser = await start()
     tab = await browser.get("https://imgur.com")
-    x = await tab.wait_for(selector="body")
+
+    # now we first need an image to upload, lets make a screenshot of the project page
+    save_path = Path('screenshot.jpg').resolve()
+    # create new tab with the project page
+    temp_tab = await browser.get('https://github.com/ultrafunkamsterdam/undetected-chromedriver', new_tab=True)
+
+    # wait page to load
+    await temp_tab
+    # save the screenshot to the previously declared path of screenshot.jpg (which is just current directory)
+    await temp_tab.save_screenshot(save_path)
+    # done, discard the temp_tab
+    await temp_tab.close()
 
     # accept goddamn cookies
-    # they have too many text having words like 'consent' so find by text takes
-    # very long, so alternatively, fetch all buttons, and match text.
-
-    buttons = await tab.query_selector_all("button")
-
-    # # ensure it's done
-    # await tab.wait_for(selector='button')
-
-    # the second last button is our target
-    await buttons[-2].click()
+    # the best_match flag will filter the best match from
+    # matching elements containing "consent" and takes the
+    # one having most similar text length
+    consent = await tab.find('Consent', best_match=True)
+    await consent.click()
 
     # shortcut
-    await (await tab(text="new post")).click()
+    await (await tab.find("new post", best_match=True)).click()
 
-    # await tab.listener.busy.wait()
-
-    file_input = await tab(selector="input[type=file]")
-
-    # while not file_input:
-    #     await tab.sleep(1)
-    #     file_input = await tab.query_selector('input[type=file]')
-
+    file_input = await tab.select("input[type=file]")
     await file_input.send_file(
-        "c://users/leon/Downloads/(m=eafTGgaaaa)(mh=_hxkIK3ynk-Y5sXw)16 (1).jpg",
-        "c://users/leon/downloads/(m=eafTGgaaaa)(mh=kNSEJA02jkztvUH9)2.jpg",
+        save_path
     )
     # since file upload takes a while , the next buttons are not available yet
-    await tab.sleep(3)
 
-    title_field = await tab(text="unique title")
+    await tab.wait(DELAY)
+
+    # wait until the grab link becomes clickable, by waiting for the toast message
+    await tab.select('.Toast-message--check')
+
+    # this one is tricky. we are trying to find a element by text content
+    # usually. the text node itself is not needed, but it's enclosing element.
+    # in this case however, the text is NOT a text node, but an "placeholder" attribute of a span element.
+    # so for this one, we use the flag return_enclosing_element and set it to False
+    title_field = await tab.find("give your post a unique title", best_match=True, ret)
+    print(title_field)
     await title_field.send_keys("undetected nodriver")
 
-    await tab.sleep(1)
-
-    grab_link = await tab(text="grab link")
+    grab_link = await tab.find("grab link", best_match=True)
     await grab_link.click()
 
-    # now they have the annoying input-like field where your link is
-    # i could not find inputs and other obvious element types so i did it differently,
-    # by taking a nearby element and walking up some parents
-    here_is_your_link = await tab.find_element_by_text("here's your link")
+    # there is a delay for the link sharing popup.
+    # let's pause for a sec
+    await tab.wait(DELAY)
 
-    # walk 2 parent up the tree, and perform a query_selector there.
-    input_thing = await here_is_your_link.parent.parent.query_selector("input")
+    # get inputs of which the value starts with http
+    input_thing = await tab.select('input[value^=https]')
+
     my_link = input_thing.attrs.value
 
     print(my_link)
-    await tab.sleep(5)
+    await tab
 
 
 if __name__ == "__main__":

@@ -99,12 +99,14 @@ class Bounds:
             left=int(json["left"]) if json.get("left", None) is not None else None,
             top=int(json["top"]) if json.get("top", None) is not None else None,
             width=int(json["width"]) if json.get("width", None) is not None else None,
-            height=int(json["height"])
-            if json.get("height", None) is not None
-            else None,
-            window_state=WindowState.from_json(json["windowState"])
-            if json.get("windowState", None) is not None
-            else None,
+            height=(
+                int(json["height"]) if json.get("height", None) is not None else None
+            ),
+            window_state=(
+                WindowState.from_json(json["windowState"])
+                if json.get("windowState", None) is not None
+                else None
+            ),
         )
 
 
@@ -201,15 +203,21 @@ class PermissionDescriptor:
         return cls(
             name=str(json["name"]),
             sysex=bool(json["sysex"]) if json.get("sysex", None) is not None else None,
-            user_visible_only=bool(json["userVisibleOnly"])
-            if json.get("userVisibleOnly", None) is not None
-            else None,
-            allow_without_sanitization=bool(json["allowWithoutSanitization"])
-            if json.get("allowWithoutSanitization", None) is not None
-            else None,
-            pan_tilt_zoom=bool(json["panTiltZoom"])
-            if json.get("panTiltZoom", None) is not None
-            else None,
+            user_visible_only=(
+                bool(json["userVisibleOnly"])
+                if json.get("userVisibleOnly", None) is not None
+                else None
+            ),
+            allow_without_sanitization=(
+                bool(json["allowWithoutSanitization"])
+                if json.get("allowWithoutSanitization", None) is not None
+                else None
+            ),
+            pan_tilt_zoom=(
+                bool(json["panTiltZoom"])
+                if json.get("panTiltZoom", None) is not None
+                else None
+            ),
         )
 
 

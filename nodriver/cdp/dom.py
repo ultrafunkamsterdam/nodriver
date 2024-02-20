@@ -360,77 +360,117 @@ class Node:
             node_name=str(json["nodeName"]),
             local_name=str(json["localName"]),
             node_value=str(json["nodeValue"]),
-            parent_id=NodeId.from_json(json["parentId"])
-            if json.get("parentId", None) is not None
-            else None,
-            child_node_count=int(json["childNodeCount"])
-            if json.get("childNodeCount", None) is not None
-            else None,
-            children=[Node.from_json(i) for i in json["children"]]
-            if json.get("children", None) is not None
-            else None,
-            attributes=[str(i) for i in json["attributes"]]
-            if json.get("attributes", None) is not None
-            else None,
-            document_url=str(json["documentURL"])
-            if json.get("documentURL", None) is not None
-            else None,
-            base_url=str(json["baseURL"])
-            if json.get("baseURL", None) is not None
-            else None,
-            public_id=str(json["publicId"])
-            if json.get("publicId", None) is not None
-            else None,
-            system_id=str(json["systemId"])
-            if json.get("systemId", None) is not None
-            else None,
-            internal_subset=str(json["internalSubset"])
-            if json.get("internalSubset", None) is not None
-            else None,
-            xml_version=str(json["xmlVersion"])
-            if json.get("xmlVersion", None) is not None
-            else None,
+            parent_id=(
+                NodeId.from_json(json["parentId"])
+                if json.get("parentId", None) is not None
+                else None
+            ),
+            child_node_count=(
+                int(json["childNodeCount"])
+                if json.get("childNodeCount", None) is not None
+                else None
+            ),
+            children=(
+                [Node.from_json(i) for i in json["children"]]
+                if json.get("children", None) is not None
+                else None
+            ),
+            attributes=(
+                [str(i) for i in json["attributes"]]
+                if json.get("attributes", None) is not None
+                else None
+            ),
+            document_url=(
+                str(json["documentURL"])
+                if json.get("documentURL", None) is not None
+                else None
+            ),
+            base_url=(
+                str(json["baseURL"]) if json.get("baseURL", None) is not None else None
+            ),
+            public_id=(
+                str(json["publicId"])
+                if json.get("publicId", None) is not None
+                else None
+            ),
+            system_id=(
+                str(json["systemId"])
+                if json.get("systemId", None) is not None
+                else None
+            ),
+            internal_subset=(
+                str(json["internalSubset"])
+                if json.get("internalSubset", None) is not None
+                else None
+            ),
+            xml_version=(
+                str(json["xmlVersion"])
+                if json.get("xmlVersion", None) is not None
+                else None
+            ),
             name=str(json["name"]) if json.get("name", None) is not None else None,
             value=str(json["value"]) if json.get("value", None) is not None else None,
-            pseudo_type=PseudoType.from_json(json["pseudoType"])
-            if json.get("pseudoType", None) is not None
-            else None,
-            pseudo_identifier=str(json["pseudoIdentifier"])
-            if json.get("pseudoIdentifier", None) is not None
-            else None,
-            shadow_root_type=ShadowRootType.from_json(json["shadowRootType"])
-            if json.get("shadowRootType", None) is not None
-            else None,
-            frame_id=page.FrameId.from_json(json["frameId"])
-            if json.get("frameId", None) is not None
-            else None,
-            content_document=Node.from_json(json["contentDocument"])
-            if json.get("contentDocument", None) is not None
-            else None,
-            shadow_roots=[Node.from_json(i) for i in json["shadowRoots"]]
-            if json.get("shadowRoots", None) is not None
-            else None,
-            template_content=Node.from_json(json["templateContent"])
-            if json.get("templateContent", None) is not None
-            else None,
-            pseudo_elements=[Node.from_json(i) for i in json["pseudoElements"]]
-            if json.get("pseudoElements", None) is not None
-            else None,
-            imported_document=Node.from_json(json["importedDocument"])
-            if json.get("importedDocument", None) is not None
-            else None,
-            distributed_nodes=[
-                BackendNode.from_json(i) for i in json["distributedNodes"]
-            ]
-            if json.get("distributedNodes", None) is not None
-            else None,
+            pseudo_type=(
+                PseudoType.from_json(json["pseudoType"])
+                if json.get("pseudoType", None) is not None
+                else None
+            ),
+            pseudo_identifier=(
+                str(json["pseudoIdentifier"])
+                if json.get("pseudoIdentifier", None) is not None
+                else None
+            ),
+            shadow_root_type=(
+                ShadowRootType.from_json(json["shadowRootType"])
+                if json.get("shadowRootType", None) is not None
+                else None
+            ),
+            frame_id=(
+                page.FrameId.from_json(json["frameId"])
+                if json.get("frameId", None) is not None
+                else None
+            ),
+            content_document=(
+                Node.from_json(json["contentDocument"])
+                if json.get("contentDocument", None) is not None
+                else None
+            ),
+            shadow_roots=(
+                [Node.from_json(i) for i in json["shadowRoots"]]
+                if json.get("shadowRoots", None) is not None
+                else None
+            ),
+            template_content=(
+                Node.from_json(json["templateContent"])
+                if json.get("templateContent", None) is not None
+                else None
+            ),
+            pseudo_elements=(
+                [Node.from_json(i) for i in json["pseudoElements"]]
+                if json.get("pseudoElements", None) is not None
+                else None
+            ),
+            imported_document=(
+                Node.from_json(json["importedDocument"])
+                if json.get("importedDocument", None) is not None
+                else None
+            ),
+            distributed_nodes=(
+                [BackendNode.from_json(i) for i in json["distributedNodes"]]
+                if json.get("distributedNodes", None) is not None
+                else None
+            ),
             is_svg=bool(json["isSVG"]) if json.get("isSVG", None) is not None else None,
-            compatibility_mode=CompatibilityMode.from_json(json["compatibilityMode"])
-            if json.get("compatibilityMode", None) is not None
-            else None,
-            assigned_slot=BackendNode.from_json(json["assignedSlot"])
-            if json.get("assignedSlot", None) is not None
-            else None,
+            compatibility_mode=(
+                CompatibilityMode.from_json(json["compatibilityMode"])
+                if json.get("compatibilityMode", None) is not None
+                else None
+            ),
+            assigned_slot=(
+                BackendNode.from_json(json["assignedSlot"])
+                if json.get("assignedSlot", None) is not None
+                else None
+            ),
         )
 
 
@@ -535,9 +575,11 @@ class BoxModel:
             margin=Quad.from_json(json["margin"]),
             width=int(json["width"]),
             height=int(json["height"]),
-            shape_outside=ShapeOutsideInfo.from_json(json["shapeOutside"])
-            if json.get("shapeOutside", None) is not None
-            else None,
+            shape_outside=(
+                ShapeOutsideInfo.from_json(json["shapeOutside"])
+                if json.get("shapeOutside", None) is not None
+                else None
+            ),
         )
 
 
@@ -1020,9 +1062,11 @@ def get_node_for_location(
     return (
         BackendNodeId.from_json(json["backendNodeId"]),
         page.FrameId.from_json(json["frameId"]),
-        NodeId.from_json(json["nodeId"])
-        if json.get("nodeId", None) is not None
-        else None,
+        (
+            NodeId.from_json(json["nodeId"])
+            if json.get("nodeId", None) is not None
+            else None
+        ),
     )
 
 
@@ -1681,9 +1725,11 @@ def get_frame_owner(
     json = yield cmd_dict
     return (
         BackendNodeId.from_json(json["backendNodeId"]),
-        NodeId.from_json(json["nodeId"])
-        if json.get("nodeId", None) is not None
-        else None,
+        (
+            NodeId.from_json(json["nodeId"])
+            if json.get("nodeId", None) is not None
+            else None
+        ),
     )
 
 

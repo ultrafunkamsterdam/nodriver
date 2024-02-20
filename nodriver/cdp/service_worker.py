@@ -143,23 +143,31 @@ class ServiceWorkerVersion:
                 json["runningStatus"]
             ),
             status=ServiceWorkerVersionStatus.from_json(json["status"]),
-            script_last_modified=float(json["scriptLastModified"])
-            if json.get("scriptLastModified", None) is not None
-            else None,
-            script_response_time=float(json["scriptResponseTime"])
-            if json.get("scriptResponseTime", None) is not None
-            else None,
-            controlled_clients=[
-                target.TargetID.from_json(i) for i in json["controlledClients"]
-            ]
-            if json.get("controlledClients", None) is not None
-            else None,
-            target_id=target.TargetID.from_json(json["targetId"])
-            if json.get("targetId", None) is not None
-            else None,
-            router_rules=str(json["routerRules"])
-            if json.get("routerRules", None) is not None
-            else None,
+            script_last_modified=(
+                float(json["scriptLastModified"])
+                if json.get("scriptLastModified", None) is not None
+                else None
+            ),
+            script_response_time=(
+                float(json["scriptResponseTime"])
+                if json.get("scriptResponseTime", None) is not None
+                else None
+            ),
+            controlled_clients=(
+                [target.TargetID.from_json(i) for i in json["controlledClients"]]
+                if json.get("controlledClients", None) is not None
+                else None
+            ),
+            target_id=(
+                target.TargetID.from_json(json["targetId"])
+                if json.get("targetId", None) is not None
+                else None
+            ),
+            router_rules=(
+                str(json["routerRules"])
+                if json.get("routerRules", None) is not None
+                else None
+            ),
         )
 
 

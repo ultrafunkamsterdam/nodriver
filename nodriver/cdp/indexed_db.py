@@ -157,16 +157,18 @@ class Key:
     def from_json(cls, json: T_JSON_DICT) -> Key:
         return cls(
             type_=str(json["type"]),
-            number=float(json["number"])
-            if json.get("number", None) is not None
-            else None,
-            string=str(json["string"])
-            if json.get("string", None) is not None
-            else None,
+            number=(
+                float(json["number"]) if json.get("number", None) is not None else None
+            ),
+            string=(
+                str(json["string"]) if json.get("string", None) is not None else None
+            ),
             date=float(json["date"]) if json.get("date", None) is not None else None,
-            array=[Key.from_json(i) for i in json["array"]]
-            if json.get("array", None) is not None
-            else None,
+            array=(
+                [Key.from_json(i) for i in json["array"]]
+                if json.get("array", None) is not None
+                else None
+            ),
         )
 
 
@@ -203,12 +205,16 @@ class KeyRange:
         return cls(
             lower_open=bool(json["lowerOpen"]),
             upper_open=bool(json["upperOpen"]),
-            lower=Key.from_json(json["lower"])
-            if json.get("lower", None) is not None
-            else None,
-            upper=Key.from_json(json["upper"])
-            if json.get("upper", None) is not None
-            else None,
+            lower=(
+                Key.from_json(json["lower"])
+                if json.get("lower", None) is not None
+                else None
+            ),
+            upper=(
+                Key.from_json(json["upper"])
+                if json.get("upper", None) is not None
+                else None
+            ),
         )
 
 
@@ -271,12 +277,14 @@ class KeyPath:
     def from_json(cls, json: T_JSON_DICT) -> KeyPath:
         return cls(
             type_=str(json["type"]),
-            string=str(json["string"])
-            if json.get("string", None) is not None
-            else None,
-            array=[str(i) for i in json["array"]]
-            if json.get("array", None) is not None
-            else None,
+            string=(
+                str(json["string"]) if json.get("string", None) is not None else None
+            ),
+            array=(
+                [str(i) for i in json["array"]]
+                if json.get("array", None) is not None
+                else None
+            ),
         )
 
 

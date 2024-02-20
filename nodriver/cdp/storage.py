@@ -152,9 +152,11 @@ class InterestGroupAd:
     def from_json(cls, json: T_JSON_DICT) -> InterestGroupAd:
         return cls(
             render_url=str(json["renderURL"]),
-            metadata=str(json["metadata"])
-            if json.get("metadata", None) is not None
-            else None,
+            metadata=(
+                str(json["metadata"])
+                if json.get("metadata", None) is not None
+                else None
+            ),
         )
 
 
@@ -223,21 +225,31 @@ class InterestGroupDetails:
             ],
             ads=[InterestGroupAd.from_json(i) for i in json["ads"]],
             ad_components=[InterestGroupAd.from_json(i) for i in json["adComponents"]],
-            bidding_logic_url=str(json["biddingLogicURL"])
-            if json.get("biddingLogicURL", None) is not None
-            else None,
-            bidding_wasm_helper_url=str(json["biddingWasmHelperURL"])
-            if json.get("biddingWasmHelperURL", None) is not None
-            else None,
-            update_url=str(json["updateURL"])
-            if json.get("updateURL", None) is not None
-            else None,
-            trusted_bidding_signals_url=str(json["trustedBiddingSignalsURL"])
-            if json.get("trustedBiddingSignalsURL", None) is not None
-            else None,
-            user_bidding_signals=str(json["userBiddingSignals"])
-            if json.get("userBiddingSignals", None) is not None
-            else None,
+            bidding_logic_url=(
+                str(json["biddingLogicURL"])
+                if json.get("biddingLogicURL", None) is not None
+                else None
+            ),
+            bidding_wasm_helper_url=(
+                str(json["biddingWasmHelperURL"])
+                if json.get("biddingWasmHelperURL", None) is not None
+                else None
+            ),
+            update_url=(
+                str(json["updateURL"])
+                if json.get("updateURL", None) is not None
+                else None
+            ),
+            trusted_bidding_signals_url=(
+                str(json["trustedBiddingSignalsURL"])
+                if json.get("trustedBiddingSignalsURL", None) is not None
+                else None
+            ),
+            user_bidding_signals=(
+                str(json["userBiddingSignals"])
+                if json.get("userBiddingSignals", None) is not None
+                else None
+            ),
         )
 
 
@@ -399,9 +411,9 @@ class SharedStorageAccessParams:
 
     #: Array of candidate URLs' specs, along with any associated metadata.
     #: Present only for SharedStorageAccessType.documentSelectURL.
-    urls_with_metadata: typing.Optional[
-        typing.List[SharedStorageUrlWithMetadata]
-    ] = None
+    urls_with_metadata: typing.Optional[typing.List[SharedStorageUrlWithMetadata]] = (
+        None
+    )
 
     #: Key for a specific entry in an origin's shared storage.
     #: Present only for SharedStorageAccessType.documentSet,
@@ -446,26 +458,36 @@ class SharedStorageAccessParams:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> SharedStorageAccessParams:
         return cls(
-            script_source_url=str(json["scriptSourceUrl"])
-            if json.get("scriptSourceUrl", None) is not None
-            else None,
-            operation_name=str(json["operationName"])
-            if json.get("operationName", None) is not None
-            else None,
-            serialized_data=str(json["serializedData"])
-            if json.get("serializedData", None) is not None
-            else None,
-            urls_with_metadata=[
-                SharedStorageUrlWithMetadata.from_json(i)
-                for i in json["urlsWithMetadata"]
-            ]
-            if json.get("urlsWithMetadata", None) is not None
-            else None,
+            script_source_url=(
+                str(json["scriptSourceUrl"])
+                if json.get("scriptSourceUrl", None) is not None
+                else None
+            ),
+            operation_name=(
+                str(json["operationName"])
+                if json.get("operationName", None) is not None
+                else None
+            ),
+            serialized_data=(
+                str(json["serializedData"])
+                if json.get("serializedData", None) is not None
+                else None
+            ),
+            urls_with_metadata=(
+                [
+                    SharedStorageUrlWithMetadata.from_json(i)
+                    for i in json["urlsWithMetadata"]
+                ]
+                if json.get("urlsWithMetadata", None) is not None
+                else None
+            ),
             key=str(json["key"]) if json.get("key", None) is not None else None,
             value=str(json["value"]) if json.get("value", None) is not None else None,
-            ignore_if_present=bool(json["ignoreIfPresent"])
-            if json.get("ignoreIfPresent", None) is not None
-            else None,
+            ignore_if_present=(
+                bool(json["ignoreIfPresent"])
+                if json.get("ignoreIfPresent", None) is not None
+                else None
+            ),
         )
 
 
@@ -629,9 +651,11 @@ class AttributionReportingFilterConfig:
                 AttributionReportingFilterDataEntry.from_json(i)
                 for i in json["filterValues"]
             ],
-            lookback_window=int(json["lookbackWindow"])
-            if json.get("lookbackWindow", None) is not None
-            else None,
+            lookback_window=(
+                int(json["lookbackWindow"])
+                if json.get("lookbackWindow", None) is not None
+                else None
+            ),
         )
 
 
@@ -816,9 +840,11 @@ class AttributionReportingSourceRegistration:
             trigger_data_matching=AttributionReportingTriggerDataMatching.from_json(
                 json["triggerDataMatching"]
             ),
-            debug_key=UnsignedInt64AsBase10.from_json(json["debugKey"])
-            if json.get("debugKey", None) is not None
-            else None,
+            debug_key=(
+                UnsignedInt64AsBase10.from_json(json["debugKey"])
+                if json.get("debugKey", None) is not None
+                else None
+            ),
         )
 
 
@@ -903,9 +929,11 @@ class AttributionReportingEventTriggerData:
             data=UnsignedInt64AsBase10.from_json(json["data"]),
             priority=SignedInt64AsBase10.from_json(json["priority"]),
             filters=AttributionReportingFilterPair.from_json(json["filters"]),
-            dedup_key=UnsignedInt64AsBase10.from_json(json["dedupKey"])
-            if json.get("dedupKey", None) is not None
-            else None,
+            dedup_key=(
+                UnsignedInt64AsBase10.from_json(json["dedupKey"])
+                if json.get("dedupKey", None) is not None
+                else None
+            ),
         )
 
 
@@ -952,9 +980,11 @@ class AttributionReportingAggregatableDedupKey:
     def from_json(cls, json: T_JSON_DICT) -> AttributionReportingAggregatableDedupKey:
         return cls(
             filters=AttributionReportingFilterPair.from_json(json["filters"]),
-            dedup_key=UnsignedInt64AsBase10.from_json(json["dedupKey"])
-            if json.get("dedupKey", None) is not None
-            else None,
+            dedup_key=(
+                UnsignedInt64AsBase10.from_json(json["dedupKey"])
+                if json.get("dedupKey", None) is not None
+                else None
+            ),
         )
 
 
@@ -992,9 +1022,9 @@ class AttributionReportingTriggerRegistration:
         ]
         json["aggregatableValues"] = [i.to_json() for i in self.aggregatable_values]
         json["debugReporting"] = self.debug_reporting
-        json[
-            "sourceRegistrationTimeConfig"
-        ] = self.source_registration_time_config.to_json()
+        json["sourceRegistrationTimeConfig"] = (
+            self.source_registration_time_config.to_json()
+        )
         if self.debug_key is not None:
             json["debugKey"] = self.debug_key.to_json()
         if self.aggregation_coordinator_origin is not None:
@@ -1027,15 +1057,21 @@ class AttributionReportingTriggerRegistration:
             source_registration_time_config=AttributionReportingSourceRegistrationTimeConfig.from_json(
                 json["sourceRegistrationTimeConfig"]
             ),
-            debug_key=UnsignedInt64AsBase10.from_json(json["debugKey"])
-            if json.get("debugKey", None) is not None
-            else None,
-            aggregation_coordinator_origin=str(json["aggregationCoordinatorOrigin"])
-            if json.get("aggregationCoordinatorOrigin", None) is not None
-            else None,
-            trigger_context_id=str(json["triggerContextId"])
-            if json.get("triggerContextId", None) is not None
-            else None,
+            debug_key=(
+                UnsignedInt64AsBase10.from_json(json["debugKey"])
+                if json.get("debugKey", None) is not None
+                else None
+            ),
+            aggregation_coordinator_origin=(
+                str(json["aggregationCoordinatorOrigin"])
+                if json.get("aggregationCoordinatorOrigin", None) is not None
+                else None
+            ),
+            trigger_context_id=(
+                str(json["triggerContextId"])
+                if json.get("triggerContextId", None) is not None
+                else None
+            ),
         )
 
 

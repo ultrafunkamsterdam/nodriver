@@ -176,80 +176,127 @@ class DOMNode:
             node_name=str(json["nodeName"]),
             node_value=str(json["nodeValue"]),
             backend_node_id=dom.BackendNodeId.from_json(json["backendNodeId"]),
-            text_value=str(json["textValue"])
-            if json.get("textValue", None) is not None
-            else None,
-            input_value=str(json["inputValue"])
-            if json.get("inputValue", None) is not None
-            else None,
-            input_checked=bool(json["inputChecked"])
-            if json.get("inputChecked", None) is not None
-            else None,
-            option_selected=bool(json["optionSelected"])
-            if json.get("optionSelected", None) is not None
-            else None,
-            child_node_indexes=[int(i) for i in json["childNodeIndexes"]]
-            if json.get("childNodeIndexes", None) is not None
-            else None,
-            attributes=[NameValue.from_json(i) for i in json["attributes"]]
-            if json.get("attributes", None) is not None
-            else None,
-            pseudo_element_indexes=[int(i) for i in json["pseudoElementIndexes"]]
-            if json.get("pseudoElementIndexes", None) is not None
-            else None,
-            layout_node_index=int(json["layoutNodeIndex"])
-            if json.get("layoutNodeIndex", None) is not None
-            else None,
-            document_url=str(json["documentURL"])
-            if json.get("documentURL", None) is not None
-            else None,
-            base_url=str(json["baseURL"])
-            if json.get("baseURL", None) is not None
-            else None,
-            content_language=str(json["contentLanguage"])
-            if json.get("contentLanguage", None) is not None
-            else None,
-            document_encoding=str(json["documentEncoding"])
-            if json.get("documentEncoding", None) is not None
-            else None,
-            public_id=str(json["publicId"])
-            if json.get("publicId", None) is not None
-            else None,
-            system_id=str(json["systemId"])
-            if json.get("systemId", None) is not None
-            else None,
-            frame_id=page.FrameId.from_json(json["frameId"])
-            if json.get("frameId", None) is not None
-            else None,
-            content_document_index=int(json["contentDocumentIndex"])
-            if json.get("contentDocumentIndex", None) is not None
-            else None,
-            pseudo_type=dom.PseudoType.from_json(json["pseudoType"])
-            if json.get("pseudoType", None) is not None
-            else None,
-            shadow_root_type=dom.ShadowRootType.from_json(json["shadowRootType"])
-            if json.get("shadowRootType", None) is not None
-            else None,
-            is_clickable=bool(json["isClickable"])
-            if json.get("isClickable", None) is not None
-            else None,
-            event_listeners=[
-                dom_debugger.EventListener.from_json(i) for i in json["eventListeners"]
-            ]
-            if json.get("eventListeners", None) is not None
-            else None,
-            current_source_url=str(json["currentSourceURL"])
-            if json.get("currentSourceURL", None) is not None
-            else None,
-            origin_url=str(json["originURL"])
-            if json.get("originURL", None) is not None
-            else None,
-            scroll_offset_x=float(json["scrollOffsetX"])
-            if json.get("scrollOffsetX", None) is not None
-            else None,
-            scroll_offset_y=float(json["scrollOffsetY"])
-            if json.get("scrollOffsetY", None) is not None
-            else None,
+            text_value=(
+                str(json["textValue"])
+                if json.get("textValue", None) is not None
+                else None
+            ),
+            input_value=(
+                str(json["inputValue"])
+                if json.get("inputValue", None) is not None
+                else None
+            ),
+            input_checked=(
+                bool(json["inputChecked"])
+                if json.get("inputChecked", None) is not None
+                else None
+            ),
+            option_selected=(
+                bool(json["optionSelected"])
+                if json.get("optionSelected", None) is not None
+                else None
+            ),
+            child_node_indexes=(
+                [int(i) for i in json["childNodeIndexes"]]
+                if json.get("childNodeIndexes", None) is not None
+                else None
+            ),
+            attributes=(
+                [NameValue.from_json(i) for i in json["attributes"]]
+                if json.get("attributes", None) is not None
+                else None
+            ),
+            pseudo_element_indexes=(
+                [int(i) for i in json["pseudoElementIndexes"]]
+                if json.get("pseudoElementIndexes", None) is not None
+                else None
+            ),
+            layout_node_index=(
+                int(json["layoutNodeIndex"])
+                if json.get("layoutNodeIndex", None) is not None
+                else None
+            ),
+            document_url=(
+                str(json["documentURL"])
+                if json.get("documentURL", None) is not None
+                else None
+            ),
+            base_url=(
+                str(json["baseURL"]) if json.get("baseURL", None) is not None else None
+            ),
+            content_language=(
+                str(json["contentLanguage"])
+                if json.get("contentLanguage", None) is not None
+                else None
+            ),
+            document_encoding=(
+                str(json["documentEncoding"])
+                if json.get("documentEncoding", None) is not None
+                else None
+            ),
+            public_id=(
+                str(json["publicId"])
+                if json.get("publicId", None) is not None
+                else None
+            ),
+            system_id=(
+                str(json["systemId"])
+                if json.get("systemId", None) is not None
+                else None
+            ),
+            frame_id=(
+                page.FrameId.from_json(json["frameId"])
+                if json.get("frameId", None) is not None
+                else None
+            ),
+            content_document_index=(
+                int(json["contentDocumentIndex"])
+                if json.get("contentDocumentIndex", None) is not None
+                else None
+            ),
+            pseudo_type=(
+                dom.PseudoType.from_json(json["pseudoType"])
+                if json.get("pseudoType", None) is not None
+                else None
+            ),
+            shadow_root_type=(
+                dom.ShadowRootType.from_json(json["shadowRootType"])
+                if json.get("shadowRootType", None) is not None
+                else None
+            ),
+            is_clickable=(
+                bool(json["isClickable"])
+                if json.get("isClickable", None) is not None
+                else None
+            ),
+            event_listeners=(
+                [
+                    dom_debugger.EventListener.from_json(i)
+                    for i in json["eventListeners"]
+                ]
+                if json.get("eventListeners", None) is not None
+                else None
+            ),
+            current_source_url=(
+                str(json["currentSourceURL"])
+                if json.get("currentSourceURL", None) is not None
+                else None
+            ),
+            origin_url=(
+                str(json["originURL"])
+                if json.get("originURL", None) is not None
+                else None
+            ),
+            scroll_offset_x=(
+                float(json["scrollOffsetX"])
+                if json.get("scrollOffsetX", None) is not None
+                else None
+            ),
+            scroll_offset_y=(
+                float(json["scrollOffsetY"])
+                if json.get("scrollOffsetY", None) is not None
+                else None
+            ),
         )
 
 
@@ -337,23 +384,31 @@ class LayoutTreeNode:
         return cls(
             dom_node_index=int(json["domNodeIndex"]),
             bounding_box=dom.Rect.from_json(json["boundingBox"]),
-            layout_text=str(json["layoutText"])
-            if json.get("layoutText", None) is not None
-            else None,
-            inline_text_nodes=[
-                InlineTextBox.from_json(i) for i in json["inlineTextNodes"]
-            ]
-            if json.get("inlineTextNodes", None) is not None
-            else None,
-            style_index=int(json["styleIndex"])
-            if json.get("styleIndex", None) is not None
-            else None,
-            paint_order=int(json["paintOrder"])
-            if json.get("paintOrder", None) is not None
-            else None,
-            is_stacking_context=bool(json["isStackingContext"])
-            if json.get("isStackingContext", None) is not None
-            else None,
+            layout_text=(
+                str(json["layoutText"])
+                if json.get("layoutText", None) is not None
+                else None
+            ),
+            inline_text_nodes=(
+                [InlineTextBox.from_json(i) for i in json["inlineTextNodes"]]
+                if json.get("inlineTextNodes", None) is not None
+                else None
+            ),
+            style_index=(
+                int(json["styleIndex"])
+                if json.get("styleIndex", None) is not None
+                else None
+            ),
+            paint_order=(
+                int(json["paintOrder"])
+                if json.get("paintOrder", None) is not None
+                else None
+            ),
+            is_stacking_context=(
+                bool(json["isStackingContext"])
+                if json.get("isStackingContext", None) is not None
+                else None
+            ),
         )
 
 
@@ -596,18 +651,26 @@ class DocumentSnapshot:
             nodes=NodeTreeSnapshot.from_json(json["nodes"]),
             layout=LayoutTreeSnapshot.from_json(json["layout"]),
             text_boxes=TextBoxSnapshot.from_json(json["textBoxes"]),
-            scroll_offset_x=float(json["scrollOffsetX"])
-            if json.get("scrollOffsetX", None) is not None
-            else None,
-            scroll_offset_y=float(json["scrollOffsetY"])
-            if json.get("scrollOffsetY", None) is not None
-            else None,
-            content_width=float(json["contentWidth"])
-            if json.get("contentWidth", None) is not None
-            else None,
-            content_height=float(json["contentHeight"])
-            if json.get("contentHeight", None) is not None
-            else None,
+            scroll_offset_x=(
+                float(json["scrollOffsetX"])
+                if json.get("scrollOffsetX", None) is not None
+                else None
+            ),
+            scroll_offset_y=(
+                float(json["scrollOffsetY"])
+                if json.get("scrollOffsetY", None) is not None
+                else None
+            ),
+            content_width=(
+                float(json["contentWidth"])
+                if json.get("contentWidth", None) is not None
+                else None
+            ),
+            content_height=(
+                float(json["contentHeight"])
+                if json.get("contentHeight", None) is not None
+                else None
+            ),
         )
 
 
@@ -712,61 +775,91 @@ class NodeTreeSnapshot:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> NodeTreeSnapshot:
         return cls(
-            parent_index=[int(i) for i in json["parentIndex"]]
-            if json.get("parentIndex", None) is not None
-            else None,
-            node_type=[int(i) for i in json["nodeType"]]
-            if json.get("nodeType", None) is not None
-            else None,
-            shadow_root_type=RareStringData.from_json(json["shadowRootType"])
-            if json.get("shadowRootType", None) is not None
-            else None,
-            node_name=[StringIndex.from_json(i) for i in json["nodeName"]]
-            if json.get("nodeName", None) is not None
-            else None,
-            node_value=[StringIndex.from_json(i) for i in json["nodeValue"]]
-            if json.get("nodeValue", None) is not None
-            else None,
-            backend_node_id=[
-                dom.BackendNodeId.from_json(i) for i in json["backendNodeId"]
-            ]
-            if json.get("backendNodeId", None) is not None
-            else None,
-            attributes=[ArrayOfStrings.from_json(i) for i in json["attributes"]]
-            if json.get("attributes", None) is not None
-            else None,
-            text_value=RareStringData.from_json(json["textValue"])
-            if json.get("textValue", None) is not None
-            else None,
-            input_value=RareStringData.from_json(json["inputValue"])
-            if json.get("inputValue", None) is not None
-            else None,
-            input_checked=RareBooleanData.from_json(json["inputChecked"])
-            if json.get("inputChecked", None) is not None
-            else None,
-            option_selected=RareBooleanData.from_json(json["optionSelected"])
-            if json.get("optionSelected", None) is not None
-            else None,
-            content_document_index=RareIntegerData.from_json(
-                json["contentDocumentIndex"]
-            )
-            if json.get("contentDocumentIndex", None) is not None
-            else None,
-            pseudo_type=RareStringData.from_json(json["pseudoType"])
-            if json.get("pseudoType", None) is not None
-            else None,
-            pseudo_identifier=RareStringData.from_json(json["pseudoIdentifier"])
-            if json.get("pseudoIdentifier", None) is not None
-            else None,
-            is_clickable=RareBooleanData.from_json(json["isClickable"])
-            if json.get("isClickable", None) is not None
-            else None,
-            current_source_url=RareStringData.from_json(json["currentSourceURL"])
-            if json.get("currentSourceURL", None) is not None
-            else None,
-            origin_url=RareStringData.from_json(json["originURL"])
-            if json.get("originURL", None) is not None
-            else None,
+            parent_index=(
+                [int(i) for i in json["parentIndex"]]
+                if json.get("parentIndex", None) is not None
+                else None
+            ),
+            node_type=(
+                [int(i) for i in json["nodeType"]]
+                if json.get("nodeType", None) is not None
+                else None
+            ),
+            shadow_root_type=(
+                RareStringData.from_json(json["shadowRootType"])
+                if json.get("shadowRootType", None) is not None
+                else None
+            ),
+            node_name=(
+                [StringIndex.from_json(i) for i in json["nodeName"]]
+                if json.get("nodeName", None) is not None
+                else None
+            ),
+            node_value=(
+                [StringIndex.from_json(i) for i in json["nodeValue"]]
+                if json.get("nodeValue", None) is not None
+                else None
+            ),
+            backend_node_id=(
+                [dom.BackendNodeId.from_json(i) for i in json["backendNodeId"]]
+                if json.get("backendNodeId", None) is not None
+                else None
+            ),
+            attributes=(
+                [ArrayOfStrings.from_json(i) for i in json["attributes"]]
+                if json.get("attributes", None) is not None
+                else None
+            ),
+            text_value=(
+                RareStringData.from_json(json["textValue"])
+                if json.get("textValue", None) is not None
+                else None
+            ),
+            input_value=(
+                RareStringData.from_json(json["inputValue"])
+                if json.get("inputValue", None) is not None
+                else None
+            ),
+            input_checked=(
+                RareBooleanData.from_json(json["inputChecked"])
+                if json.get("inputChecked", None) is not None
+                else None
+            ),
+            option_selected=(
+                RareBooleanData.from_json(json["optionSelected"])
+                if json.get("optionSelected", None) is not None
+                else None
+            ),
+            content_document_index=(
+                RareIntegerData.from_json(json["contentDocumentIndex"])
+                if json.get("contentDocumentIndex", None) is not None
+                else None
+            ),
+            pseudo_type=(
+                RareStringData.from_json(json["pseudoType"])
+                if json.get("pseudoType", None) is not None
+                else None
+            ),
+            pseudo_identifier=(
+                RareStringData.from_json(json["pseudoIdentifier"])
+                if json.get("pseudoIdentifier", None) is not None
+                else None
+            ),
+            is_clickable=(
+                RareBooleanData.from_json(json["isClickable"])
+                if json.get("isClickable", None) is not None
+                else None
+            ),
+            current_source_url=(
+                RareStringData.from_json(json["currentSourceURL"])
+                if json.get("currentSourceURL", None) is not None
+                else None
+            ),
+            origin_url=(
+                RareStringData.from_json(json["originURL"])
+                if json.get("originURL", None) is not None
+                else None
+            ),
         )
 
 
@@ -842,26 +935,36 @@ class LayoutTreeSnapshot:
             bounds=[Rectangle.from_json(i) for i in json["bounds"]],
             text=[StringIndex.from_json(i) for i in json["text"]],
             stacking_contexts=RareBooleanData.from_json(json["stackingContexts"]),
-            paint_orders=[int(i) for i in json["paintOrders"]]
-            if json.get("paintOrders", None) is not None
-            else None,
-            offset_rects=[Rectangle.from_json(i) for i in json["offsetRects"]]
-            if json.get("offsetRects", None) is not None
-            else None,
-            scroll_rects=[Rectangle.from_json(i) for i in json["scrollRects"]]
-            if json.get("scrollRects", None) is not None
-            else None,
-            client_rects=[Rectangle.from_json(i) for i in json["clientRects"]]
-            if json.get("clientRects", None) is not None
-            else None,
-            blended_background_colors=[
-                StringIndex.from_json(i) for i in json["blendedBackgroundColors"]
-            ]
-            if json.get("blendedBackgroundColors", None) is not None
-            else None,
-            text_color_opacities=[float(i) for i in json["textColorOpacities"]]
-            if json.get("textColorOpacities", None) is not None
-            else None,
+            paint_orders=(
+                [int(i) for i in json["paintOrders"]]
+                if json.get("paintOrders", None) is not None
+                else None
+            ),
+            offset_rects=(
+                [Rectangle.from_json(i) for i in json["offsetRects"]]
+                if json.get("offsetRects", None) is not None
+                else None
+            ),
+            scroll_rects=(
+                [Rectangle.from_json(i) for i in json["scrollRects"]]
+                if json.get("scrollRects", None) is not None
+                else None
+            ),
+            client_rects=(
+                [Rectangle.from_json(i) for i in json["clientRects"]]
+                if json.get("clientRects", None) is not None
+                else None
+            ),
+            blended_background_colors=(
+                [StringIndex.from_json(i) for i in json["blendedBackgroundColors"]]
+                if json.get("blendedBackgroundColors", None) is not None
+                else None
+            ),
+            text_color_opacities=(
+                [float(i) for i in json["textColorOpacities"]]
+                if json.get("textColorOpacities", None) is not None
+                else None
+            ),
         )
 
 

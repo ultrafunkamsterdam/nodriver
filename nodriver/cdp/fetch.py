@@ -76,15 +76,21 @@ class RequestPattern:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> RequestPattern:
         return cls(
-            url_pattern=str(json["urlPattern"])
-            if json.get("urlPattern", None) is not None
-            else None,
-            resource_type=network.ResourceType.from_json(json["resourceType"])
-            if json.get("resourceType", None) is not None
-            else None,
-            request_stage=RequestStage.from_json(json["requestStage"])
-            if json.get("requestStage", None) is not None
-            else None,
+            url_pattern=(
+                str(json["urlPattern"])
+                if json.get("urlPattern", None) is not None
+                else None
+            ),
+            resource_type=(
+                network.ResourceType.from_json(json["resourceType"])
+                if json.get("resourceType", None) is not None
+                else None
+            ),
+            request_stage=(
+                RequestStage.from_json(json["requestStage"])
+                if json.get("requestStage", None) is not None
+                else None
+            ),
         )
 
 
@@ -145,9 +151,9 @@ class AuthChallenge:
             origin=str(json["origin"]),
             scheme=str(json["scheme"]),
             realm=str(json["realm"]),
-            source=str(json["source"])
-            if json.get("source", None) is not None
-            else None,
+            source=(
+                str(json["source"]) if json.get("source", None) is not None else None
+            ),
         )
 
 
@@ -183,12 +189,16 @@ class AuthChallengeResponse:
     def from_json(cls, json: T_JSON_DICT) -> AuthChallengeResponse:
         return cls(
             response=str(json["response"]),
-            username=str(json["username"])
-            if json.get("username", None) is not None
-            else None,
-            password=str(json["password"])
-            if json.get("password", None) is not None
-            else None,
+            username=(
+                str(json["username"])
+                if json.get("username", None) is not None
+                else None
+            ),
+            password=(
+                str(json["password"])
+                if json.get("password", None) is not None
+                else None
+            ),
         )
 
 
@@ -479,26 +489,36 @@ class RequestPaused:
             request=network.Request.from_json(json["request"]),
             frame_id=page.FrameId.from_json(json["frameId"]),
             resource_type=network.ResourceType.from_json(json["resourceType"]),
-            response_error_reason=network.ErrorReason.from_json(
-                json["responseErrorReason"]
-            )
-            if json.get("responseErrorReason", None) is not None
-            else None,
-            response_status_code=int(json["responseStatusCode"])
-            if json.get("responseStatusCode", None) is not None
-            else None,
-            response_status_text=str(json["responseStatusText"])
-            if json.get("responseStatusText", None) is not None
-            else None,
-            response_headers=[HeaderEntry.from_json(i) for i in json["responseHeaders"]]
-            if json.get("responseHeaders", None) is not None
-            else None,
-            network_id=network.RequestId.from_json(json["networkId"])
-            if json.get("networkId", None) is not None
-            else None,
-            redirected_request_id=RequestId.from_json(json["redirectedRequestId"])
-            if json.get("redirectedRequestId", None) is not None
-            else None,
+            response_error_reason=(
+                network.ErrorReason.from_json(json["responseErrorReason"])
+                if json.get("responseErrorReason", None) is not None
+                else None
+            ),
+            response_status_code=(
+                int(json["responseStatusCode"])
+                if json.get("responseStatusCode", None) is not None
+                else None
+            ),
+            response_status_text=(
+                str(json["responseStatusText"])
+                if json.get("responseStatusText", None) is not None
+                else None
+            ),
+            response_headers=(
+                [HeaderEntry.from_json(i) for i in json["responseHeaders"]]
+                if json.get("responseHeaders", None) is not None
+                else None
+            ),
+            network_id=(
+                network.RequestId.from_json(json["networkId"])
+                if json.get("networkId", None) is not None
+                else None
+            ),
+            redirected_request_id=(
+                RequestId.from_json(json["redirectedRequestId"])
+                if json.get("redirectedRequestId", None) is not None
+                else None
+            ),
         )
 
 

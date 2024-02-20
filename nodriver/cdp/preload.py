@@ -99,19 +99,27 @@ class RuleSet:
             id_=RuleSetId.from_json(json["id"]),
             loader_id=network.LoaderId.from_json(json["loaderId"]),
             source_text=str(json["sourceText"]),
-            backend_node_id=dom.BackendNodeId.from_json(json["backendNodeId"])
-            if json.get("backendNodeId", None) is not None
-            else None,
+            backend_node_id=(
+                dom.BackendNodeId.from_json(json["backendNodeId"])
+                if json.get("backendNodeId", None) is not None
+                else None
+            ),
             url=str(json["url"]) if json.get("url", None) is not None else None,
-            request_id=network.RequestId.from_json(json["requestId"])
-            if json.get("requestId", None) is not None
-            else None,
-            error_type=RuleSetErrorType.from_json(json["errorType"])
-            if json.get("errorType", None) is not None
-            else None,
-            error_message=str(json["errorMessage"])
-            if json.get("errorMessage", None) is not None
-            else None,
+            request_id=(
+                network.RequestId.from_json(json["requestId"])
+                if json.get("requestId", None) is not None
+                else None
+            ),
+            error_type=(
+                RuleSetErrorType.from_json(json["errorType"])
+                if json.get("errorType", None) is not None
+                else None
+            ),
+            error_message=(
+                str(json["errorMessage"])
+                if json.get("errorMessage", None) is not None
+                else None
+            ),
         )
 
 
@@ -196,9 +204,11 @@ class PreloadingAttemptKey:
             loader_id=network.LoaderId.from_json(json["loaderId"]),
             action=SpeculationAction.from_json(json["action"]),
             url=str(json["url"]),
-            target_hint=SpeculationTargetHint.from_json(json["targetHint"])
-            if json.get("targetHint", None) is not None
-            else None,
+            target_hint=(
+                SpeculationTargetHint.from_json(json["targetHint"])
+                if json.get("targetHint", None) is not None
+                else None
+            ),
         )
 
 
@@ -443,12 +453,16 @@ class PrerenderMismatchedHeaders:
     def from_json(cls, json: T_JSON_DICT) -> PrerenderMismatchedHeaders:
         return cls(
             header_name=str(json["headerName"]),
-            initial_value=str(json["initialValue"])
-            if json.get("initialValue", None) is not None
-            else None,
-            activation_value=str(json["activationValue"])
-            if json.get("activationValue", None) is not None
-            else None,
+            initial_value=(
+                str(json["initialValue"])
+                if json.get("initialValue", None) is not None
+                else None
+            ),
+            activation_value=(
+                str(json["activationValue"])
+                if json.get("activationValue", None) is not None
+                else None
+            ),
         )
 
 
@@ -565,18 +579,24 @@ class PrerenderStatusUpdated:
         return cls(
             key=PreloadingAttemptKey.from_json(json["key"]),
             status=PreloadingStatus.from_json(json["status"]),
-            prerender_status=PrerenderFinalStatus.from_json(json["prerenderStatus"])
-            if json.get("prerenderStatus", None) is not None
-            else None,
-            disallowed_mojo_interface=str(json["disallowedMojoInterface"])
-            if json.get("disallowedMojoInterface", None) is not None
-            else None,
-            mismatched_headers=[
-                PrerenderMismatchedHeaders.from_json(i)
-                for i in json["mismatchedHeaders"]
-            ]
-            if json.get("mismatchedHeaders", None) is not None
-            else None,
+            prerender_status=(
+                PrerenderFinalStatus.from_json(json["prerenderStatus"])
+                if json.get("prerenderStatus", None) is not None
+                else None
+            ),
+            disallowed_mojo_interface=(
+                str(json["disallowedMojoInterface"])
+                if json.get("disallowedMojoInterface", None) is not None
+                else None
+            ),
+            mismatched_headers=(
+                [
+                    PrerenderMismatchedHeaders.from_json(i)
+                    for i in json["mismatchedHeaders"]
+                ]
+                if json.get("mismatchedHeaders", None) is not None
+                else None
+            ),
         )
 
 

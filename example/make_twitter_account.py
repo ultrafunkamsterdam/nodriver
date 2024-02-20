@@ -29,7 +29,6 @@ months = [
 
 
 async def main():
-
     driver = await uc.start()
 
     tab = await driver.get("https://twitter.com")
@@ -38,7 +37,6 @@ async def main():
     # this does not always work as expected, due to speed.
     print('finding the "create account" button')
     create_account = await tab.find("create account", best_match=True)
-
 
     print('"create account" => click')
     await create_account.click()
@@ -109,7 +107,6 @@ async def main():
     next_btn = await tab.find(text="next", best_match=True)
     print('clicking "next" button')
     await next_btn.mouse_click()
-
 
     # just wait for some button, before we continue
     await tab.select("[role=button]")

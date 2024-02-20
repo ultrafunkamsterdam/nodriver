@@ -226,9 +226,11 @@ class BaseAudioContext:
             callback_buffer_size=float(json["callbackBufferSize"]),
             max_output_channel_count=float(json["maxOutputChannelCount"]),
             sample_rate=float(json["sampleRate"]),
-            realtime_data=ContextRealtimeData.from_json(json["realtimeData"])
-            if json.get("realtimeData", None) is not None
-            else None,
+            realtime_data=(
+                ContextRealtimeData.from_json(json["realtimeData"])
+                if json.get("realtimeData", None) is not None
+                else None
+            ),
         )
 
 
@@ -552,12 +554,16 @@ class NodesConnected:
             context_id=GraphObjectId.from_json(json["contextId"]),
             source_id=GraphObjectId.from_json(json["sourceId"]),
             destination_id=GraphObjectId.from_json(json["destinationId"]),
-            source_output_index=float(json["sourceOutputIndex"])
-            if json.get("sourceOutputIndex", None) is not None
-            else None,
-            destination_input_index=float(json["destinationInputIndex"])
-            if json.get("destinationInputIndex", None) is not None
-            else None,
+            source_output_index=(
+                float(json["sourceOutputIndex"])
+                if json.get("sourceOutputIndex", None) is not None
+                else None
+            ),
+            destination_input_index=(
+                float(json["destinationInputIndex"])
+                if json.get("destinationInputIndex", None) is not None
+                else None
+            ),
         )
 
 
@@ -580,12 +586,16 @@ class NodesDisconnected:
             context_id=GraphObjectId.from_json(json["contextId"]),
             source_id=GraphObjectId.from_json(json["sourceId"]),
             destination_id=GraphObjectId.from_json(json["destinationId"]),
-            source_output_index=float(json["sourceOutputIndex"])
-            if json.get("sourceOutputIndex", None) is not None
-            else None,
-            destination_input_index=float(json["destinationInputIndex"])
-            if json.get("destinationInputIndex", None) is not None
-            else None,
+            source_output_index=(
+                float(json["sourceOutputIndex"])
+                if json.get("sourceOutputIndex", None) is not None
+                else None
+            ),
+            destination_input_index=(
+                float(json["destinationInputIndex"])
+                if json.get("destinationInputIndex", None) is not None
+                else None
+            ),
         )
 
 
@@ -607,9 +617,11 @@ class NodeParamConnected:
             context_id=GraphObjectId.from_json(json["contextId"]),
             source_id=GraphObjectId.from_json(json["sourceId"]),
             destination_id=GraphObjectId.from_json(json["destinationId"]),
-            source_output_index=float(json["sourceOutputIndex"])
-            if json.get("sourceOutputIndex", None) is not None
-            else None,
+            source_output_index=(
+                float(json["sourceOutputIndex"])
+                if json.get("sourceOutputIndex", None) is not None
+                else None
+            ),
         )
 
 
@@ -631,7 +643,9 @@ class NodeParamDisconnected:
             context_id=GraphObjectId.from_json(json["contextId"]),
             source_id=GraphObjectId.from_json(json["sourceId"]),
             destination_id=GraphObjectId.from_json(json["destinationId"]),
-            source_output_index=float(json["sourceOutputIndex"])
-            if json.get("sourceOutputIndex", None) is not None
-            else None,
+            source_output_index=(
+                float(json["sourceOutputIndex"])
+                if json.get("sourceOutputIndex", None) is not None
+                else None
+            ),
         )

@@ -61,15 +61,15 @@ class Browser:
 
     @classmethod
     async def create(
-            cls,
-            config: Config = None,
-            *,
-            user_data_dir: PathLike = None,
-            headless: bool = False,
-            browser_executable_path: PathLike = None,
-            browser_args: List[str] = None,
-            sandbox: bool = True,
-            **kwargs,
+        cls,
+        config: Config = None,
+        *,
+        user_data_dir: PathLike = None,
+        headless: bool = False,
+        browser_executable_path: PathLike = None,
+        browser_args: List[str] = None,
+        sandbox: bool = True,
+        **kwargs,
     ) -> Browser:
         """
         entry point for creating an instance
@@ -159,13 +159,13 @@ class Browser:
     """alias for wait"""
 
     def _handle_target_update(
-            self,
-            event: Union[
-                cdp.target.TargetInfoChanged,
-                cdp.target.TargetDestroyed,
-                cdp.target.TargetCreated,
-                cdp.target.TargetCrashed,
-            ],
+        self,
+        event: Union[
+            cdp.target.TargetInfoChanged,
+            cdp.target.TargetDestroyed,
+            cdp.target.TargetCreated,
+            cdp.target.TargetCrashed,
+        ],
     ):
         """this is an internal handler which updates the targets when chrome emits the corresponding event"""
 
@@ -216,7 +216,7 @@ class Browser:
             self.targets.remove(current_tab)
 
     async def get(
-            self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
+        self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
     ) -> tab.Tab:
         """top level get. utilizes the first tab to retrieve given url.
 
@@ -247,18 +247,18 @@ class Browser:
             # if for some reason the connection could not be found (not updated or too fast/slow),
             # just loop until the connection matches the target id
             while not connection:
-                print('while not tab')
+                print("while not tab")
                 # update targets
                 await self
                 # get the connection matching the new target_id from our inventory
                 connection = next(
                     filter(
                         lambda item: item.type_ == "page"
-                                     and item.target_id == target_id,
+                        and item.target_id == target_id,
                         self.targets,
                     )
                 )
-            await connection.sleep(.25)
+            await connection.sleep(0.25)
             return connection
         else:
             # first tab from browser.tabs
@@ -267,9 +267,8 @@ class Browser:
             frame_id, loader_id, *_ = await connection.send(cdp.page.navigate(url))
             # update the frame_id on the tab
             connection.frame_id = frame_id
-            await connection.sleep(.25)
+            await connection.sleep(0.25)
             return connection
-
 
     async def start(self=None) -> Browser:
         """launches the actual browser"""
@@ -289,15 +288,16 @@ class Browser:
 
         logger.debug("BROWSER EXECUTABLE PATH: %s", self.config.browser_executable_path)
         if not pathlib.Path(self.config.browser_executable_path).exists():
-            raise FileNotFoundError((
-                """
+            raise FileNotFoundError(
+                (
+                    """
                 ---------------------
                 Could not determine browser executable.
                 ---------------------
                 Make sure your browser is installed in the default location (path).
                 If you are sure about the browser executable, you can specify it using
                 the `browser_executable_path='{}` parameter."""
-            ).format(
+                ).format(
                     "/path/to/browser/executable"
                     if is_posix
                     else "c:/path/to/your/browser.exe"
@@ -309,15 +309,17 @@ class Browser:
         logger.info(
             "starting\n\texecutable :%s\n\narguments:\n%s", exe, "\n\t".join(params)
         )
-        self._process: asyncio.subprocess.Process = await asyncio.create_subprocess_exec(
-            # self.config.browser_executable_path,
-            # *cmdparams,
-            exe,
-            *params,
-            stdin=asyncio.subprocess.PIPE,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-            close_fds=is_posix,
+        self._process: asyncio.subprocess.Process = (
+            await asyncio.create_subprocess_exec(
+                # self.config.browser_executable_path,
+                # *cmdparams,
+                exe,
+                *params,
+                stdin=asyncio.subprocess.PIPE,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                close_fds=is_posix,
+            )
         )
 
         self._process_pid = self._process.pid
@@ -339,31 +341,45 @@ class Browser:
                 break
 
         if not self.info:
-            raise Exception((
-                """
+            raise Exception(
+                (
+                    """
                 ---------------------
                 Failed to connect to browser
                 ---------------------
                 One of the causes could be when you are running as root.
                 In that case you need to pass no_sandbox=True 
                 """
-            ))
+                )
+            )
 
         self.connection = Connection(self.info.webSocketDebuggerUrl, _owner=self)
 
         if self.config.autodiscover_targets:
-            self.connection.handlers[cdp.target.TargetInfoChanged] = [
-                self._handle_target_update
-            ]
-            self.connection.handlers[cdp.target.TargetCreated] = [
-                self._handle_target_update
-            ]
-            self.connection.handlers[cdp.target.TargetDestroyed] = [
-                self._handle_target_update
-            ]
-            self.connection.handlers[cdp.target.TargetCrashed] = [
-                self._handle_target_update
-            ]
+            self.connection.add_handler(
+                cdp.target.TargetInfoChanged, self._handle_target_update
+            )
+            self.connection.add_handler(
+                cdp.target.TargetCreated, self._handle_target_update
+            )
+            self.connection.add_handler(
+                cdp.target.TargetDestroyed, self._handle_target_update
+            )
+            self.connection.add_handler(
+                cdp.target.TargetCreated, self._handle_target_update
+            )
+            # self.connection.handlers[cdp.target.TargetInfoChanged] = [
+            #     self._handle_target_update
+            # ]
+            # self.connection.handlers[cdp.target.TargetCreated] = [
+            #     self._handle_target_update
+            # ]
+            # self.connection.handlers[cdp.target.TargetDestroyed] = [
+            #     self._handle_target_update
+            # ]
+            # self.connection.handlers[cdp.target.TargetCrashed] = [
+            #     self._handle_target_update
+            # ]
             logger.info("enabling autodiscover targets")
             await self.connection.send(cdp.target.set_discover_targets(True))
 
@@ -403,9 +419,7 @@ class Browser:
         permissions = list(cdp.browser.PermissionType)
         permissions.remove(cdp.browser.PermissionType.FLASH)
         permissions.remove(cdp.browser.PermissionType.CAPTURED_SURFACE_CONTROL)
-        await self.connection.send(
-            cdp.browser.grant_permissions(permissions)
-        )
+        await self.connection.send(cdp.browser.grant_permissions(permissions))
 
     async def tile_windows(self, max_columns: int = 0):
         import mss
@@ -541,7 +555,7 @@ class Browser:
 
             asyncio.get_event_loop().create_task(self.connection.aclose())
             logger.debug("closed the connection using get_event_loop().create_task()")
-        except:
+        except RuntimeError:
             if self.connection:
                 try:
                     # asyncio.run(self.connection.send(cdp.browser.close()))
@@ -599,13 +613,12 @@ class Browser:
 
 
 class CookieJar:
-
     def __init__(self, browser: Browser):
         self._browser = browser
         # self._connection = connection
 
     async def get_all(
-            self, requests_cookie_format: bool = False
+        self, requests_cookie_format: bool = False
     ) -> List[Union[cdp.network.Cookie, "http.cookiejar.Cookie"]]:
         """
         get all cookies
@@ -625,6 +638,7 @@ class CookieJar:
         cookies = await connection.send(cdp.storage.get_cookies())
         if requests_cookie_format:
             import requests.cookies
+
             return [
                 requests.cookies.create_cookie(
                     name=c.name,
@@ -656,7 +670,7 @@ class CookieJar:
         cookies = await connection.send(cdp.storage.get_cookies())
         await connection.send(cdp.storage.set_cookies(cookies))
 
-    async def save(self, file: PathLike = '.session.dat', pattern: str = '.*'):
+    async def save(self, file: PathLike = ".session.dat", pattern: str = ".*"):
         """
         save all cookies (or a subset, controlled by `pattern`) to a file to be restored later
 
@@ -675,6 +689,7 @@ class CookieJar:
         :rtype:
         """
         import re
+
         pattern = re.compile(pattern)
         save_path = pathlib.Path(file).resolve()
         connection = None
@@ -694,13 +709,17 @@ class CookieJar:
         included_cookies = []
         for cookie in cookies:
             for match in pattern.finditer(str(cookie.__dict__)):
-                logger.debug("saved cookie for matching pattern '%s' => (%s: %s)",
-                             pattern.pattern, cookie.name, cookie.value)
+                logger.debug(
+                    "saved cookie for matching pattern '%s' => (%s: %s)",
+                    pattern.pattern,
+                    cookie.name,
+                    cookie.value,
+                )
                 included_cookies.append(cookie)
                 break
-        pickle.dump(cookies, save_path.open('w+b'))
+        pickle.dump(cookies, save_path.open("w+b"))
 
-    async def load(self, file: PathLike = '.session.dat', pattern: str = '.*'):
+    async def load(self, file: PathLike = ".session.dat", pattern: str = ".*"):
         """
         load all cookies (or a subset, controlled by `pattern`) from a file created by :py:meth:`~save_cookies`.
 
@@ -719,9 +738,10 @@ class CookieJar:
         :rtype:
         """
         import re
+
         pattern = re.compile(pattern)
         save_path = pathlib.Path(file).resolve()
-        cookies = pickle.load(save_path.open('r+b'))
+        cookies = pickle.load(save_path.open("r+b"))
         included_cookies = []
         connection = None
         for tab in self._browser.tabs:
@@ -731,10 +751,13 @@ class CookieJar:
             break
         cookies = await connection.send(cdp.storage.get_cookies())
         for cookie in cookies:
-
             for match in pattern.finditer(str(cookie.__dict__)):
-                logger.debug("loaded cookie for matching pattern '%s' => (%s: %s)",
-                             pattern.pattern, cookie.name, cookie.value)
+                logger.debug(
+                    "loaded cookie for matching pattern '%s' => (%s: %s)",
+                    pattern.pattern,
+                    cookie.name,
+                    cookie.value,
+                )
                 included_cookies.append(cookie)
                 break
         await connection.send(cdp.storage.set_cookies(included_cookies))

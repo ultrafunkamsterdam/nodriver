@@ -151,39 +151,59 @@ class VirtualAuthenticatorOptions:
         return cls(
             protocol=AuthenticatorProtocol.from_json(json["protocol"]),
             transport=AuthenticatorTransport.from_json(json["transport"]),
-            ctap2_version=Ctap2Version.from_json(json["ctap2Version"])
-            if json.get("ctap2Version", None) is not None
-            else None,
-            has_resident_key=bool(json["hasResidentKey"])
-            if json.get("hasResidentKey", None) is not None
-            else None,
-            has_user_verification=bool(json["hasUserVerification"])
-            if json.get("hasUserVerification", None) is not None
-            else None,
-            has_large_blob=bool(json["hasLargeBlob"])
-            if json.get("hasLargeBlob", None) is not None
-            else None,
-            has_cred_blob=bool(json["hasCredBlob"])
-            if json.get("hasCredBlob", None) is not None
-            else None,
-            has_min_pin_length=bool(json["hasMinPinLength"])
-            if json.get("hasMinPinLength", None) is not None
-            else None,
-            has_prf=bool(json["hasPrf"])
-            if json.get("hasPrf", None) is not None
-            else None,
-            automatic_presence_simulation=bool(json["automaticPresenceSimulation"])
-            if json.get("automaticPresenceSimulation", None) is not None
-            else None,
-            is_user_verified=bool(json["isUserVerified"])
-            if json.get("isUserVerified", None) is not None
-            else None,
-            default_backup_eligibility=bool(json["defaultBackupEligibility"])
-            if json.get("defaultBackupEligibility", None) is not None
-            else None,
-            default_backup_state=bool(json["defaultBackupState"])
-            if json.get("defaultBackupState", None) is not None
-            else None,
+            ctap2_version=(
+                Ctap2Version.from_json(json["ctap2Version"])
+                if json.get("ctap2Version", None) is not None
+                else None
+            ),
+            has_resident_key=(
+                bool(json["hasResidentKey"])
+                if json.get("hasResidentKey", None) is not None
+                else None
+            ),
+            has_user_verification=(
+                bool(json["hasUserVerification"])
+                if json.get("hasUserVerification", None) is not None
+                else None
+            ),
+            has_large_blob=(
+                bool(json["hasLargeBlob"])
+                if json.get("hasLargeBlob", None) is not None
+                else None
+            ),
+            has_cred_blob=(
+                bool(json["hasCredBlob"])
+                if json.get("hasCredBlob", None) is not None
+                else None
+            ),
+            has_min_pin_length=(
+                bool(json["hasMinPinLength"])
+                if json.get("hasMinPinLength", None) is not None
+                else None
+            ),
+            has_prf=(
+                bool(json["hasPrf"]) if json.get("hasPrf", None) is not None else None
+            ),
+            automatic_presence_simulation=(
+                bool(json["automaticPresenceSimulation"])
+                if json.get("automaticPresenceSimulation", None) is not None
+                else None
+            ),
+            is_user_verified=(
+                bool(json["isUserVerified"])
+                if json.get("isUserVerified", None) is not None
+                else None
+            ),
+            default_backup_eligibility=(
+                bool(json["defaultBackupEligibility"])
+                if json.get("defaultBackupEligibility", None) is not None
+                else None
+            ),
+            default_backup_state=(
+                bool(json["defaultBackupState"])
+                if json.get("defaultBackupState", None) is not None
+                else None
+            ),
         )
 
 
@@ -235,12 +255,16 @@ class Credential:
             private_key=str(json["privateKey"]),
             sign_count=int(json["signCount"]),
             rp_id=str(json["rpId"]) if json.get("rpId", None) is not None else None,
-            user_handle=str(json["userHandle"])
-            if json.get("userHandle", None) is not None
-            else None,
-            large_blob=str(json["largeBlob"])
-            if json.get("largeBlob", None) is not None
-            else None,
+            user_handle=(
+                str(json["userHandle"])
+                if json.get("userHandle", None) is not None
+                else None
+            ),
+            large_blob=(
+                str(json["largeBlob"])
+                if json.get("largeBlob", None) is not None
+                else None
+            ),
         )
 
 
