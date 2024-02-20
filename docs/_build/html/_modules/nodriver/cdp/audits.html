@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>nodriver.cdp.audits - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -171,7 +171,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/element.html">Element class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/others_and_helpers.html">Other classes and Helper classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/page.html">Page class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/tab.html"><code class="docutils literal notranslate"><span class="pre">Tab</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
 <ul>
@@ -500,21 +500,31 @@
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookieExclusionReasons&quot;</span><span class="p">]</span>
             <span class="p">],</span>
             <span class="n">operation</span><span class="o">=</span><span class="n">CookieOperation</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">]),</span>
-            <span class="n">cookie</span><span class="o">=</span><span class="n">AffectedCookie</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookie&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cookie&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">raw_cookie_line</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;rawCookieLine&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rawCookieLine&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">site_for_cookies</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;siteForCookies&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;siteForCookies&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">cookie_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookieUrl&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cookieUrl&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">request</span><span class="o">=</span><span class="n">AffectedRequest</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">cookie</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">AffectedCookie</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookie&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cookie&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">raw_cookie_line</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;rawCookieLine&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rawCookieLine&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">site_for_cookies</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;siteForCookies&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;siteForCookies&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">cookie_url</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookieUrl&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cookieUrl&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">request</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">AffectedRequest</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -623,15 +633,21 @@
             <span class="p">),</span>
             <span class="n">insecure_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;insecureURL&quot;</span><span class="p">]),</span>
             <span class="n">main_resource_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;mainResourceURL&quot;</span><span class="p">]),</span>
-            <span class="n">resource_type</span><span class="o">=</span><span class="n">MixedContentResourceType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;resourceType&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resourceType&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">request</span><span class="o">=</span><span class="n">AffectedRequest</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">frame</span><span class="o">=</span><span class="n">AffectedFrame</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">resource_type</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">MixedContentResourceType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;resourceType&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resourceType&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">request</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">AffectedRequest</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">frame</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">AffectedFrame</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -696,12 +712,16 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">request</span><span class="o">=</span><span class="n">AffectedRequest</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">]),</span>
             <span class="n">reason</span><span class="o">=</span><span class="n">BlockedByResponseReason</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;reason&quot;</span><span class="p">]),</span>
-            <span class="n">parent_frame</span><span class="o">=</span><span class="n">AffectedFrame</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;parentFrame&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parentFrame&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">blocked_frame</span><span class="o">=</span><span class="n">AffectedFrame</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;blockedFrame&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;blockedFrame&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">parent_frame</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">AffectedFrame</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;parentFrame&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parentFrame&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">blocked_frame</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">AffectedFrame</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;blockedFrame&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;blockedFrame&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -813,9 +833,11 @@
             <span class="n">url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]),</span>
             <span class="n">line_number</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;lineNumber&quot;</span><span class="p">]),</span>
             <span class="n">column_number</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;columnNumber&quot;</span><span class="p">]),</span>
-            <span class="n">script_id</span><span class="o">=</span><span class="n">runtime</span><span class="o">.</span><span class="n">ScriptId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;scriptId&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;scriptId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">script_id</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">runtime</span><span class="o">.</span><span class="n">ScriptId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;scriptId&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;scriptId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -844,9 +866,9 @@
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">json</span><span class="p">[</span><span class="s2">&quot;violatedDirective&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">violated_directive</span>
         <span class="n">json</span><span class="p">[</span><span class="s2">&quot;isReportOnly&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_report_only</span>
-        <span class="n">json</span><span class="p">[</span>
-            <span class="s2">&quot;contentSecurityPolicyViolationType&quot;</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_security_policy_violation_type</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;contentSecurityPolicyViolationType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">content_security_policy_violation_type</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocked_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;blockedURL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocked_url</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_ancestor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -865,20 +887,26 @@
             <span class="n">content_security_policy_violation_type</span><span class="o">=</span><span class="n">ContentSecurityPolicyViolationType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
                 <span class="n">json</span><span class="p">[</span><span class="s2">&quot;contentSecurityPolicyViolationType&quot;</span><span class="p">]</span>
             <span class="p">),</span>
-            <span class="n">blocked_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;blockedURL&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;blockedURL&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">frame_ancestor</span><span class="o">=</span><span class="n">AffectedFrame</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;frameAncestor&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;frameAncestor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">source_code_location</span><span class="o">=</span><span class="n">SourceCodeLocation</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sourceCodeLocation&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sourceCodeLocation&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">violating_node_id</span><span class="o">=</span><span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;violatingNodeId&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;violatingNodeId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">blocked_url</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;blockedURL&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;blockedURL&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">frame_ancestor</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">AffectedFrame</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;frameAncestor&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;frameAncestor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">source_code_location</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">SourceCodeLocation</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;sourceCodeLocation&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sourceCodeLocation&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">violating_node_id</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;violatingNodeId&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;violatingNodeId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -1021,22 +1049,26 @@
             <span class="p">),</span>
             <span class="n">is_warning</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;isWarning&quot;</span><span class="p">]),</span>
             <span class="n">request</span><span class="o">=</span><span class="n">AffectedRequest</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">]),</span>
-            <span class="n">location</span><span class="o">=</span><span class="n">SourceCodeLocation</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">initiator_origin</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;initiatorOrigin&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;initiatorOrigin&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">resource_ip_address_space</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">IPAddressSpace</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;resourceIPAddressSpace&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resourceIPAddressSpace&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">client_security_state</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">ClientSecurityState</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;clientSecurityState&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;clientSecurityState&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">SourceCodeLocation</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">initiator_origin</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;initiatorOrigin&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;initiatorOrigin&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">resource_ip_address_space</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">network</span><span class="o">.</span><span class="n">IPAddressSpace</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;resourceIPAddressSpace&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resourceIPAddressSpace&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">client_security_state</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">network</span><span class="o">.</span><span class="n">ClientSecurityState</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;clientSecurityState&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;clientSecurityState&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -1105,15 +1137,21 @@
             <span class="n">violation_type</span><span class="o">=</span><span class="n">AttributionReportingIssueType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
                 <span class="n">json</span><span class="p">[</span><span class="s2">&quot;violationType&quot;</span><span class="p">]</span>
             <span class="p">),</span>
-            <span class="n">request</span><span class="o">=</span><span class="n">AffectedRequest</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">violating_node_id</span><span class="o">=</span><span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;violatingNodeId&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;violatingNodeId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">invalid_parameter</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;invalidParameter&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;invalidParameter&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">request</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">AffectedRequest</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">violating_node_id</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;violatingNodeId&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;violatingNodeId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">invalid_parameter</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;invalidParameter&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;invalidParameter&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -1179,9 +1217,11 @@
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NavigatorUserAgentIssueDetails</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]),</span>
-            <span class="n">location</span><span class="o">=</span><span class="n">SourceCodeLocation</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">SourceCodeLocation</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -1255,18 +1295,26 @@
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GenericIssueDetails</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">error_type</span><span class="o">=</span><span class="n">GenericIssueErrorType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;errorType&quot;</span><span class="p">]),</span>
-            <span class="n">frame_id</span><span class="o">=</span><span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;frameId&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;frameId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">violating_node_id</span><span class="o">=</span><span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;violatingNodeId&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;violatingNodeId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">violating_node_attribute</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;violatingNodeAttribute&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;violatingNodeAttribute&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">request</span><span class="o">=</span><span class="n">AffectedRequest</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">frame_id</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;frameId&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;frameId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">violating_node_id</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;violatingNodeId&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;violatingNodeId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">violating_node_attribute</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;violatingNodeAttribute&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;violatingNodeAttribute&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">request</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">AffectedRequest</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -1302,9 +1350,11 @@
                 <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sourceCodeLocation&quot;</span><span class="p">]</span>
             <span class="p">),</span>
             <span class="n">type_</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]),</span>
-            <span class="n">affected_frame</span><span class="o">=</span><span class="n">AffectedFrame</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;affectedFrame&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;affectedFrame&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">affected_frame</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">AffectedFrame</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;affectedFrame&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;affectedFrame&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -1386,9 +1436,9 @@
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span>
-            <span class="s2">&quot;federatedAuthRequestIssueReason&quot;</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">federated_auth_request_issue_reason</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;federatedAuthRequestIssueReason&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">federated_auth_request_issue_reason</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
@@ -1463,13 +1513,15 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.FederatedAuthUserInfoRequestIssueDetails">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">FederatedAuthUserInfoRequestIssueDetails</span><span class="p">:</span>
-    <span class="n">federated_auth_user_info_request_issue_reason</span><span class="p">:</span> <span class="n">FederatedAuthUserInfoRequestIssueReason</span>
+    <span class="n">federated_auth_user_info_request_issue_reason</span><span class="p">:</span> <span class="p">(</span>
+        <span class="n">FederatedAuthUserInfoRequestIssueReason</span>
+    <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span>
-            <span class="s2">&quot;federatedAuthUserInfoRequestIssueReason&quot;</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">federated_auth_user_info_request_issue_reason</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;federatedAuthUserInfoRequestIssueReason&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">federated_auth_user_info_request_issue_reason</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
@@ -1567,9 +1619,11 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]),</span>
             <span class="n">failure_message</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;failureMessage&quot;</span><span class="p">]),</span>
-            <span class="n">request_id</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requestId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">request_id</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">network</span><span class="o">.</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requestId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -1609,9 +1663,9 @@
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sourceCodeLocation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_location</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span>
-            <span class="s2">&quot;styleSheetLoadingIssueReason&quot;</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">style_sheet_loading_issue_reason</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;styleSheetLoadingIssueReason&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">style_sheet_loading_issue_reason</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">failed_request_info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;failedRequestInfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">failed_request_info</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">json</span>
@@ -1625,9 +1679,11 @@
             <span class="n">style_sheet_loading_issue_reason</span><span class="o">=</span><span class="n">StyleSheetLoadingIssueReason</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
                 <span class="n">json</span><span class="p">[</span><span class="s2">&quot;styleSheetLoadingIssueReason&quot;</span><span class="p">]</span>
             <span class="p">),</span>
-            <span class="n">failed_request_info</span><span class="o">=</span><span class="n">FailedRequestInfo</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;failedRequestInfo&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;failedRequestInfo&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">failed_request_info</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">FailedRequestInfo</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;failedRequestInfo&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;failedRequestInfo&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -1684,9 +1740,11 @@
             <span class="n">property_rule_issue_reason</span><span class="o">=</span><span class="n">PropertyRuleIssueReason</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
                 <span class="n">json</span><span class="p">[</span><span class="s2">&quot;propertyRuleIssueReason&quot;</span><span class="p">]</span>
             <span class="p">),</span>
-            <span class="n">property_value</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;propertyValue&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;propertyValue&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">property_value</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;propertyValue&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;propertyValue&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -1788,9 +1846,9 @@
         <span class="n">CookieDeprecationMetadataIssueDetails</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="n">stylesheet_loading_issue_details</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span>
-        <span class="n">StylesheetLoadingIssueDetails</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">stylesheet_loading_issue_details</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">StylesheetLoadingIssueDetails</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="kc">None</span>
+    <span class="p">)</span>
 
     <span class="n">property_rule_issue_details</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">PropertyRuleIssueDetails</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -1803,39 +1861,39 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cookie_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookieIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cookie_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mixed_content_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span>
-                <span class="s2">&quot;mixedContentIssueDetails&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mixed_content_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;mixedContentIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mixed_content_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocked_by_response_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span>
-                <span class="s2">&quot;blockedByResponseIssueDetails&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocked_by_response_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;blockedByResponseIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">blocked_by_response_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">heavy_ad_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;heavyAdIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">heavy_ad_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_security_policy_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span>
-                <span class="s2">&quot;contentSecurityPolicyIssueDetails&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_security_policy_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;contentSecurityPolicyIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">content_security_policy_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shared_array_buffer_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span>
-                <span class="s2">&quot;sharedArrayBufferIssueDetails&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shared_array_buffer_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sharedArrayBufferIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">shared_array_buffer_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">low_text_contrast_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span>
-                <span class="s2">&quot;lowTextContrastIssueDetails&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">low_text_contrast_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;lowTextContrastIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">low_text_contrast_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cors_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;corsIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cors_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">attribution_reporting_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span>
-                <span class="s2">&quot;attributionReportingIssueDetails&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attribution_reporting_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;attributionReportingIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">attribution_reporting_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">quirks_mode_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;quirksModeIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quirks_mode_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">navigator_user_agent_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span>
-                <span class="s2">&quot;navigatorUserAgentIssueDetails&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">navigator_user_agent_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;navigatorUserAgentIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">navigator_user_agent_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;genericIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deprecation_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1843,132 +1901,155 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_hint_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;clientHintIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_hint_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">federated_auth_request_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span>
-                <span class="s2">&quot;federatedAuthRequestIssueDetails&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">federated_auth_request_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;federatedAuthRequestIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">federated_auth_request_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounce_tracking_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span>
-                <span class="s2">&quot;bounceTrackingIssueDetails&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounce_tracking_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;bounceTrackingIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bounce_tracking_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cookie_deprecation_metadata_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span>
-                <span class="s2">&quot;cookieDeprecationMetadataIssueDetails&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cookie_deprecation_metadata_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookieDeprecationMetadataIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cookie_deprecation_metadata_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stylesheet_loading_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span>
-                <span class="s2">&quot;stylesheetLoadingIssueDetails&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stylesheet_loading_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;stylesheetLoadingIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stylesheet_loading_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_rule_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span>
-                <span class="s2">&quot;propertyRuleIssueDetails&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_rule_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;propertyRuleIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">property_rule_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">federated_auth_user_info_request_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span>
-                <span class="s2">&quot;federatedAuthUserInfoRequestIssueDetails&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">federated_auth_user_info_request_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;federatedAuthUserInfoRequestIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">federated_auth_user_info_request_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InspectorIssueDetails</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">cookie_issue_details</span><span class="o">=</span><span class="n">CookieIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookieIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cookieIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">mixed_content_issue_details</span><span class="o">=</span><span class="n">MixedContentIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;mixedContentIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mixedContentIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">blocked_by_response_issue_details</span><span class="o">=</span><span class="n">BlockedByResponseIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;blockedByResponseIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;blockedByResponseIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">heavy_ad_issue_details</span><span class="o">=</span><span class="n">HeavyAdIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;heavyAdIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;heavyAdIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">content_security_policy_issue_details</span><span class="o">=</span><span class="n">ContentSecurityPolicyIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;contentSecurityPolicyIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;contentSecurityPolicyIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">shared_array_buffer_issue_details</span><span class="o">=</span><span class="n">SharedArrayBufferIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sharedArrayBufferIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sharedArrayBufferIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">low_text_contrast_issue_details</span><span class="o">=</span><span class="n">LowTextContrastIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;lowTextContrastIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lowTextContrastIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">cors_issue_details</span><span class="o">=</span><span class="n">CorsIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;corsIssueDetails&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;corsIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">attribution_reporting_issue_details</span><span class="o">=</span><span class="n">AttributionReportingIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;attributionReportingIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attributionReportingIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">quirks_mode_issue_details</span><span class="o">=</span><span class="n">QuirksModeIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;quirksModeIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;quirksModeIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">navigator_user_agent_issue_details</span><span class="o">=</span><span class="n">NavigatorUserAgentIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;navigatorUserAgentIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;navigatorUserAgentIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">generic_issue_details</span><span class="o">=</span><span class="n">GenericIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;genericIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;genericIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">deprecation_issue_details</span><span class="o">=</span><span class="n">DeprecationIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;deprecationIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;deprecationIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">client_hint_issue_details</span><span class="o">=</span><span class="n">ClientHintIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;clientHintIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;clientHintIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">federated_auth_request_issue_details</span><span class="o">=</span><span class="n">FederatedAuthRequestIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;federatedAuthRequestIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;federatedAuthRequestIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">bounce_tracking_issue_details</span><span class="o">=</span><span class="n">BounceTrackingIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;bounceTrackingIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bounceTrackingIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">cookie_deprecation_metadata_issue_details</span><span class="o">=</span><span class="n">CookieDeprecationMetadataIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookieDeprecationMetadataIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cookieDeprecationMetadataIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">stylesheet_loading_issue_details</span><span class="o">=</span><span class="n">StylesheetLoadingIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;stylesheetLoadingIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stylesheetLoadingIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">property_rule_issue_details</span><span class="o">=</span><span class="n">PropertyRuleIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;propertyRuleIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;propertyRuleIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">federated_auth_user_info_request_issue_details</span><span class="o">=</span><span class="n">FederatedAuthUserInfoRequestIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;federatedAuthUserInfoRequestIssueDetails&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;federatedAuthUserInfoRequestIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">cookie_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">CookieIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookieIssueDetails&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cookieIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">mixed_content_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">MixedContentIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;mixedContentIssueDetails&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mixedContentIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">blocked_by_response_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">BlockedByResponseIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;blockedByResponseIssueDetails&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;blockedByResponseIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">heavy_ad_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">HeavyAdIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;heavyAdIssueDetails&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;heavyAdIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">content_security_policy_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">ContentSecurityPolicyIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;contentSecurityPolicyIssueDetails&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;contentSecurityPolicyIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">shared_array_buffer_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">SharedArrayBufferIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sharedArrayBufferIssueDetails&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sharedArrayBufferIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">low_text_contrast_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">LowTextContrastIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;lowTextContrastIssueDetails&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lowTextContrastIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">cors_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">CorsIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;corsIssueDetails&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;corsIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">attribution_reporting_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">AttributionReportingIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;attributionReportingIssueDetails&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attributionReportingIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">quirks_mode_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">QuirksModeIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;quirksModeIssueDetails&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;quirksModeIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">navigator_user_agent_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">NavigatorUserAgentIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;navigatorUserAgentIssueDetails&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;navigatorUserAgentIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">generic_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">GenericIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;genericIssueDetails&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;genericIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">deprecation_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">DeprecationIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;deprecationIssueDetails&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;deprecationIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">client_hint_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">ClientHintIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;clientHintIssueDetails&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;clientHintIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">federated_auth_request_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">FederatedAuthRequestIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;federatedAuthRequestIssueDetails&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;federatedAuthRequestIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">bounce_tracking_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">BounceTrackingIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;bounceTrackingIssueDetails&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bounceTrackingIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">cookie_deprecation_metadata_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">CookieDeprecationMetadataIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookieDeprecationMetadataIssueDetails&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cookieDeprecationMetadataIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">stylesheet_loading_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">StylesheetLoadingIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;stylesheetLoadingIssueDetails&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stylesheetLoadingIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">property_rule_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">PropertyRuleIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;propertyRuleIssueDetails&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;propertyRuleIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">federated_auth_user_info_request_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">FederatedAuthUserInfoRequestIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;federatedAuthUserInfoRequestIssueDetails&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;federatedAuthUserInfoRequestIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -2022,9 +2103,11 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">code</span><span class="o">=</span><span class="n">InspectorIssueCode</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]),</span>
             <span class="n">details</span><span class="o">=</span><span class="n">InspectorIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;details&quot;</span><span class="p">]),</span>
-            <span class="n">issue_id</span><span class="o">=</span><span class="n">IssueId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;issueId&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;issueId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">issue_id</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">IssueId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;issueId&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;issueId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 

@@ -102,7 +102,7 @@ the next time you make network traffic you will see your console print like craz
   **kw** – 
 * **Returns:**
 
-#### attached*: bool* *= None*
+#### attached *: bool* *= None*
 
 #### *async* back()
 
@@ -112,13 +112,15 @@ history back
 
 alias to self.activate
 
-#### browser*: [`Browser`](browser.md#nodriver.Browser)*
+#### browser *: nodriver.core.browser.Browser*
 
 #### *async* close()
 
 close the current target (ie: tab,window,page)
 :return:
 :rtype:
+
+#### *property* closed
 
 #### *async* download_file(url, filename=None)
 
@@ -128,24 +130,60 @@ downloads file by given url.
   * **url** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – url of the file
   * **filename** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/library/constants.html#None)]) – the name for the file. if not specified the name is composed from the url file name
 
-#### *async* find(text='', selector='', timeout=5)
+#### *async* evaluate(expression, await_promise=False, return_by_value=False)
 
-#### *async* find_all(text='', selector='', timeout=5)
+#### *async* find(text, best_match=False, return_enclosing_element=True, timeout=10)
 
-#### *async* find_element_by_text(text, return_enclosing_element=True)
+find single element by text
+can also be used to wait for such element to appear.
+
+* **Parameters:**
+  * **text** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – text to search for. note: script contents are also considered text
+  * **best_match** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – 
+
+    when True, which is MUCH more expensive (thus much slower),
+    : will find the closest match based on length.
+      this could help tremendously, when for example you search for “login”, you’d probably want the login button element,
+      and not thousands of scripts,meta,headings containing a string of “login”.
+
+    * **type best_match:**
+      bool
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+
+#### *async* find_all(text, timeout=10)
+
+find multiple elements by text
+can also be used to wait for such element to appear.
+
+* **Parameters:**
+  * **text** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – text to search for. note: script contents are also considered text
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+* **Return type:**
+  [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Element`](element.md#nodriver.Element)]
+
+#### *async* find_element_by_text(text, best_match=False, return_enclosing_element=True)
+
+finds and returns the first element containing <text>, or best match
 
 * **Parameters:**
   * **text** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **best_match** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – when True, which is MUCH more expensive (thus much slower),
+    will find the closest match based on length.
+    this could help tremendously, when for example you search for “login”, you’d probably want the login button element,
+    and not thousands of scripts,meta,headings containing a string of “login”.
   * **return_enclosing_element** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – 
 * **Returns:**
 * **Return type:**
 
-#### *async* find_elements_by_text(text, tag_hint=None, return_enclosing_element=True)
+#### *async* find_elements_by_text(text, tag_hint=None)
+
+returns element which match the given text.
+please note: this may (or will) also return any other element (like inline scripts),
+which happen to contain that text.
 
 * **Parameters:**
   * **text** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **return_enclosing_element** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – if False, it returns the textual element,
-    but usually one needs the element containing the text, like a button. default = True
+  * **tag_hint** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – when provided, narrows down search to only elements which match given tag eg: a, div, script, span
 * **Returns:**
 * **Return type:**
 
@@ -171,15 +209,6 @@ way of navigating.
   * **new_window** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – open new window
 * **Returns:**
   Page
-
-#### *async* get_all_cookies(requests_cookie_format=False)
-
-get all cookies
-
-* **Parameters:**
-  **requests_cookie_format** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – when True, returns python http.cookiejar.Cookie objects, compatible  with requests library and many others.
-* **Returns:**
-* **Return type:**
 
 #### *async* get_all_linked_sources()
 
@@ -211,6 +240,41 @@ gets the current page source content (html)
 get the window Bounds
 :return:
 :rtype:
+
+#### *async* js_dumps(obj)
+
+get properties of a js variable.
+since data is transferred in JSON, expect
+complex objects to not have all properties.
+functions for example are hard to serialize.
+
+### Example
+
+```pycon
+>>> x = await self.js_dumps('window')
+>>> x
+'...{
+'pageYOffset': 0,
+'visualViewport': {},
+'screenX': 10,
+'screenY': 10,
+'outerWidth': 1050,
+'outerHeight': 832,
+'devicePixelRatio': 1,
+'screenLeft': 10,
+'screenTop': 10,
+'styleMedia': {},
+'onsearch': None,
+'isSecureContext': True,
+'trustedTypes': {},
+'performance': {'timeOrigin': 1707823094767.9,
+'timing': {'connectStart': 0,
+'navigationStart': 1707823094768,
+]...'
+```
+
+* **Parameters:**
+  **obj** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – the object to fetch
 
 #### *async* maximize()
 
@@ -286,25 +350,41 @@ scrolls up maybe
 * **Returns:**
 * **Return type:**
 
+#### *async* select(selector, timeout=10)
+
+find single element by css selector.
+can also be used to wait for such element to appear.
+
+* **Parameters:**
+  * **selector** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – css selector, eg a[href], button[class\*=close], a > img[src]
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+* **Return type:**
+  [`Element`](element.md#nodriver.Element)
+
+#### *async* select_all(selector, timeout=10)
+
+find multiple elements by css selector.
+can also be used to wait for such element to appear.
+
+* **Parameters:**
+  * **selector** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – css selector, eg a[href], button[class\*=close], a > img[src]
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+* **Return type:**
+  [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Element`](element.md#nodriver.Element)]
+
 #### *async* send(cdp_obj, \_is_update=False)
 
-send a protocol command
-
-* **Return type:**
-  [object](https://docs.python.org/3/library/functions.html#object)
-* **Parameters:**
-  * **cdp_obj** ([`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`dict`](https://docs.python.org/3/library/stdtypes.html#dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]) – 
-  * **\_is_update** – 
-* **Returns:**
-
-#### *async* set_all_cookies(cookies)
-
-set cookies
+send a protocol command. the commands are made using any of the cdp.<domain>.<method>()’s
+and is used to send custom cdp commands as well.
 
 * **Parameters:**
-  **cookies** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CookieParam`](../cdp/network.md#nodriver.cdp.network.CookieParam)]) – list of cookies
-* **Returns:**
+  * **cdp_obj** ([`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`dict`](https://docs.python.org/3/library/stdtypes.html#dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]) – the generator object created by a cdp method
+  * **\_is_update** – internal flag
+    prevents infinite loop by skipping the registeration of handlers
+    when multiple calls to connection.send() are made
 * **Return type:**
+  [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
+* **Returns:**
 
 #### *async* set_download_path(path)
 
@@ -338,7 +418,9 @@ in case state is set other than “normal”, the left, top, width, and height a
   * **top** ([*int*](https://docs.python.org/3/library/functions.html#int)) – desired offset from the top, in pixels
   * **width** ([*int*](https://docs.python.org/3/library/functions.html#int)) – desired width in pixels
   * **height** ([*int*](https://docs.python.org/3/library/functions.html#int)) – desired height in pixels
-  * **state** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – can be one of the following strings:
+  * **state** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+
+    can be one of the following strings:
     : - normal
       - fullscreen
       - maximized
@@ -346,13 +428,23 @@ in case state is set other than “normal”, the left, top, width, and height a
 
 #### *async* sleep(t=0.25)
 
-#### *property* target*: [TargetInfo](../cdp/target.md#nodriver.cdp.target.TargetInfo)*
+#### *property* target *: [TargetInfo](../cdp/target.md#nodriver.cdp.target.TargetInfo)*
 
 #### *async* update_target()
 
+#### *async* verify_cf()
+
 #### *async* wait(t=None)
 
-#### *async* wait_for(text='', selector='', timeout=5)
+updates targets and
+waits until the event listener reports idle (when no new events are received for 1 second)
+
+* **Parameters:**
+  **t** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`int`](https://docs.python.org/3/library/functions.html#int), [`float`](https://docs.python.org/3/library/functions.html#float)]) – 
+* **Returns:**
+* **Return type:**
+
+#### *async* wait_for(selector='', text='', timeout=10)
 
 variant on query_selector_all and find_elements_by_text
 this variant takes either selector or text, and will block until
@@ -371,4 +463,4 @@ an TimeoutError will be raised
 * **Raises:**
   asyncio.TimeoutError
 
-#### websocket*: websockets.WebSocketClientProtocol*
+#### websocket *: websockets.WebSocketClientProtocol*

@@ -20,38 +20,33 @@ arguments to other commands.
 
 ServiceWorker registration.
 
-* **Parameters:**
-  * **registration_id** ([*RegistrationID*](#nodriver.cdp.service_worker.RegistrationID)) – 
-  * **scope_url** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **is_deleted** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – 
+#### registration_id *: [`RegistrationID`](#nodriver.cdp.service_worker.RegistrationID)*
 
-#### is_deleted*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### scope_url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### registration_id*: [`RegistrationID`](#nodriver.cdp.service_worker.RegistrationID)*
-
-#### scope_url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### is_deleted *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 ### *class* ServiceWorkerVersionRunningStatus(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
-#### RUNNING *= 'running'*
+#### STOPPED *= 'stopped'*
 
 #### STARTING *= 'starting'*
 
-#### STOPPED *= 'stopped'*
+#### RUNNING *= 'running'*
 
 #### STOPPING *= 'stopping'*
 
 ### *class* ServiceWorkerVersionStatus(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
-#### ACTIVATED *= 'activated'*
-
-#### ACTIVATING *= 'activating'*
-
-#### INSTALLED *= 'installed'*
+#### NEW *= 'new'*
 
 #### INSTALLING *= 'installing'*
 
-#### NEW *= 'new'*
+#### INSTALLED *= 'installed'*
+
+#### ACTIVATING *= 'activating'*
+
+#### ACTIVATED *= 'activated'*
 
 #### REDUNDANT *= 'redundant'*
 
@@ -59,66 +54,46 @@ ServiceWorker registration.
 
 ServiceWorker version.
 
-* **Parameters:**
-  * **version_id** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **registration_id** ([*RegistrationID*](#nodriver.cdp.service_worker.RegistrationID)) – 
-  * **script_url** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **running_status** ([*ServiceWorkerVersionRunningStatus*](#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus)) – 
-  * **status** ([*ServiceWorkerVersionStatus*](#nodriver.cdp.service_worker.ServiceWorkerVersionStatus)) – 
-  * **script_last_modified** ([*float*](https://docs.python.org/3/library/functions.html#float) *|* *None*) – 
-  * **script_response_time** ([*float*](https://docs.python.org/3/library/functions.html#float) *|* *None*) – 
-  * **controlled_clients** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*TargetID*](target.md#nodriver.cdp.target.TargetID)*]* *|* *None*) – 
-  * **target_id** ([*TargetID*](target.md#nodriver.cdp.target.TargetID) *|* *None*) – 
-  * **router_rules** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
+#### version_id *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### controlled_clients*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`TargetID`](target.md#nodriver.cdp.target.TargetID)]]* *= None*
+#### registration_id *: [`RegistrationID`](#nodriver.cdp.service_worker.RegistrationID)*
 
-#### registration_id*: [`RegistrationID`](#nodriver.cdp.service_worker.RegistrationID)*
+#### script_url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### router_rules*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### running_status *: [`ServiceWorkerVersionRunningStatus`](#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus)*
 
-#### running_status*: [`ServiceWorkerVersionRunningStatus`](#nodriver.cdp.service_worker.ServiceWorkerVersionRunningStatus)*
+#### status *: [`ServiceWorkerVersionStatus`](#nodriver.cdp.service_worker.ServiceWorkerVersionStatus)*
 
-#### script_last_modified*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### script_last_modified *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 The Last-Modified header value of the main script.
 
-#### script_response_time*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### script_response_time *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 The time at which the response headers of the main script were received from the server.
 For cached script it is the last time the cache entry was validated.
 
-#### script_url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### controlled_clients *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`TargetID`](target.md#nodriver.cdp.target.TargetID)]]* *= None*
 
-#### status*: [`ServiceWorkerVersionStatus`](#nodriver.cdp.service_worker.ServiceWorkerVersionStatus)*
+#### target_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](target.md#nodriver.cdp.target.TargetID)]* *= None*
 
-#### target_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](target.md#nodriver.cdp.target.TargetID)]* *= None*
-
-#### version_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### router_rules *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 ### *class* ServiceWorkerErrorMessage(error_message, registration_id, version_id, source_url, line_number, column_number)
 
 ServiceWorker error message.
 
-* **Parameters:**
-  * **error_message** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **registration_id** ([*RegistrationID*](#nodriver.cdp.service_worker.RegistrationID)) – 
-  * **version_id** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **source_url** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **line_number** ([*int*](https://docs.python.org/3/library/functions.html#int)) – 
-  * **column_number** ([*int*](https://docs.python.org/3/library/functions.html#int)) – 
+#### error_message *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### column_number*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### registration_id *: [`RegistrationID`](#nodriver.cdp.service_worker.RegistrationID)*
 
-#### error_message*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### version_id *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### line_number*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### source_url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### registration_id*: [`RegistrationID`](#nodriver.cdp.service_worker.RegistrationID)*
+#### line_number *: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
-#### source_url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-#### version_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### column_number *: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 ## Commands
 
@@ -231,21 +206,12 @@ you use the event’s attributes.
 
 ### *class* WorkerErrorReported(error_message)
 
-* **Parameters:**
-  **error_message** ([*ServiceWorkerErrorMessage*](#nodriver.cdp.service_worker.ServiceWorkerErrorMessage)) – 
-
-#### error_message*: [`ServiceWorkerErrorMessage`](#nodriver.cdp.service_worker.ServiceWorkerErrorMessage)*
+#### error_message *: [`ServiceWorkerErrorMessage`](#nodriver.cdp.service_worker.ServiceWorkerErrorMessage)*
 
 ### *class* WorkerRegistrationUpdated(registrations)
 
-* **Parameters:**
-  **registrations** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*ServiceWorkerRegistration*](#nodriver.cdp.service_worker.ServiceWorkerRegistration)*]*) – 
-
-#### registrations*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ServiceWorkerRegistration`](#nodriver.cdp.service_worker.ServiceWorkerRegistration)]*
+#### registrations *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ServiceWorkerRegistration`](#nodriver.cdp.service_worker.ServiceWorkerRegistration)]*
 
 ### *class* WorkerVersionUpdated(versions)
 
-* **Parameters:**
-  **versions** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*ServiceWorkerVersion*](#nodriver.cdp.service_worker.ServiceWorkerVersion)*]*) – 
-
-#### versions*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ServiceWorkerVersion`](#nodriver.cdp.service_worker.ServiceWorkerVersion)]*
+#### versions *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ServiceWorkerVersion`](#nodriver.cdp.service_worker.ServiceWorkerVersion)]*

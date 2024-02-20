@@ -74,6 +74,30 @@ async def start(
     return await Browser.create(config)
 
 
+async def create_from_undetected_chromedriver(
+    driver: "undetected_chromedriver.Chrome",
+) -> Browser:
+    """
+    create a nodriver.Browser instance from a running undetected_chromedriver.Chrome instance.
+    """
+    from .config import Config
+
+    conf = Config()
+
+    host, port = driver.options.debugger_address.split(":")
+    conf.host, conf.port = host, int(port)
+
+    # create nodriver Browser instance
+    browser = await start(conf)
+
+    browser._process_pid = driver.browser_pid
+    # stop chromedriver binary
+    driver.service.stop()
+    driver.browser_pid = -1
+    driver.user_data_dir = None
+    return browser
+
+
 def get_registered_instances():
     return __registered__instances__
 
@@ -259,119 +283,3 @@ class js_helpers:
             obj,
             indent,
         )
-
-
-from . import _contradict
-
-
-class Register:
-    def __init__(self):
-        self._data = set()
-
-    def add(self, *obj):
-        print(obj)
-        if any(map(lambda _: isinstance(_, int), obj)):
-            raise ValueError("ints cannot be added")
-        elif len(obj) == 1:
-            self._data.update(obj[0])
-        else:
-            for x in obj:
-                self._data.add(x)
-
-    def update(self, objs):
-        self._data.update(objs)
-
-    def get(self):
-        return self._data
-
-    def remove(self, obj):
-        for o in self._data.copy():
-            if o == obj:
-                return self._data.discard(o)
-
-    def clear(self):
-        self._data.clear()
-
-    def pop(self):
-        self._data.pop()
-
-    def __iter__(self):
-        self.__idx__ = 0
-        return self
-
-    def __getitem__(self, idx):
-        if isinstance(idx, int):
-            return list(self._data)[idx]
-        else:
-            return list(self._data).index(idx)
-
-    def __index__(self):
-        return len(self._data)
-
-    def __next__(self):
-        print(self.__idx__)
-        try:
-            item = list(self._data)[self.__idx__]
-            self.__idx__ += 1
-            return item
-        except:
-            del self.__idx__
-            raise StopIteration
-
-    def __repr__(self):
-        return f"{self.__class__.__name__}\n%s" % "\n\t".join(
-            map(str, list(self._data))
-        )
-
-
-async def create_js_object_representation(
-    object_id: cdp.runtime.RemoteObjectId, tab: "Tab"
-):
-    props = await tab.send(cdp.runtime.get_properties(object_id=object_id))
-    return props
-
-
-class JSObjectRepr(_contradict.ContraDict):
-    def __init__(self, name):
-        super().__init__()
-
-        self.name = name
-
-
-def print_exc_plus():
-    """
-    Print the usual traceback information, followed by a listing of all the
-    local variables in each frame.
-    """
-    import sys, traceback
-
-    tb = sys.exc_info()[2]
-    while 1:
-        if not tb.tb_next:
-            break
-        tb = tb.tb_next
-    stack = []
-    f = tb.tb_frame
-    while f:
-        stack.append(f)
-        f = f.f_back
-    stack.reverse()
-    traceback.print_exc()
-    print("Locals by frame, innermost last")
-    for frame in stack:
-        print()
-        print(
-            "Frame %s in %s at line %s"
-            % (frame.f_code.co_name, frame.f_code.co_filename, frame.f_lineno)
-        )
-        for key, value in frame.f_locals.items():
-            print("\t%20s = " % key)
-            # We have to be VERY careful not to cause a new error in our error
-            # printer! Calling str(  ) on an unknown object could cause an
-            # error we don't want, so we must use try/except to catch it --
-            # we can't stop it from happening, but we can and should
-            # stop it from propagating if it does happen!
-            try:
-                print(value)
-            except:
-                print("<ERROR WHILE PRINTING VALUE>")

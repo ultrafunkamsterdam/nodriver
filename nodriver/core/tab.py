@@ -1,11 +1,8 @@
 from __future__ import annotations
 import asyncio
-import http.cookiejar
 import json
 import logging
 import pathlib
-import types
-import typing
 import warnings
 from typing import List, Union, Optional, Tuple
 
@@ -470,7 +467,7 @@ class Tab(Connection):
             for iframe_elem in iframes_elems:
                 iframe_text_nodes = util.filter_recurse_all(
                     iframe_elem.node,
-                    lambda node: node.node_type == 3
+                    lambda node: node.node_type == 3  # noqa
                     and text.lower() in node.node_value.lower(),
                 )
                 if iframe_text_nodes:
@@ -538,7 +535,7 @@ class Tab(Connection):
             for iframe_elem in iframes_elems:
                 iframe_text_nodes = util.filter_recurse_all(
                     iframe_elem.node,
-                    lambda node: node.node_type == 3
+                    lambda node: node.node_type == 3  # noqa
                     and text.lower() in node.node_value.lower(),
                 )
                 if iframe_text_nodes:

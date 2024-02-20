@@ -52,14 +52,10 @@ you use the event’s attributes.
 
 Informs that port was successfully bound and got a specified connection id.
 
-* **Parameters:**
-  * **port** ([*int*](https://docs.python.org/3/library/functions.html#int)) – 
-  * **connection_id** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-
-#### connection_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-Connection id to be used.
-
-#### port*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### port *: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Port number that was successfully bound.
+
+#### connection_id *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+Connection id to be used.

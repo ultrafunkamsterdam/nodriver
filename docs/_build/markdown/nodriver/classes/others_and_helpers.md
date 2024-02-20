@@ -4,19 +4,7 @@
 
 ### *class* Config(user_data_dir=None, headless=False, browser_executable_path=None, browser_args=None, sandbox=True, lang='en-US,en;q=0.9', \*\*kwargs)
 
-* **Parameters:**
-  * **user_data_dir** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* [*Path*](https://docs.python.org/3/library/pathlib.html#pathlib.Path) *|* *None*) – 
-  * **headless** ([*bool*](https://docs.python.org/3/library/functions.html#bool) *|* *None*) – 
-  * **browser_executable_path** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* [*Path*](https://docs.python.org/3/library/pathlib.html#pathlib.Path) *|* *None*) – 
-  * **browser_args** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*str*](https://docs.python.org/3/library/stdtypes.html#str)*]* *|* *None*) – 
-  * **sandbox** ([*bool*](https://docs.python.org/3/library/functions.html#bool) *|* *None*) – 
-  * **lang** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **kwargs** ([*dict*](https://docs.python.org/3/library/stdtypes.html#dict)) – 
-
 #### add_argument(arg)
-
-* **Parameters:**
-  **arg** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
 
 #### clear()
 

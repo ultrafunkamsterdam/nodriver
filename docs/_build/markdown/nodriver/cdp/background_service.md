@@ -26,69 +26,55 @@ API.
 
 #### BACKGROUND_SYNC *= 'backgroundSync'*
 
+#### PUSH_MESSAGING *= 'pushMessaging'*
+
 #### NOTIFICATIONS *= 'notifications'*
 
 #### PAYMENT_HANDLER *= 'paymentHandler'*
 
 #### PERIODIC_BACKGROUND_SYNC *= 'periodicBackgroundSync'*
 
-#### PUSH_MESSAGING *= 'pushMessaging'*
-
 ### *class* EventMetadata(key, value)
 
 A key-value pair for additional event information to pass along.
 
-* **Parameters:**
-  * **key** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **value** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+#### key *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-#### value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ### *class* BackgroundServiceEvent(timestamp, origin, service_worker_registration_id, service, event_name, instance_id, event_metadata, storage_key)
 
-* **Parameters:**
-  * **timestamp** ([*TimeSinceEpoch*](network.md#nodriver.cdp.network.TimeSinceEpoch)) – 
-  * **origin** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **service_worker_registration_id** ([*RegistrationID*](service_worker.md#nodriver.cdp.service_worker.RegistrationID)) – 
-  * **service** ([*ServiceName*](#nodriver.cdp.background_service.ServiceName)) – 
-  * **event_name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **instance_id** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **event_metadata** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*EventMetadata*](#nodriver.cdp.background_service.EventMetadata)*]*) – 
-  * **storage_key** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+#### timestamp *: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
-#### event_metadata*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`EventMetadata`](#nodriver.cdp.background_service.EventMetadata)]*
+Timestamp of the event (in seconds).
 
-A list of event-specific information.
-
-#### event_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-A description of the event.
-
-#### instance_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-An identifier that groups related events together.
-
-#### origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The origin this event belongs to.
 
-#### service*: [`ServiceName`](#nodriver.cdp.background_service.ServiceName)*
-
-The Background Service this event belongs to.
-
-#### service_worker_registration_id*: [`RegistrationID`](service_worker.md#nodriver.cdp.service_worker.RegistrationID)*
+#### service_worker_registration_id *: [`RegistrationID`](service_worker.md#nodriver.cdp.service_worker.RegistrationID)*
 
 The Service Worker ID that initiated the event.
 
-#### storage_key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### service *: [`ServiceName`](#nodriver.cdp.background_service.ServiceName)*
+
+The Background Service this event belongs to.
+
+#### event_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+A description of the event.
+
+#### instance_id *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+An identifier that groups related events together.
+
+#### event_metadata *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`EventMetadata`](#nodriver.cdp.background_service.EventMetadata)]*
+
+A list of event-specific information.
+
+#### storage_key *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Storage key this event belongs to.
-
-#### timestamp*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
-
-Timestamp of the event (in seconds).
 
 ## Commands
 
@@ -148,20 +134,13 @@ you use the event’s attributes.
 
 Called when the recording state for the service has been updated.
 
-* **Parameters:**
-  * **is_recording** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – 
-  * **service** ([*ServiceName*](#nodriver.cdp.background_service.ServiceName)) – 
+#### is_recording *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### is_recording*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
-
-#### service*: [`ServiceName`](#nodriver.cdp.background_service.ServiceName)*
+#### service *: [`ServiceName`](#nodriver.cdp.background_service.ServiceName)*
 
 ### *class* BackgroundServiceEventReceived(background_service_event)
 
 Called with all existing backgroundServiceEvents when enabled, and all new
 events afterwards if enabled and recording.
 
-* **Parameters:**
-  **background_service_event** ([*BackgroundServiceEvent*](#nodriver.cdp.background_service.BackgroundServiceEvent)) – 
-
-#### background_service_event*: [`BackgroundServiceEvent`](#nodriver.cdp.background_service.BackgroundServiceEvent)*
+#### background_service_event *: [`BackgroundServiceEvent`](#nodriver.cdp.background_service.BackgroundServiceEvent)*

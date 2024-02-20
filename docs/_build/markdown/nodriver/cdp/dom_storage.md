@@ -22,20 +22,15 @@ arguments to other commands.
 
 DOM Storage identifier.
 
-* **Parameters:**
-  * **is_local_storage** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – 
-  * **security_origin** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **storage_key** ([*SerializedStorageKey*](#nodriver.cdp.dom_storage.SerializedStorageKey) *|* *None*) – 
-
-#### is_local_storage*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### is_local_storage *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Whether the storage is local storage (not session storage).
 
-#### security_origin*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### security_origin *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Security origin for the storage.
 
-#### storage_key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SerializedStorageKey`](#nodriver.cdp.dom_storage.SerializedStorageKey)]* *= None*
+#### storage_key *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SerializedStorageKey`](#nodriver.cdp.dom_storage.SerializedStorageKey)]* *= None*
 
 Represents a key by which DOM Storage keys its CachedStorageAreas
 
@@ -108,46 +103,28 @@ you use the event’s attributes.
 
 ### *class* DomStorageItemAdded(storage_id, key, new_value)
 
-* **Parameters:**
-  * **storage_id** ([*StorageId*](#nodriver.cdp.dom_storage.StorageId)) – 
-  * **key** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **new_value** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+#### storage_id *: [`StorageId`](#nodriver.cdp.dom_storage.StorageId)*
 
-#### key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### key *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### new_value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-#### storage_id*: [`StorageId`](#nodriver.cdp.dom_storage.StorageId)*
+#### new_value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ### *class* DomStorageItemRemoved(storage_id, key)
 
-* **Parameters:**
-  * **storage_id** ([*StorageId*](#nodriver.cdp.dom_storage.StorageId)) – 
-  * **key** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+#### storage_id *: [`StorageId`](#nodriver.cdp.dom_storage.StorageId)*
 
-#### key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-#### storage_id*: [`StorageId`](#nodriver.cdp.dom_storage.StorageId)*
+#### key *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ### *class* DomStorageItemUpdated(storage_id, key, old_value, new_value)
 
-* **Parameters:**
-  * **storage_id** ([*StorageId*](#nodriver.cdp.dom_storage.StorageId)) – 
-  * **key** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **old_value** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **new_value** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+#### storage_id *: [`StorageId`](#nodriver.cdp.dom_storage.StorageId)*
 
-#### key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### key *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### new_value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### old_value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### old_value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-#### storage_id*: [`StorageId`](#nodriver.cdp.dom_storage.StorageId)*
+#### new_value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ### *class* DomStorageItemsCleared(storage_id)
 
-* **Parameters:**
-  **storage_id** ([*StorageId*](#nodriver.cdp.dom_storage.StorageId)) – 
-
-#### storage_id*: [`StorageId`](#nodriver.cdp.dom_storage.StorageId)*
+#### storage_id *: [`StorageId`](#nodriver.cdp.dom_storage.StorageId)*

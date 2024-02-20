@@ -282,7 +282,9 @@ class Browser:
             return
 
         # self.config.update(kwargs)
-
+        connect_exisiting = False
+        if self.config.host and self.config.port:
+            connect_exisiting = True
         self.config.host = self.config.host or "127.0.0.1"
         self.config.port = self.config.port or util.free_port()
 
@@ -309,21 +311,22 @@ class Browser:
         logger.info(
             "starting\n\texecutable :%s\n\narguments:\n%s", exe, "\n\t".join(params)
         )
-        self._process: asyncio.subprocess.Process = (
-            await asyncio.create_subprocess_exec(
-                # self.config.browser_executable_path,
-                # *cmdparams,
-                exe,
-                *params,
-                stdin=asyncio.subprocess.PIPE,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE,
-                close_fds=is_posix,
+        if not connect_exisiting:
+            self._process: asyncio.subprocess.Process = (
+                await asyncio.create_subprocess_exec(
+                    # self.config.browser_executable_path,
+                    # *cmdparams,
+                    exe,
+                    *params,
+                    stdin=asyncio.subprocess.PIPE,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                    close_fds=is_posix,
+                )
             )
-        )
 
-        self._process_pid = self._process.pid
-        logger.info("created process with pid %d " % self._process_pid)
+            self._process_pid = self._process.pid
+            logger.info("created process with pid %d " % self._process_pid)
 
         self._http = HTTPApi((self.config.host, self.config.port))
 

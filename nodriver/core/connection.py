@@ -280,9 +280,7 @@ class Connection(metaclass=CantTouchThis):
                 logger.debug(
                     "exception during opening of websocket : %s", e, exc_info=True
                 )
-                from .util import print_exc_plus
 
-                print_exc_plus()
                 if self.listener:
                     self.listener.cancel()
                 raise

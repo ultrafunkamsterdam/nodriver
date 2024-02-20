@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Browser class" href="classes/browser.html" /><link rel="prev" title="NODRIVER" href="../index.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Installation - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -284,7 +284,7 @@ type or paste a few lines and off you go.</p>
     <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">scroll_down</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
     <span class="n">elems</span> <span class="o">=</span> <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="s1">&#39;*[src]&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elems</span><span class="p">:</span>
-        <span class="k">await</span> <span class="n">elem</span><span class="o">.</span><span class="n">highlight_position</span><span class="p">()</span>
+        <span class="k">await</span> <span class="n">elem</span><span class="o">.</span><span class="n">flash</span><span class="p">()</span>
 
     <span class="n">page2</span> <span class="o">=</span> <span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://twitter.com&#39;</span><span class="p">,</span> <span class="n">new_tab</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">page3</span> <span class="o">=</span> <span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://pornhub.com&#39;</span><span class="p">,</span> <span class="n">new_window</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -292,7 +292,7 @@ type or paste a few lines and off you go.</p>
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">page2</span><span class="p">,</span> <span class="n">page3</span><span class="p">):</span>
        <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">bring_to_front</span><span class="p">()</span>
        <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">scroll_down</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
-       <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+       <span class="k">await</span> <span class="n">p</span>  <span class="c1"># waits for most events to be processed</span>
        <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
        <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="n">page3</span><span class="p">:</span>
            <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -301,6 +301,136 @@ type or paste a few lines and off you go.</p>
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
 
     <span class="c1"># since asyncio.run never worked (for me)</span>
+    <span class="n">uc</span><span class="o">.</span><span class="n">loop</span><span class="p">()</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>A more concrete example, which can be found in the ./example/ folder,
+shows a script to create a twitter account</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">nodriver</span> <span class="k">as</span> <span class="nn">uc</span>
+
+<span class="n">months</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;january&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;february&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;march&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;april&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;may&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;june&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;july&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;august&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;september&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;october&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;november&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;december&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">driver</span> <span class="o">=</span> <span class="k">await</span> <span class="n">uc</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="n">tab</span> <span class="o">=</span> <span class="k">await</span> <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://twitter.com&quot;</span><span class="p">)</span>
+
+    <span class="c1"># wait for text to appear instead of a static number of seconds to wait</span>
+    <span class="c1"># this does not always work as expected, due to speed.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;finding the &quot;create account&quot; button&#39;</span><span class="p">)</span>
+    <span class="n">create_account</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;create account&quot;</span><span class="p">,</span> <span class="n">best_match</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&quot;create account&quot; =&gt; click&#39;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">create_account</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;finding the email input field&quot;</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;input[type=email]&quot;</span><span class="p">)</span>
+
+    <span class="c1"># sometimes, email field is not shown, because phone is being asked instead</span>
+    <span class="c1"># when this occurs, find the small text which says &quot;use email instead&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">email</span><span class="p">:</span>
+        <span class="n">use_mail_instead</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;use email instead&quot;</span><span class="p">)</span>
+        <span class="c1"># and click it</span>
+        <span class="k">await</span> <span class="n">use_mail_instead</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+        <span class="c1"># now find the email field again</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;input[type=email]&quot;</span><span class="p">)</span>
+
+    <span class="n">randstr</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">))</span>
+
+    <span class="c1"># send keys to email field</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;filling in the &quot;email&quot; input field&#39;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">email</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">randstr</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="s2">&quot;@&quot;</span><span class="p">,</span> <span class="n">randstr</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="s2">&quot;.com&quot;</span><span class="p">]))</span>
+
+    <span class="c1"># find the name input field</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;finding the name input field&quot;</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;input[type=text]&quot;</span><span class="p">)</span>
+
+    <span class="c1"># again, send random text</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;filling in the &quot;name&quot; input field&#39;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">name</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">randstr</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+
+    <span class="c1"># since there are 3 select fields on the tab, we can use unpacking</span>
+    <span class="c1"># to assign each field</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;finding the &quot;month&quot; , &quot;day&quot; and &quot;year&quot; fields in 1 go&#39;</span><span class="p">)</span>
+    <span class="n">sel_month</span><span class="p">,</span> <span class="n">sel_day</span><span class="p">,</span> <span class="n">sel_year</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">select_all</span><span class="p">(</span><span class="s2">&quot;select&quot;</span><span class="p">)</span>
+
+    <span class="c1"># await sel_month.focus()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;filling in the &quot;month&quot; input field&#39;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">sel_month</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">months</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">)]</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
+
+    <span class="c1"># await sel_day.focus()</span>
+    <span class="c1"># i don&#39;t want to bother with month-lengths and leap years</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;filling in the &quot;day&quot; input field&#39;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">sel_day</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">28</span><span class="p">)))</span>
+
+    <span class="c1"># await sel_year.focus()</span>
+    <span class="c1"># i don&#39;t want to bother with age restrictions</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;filling in the &quot;year&quot; input field&#39;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">sel_year</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span> <span class="mi">2005</span><span class="p">)))</span>
+
+    <span class="k">await</span> <span class="n">tab</span>
+
+    <span class="c1"># let&#39;s handle the cookie nag as well</span>
+    <span class="n">cookie_bar_accept</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;accept all&quot;</span><span class="p">,</span> <span class="n">best_match</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cookie_bar_accept</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">cookie_bar_accept</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+    <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">next_btn</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="n">best_match</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># for btn in reversed(next_btns):</span>
+    <span class="k">await</span> <span class="n">next_btn</span><span class="o">.</span><span class="n">mouse_click</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sleeping 2 seconds&quot;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># visually see what part we&#39;re actually in</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;finding &quot;next&quot; button&#39;</span><span class="p">)</span>
+    <span class="n">next_btn</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="n">best_match</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;clicking &quot;next&quot; button&#39;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">next_btn</span><span class="o">.</span><span class="n">mouse_click</span><span class="p">()</span>
+
+    <span class="c1"># just wait for some button, before we continue</span>
+    <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;[role=button]&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;finding &quot;sign up&quot;  button&#39;</span><span class="p">)</span>
+    <span class="n">sign_up_btn</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Sign up&quot;</span><span class="p">,</span> <span class="n">best_match</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># we need the second one</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;clicking &quot;sign up&quot;  button&#39;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">sign_up_btn</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;the rest of the &quot;implementation&quot; is out of scope&#39;</span><span class="p">)</span>
+    <span class="c1"># further implementation outside of scope</span>
+    <span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+    <span class="c1"># verification code per mail</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># since asyncio.run never worked (for me)</span>
+    <span class="c1"># i use</span>
     <span class="n">uc</span><span class="o">.</span><span class="n">loop</span><span class="p">()</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>

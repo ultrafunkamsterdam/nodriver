@@ -30,105 +30,81 @@ type of HTTP response cached
 
 #### ERROR *= 'error'*
 
-#### OPAQUE_REDIRECT *= 'opaqueRedirect'*
-
 #### OPAQUE_RESPONSE *= 'opaqueResponse'*
+
+#### OPAQUE_REDIRECT *= 'opaqueRedirect'*
 
 ### *class* DataEntry(request_url, request_method, request_headers, response_time, response_status, response_status_text, response_type, response_headers)
 
 Data entry.
 
-* **Parameters:**
-  * **request_url** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **request_method** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **request_headers** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*Header*](#nodriver.cdp.cache_storage.Header)*]*) – 
-  * **response_time** ([*float*](https://docs.python.org/3/library/functions.html#float)) – 
-  * **response_status** ([*int*](https://docs.python.org/3/library/functions.html#int)) – 
-  * **response_status_text** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **response_type** ([*CachedResponseType*](#nodriver.cdp.cache_storage.CachedResponseType)) – 
-  * **response_headers** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*Header*](#nodriver.cdp.cache_storage.Header)*]*) – 
-
-#### request_headers*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Header`](#nodriver.cdp.cache_storage.Header)]*
-
-Request headers
-
-#### request_method*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-Request method.
-
-#### request_url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### request_url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Request URL.
 
-#### response_headers*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Header`](#nodriver.cdp.cache_storage.Header)]*
+#### request_method *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-Response headers
+Request method.
 
-#### response_status*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### request_headers *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Header`](#nodriver.cdp.cache_storage.Header)]*
 
-HTTP response status code.
+Request headers
 
-#### response_status_text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-HTTP response status text.
-
-#### response_time*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### response_time *: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Number of seconds since epoch.
 
-#### response_type*: [`CachedResponseType`](#nodriver.cdp.cache_storage.CachedResponseType)*
+#### response_status *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+HTTP response status code.
+
+#### response_status_text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+HTTP response status text.
+
+#### response_type *: [`CachedResponseType`](#nodriver.cdp.cache_storage.CachedResponseType)*
 
 HTTP response type
+
+#### response_headers *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Header`](#nodriver.cdp.cache_storage.Header)]*
+
+Response headers
 
 ### *class* Cache(cache_id, security_origin, storage_key, cache_name, storage_bucket=None)
 
 Cache identifier.
 
-* **Parameters:**
-  * **cache_id** ([*CacheId*](#nodriver.cdp.cache_storage.CacheId)) – 
-  * **security_origin** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **storage_key** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **cache_name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **storage_bucket** ([*StorageBucket*](storage.md#nodriver.cdp.storage.StorageBucket) *|* *None*) – 
-
-#### cache_id*: [`CacheId`](#nodriver.cdp.cache_storage.CacheId)*
+#### cache_id *: [`CacheId`](#nodriver.cdp.cache_storage.CacheId)*
 
 An opaque unique id of the cache.
 
-#### cache_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-The name of the cache.
-
-#### security_origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### security_origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Security origin of the cache.
 
-#### storage_bucket*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]* *= None*
-
-Storage bucket of the cache.
-
-#### storage_key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### storage_key *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Storage key of the cache.
 
+#### cache_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+The name of the cache.
+
+#### storage_bucket *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]* *= None*
+
+Storage bucket of the cache.
+
 ### *class* Header(name, value)
 
-* **Parameters:**
-  * **name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **value** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-#### value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ### *class* CachedResponse(body)
 
 Cached response
 
-* **Parameters:**
-  **body** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-
-#### body*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### body *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Entry content, base64-encoded. (Encoded as a base64 string when passed over JSON)
 
@@ -167,9 +143,9 @@ Deletes a cache entry.
 Requests cache names.
 
 * **Parameters:**
-  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* At least and at most one of securityOrigin, storageKey, storageBucket must be specified. Security origin.
-  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Storage key.
-  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) – *(Optional)* Storage bucket. If not specified, it uses the default bucket.
+  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* At least and at most one of securityOrigin, storageKey, storageBucket must be specified. Security origin.
+  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Storage key.
+  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) –  *(Optional)* Storage bucket. If not specified, it uses the default bucket.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Cache`](#nodriver.cdp.cache_storage.Cache)]]
 * **Returns:**
@@ -194,9 +170,9 @@ Requests data from cache.
 
 * **Parameters:**
   * **cache_id** ([`CacheId`](#nodriver.cdp.cache_storage.CacheId)) – ID of cache to get entries from.
-  * **skip_count** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Number of records to skip.
-  * **page_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Number of records to fetch.
-  * **path_filter** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* If present, only return the entries containing this substring in the path
+  * **skip_count** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Number of records to skip.
+  * **page_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Number of records to fetch.
+  * **path_filter** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* If present, only return the entries containing this substring in the path
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`DataEntry`](#nodriver.cdp.cache_storage.DataEntry)], [`float`](https://docs.python.org/3/library/functions.html#float)]]
 * **Returns:**

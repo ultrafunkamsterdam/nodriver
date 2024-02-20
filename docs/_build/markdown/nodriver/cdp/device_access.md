@@ -26,13 +26,9 @@ A device id.
 
 Device information displayed in a user prompt to select a device.
 
-* **Parameters:**
-  * **id_** ([*DeviceId*](#nodriver.cdp.device_access.DeviceId)) – 
-  * **name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+#### id_ *: [`DeviceId`](#nodriver.cdp.device_access.DeviceId)*
 
-#### id_*: [`DeviceId`](#nodriver.cdp.device_access.DeviceId)*
-
-#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Display name as it appears in a device request user prompt.
 
@@ -52,8 +48,7 @@ to. For more information, see
 Cancel a prompt in response to a DeviceAccess.deviceRequestPrompted event.
 
 * **Parameters:**
-  * **id** – 
-  * **id_** ([*RequestId*](#nodriver.cdp.device_access.RequestId)) – 
+  **id** – 
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -78,7 +73,6 @@ Select a device in response to a DeviceAccess.deviceRequestPrompted event.
 * **Parameters:**
   * **id** – 
   * **device_id** ([`DeviceId`](#nodriver.cdp.device_access.DeviceId)) – 
-  * **id_** ([*RequestId*](#nodriver.cdp.device_access.RequestId)) – 
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -93,10 +87,6 @@ you use the event’s attributes.
 A device request opened a user prompt to select a device. Respond with the
 selectPrompt or cancelPrompt command.
 
-* **Parameters:**
-  * **id_** ([*RequestId*](#nodriver.cdp.device_access.RequestId)) – 
-  * **devices** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*PromptDevice*](#nodriver.cdp.device_access.PromptDevice)*]*) – 
+#### id_ *: [`RequestId`](#nodriver.cdp.device_access.RequestId)*
 
-#### devices*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PromptDevice`](#nodriver.cdp.device_access.PromptDevice)]*
-
-#### id_*: [`RequestId`](#nodriver.cdp.device_access.RequestId)*
+#### devices *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PromptDevice`](#nodriver.cdp.device_access.PromptDevice)]*

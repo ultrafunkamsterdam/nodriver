@@ -18,15 +18,11 @@ arguments to other commands.
 
 Description of the protocol domain.
 
-* **Parameters:**
-  * **name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **version** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-
-#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Domain name.
 
-#### version*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### version *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Domain version.
 

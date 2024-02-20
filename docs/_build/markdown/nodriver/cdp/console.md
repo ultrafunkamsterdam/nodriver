@@ -18,37 +18,29 @@ arguments to other commands.
 
 Console message.
 
-* **Parameters:**
-  * **source** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **level** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **text** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **url** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **line** ([*int*](https://docs.python.org/3/library/functions.html#int) *|* *None*) – 
-  * **column** ([*int*](https://docs.python.org/3/library/functions.html#int) *|* *None*) – 
-
-#### column*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
-
-Column number in the resource that generated this message (1-based).
-
-#### level*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-Message severity.
-
-#### line*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
-
-Line number in the resource that generated this message (1-based).
-
-#### source*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### source *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Message source.
 
-#### text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### level *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+Message severity.
+
+#### text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Message text.
 
-#### url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 URL of the message origin.
+
+#### line *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+
+Line number in the resource that generated this message (1-based).
+
+#### column *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+
+Column number in the resource that generated this message (1-based).
 
 ## Commands
 
@@ -93,9 +85,6 @@ you use the event’s attributes.
 
 Issued when new console message is added.
 
-* **Parameters:**
-  **message** ([*ConsoleMessage*](#nodriver.cdp.console.ConsoleMessage)) – 
-
-#### message*: [`ConsoleMessage`](#nodriver.cdp.console.ConsoleMessage)*
+#### message *: [`ConsoleMessage`](#nodriver.cdp.console.ConsoleMessage)*
 
 Console message that has been added.

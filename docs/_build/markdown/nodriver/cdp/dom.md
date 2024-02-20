@@ -33,64 +33,59 @@ front-end.
 
 Backend node with a friendly name.
 
-* **Parameters:**
-  * **node_type** ([*int*](https://docs.python.org/3/library/functions.html#int)) – 
-  * **node_name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **backend_node_id** ([*BackendNodeId*](#nodriver.cdp.dom.BackendNodeId)) – 
+#### node_type *: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
-#### backend_node_id*: [`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)*
+`Node`’s nodeType.
 
-#### node_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### node_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 `Node`’s nodeName.
 
-#### node_type*: [`int`](https://docs.python.org/3/library/functions.html#int)*
-
-`Node`’s nodeType.
+#### backend_node_id *: [`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)*
 
 ### *class* PseudoType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 Pseudo element type.
 
-#### AFTER *= 'after'*
-
-#### BACKDROP *= 'backdrop'*
-
-#### BEFORE *= 'before'*
+#### FIRST_LINE *= 'first-line'*
 
 #### FIRST_LETTER *= 'first-letter'*
 
-#### FIRST_LINE *= 'first-line'*
+#### BEFORE *= 'before'*
 
-#### FIRST_LINE_INHERITED *= 'first-line-inherited'*
+#### AFTER *= 'after'*
+
+#### MARKER *= 'marker'*
+
+#### BACKDROP *= 'backdrop'*
+
+#### SELECTION *= 'selection'*
+
+#### TARGET_TEXT *= 'target-text'*
+
+#### SPELLING_ERROR *= 'spelling-error'*
 
 #### GRAMMAR_ERROR *= 'grammar-error'*
 
 #### HIGHLIGHT *= 'highlight'*
 
-#### INPUT_LIST_BUTTON *= 'input-list-button'*
-
-#### MARKER *= 'marker'*
-
-#### RESIZER *= 'resizer'*
+#### FIRST_LINE_INHERITED *= 'first-line-inherited'*
 
 #### SCROLLBAR *= 'scrollbar'*
 
-#### SCROLLBAR_BUTTON *= 'scrollbar-button'*
-
-#### SCROLLBAR_CORNER *= 'scrollbar-corner'*
-
 #### SCROLLBAR_THUMB *= 'scrollbar-thumb'*
+
+#### SCROLLBAR_BUTTON *= 'scrollbar-button'*
 
 #### SCROLLBAR_TRACK *= 'scrollbar-track'*
 
 #### SCROLLBAR_TRACK_PIECE *= 'scrollbar-track-piece'*
 
-#### SELECTION *= 'selection'*
+#### SCROLLBAR_CORNER *= 'scrollbar-corner'*
 
-#### SPELLING_ERROR *= 'spelling-error'*
+#### RESIZER *= 'resizer'*
 
-#### TARGET_TEXT *= 'target-text'*
+#### INPUT_LIST_BUTTON *= 'input-list-button'*
 
 #### VIEW_TRANSITION *= 'view-transition'*
 
@@ -98,241 +93,202 @@ Pseudo element type.
 
 #### VIEW_TRANSITION_IMAGE_PAIR *= 'view-transition-image-pair'*
 
-#### VIEW_TRANSITION_NEW *= 'view-transition-new'*
-
 #### VIEW_TRANSITION_OLD *= 'view-transition-old'*
+
+#### VIEW_TRANSITION_NEW *= 'view-transition-new'*
 
 ### *class* ShadowRootType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 Shadow root type.
 
-#### CLOSED *= 'closed'*
+#### USER_AGENT *= 'user-agent'*
 
 #### OPEN_ *= 'open'*
 
-#### USER_AGENT *= 'user-agent'*
+#### CLOSED *= 'closed'*
 
 ### *class* CompatibilityMode(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 Document compatibility mode.
 
+#### QUIRKS_MODE *= 'QuirksMode'*
+
 #### LIMITED_QUIRKS_MODE *= 'LimitedQuirksMode'*
 
 #### NO_QUIRKS_MODE *= 'NoQuirksMode'*
-
-#### QUIRKS_MODE *= 'QuirksMode'*
 
 ### *class* PhysicalAxes(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 ContainerSelector physical axes
 
-#### BOTH *= 'Both'*
-
 #### HORIZONTAL *= 'Horizontal'*
 
 #### VERTICAL *= 'Vertical'*
+
+#### BOTH *= 'Both'*
 
 ### *class* LogicalAxes(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 ContainerSelector logical axes
 
+#### INLINE *= 'Inline'*
+
 #### BLOCK *= 'Block'*
 
 #### BOTH *= 'Both'*
-
-#### INLINE *= 'Inline'*
 
 ### *class* Node(node_id, backend_node_id, node_type, node_name, local_name, node_value, parent_id=None, child_node_count=None, children=None, attributes=None, document_url=None, base_url=None, public_id=None, system_id=None, internal_subset=None, xml_version=None, name=None, value=None, pseudo_type=None, pseudo_identifier=None, shadow_root_type=None, frame_id=None, content_document=None, shadow_roots=None, template_content=None, pseudo_elements=None, imported_document=None, distributed_nodes=None, is_svg=None, compatibility_mode=None, assigned_slot=None)
 
 DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes.
 DOMNode is a base node mirror type.
 
-* **Parameters:**
-  * **node_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-  * **backend_node_id** ([*BackendNodeId*](#nodriver.cdp.dom.BackendNodeId)) – 
-  * **node_type** ([*int*](https://docs.python.org/3/library/functions.html#int)) – 
-  * **node_name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **local_name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **node_value** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **parent_id** ([*NodeId*](#nodriver.cdp.dom.NodeId) *|* *None*) – 
-  * **child_node_count** ([*int*](https://docs.python.org/3/library/functions.html#int) *|* *None*) – 
-  * **children** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*Node*](#nodriver.cdp.dom.Node)*]* *|* *None*) – 
-  * **attributes** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*str*](https://docs.python.org/3/library/stdtypes.html#str)*]* *|* *None*) – 
-  * **document_url** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **base_url** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **public_id** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **system_id** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **internal_subset** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **xml_version** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **value** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **pseudo_type** ([*PseudoType*](#nodriver.cdp.dom.PseudoType) *|* *None*) – 
-  * **pseudo_identifier** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **shadow_root_type** ([*ShadowRootType*](#nodriver.cdp.dom.ShadowRootType) *|* *None*) – 
-  * **frame_id** ([*FrameId*](page.md#nodriver.cdp.page.FrameId) *|* *None*) – 
-  * **content_document** ([*Node*](#nodriver.cdp.dom.Node) *|* *None*) – 
-  * **shadow_roots** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*Node*](#nodriver.cdp.dom.Node)*]* *|* *None*) – 
-  * **template_content** ([*Node*](#nodriver.cdp.dom.Node) *|* *None*) – 
-  * **pseudo_elements** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*Node*](#nodriver.cdp.dom.Node)*]* *|* *None*) – 
-  * **imported_document** ([*Node*](#nodriver.cdp.dom.Node) *|* *None*) – 
-  * **distributed_nodes** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*BackendNode*](#nodriver.cdp.dom.BackendNode)*]* *|* *None*) – 
-  * **is_svg** ([*bool*](https://docs.python.org/3/library/functions.html#bool) *|* *None*) – 
-  * **compatibility_mode** ([*CompatibilityMode*](#nodriver.cdp.dom.CompatibilityMode) *|* *None*) – 
-  * **assigned_slot** ([*BackendNode*](#nodriver.cdp.dom.BackendNode) *|* *None*) – 
-
-#### assigned_slot*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNode`](#nodriver.cdp.dom.BackendNode)]* *= None*
-
-#### attributes*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
-
-Attributes of the `Element` node in the form of flat array `[name1, value1, name2, value2]`.
-
-#### backend_node_id*: [`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)*
-
-The BackendNodeId for this node.
-
-#### base_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
-
-Base URL that `Document` or `FrameOwner` node uses for URL completion.
-
-#### child_node_count*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
-
-Child count for `Container` nodes.
-
-#### children*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Node`](#nodriver.cdp.dom.Node)]]* *= None*
-
-Child nodes of this node when requested with children.
-
-#### compatibility_mode*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CompatibilityMode`](#nodriver.cdp.dom.CompatibilityMode)]* *= None*
-
-#### content_document*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Node`](#nodriver.cdp.dom.Node)]* *= None*
-
-Content document for frame owner elements.
-
-#### distributed_nodes*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BackendNode`](#nodriver.cdp.dom.BackendNode)]]* *= None*
-
-Distributed nodes for given insertion point.
-
-#### document_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
-
-Document URL that `Document` or `FrameOwner` node points to.
-
-#### frame_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]* *= None*
-
-Frame ID for frame owner elements.
-
-#### imported_document*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Node`](#nodriver.cdp.dom.Node)]* *= None*
-
-Deprecated, as the HTML Imports API has been removed (crbug.com/937746).
-This property used to return the imported document for the HTMLImport links.
-The property is always undefined now.
-
-#### internal_subset*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
-
-`DocumentType`’s internalSubset.
-
-#### is_svg*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
-
-Whether the node is SVG.
-
-#### local_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-`Node`’s localName.
-
-#### name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
-
-`Attr`’s name.
-
-#### node_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### node_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Node identifier that is passed into the rest of the DOM messages as the `nodeId`. Backend
 will only push node with given `id` once. It is aware of all requested nodes and will only
 fire DOM events for nodes known to the client.
 
-#### node_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### backend_node_id *: [`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)*
 
-`Node`’s nodeName.
+The BackendNodeId for this node.
 
-#### node_type*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### node_type *: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 `Node`’s nodeType.
 
-#### node_value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### node_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+`Node`’s nodeName.
+
+#### local_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+`Node`’s localName.
+
+#### node_value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 `Node`’s nodeValue.
 
-#### parent_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]* *= None*
+#### parent_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]* *= None*
 
 The id of the parent node if any.
 
-#### pseudo_elements*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Node`](#nodriver.cdp.dom.Node)]]* *= None*
+#### child_node_count *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
-Pseudo elements associated with this node.
+Child count for `Container` nodes.
 
-#### pseudo_identifier*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### children *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Node`](#nodriver.cdp.dom.Node)]]* *= None*
+
+Child nodes of this node when requested with children.
+
+#### attributes *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
+
+Attributes of the `Element` node in the form of flat array `[name1, value1, name2, value2]`.
+
+#### document_url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+Document URL that `Document` or `FrameOwner` node points to.
+
+#### base_url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+Base URL that `Document` or `FrameOwner` node uses for URL completion.
+
+#### public_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+`DocumentType`’s publicId.
+
+#### system_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+`DocumentType`’s systemId.
+
+#### internal_subset *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+`DocumentType`’s internalSubset.
+
+#### xml_version *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+`Document`’s XML version in case of XML documents.
+
+#### name *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+`Attr`’s name.
+
+#### value *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+`Attr`’s value.
+
+#### pseudo_type *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PseudoType`](#nodriver.cdp.dom.PseudoType)]* *= None*
+
+Pseudo element type for this node.
+
+#### pseudo_identifier *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Pseudo element identifier for this node. Only present if there is a
 valid pseudoType.
 
-#### pseudo_type*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PseudoType`](#nodriver.cdp.dom.PseudoType)]* *= None*
-
-Pseudo element type for this node.
-
-#### public_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
-
-`DocumentType`’s publicId.
-
-#### shadow_root_type*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ShadowRootType`](#nodriver.cdp.dom.ShadowRootType)]* *= None*
+#### shadow_root_type *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ShadowRootType`](#nodriver.cdp.dom.ShadowRootType)]* *= None*
 
 Shadow root type.
 
-#### shadow_roots*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Node`](#nodriver.cdp.dom.Node)]]* *= None*
+#### frame_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]* *= None*
+
+Frame ID for frame owner elements.
+
+#### content_document *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Node`](#nodriver.cdp.dom.Node)]* *= None*
+
+Content document for frame owner elements.
+
+#### shadow_roots *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Node`](#nodriver.cdp.dom.Node)]]* *= None*
 
 Shadow root list for given element host.
 
-#### system_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
-
-`DocumentType`’s systemId.
-
-#### template_content*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Node`](#nodriver.cdp.dom.Node)]* *= None*
+#### template_content *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Node`](#nodriver.cdp.dom.Node)]* *= None*
 
 Content document fragment for template elements.
 
-#### value*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### pseudo_elements *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Node`](#nodriver.cdp.dom.Node)]]* *= None*
 
-`Attr`’s value.
+Pseudo elements associated with this node.
 
-#### xml_version*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### imported_document *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Node`](#nodriver.cdp.dom.Node)]* *= None*
 
-`Document`’s XML version in case of XML documents.
+Deprecated, as the HTML Imports API has been removed (crbug.com/937746).
+This property used to return the imported document for the HTMLImport links.
+The property is always undefined now.
+
+#### distributed_nodes *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BackendNode`](#nodriver.cdp.dom.BackendNode)]]* *= None*
+
+Distributed nodes for given insertion point.
+
+#### is_svg *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+Whether the node is SVG.
+
+#### compatibility_mode *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CompatibilityMode`](#nodriver.cdp.dom.CompatibilityMode)]* *= None*
+
+#### assigned_slot *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNode`](#nodriver.cdp.dom.BackendNode)]* *= None*
 
 ### *class* RGBA(r, g, b, a=None)
 
 A structure holding an RGBA color.
 
-* **Parameters:**
-  * **r** ([*int*](https://docs.python.org/3/library/functions.html#int)) – 
-  * **g** ([*int*](https://docs.python.org/3/library/functions.html#int)) – 
-  * **b** ([*int*](https://docs.python.org/3/library/functions.html#int)) – 
-  * **a** ([*float*](https://docs.python.org/3/library/functions.html#float) *|* *None*) – 
+#### r *: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
-#### a*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+The red component, in the [0-255] range.
+
+#### g *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+The green component, in the [0-255] range.
+
+#### b *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+The blue component, in the [0-255] range.
+
+#### a *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 1).
 
 * **Type:**
   The alpha component, in the [0-1] [range](https://docs.python.org/3/library/stdtypes.html#range) (default
-
-#### b*: [`int`](https://docs.python.org/3/library/functions.html#int)*
-
-The blue component, in the [0-255] range.
-
-#### g*: [`int`](https://docs.python.org/3/library/functions.html#int)*
-
-The green component, in the [0-255] range.
-
-#### r*: [`int`](https://docs.python.org/3/library/functions.html#int)*
-
-The red component, in the [0-255] range.
 
 ### *class* Quad(iterable=(), /)
 
@@ -342,101 +298,77 @@ An array of quad vertices, x immediately followed by y for each point, points cl
 
 Box model.
 
-* **Parameters:**
-  * **content** ([*Quad*](#nodriver.cdp.dom.Quad)) – 
-  * **padding** ([*Quad*](#nodriver.cdp.dom.Quad)) – 
-  * **border** ([*Quad*](#nodriver.cdp.dom.Quad)) – 
-  * **margin** ([*Quad*](#nodriver.cdp.dom.Quad)) – 
-  * **width** ([*int*](https://docs.python.org/3/library/functions.html#int)) – 
-  * **height** ([*int*](https://docs.python.org/3/library/functions.html#int)) – 
-  * **shape_outside** ([*ShapeOutsideInfo*](#nodriver.cdp.dom.ShapeOutsideInfo) *|* *None*) – 
-
-#### border*: [`Quad`](#nodriver.cdp.dom.Quad)*
-
-Border box
-
-#### content*: [`Quad`](#nodriver.cdp.dom.Quad)*
+#### content *: [`Quad`](#nodriver.cdp.dom.Quad)*
 
 Content box
 
-#### height*: [`int`](https://docs.python.org/3/library/functions.html#int)*
-
-Node height
-
-#### margin*: [`Quad`](#nodriver.cdp.dom.Quad)*
-
-Margin box
-
-#### padding*: [`Quad`](#nodriver.cdp.dom.Quad)*
+#### padding *: [`Quad`](#nodriver.cdp.dom.Quad)*
 
 Padding box
 
-#### shape_outside*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ShapeOutsideInfo`](#nodriver.cdp.dom.ShapeOutsideInfo)]* *= None*
+#### border *: [`Quad`](#nodriver.cdp.dom.Quad)*
 
-Shape outside coordinates
+Border box
 
-#### width*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### margin *: [`Quad`](#nodriver.cdp.dom.Quad)*
+
+Margin box
+
+#### width *: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Node width
+
+#### height *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+Node height
+
+#### shape_outside *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ShapeOutsideInfo`](#nodriver.cdp.dom.ShapeOutsideInfo)]* *= None*
+
+Shape outside coordinates
 
 ### *class* ShapeOutsideInfo(bounds, shape, margin_shape)
 
 CSS Shape Outside details.
 
-* **Parameters:**
-  * **bounds** ([*Quad*](#nodriver.cdp.dom.Quad)) – 
-  * **shape** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*Any*](https://docs.python.org/3/library/typing.html#typing.Any)*]*) – 
-  * **margin_shape** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*Any*](https://docs.python.org/3/library/typing.html#typing.Any)*]*) – 
-
-#### bounds*: [`Quad`](#nodriver.cdp.dom.Quad)*
+#### bounds *: [`Quad`](#nodriver.cdp.dom.Quad)*
 
 Shape bounds
 
-#### margin_shape*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]*
-
-Margin shape bounds
-
-#### shape*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]*
+#### shape *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]*
 
 Shape coordinate details
+
+#### margin_shape *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]*
+
+Margin shape bounds
 
 ### *class* Rect(x, y, width, height)
 
 Rectangle.
 
-* **Parameters:**
-  * **x** ([*float*](https://docs.python.org/3/library/functions.html#float)) – 
-  * **y** ([*float*](https://docs.python.org/3/library/functions.html#float)) – 
-  * **width** ([*float*](https://docs.python.org/3/library/functions.html#float)) – 
-  * **height** ([*float*](https://docs.python.org/3/library/functions.html#float)) – 
-
-#### height*: [`float`](https://docs.python.org/3/library/functions.html#float)*
-
-Rectangle height
-
-#### width*: [`float`](https://docs.python.org/3/library/functions.html#float)*
-
-Rectangle width
-
-#### x*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### x *: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 X coordinate
 
-#### y*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### y *: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Y coordinate
 
+#### width *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+
+Rectangle width
+
+#### height *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+
+Rectangle height
+
 ### *class* CSSComputedStyleProperty(name, value)
 
-* **Parameters:**
-  * **name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **value** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-
-#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Computed style property name.
 
-#### value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Computed style property value.
 
@@ -474,7 +406,7 @@ given anchor.
 * **Parameters:**
   * **node_id** ([`NodeId`](#nodriver.cdp.dom.NodeId)) – Id of the node to copy.
   * **target_node_id** ([`NodeId`](#nodriver.cdp.dom.NodeId)) – Id of the element to drop the copy into.
-  * **insert_before_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) – *(Optional)* Drop the copy before this node (if absent, the copy becomes the last child of ``targetNodeId``).
+  * **insert_before_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) –  *(Optional)* Drop the copy before this node (if absent, the copy becomes the last child of ``targetNodeId``).
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`NodeId`](#nodriver.cdp.dom.NodeId)]
 * **Returns:**
@@ -486,11 +418,11 @@ Describes node given its id, does not require domain to be enabled. Does not sta
 objects, can be used for automation.
 
 * **Parameters:**
-  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) – *(Optional)* Identifier of the node.
-  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) – *(Optional)* Identifier of the backend node.
-  * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) – *(Optional)* JavaScript object id of the node wrapper.
-  * **depth** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
-  * **pierce** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false).
+  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) –  *(Optional)* Identifier of the node.
+  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) –  *(Optional)* Identifier of the backend node.
+  * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) –  *(Optional)* JavaScript object id of the node wrapper.
+  * **depth** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
+  * **pierce** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false).
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Node`](#nodriver.cdp.dom.Node)]
 * **Returns:**
@@ -520,7 +452,7 @@ be called for that search.
 Enables DOM agent for the given page.
 
 * **Parameters:**
-  **include_whitespace** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)** *(Optional)* Whether to include whitespaces in the children array of returned Nodes.
+  **include_whitespace** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)**  *(Optional)* Whether to include whitespaces in the children array of returned Nodes.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -529,9 +461,9 @@ Enables DOM agent for the given page.
 Focuses the given element.
 
 * **Parameters:**
-  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) – *(Optional)* Identifier of the node.
-  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) – *(Optional)* Identifier of the backend node.
-  * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) – *(Optional)* JavaScript object id of the node wrapper.
+  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) –  *(Optional)* Identifier of the node.
+  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) –  *(Optional)* Identifier of the backend node.
+  * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) –  *(Optional)* JavaScript object id of the node wrapper.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -551,9 +483,9 @@ Returns attributes for the specified node.
 Returns boxes for the given node.
 
 * **Parameters:**
-  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) – *(Optional)* Identifier of the node.
-  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) – *(Optional)* Identifier of the backend node.
-  * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) – *(Optional)* JavaScript object id of the node wrapper.
+  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) –  *(Optional)* Identifier of the node.
+  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) –  *(Optional)* Identifier of the backend node.
+  * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) –  *(Optional)* JavaScript object id of the node wrapper.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`BoxModel`](#nodriver.cdp.dom.BoxModel)]
 * **Returns:**
@@ -570,13 +502,13 @@ closest element with a matching container-name.
 
 * **Parameters:**
   * **node_id** ([`NodeId`](#nodriver.cdp.dom.NodeId)) – 
-  * **container_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)*
-  * **physical_axes** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PhysicalAxes`](#nodriver.cdp.dom.PhysicalAxes)]) – *(Optional)*
-  * **logical_axes** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LogicalAxes`](#nodriver.cdp.dom.LogicalAxes)]) – *(Optional)*
+  * **container_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)*
+  * **physical_axes** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PhysicalAxes`](#nodriver.cdp.dom.PhysicalAxes)]) –  *(Optional)*
+  * **logical_axes** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LogicalAxes`](#nodriver.cdp.dom.LogicalAxes)]) –  *(Optional)*
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]]
 * **Returns:**
-  *(Optional)* The container node for the given node, or null if not found.
+   *(Optional)* The container node for the given node, or null if not found.
 
 ### get_content_quads(node_id=None, backend_node_id=None, object_id=None)
 
@@ -586,9 +518,9 @@ might return multiple quads for inline nodes.
 **EXPERIMENTAL**
 
 * **Parameters:**
-  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) – *(Optional)* Identifier of the node.
-  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) – *(Optional)* Identifier of the backend node.
-  * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) – *(Optional)* JavaScript object id of the node wrapper.
+  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) –  *(Optional)* Identifier of the node.
+  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) –  *(Optional)* Identifier of the backend node.
+  * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) –  *(Optional)* JavaScript object id of the node wrapper.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Quad`](#nodriver.cdp.dom.Quad)]]
 * **Returns:**
@@ -600,8 +532,8 @@ Returns the root DOM node (and optionally the subtree) to the caller.
 Implicitly enables the DOM domain events for the current target.
 
 * **Parameters:**
-  * **depth** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
-  * **pierce** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false).
+  * **depth** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
+  * **pierce** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false).
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Node`](#nodriver.cdp.dom.Node)]
 * **Returns:**
@@ -630,8 +562,8 @@ Use DOMSnapshot.captureSnapshot instead.
 Deprecated since version 1.3.
 
 * **Parameters:**
-  * **depth** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
-  * **pierce** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false).
+  * **depth** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
+  * **pierce** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false).
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Node`](#nodriver.cdp.dom.Node)]]
 * **Returns:**
@@ -653,7 +585,7 @@ Returns iframe node that owns iframe with the given domain.
 * **Returns:**
   A tuple with the following items:
   1. **backendNodeId** - Resulting node.
-  2. **nodeId** - *(Optional)* Id of the node at given coordinates, only when enabled and requested document.
+  2. **nodeId** -  *(Optional)* Id of the node at given coordinates, only when enabled and requested document.
 
 ### get_node_for_location(x, y, include_user_agent_shadow_dom=None, ignore_pointer_events_none=None)
 
@@ -663,15 +595,15 @@ either returned or not.
 * **Parameters:**
   * **x** ([`int`](https://docs.python.org/3/library/functions.html#int)) – X coordinate.
   * **y** ([`int`](https://docs.python.org/3/library/functions.html#int)) – Y coordinate.
-  * **include_user_agent_shadow_dom** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* False to skip to the nearest non-UA shadow root ancestor (default: false).
-  * **ignore_pointer_events_none** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether to ignore pointer-events: none on elements and hit test them.
+  * **include_user_agent_shadow_dom** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* False to skip to the nearest non-UA shadow root ancestor (default: false).
+  * **ignore_pointer_events_none** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Whether to ignore pointer-events: none on elements and hit test them.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId), [`FrameId`](page.md#nodriver.cdp.page.FrameId), [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]]]
 * **Returns:**
   A tuple with the following items:
   1. **backendNodeId** - Resulting node.
   2. **frameId** - Frame this node belongs to.
-  3. **nodeId** - *(Optional)* Id of the node at given coordinates, only when enabled and requested document.
+  3. **nodeId** -  *(Optional)* Id of the node at given coordinates, only when enabled and requested document.
 
 ### get_node_stack_traces(node_id)
 
@@ -684,7 +616,7 @@ Gets stack traces associated with a Node. As of now, only provides stack trace f
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)]]
 * **Returns:**
-  *(Optional)* Creation stack trace, if available.
+   *(Optional)* Creation stack trace, if available.
 
 ### get_nodes_for_subtree_by_style(node_id, computed_styles, pierce=None)
 
@@ -695,7 +627,7 @@ Finds nodes with a given computed style in a subtree.
 * **Parameters:**
   * **node_id** ([`NodeId`](#nodriver.cdp.dom.NodeId)) – Node ID pointing to the root of a subtree.
   * **computed_styles** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSComputedStyleProperty`](#nodriver.cdp.dom.CSSComputedStyleProperty)]) – The style to filter nodes by (includes nodes if any of properties matches).
-  * **pierce** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether or not iframes and shadow roots in the same target should be traversed when returning the results (default is false).
+  * **pierce** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Whether or not iframes and shadow roots in the same target should be traversed when returning the results (default is false).
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`NodeId`](#nodriver.cdp.dom.NodeId)]]
 * **Returns:**
@@ -706,9 +638,9 @@ Finds nodes with a given computed style in a subtree.
 Returns node’s HTML markup.
 
 * **Parameters:**
-  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) – *(Optional)* Identifier of the node.
-  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) – *(Optional)* Identifier of the backend node.
-  * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) – *(Optional)* JavaScript object id of the node wrapper.
+  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) –  *(Optional)* Identifier of the node.
+  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) –  *(Optional)* Identifier of the backend node.
+  * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) –  *(Optional)* JavaScript object id of the node wrapper.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`str`](https://docs.python.org/3/library/stdtypes.html#str)]
 * **Returns:**
@@ -807,7 +739,7 @@ Moves node into the new container, places it before the given anchor.
 * **Parameters:**
   * **node_id** ([`NodeId`](#nodriver.cdp.dom.NodeId)) – Id of the node to move.
   * **target_node_id** ([`NodeId`](#nodriver.cdp.dom.NodeId)) – Id of the element to drop the moved node into.
-  * **insert_before_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) – *(Optional)* Drop node before this one (if absent, the moved node becomes the last child of ``targetNodeId``).
+  * **insert_before_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) –  *(Optional)* Drop node before this one (if absent, the moved node becomes the last child of ``targetNodeId``).
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`NodeId`](#nodriver.cdp.dom.NodeId)]
 * **Returns:**
@@ -822,7 +754,7 @@ Searches for a given string in the DOM tree. Use `getSearchResults` to access se
 
 * **Parameters:**
   * **query** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Plain text or query selector or XPath search query.
-  * **include_user_agent_shadow_dom** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* True to search in user agent shadow DOM.
+  * **include_user_agent_shadow_dom** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* True to search in user agent shadow DOM.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`int`](https://docs.python.org/3/library/functions.html#int)]]
 * **Returns:**
@@ -916,8 +848,8 @@ the specified depth.
 
 * **Parameters:**
   * **node_id** ([`NodeId`](#nodriver.cdp.dom.NodeId)) – Id of the node to get children for.
-  * **depth** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
-  * **pierce** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether or not iframes and shadow roots should be traversed when returning the sub-tree (default is false).
+  * **depth** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
+  * **pierce** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Whether or not iframes and shadow roots should be traversed when returning the sub-tree (default is false).
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -939,10 +871,10 @@ nodes that form the path from the node to the root are also sent to the client a
 Resolves the JavaScript node object for a given NodeId or BackendNodeId.
 
 * **Parameters:**
-  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) – *(Optional)* Id of the node to resolve.
-  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) – *(Optional)* Backend identifier of the node to resolve.
-  * **object_group** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Symbolic group name that can be used to release multiple objects.
-  * **execution_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ExecutionContextId`](runtime.md#nodriver.cdp.runtime.ExecutionContextId)]) – *(Optional)* Execution context in which to resolve the node.
+  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) –  *(Optional)* Id of the node to resolve.
+  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) –  *(Optional)* Backend identifier of the node to resolve.
+  * **object_group** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Symbolic group name that can be used to release multiple objects.
+  * **execution_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ExecutionContextId`](runtime.md#nodriver.cdp.runtime.ExecutionContextId)]) –  *(Optional)* Execution context in which to resolve the node.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)]
 * **Returns:**
@@ -955,10 +887,10 @@ Note: exactly one between nodeId, backendNodeId and objectId should be passed
 to identify the node.
 
 * **Parameters:**
-  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) – *(Optional)* Identifier of the node.
-  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) – *(Optional)* Identifier of the backend node.
-  * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) – *(Optional)* JavaScript object id of the node wrapper.
-  * **rect** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Rect`](#nodriver.cdp.dom.Rect)]) – *(Optional)* The rect to be scrolled into view, relative to the node’s border box, in CSS pixels. When omitted, center of the node will be used, similar to Element.scrollIntoView.
+  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) –  *(Optional)* Identifier of the node.
+  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) –  *(Optional)* Identifier of the backend node.
+  * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) –  *(Optional)* JavaScript object id of the node wrapper.
+  * **rect** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Rect`](#nodriver.cdp.dom.Rect)]) –  *(Optional)* The rect to be scrolled into view, relative to the node’s border box, in CSS pixels. When omitted, center of the node will be used, similar to Element.scrollIntoView.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -981,7 +913,7 @@ attribute value and types in several attribute name/value pairs.
 * **Parameters:**
   * **node_id** ([`NodeId`](#nodriver.cdp.dom.NodeId)) – Id of the element to set attributes for.
   * **text** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Text with a number of attributes. Will parse this text using HTML parser.
-  * **name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Attribute name to replace with new attributes derived from text in case text parsed successfully.
+  * **name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Attribute name to replace with new attributes derived from text in case text parsed successfully.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -991,9 +923,9 @@ Sets files for the given file input element.
 
 * **Parameters:**
   * **files** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – Array of file paths to set.
-  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) – *(Optional)* Identifier of the node.
-  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) – *(Optional)* Identifier of the backend node.
-  * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) – *(Optional)* JavaScript object id of the node wrapper.
+  * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) –  *(Optional)* Identifier of the node.
+  * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) –  *(Optional)* Identifier of the backend node.
+  * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) –  *(Optional)* JavaScript object id of the node wrapper.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1071,20 +1003,15 @@ you use the event’s attributes.
 
 Fired when `Element`’s attribute is modified.
 
-* **Parameters:**
-  * **node_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-  * **name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **value** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-
-#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-Attribute name.
-
-#### node_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### node_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Id of the node that has changed.
 
-#### value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+Attribute name.
+
+#### value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Attribute value.
 
@@ -1092,86 +1019,65 @@ Attribute value.
 
 Fired when `Element`’s attribute is removed.
 
-* **Parameters:**
-  * **node_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-  * **name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-
-#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-A ttribute name.
-
-#### node_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### node_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Id of the node that has changed.
+
+#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+A ttribute name.
 
 ### *class* CharacterDataModified(node_id, character_data)
 
 Mirrors `DOMCharacterDataModified` event.
 
-* **Parameters:**
-  * **node_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-  * **character_data** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-
-#### character_data*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-New text value.
-
-#### node_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### node_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Id of the node that has changed.
+
+#### character_data *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+New text value.
 
 ### *class* ChildNodeCountUpdated(node_id, child_node_count)
 
 Fired when `Container`’s child node count has changed.
 
-* **Parameters:**
-  * **node_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-  * **child_node_count** ([*int*](https://docs.python.org/3/library/functions.html#int)) – 
-
-#### child_node_count*: [`int`](https://docs.python.org/3/library/functions.html#int)*
-
-New node count.
-
-#### node_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### node_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Id of the node that has changed.
+
+#### child_node_count *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+New node count.
 
 ### *class* ChildNodeInserted(parent_node_id, previous_node_id, node)
 
 Mirrors `DOMNodeInserted` event.
 
-* **Parameters:**
-  * **parent_node_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-  * **previous_node_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-  * **node** ([*Node*](#nodriver.cdp.dom.Node)) – 
-
-#### node*: [`Node`](#nodriver.cdp.dom.Node)*
-
-Inserted node data.
-
-#### parent_node_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### parent_node_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Id of the node that has changed.
 
-#### previous_node_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### previous_node_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Id of the previous sibling.
+
+#### node *: [`Node`](#nodriver.cdp.dom.Node)*
+
+Inserted node data.
 
 ### *class* ChildNodeRemoved(parent_node_id, node_id)
 
 Mirrors `DOMNodeRemoved` event.
 
-* **Parameters:**
-  * **parent_node_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-  * **node_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-
-#### node_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
-
-Id of the node that has been removed.
-
-#### parent_node_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### parent_node_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Parent id.
+
+#### node_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+
+Id of the node that has been removed.
 
 ### *class* DistributedNodesUpdated(insertion_point_id, distributed_nodes)
 
@@ -1179,17 +1085,13 @@ Parent id.
 
 Called when distribution is changed.
 
-* **Parameters:**
-  * **insertion_point_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-  * **distributed_nodes** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*BackendNode*](#nodriver.cdp.dom.BackendNode)*]*) – 
-
-#### distributed_nodes*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BackendNode`](#nodriver.cdp.dom.BackendNode)]*
-
-Distributed nodes for given insertion point.
-
-#### insertion_point_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### insertion_point_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Insertion point where distributed nodes were updated.
+
+#### distributed_nodes *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BackendNode`](#nodriver.cdp.dom.BackendNode)]*
+
+Distributed nodes for given insertion point.
 
 ### *class* DocumentUpdated
 
@@ -1201,10 +1103,7 @@ Fired when `Document` has been totally updated. Node ids are no longer valid.
 
 Fired when `Element`’s inline style is modified via a CSS property modification.
 
-* **Parameters:**
-  **node_ids** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*NodeId*](#nodriver.cdp.dom.NodeId)*]*) – 
-
-#### node_ids*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`NodeId`](#nodriver.cdp.dom.NodeId)]*
+#### node_ids *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`NodeId`](#nodriver.cdp.dom.NodeId)]*
 
 Ids of the nodes for which the inline styles have been invalidated.
 
@@ -1214,15 +1113,11 @@ Ids of the nodes for which the inline styles have been invalidated.
 
 Called when a pseudo element is added to an element.
 
-* **Parameters:**
-  * **parent_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-  * **pseudo_element** ([*Node*](#nodriver.cdp.dom.Node)) – 
-
-#### parent_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### parent_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Pseudo element’s parent element id.
 
-#### pseudo_element*: [`Node`](#nodriver.cdp.dom.Node)*
+#### pseudo_element *: [`Node`](#nodriver.cdp.dom.Node)*
 
 The added pseudo element.
 
@@ -1238,15 +1133,11 @@ Called when top layer elements are changed.
 
 Called when a pseudo element is removed from an element.
 
-* **Parameters:**
-  * **parent_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-  * **pseudo_element_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-
-#### parent_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### parent_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Pseudo element’s parent element id.
 
-#### pseudo_element_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### pseudo_element_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 The removed pseudo element id.
 
@@ -1255,17 +1146,13 @@ The removed pseudo element id.
 Fired when backend wants to provide client with the missing DOM structure. This happens upon
 most of the calls requesting node ids.
 
-* **Parameters:**
-  * **parent_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-  * **nodes** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*Node*](#nodriver.cdp.dom.Node)*]*) – 
-
-#### nodes*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Node`](#nodriver.cdp.dom.Node)]*
-
-Child nodes array.
-
-#### parent_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### parent_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Parent node id to populate with children.
+
+#### nodes *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Node`](#nodriver.cdp.dom.Node)]*
+
+Child nodes array.
 
 ### *class* ShadowRootPopped(host_id, root_id)
 
@@ -1273,15 +1160,11 @@ Parent node id to populate with children.
 
 Called when shadow root is popped from the element.
 
-* **Parameters:**
-  * **host_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-  * **root_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-
-#### host_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### host_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Host element id.
 
-#### root_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### root_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Shadow root id.
 
@@ -1291,14 +1174,10 @@ Shadow root id.
 
 Called when shadow root is pushed into the element.
 
-* **Parameters:**
-  * **host_id** ([*NodeId*](#nodriver.cdp.dom.NodeId)) – 
-  * **root** ([*Node*](#nodriver.cdp.dom.Node)) – 
-
-#### host_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+#### host_id *: [`NodeId`](#nodriver.cdp.dom.NodeId)*
 
 Host element id.
 
-#### root*: [`Node`](#nodriver.cdp.dom.Node)*
+#### root *: [`Node`](#nodriver.cdp.dom.Node)*
 
 Shadow root.

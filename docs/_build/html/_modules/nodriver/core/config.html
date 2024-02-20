@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>nodriver.core.config - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -385,7 +385,9 @@
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-renderer-backgrounding&quot;</span><span class="p">]</span>
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-background-networking&quot;</span><span class="p">]</span>
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-dev-shm-usage&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-ipc-flooding-protection&quot;</span><span class="p">]</span>
+        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-features=IsolateOrigins&quot;</span><span class="p">]</span>
+        <span class="c1"># args += [&quot;--disable-ipc-flooding-protection&quot;]</span>
+        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-session-crashed-bubble&quot;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser_args</span><span class="p">:</span>
             <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser_args</span> <span class="k">if</span> <span class="n">arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="p">])</span>
@@ -419,7 +421,13 @@
                 <span class="o">%</span> <span class="n">arg</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">browser_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></div>
-</div>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;browser_args&quot;</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;browser_args&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ContraDict</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
 
 
 

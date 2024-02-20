@@ -42,17 +42,17 @@ async def main():
     await create_account.click()
 
     print("finding the email input field")
-    email = await tab.select(selector="input[type=email]")
+    email = await tab.select("input[type=email]")
 
     # sometimes, email field is not shown, because phone is being asked instead
     # when this occurs, find the small text which says "use email instead"
     if not email:
-        use_mail_instead = await tab.wait_for(text="use email instead")
+        use_mail_instead = await tab.find("use email instead")
         # and click it
         await use_mail_instead.click()
 
         # now find the email field again
-        email = await tab.select(selector="input[type=email]")
+        email = await tab.select("input[type=email]")
 
     randstr = lambda k: "".join(random.choices(string.ascii_letters, k=k))
 
@@ -62,7 +62,7 @@ async def main():
 
     # find the name input field
     print("finding the name input field")
-    name = await tab.query_selector("input[type=text]")
+    name = await tab.select("input[type=text]")
 
     # again, send random text
     print('filling in the "name" input field')
@@ -71,7 +71,7 @@ async def main():
     # since there are 3 select fields on the tab, we can use unpacking
     # to assign each field
     print('finding the "month" , "day" and "year" fields in 1 go')
-    sel_month, sel_day, sel_year = await tab.query_selector_all("select")
+    sel_month, sel_day, sel_year = await tab.select_all("select")
 
     # await sel_month.focus()
     print('filling in the "month" input field')

@@ -22,17 +22,23 @@ Unique id
 
 Corresponds to SpeculationRuleSet
 
-* **Parameters:**
-  * **id_** ([*RuleSetId*](#nodriver.cdp.preload.RuleSetId)) – 
-  * **loader_id** ([*LoaderId*](network.md#nodriver.cdp.network.LoaderId)) – 
-  * **source_text** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **backend_node_id** ([*BackendNodeId*](dom.md#nodriver.cdp.dom.BackendNodeId) *|* *None*) – 
-  * **url** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **request_id** ([*RequestId*](network.md#nodriver.cdp.network.RequestId) *|* *None*) – 
-  * **error_type** ([*RuleSetErrorType*](#nodriver.cdp.preload.RuleSetErrorType) *|* *None*) – 
-  * **error_message** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
+#### id_ *: [`RuleSetId`](#nodriver.cdp.preload.RuleSetId)*
 
-#### backend_node_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
+#### loader_id *: [`LoaderId`](network.md#nodriver.cdp.network.LoaderId)*
+
+Identifies a document which the rule set is associated with.
+
+#### source_text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+Source text of JSON representing the rule set. If it comes from
+`<script>` tag, it is the textContent of the node. Note that it is
+a JSON for valid case.
+
+See also:
+- [https://wicg.github.io/nav-speculation/speculation-rules.html](https://wicg.github.io/nav-speculation/speculation-rules.html)
+- [https://github.com/WICG/nav-speculation/blob/main/triggers.md](https://github.com/WICG/nav-speculation/blob/main/triggers.md)
+
+#### backend_node_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
 
 A speculation rule set is either added through an inline
 `<script>` tag or through an external resource via the
@@ -45,7 +51,16 @@ See also:
 - [https://wicg.github.io/nav-speculation/speculation-rules.html#speculation-rules-script](https://wicg.github.io/nav-speculation/speculation-rules.html#speculation-rules-script)
 - [https://wicg.github.io/nav-speculation/speculation-rules.html#speculation-rules-header](https://wicg.github.io/nav-speculation/speculation-rules.html#speculation-rules-header)
 
-#### error_message*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### request_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RequestId`](network.md#nodriver.cdp.network.RequestId)]* *= None*
+
+#### error_type *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RuleSetErrorType`](#nodriver.cdp.preload.RuleSetErrorType)]* *= None*
+
+Error information
+`errorMessage` is null iff `errorType` is null.
+
+#### error_message *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Replace this property with structured error.
 
@@ -54,36 +69,11 @@ Replace this property with structured error.
 * **Type:**
   //crbug.com/1425354)
 
-#### error_type*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RuleSetErrorType`](#nodriver.cdp.preload.RuleSetErrorType)]* *= None*
-
-Error information
-`errorMessage` is null iff `errorType` is null.
-
-#### id_*: [`RuleSetId`](#nodriver.cdp.preload.RuleSetId)*
-
-#### loader_id*: [`LoaderId`](network.md#nodriver.cdp.network.LoaderId)*
-
-Identifies a document which the rule set is associated with.
-
-#### request_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RequestId`](network.md#nodriver.cdp.network.RequestId)]* *= None*
-
-#### source_text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-Source text of JSON representing the rule set. If it comes from
-`<script>` tag, it is the textContent of the node. Note that it is
-a JSON for valid case.
-
-See also:
-- [https://wicg.github.io/nav-speculation/speculation-rules.html](https://wicg.github.io/nav-speculation/speculation-rules.html)
-- [https://github.com/WICG/nav-speculation/blob/main/triggers.md](https://github.com/WICG/nav-speculation/blob/main/triggers.md)
-
-#### url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
-
 ### *class* RuleSetErrorType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
-#### INVALID_RULES_SKIPPED *= 'InvalidRulesSkipped'*
-
 #### SOURCE_IS_NOT_JSON_OBJECT *= 'SourceIsNotJsonObject'*
+
+#### INVALID_RULES_SKIPPED *= 'InvalidRulesSkipped'*
 
 ### *class* SpeculationAction(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -113,19 +103,13 @@ not the final url that is navigated to. For example, prerendering allows
 same-origin main frame navigations during the attempt, but the attempt is
 still keyed with the initial URL.
 
-* **Parameters:**
-  * **loader_id** ([*LoaderId*](network.md#nodriver.cdp.network.LoaderId)) – 
-  * **action** ([*SpeculationAction*](#nodriver.cdp.preload.SpeculationAction)) – 
-  * **url** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **target_hint** ([*SpeculationTargetHint*](#nodriver.cdp.preload.SpeculationTargetHint) *|* *None*) – 
+#### loader_id *: [`LoaderId`](network.md#nodriver.cdp.network.LoaderId)*
 
-#### action*: [`SpeculationAction`](#nodriver.cdp.preload.SpeculationAction)*
+#### action *: [`SpeculationAction`](#nodriver.cdp.preload.SpeculationAction)*
 
-#### loader_id*: [`LoaderId`](network.md#nodriver.cdp.network.LoaderId)*
+#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### target_hint*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SpeculationTargetHint`](#nodriver.cdp.preload.SpeculationTargetHint)]* *= None*
-
-#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### target_hint *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SpeculationTargetHint`](#nodriver.cdp.preload.SpeculationTargetHint)]* *= None*
 
 ### *class* PreloadingAttemptSource(key, rule_set_ids, node_ids)
 
@@ -135,16 +119,11 @@ BackendNodeIds of <a href> or <area href> elements that triggered the
 attempt (in the case of attempts triggered by a document rule). It is
 possible for mulitple rule sets and links to trigger a single attempt.
 
-* **Parameters:**
-  * **key** ([*PreloadingAttemptKey*](#nodriver.cdp.preload.PreloadingAttemptKey)) – 
-  * **rule_set_ids** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*RuleSetId*](#nodriver.cdp.preload.RuleSetId)*]*) – 
-  * **node_ids** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*BackendNodeId*](dom.md#nodriver.cdp.dom.BackendNodeId)*]*) – 
+#### key *: [`PreloadingAttemptKey`](#nodriver.cdp.preload.PreloadingAttemptKey)*
 
-#### key*: [`PreloadingAttemptKey`](#nodriver.cdp.preload.PreloadingAttemptKey)*
+#### rule_set_ids *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`RuleSetId`](#nodriver.cdp.preload.RuleSetId)]*
 
-#### node_ids*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]*
-
-#### rule_set_ids*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`RuleSetId`](#nodriver.cdp.preload.RuleSetId)]*
+#### node_ids *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]*
 
 ### *class* PrerenderFinalStatus(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -152,150 +131,150 @@ List of FinalStatus reasons for Prerender2.
 
 #### ACTIVATED *= 'Activated'*
 
-#### ACTIVATED_BEFORE_STARTED *= 'ActivatedBeforeStarted'*
-
-#### ACTIVATED_DURING_MAIN_FRAME_NAVIGATION *= 'ActivatedDuringMainFrameNavigation'*
-
-#### ACTIVATED_IN_BACKGROUND *= 'ActivatedInBackground'*
-
-#### ACTIVATED_WITH_AUXILIARY_BROWSING_CONTEXTS *= 'ActivatedWithAuxiliaryBrowsingContexts'*
-
-#### ACTIVATION_FRAME_POLICY_NOT_COMPATIBLE *= 'ActivationFramePolicyNotCompatible'*
-
-#### ACTIVATION_NAVIGATION_DESTROYED_BEFORE_SUCCESS *= 'ActivationNavigationDestroyedBeforeSuccess'*
-
-#### ACTIVATION_NAVIGATION_PARAMETER_MISMATCH *= 'ActivationNavigationParameterMismatch'*
-
-#### ACTIVATION_URL_HAS_EFFECTIVE_URL *= 'ActivationUrlHasEffectiveUrl'*
-
-#### AUDIO_OUTPUT_DEVICE_REQUESTED *= 'AudioOutputDeviceRequested'*
-
-#### BATTERY_SAVER_ENABLED *= 'BatterySaverEnabled'*
-
-#### BLOCKED_BY_CLIENT *= 'BlockedByClient'*
-
-#### CANCEL_ALL_HOSTS_FOR_TESTING *= 'CancelAllHostsForTesting'*
-
-#### CLIENT_CERT_REQUESTED *= 'ClientCertRequested'*
-
-#### CROSS_SITE_NAVIGATION_IN_INITIAL_NAVIGATION *= 'CrossSiteNavigationInInitialNavigation'*
-
-#### CROSS_SITE_NAVIGATION_IN_MAIN_FRAME_NAVIGATION *= 'CrossSiteNavigationInMainFrameNavigation'*
-
-#### CROSS_SITE_REDIRECT_IN_INITIAL_NAVIGATION *= 'CrossSiteRedirectInInitialNavigation'*
-
-#### CROSS_SITE_REDIRECT_IN_MAIN_FRAME_NAVIGATION *= 'CrossSiteRedirectInMainFrameNavigation'*
-
-#### DATA_SAVER_ENABLED *= 'DataSaverEnabled'*
-
 #### DESTROYED *= 'Destroyed'*
-
-#### DID_FAIL_LOAD *= 'DidFailLoad'*
-
-#### DOWNLOAD *= 'Download'*
-
-#### EMBEDDER_HOST_DISALLOWED *= 'EmbedderHostDisallowed'*
-
-#### INACTIVE_PAGE_RESTRICTION *= 'InactivePageRestriction'*
-
-#### INVALID_SCHEME_NAVIGATION *= 'InvalidSchemeNavigation'*
-
-#### INVALID_SCHEME_REDIRECT *= 'InvalidSchemeRedirect'*
-
-#### LOGIN_AUTH_REQUESTED *= 'LoginAuthRequested'*
 
 #### LOW_END_DEVICE *= 'LowEndDevice'*
 
-#### MAIN_FRAME_NAVIGATION *= 'MainFrameNavigation'*
+#### INVALID_SCHEME_REDIRECT *= 'InvalidSchemeRedirect'*
 
-#### MAX_NUM_OF_RUNNING_EAGER_PRERENDERS_EXCEEDED *= 'MaxNumOfRunningEagerPrerendersExceeded'*
-
-#### MAX_NUM_OF_RUNNING_EMBEDDER_PRERENDERS_EXCEEDED *= 'MaxNumOfRunningEmbedderPrerendersExceeded'*
-
-#### MAX_NUM_OF_RUNNING_NON_EAGER_PRERENDERS_EXCEEDED *= 'MaxNumOfRunningNonEagerPrerendersExceeded'*
-
-#### MEMORY_LIMIT_EXCEEDED *= 'MemoryLimitExceeded'*
-
-#### MEMORY_PRESSURE_AFTER_TRIGGERED *= 'MemoryPressureAfterTriggered'*
-
-#### MEMORY_PRESSURE_ON_TRIGGER *= 'MemoryPressureOnTrigger'*
-
-#### MIXED_CONTENT *= 'MixedContent'*
-
-#### MOJO_BINDER_POLICY *= 'MojoBinderPolicy'*
-
-#### NAVIGATION_BAD_HTTP_STATUS *= 'NavigationBadHttpStatus'*
-
-#### NAVIGATION_NOT_COMMITTED *= 'NavigationNotCommitted'*
+#### INVALID_SCHEME_NAVIGATION *= 'InvalidSchemeNavigation'*
 
 #### NAVIGATION_REQUEST_BLOCKED_BY_CSP *= 'NavigationRequestBlockedByCsp'*
 
-#### NAVIGATION_REQUEST_NETWORK_ERROR *= 'NavigationRequestNetworkError'*
+#### MAIN_FRAME_NAVIGATION *= 'MainFrameNavigation'*
 
-#### PRELOADING_DISABLED *= 'PreloadingDisabled'*
-
-#### PRELOADING_UNSUPPORTED_BY_WEB_CONTENTS *= 'PreloadingUnsupportedByWebContents'*
-
-#### PRERENDERING_DISABLED_BY_DEV_TOOLS *= 'PrerenderingDisabledByDevTools'*
-
-#### PRERENDERING_URL_HAS_EFFECTIVE_URL *= 'PrerenderingUrlHasEffectiveUrl'*
-
-#### PRIMARY_MAIN_FRAME_RENDERER_PROCESS_CRASHED *= 'PrimaryMainFrameRendererProcessCrashed'*
-
-#### PRIMARY_MAIN_FRAME_RENDERER_PROCESS_KILLED *= 'PrimaryMainFrameRendererProcessKilled'*
-
-#### REDIRECTED_PRERENDERING_URL_HAS_EFFECTIVE_URL *= 'RedirectedPrerenderingUrlHasEffectiveUrl'*
+#### MOJO_BINDER_POLICY *= 'MojoBinderPolicy'*
 
 #### RENDERER_PROCESS_CRASHED *= 'RendererProcessCrashed'*
 
 #### RENDERER_PROCESS_KILLED *= 'RendererProcessKilled'*
 
-#### SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_INITIAL_NAVIGATION *= 'SameSiteCrossOriginNavigationNotOptInInInitialNavigation'*
+#### DOWNLOAD *= 'Download'*
 
-#### SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION *= 'SameSiteCrossOriginNavigationNotOptInInMainFrameNavigation'*
+#### TRIGGER_DESTROYED *= 'TriggerDestroyed'*
 
-#### SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_INITIAL_NAVIGATION *= 'SameSiteCrossOriginRedirectNotOptInInInitialNavigation'*
+#### NAVIGATION_NOT_COMMITTED *= 'NavigationNotCommitted'*
 
-#### SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION *= 'SameSiteCrossOriginRedirectNotOptInInMainFrameNavigation'*
+#### NAVIGATION_BAD_HTTP_STATUS *= 'NavigationBadHttpStatus'*
 
-#### SPECULATION_RULE_REMOVED *= 'SpeculationRuleRemoved'*
+#### CLIENT_CERT_REQUESTED *= 'ClientCertRequested'*
+
+#### NAVIGATION_REQUEST_NETWORK_ERROR *= 'NavigationRequestNetworkError'*
+
+#### CANCEL_ALL_HOSTS_FOR_TESTING *= 'CancelAllHostsForTesting'*
+
+#### DID_FAIL_LOAD *= 'DidFailLoad'*
+
+#### STOP *= 'Stop'*
 
 #### SSL_CERTIFICATE_ERROR *= 'SslCertificateError'*
 
+#### LOGIN_AUTH_REQUESTED *= 'LoginAuthRequested'*
+
+#### UA_CHANGE_REQUIRES_RELOAD *= 'UaChangeRequiresReload'*
+
+#### BLOCKED_BY_CLIENT *= 'BlockedByClient'*
+
+#### AUDIO_OUTPUT_DEVICE_REQUESTED *= 'AudioOutputDeviceRequested'*
+
+#### MIXED_CONTENT *= 'MixedContent'*
+
+#### TRIGGER_BACKGROUNDED *= 'TriggerBackgrounded'*
+
+#### MEMORY_LIMIT_EXCEEDED *= 'MemoryLimitExceeded'*
+
+#### DATA_SAVER_ENABLED *= 'DataSaverEnabled'*
+
+#### TRIGGER_URL_HAS_EFFECTIVE_URL *= 'TriggerUrlHasEffectiveUrl'*
+
+#### ACTIVATED_BEFORE_STARTED *= 'ActivatedBeforeStarted'*
+
+#### INACTIVE_PAGE_RESTRICTION *= 'InactivePageRestriction'*
+
 #### START_FAILED *= 'StartFailed'*
 
-#### STOP *= 'Stop'*
+#### TIMEOUT_BACKGROUNDED *= 'TimeoutBackgrounded'*
+
+#### CROSS_SITE_REDIRECT_IN_INITIAL_NAVIGATION *= 'CrossSiteRedirectInInitialNavigation'*
+
+#### CROSS_SITE_NAVIGATION_IN_INITIAL_NAVIGATION *= 'CrossSiteNavigationInInitialNavigation'*
+
+#### SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_INITIAL_NAVIGATION *= 'SameSiteCrossOriginRedirectNotOptInInInitialNavigation'*
+
+#### SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_INITIAL_NAVIGATION *= 'SameSiteCrossOriginNavigationNotOptInInInitialNavigation'*
+
+#### ACTIVATION_NAVIGATION_PARAMETER_MISMATCH *= 'ActivationNavigationParameterMismatch'*
+
+#### ACTIVATED_IN_BACKGROUND *= 'ActivatedInBackground'*
+
+#### EMBEDDER_HOST_DISALLOWED *= 'EmbedderHostDisallowed'*
+
+#### ACTIVATION_NAVIGATION_DESTROYED_BEFORE_SUCCESS *= 'ActivationNavigationDestroyedBeforeSuccess'*
 
 #### TAB_CLOSED_BY_USER_GESTURE *= 'TabClosedByUserGesture'*
 
 #### TAB_CLOSED_WITHOUT_USER_GESTURE *= 'TabClosedWithoutUserGesture'*
 
-#### TIMEOUT_BACKGROUNDED *= 'TimeoutBackgrounded'*
+#### PRIMARY_MAIN_FRAME_RENDERER_PROCESS_CRASHED *= 'PrimaryMainFrameRendererProcessCrashed'*
 
-#### TRIGGER_BACKGROUNDED *= 'TriggerBackgrounded'*
+#### PRIMARY_MAIN_FRAME_RENDERER_PROCESS_KILLED *= 'PrimaryMainFrameRendererProcessKilled'*
 
-#### TRIGGER_DESTROYED *= 'TriggerDestroyed'*
+#### ACTIVATION_FRAME_POLICY_NOT_COMPATIBLE *= 'ActivationFramePolicyNotCompatible'*
 
-#### TRIGGER_URL_HAS_EFFECTIVE_URL *= 'TriggerUrlHasEffectiveUrl'*
+#### PRELOADING_DISABLED *= 'PreloadingDisabled'*
 
-#### UA_CHANGE_REQUIRES_RELOAD *= 'UaChangeRequiresReload'*
+#### BATTERY_SAVER_ENABLED *= 'BatterySaverEnabled'*
+
+#### ACTIVATED_DURING_MAIN_FRAME_NAVIGATION *= 'ActivatedDuringMainFrameNavigation'*
+
+#### PRELOADING_UNSUPPORTED_BY_WEB_CONTENTS *= 'PreloadingUnsupportedByWebContents'*
+
+#### CROSS_SITE_REDIRECT_IN_MAIN_FRAME_NAVIGATION *= 'CrossSiteRedirectInMainFrameNavigation'*
+
+#### CROSS_SITE_NAVIGATION_IN_MAIN_FRAME_NAVIGATION *= 'CrossSiteNavigationInMainFrameNavigation'*
+
+#### SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION *= 'SameSiteCrossOriginRedirectNotOptInInMainFrameNavigation'*
+
+#### SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION *= 'SameSiteCrossOriginNavigationNotOptInInMainFrameNavigation'*
+
+#### MEMORY_PRESSURE_ON_TRIGGER *= 'MemoryPressureOnTrigger'*
+
+#### MEMORY_PRESSURE_AFTER_TRIGGERED *= 'MemoryPressureAfterTriggered'*
+
+#### PRERENDERING_DISABLED_BY_DEV_TOOLS *= 'PrerenderingDisabledByDevTools'*
+
+#### SPECULATION_RULE_REMOVED *= 'SpeculationRuleRemoved'*
+
+#### ACTIVATED_WITH_AUXILIARY_BROWSING_CONTEXTS *= 'ActivatedWithAuxiliaryBrowsingContexts'*
+
+#### MAX_NUM_OF_RUNNING_EAGER_PRERENDERS_EXCEEDED *= 'MaxNumOfRunningEagerPrerendersExceeded'*
+
+#### MAX_NUM_OF_RUNNING_NON_EAGER_PRERENDERS_EXCEEDED *= 'MaxNumOfRunningNonEagerPrerendersExceeded'*
+
+#### MAX_NUM_OF_RUNNING_EMBEDDER_PRERENDERS_EXCEEDED *= 'MaxNumOfRunningEmbedderPrerendersExceeded'*
+
+#### PRERENDERING_URL_HAS_EFFECTIVE_URL *= 'PrerenderingUrlHasEffectiveUrl'*
+
+#### REDIRECTED_PRERENDERING_URL_HAS_EFFECTIVE_URL *= 'RedirectedPrerenderingUrlHasEffectiveUrl'*
+
+#### ACTIVATION_URL_HAS_EFFECTIVE_URL *= 'ActivationUrlHasEffectiveUrl'*
 
 ### *class* PreloadingStatus(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 Preloading status values, see also PreloadingTriggeringOutcome. This
 status is shared by prefetchStatusUpdated and prerenderStatusUpdated.
 
-#### FAILURE *= 'Failure'*
-
-#### NOT_SUPPORTED *= 'NotSupported'*
-
 #### PENDING *= 'Pending'*
-
-#### READY *= 'Ready'*
 
 #### RUNNING *= 'Running'*
 
+#### READY *= 'Ready'*
+
 #### SUCCESS *= 'Success'*
+
+#### FAILURE *= 'Failure'*
+
+#### NOT_SUPPORTED *= 'NotSupported'*
 
 ### *class* PrefetchStatus(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -303,10 +282,6 @@ TODO([https://crbug.com/1384419](https://crbug.com/1384419)): revisit the list o
 filter out the ones that aren’t necessary to the developers.
 
 #### PREFETCH_ALLOWED *= 'PrefetchAllowed'*
-
-#### PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED *= 'PrefetchEvictedAfterCandidateRemoved'*
-
-#### PREFETCH_EVICTED_FOR_NEWER_PREFETCH *= 'PrefetchEvictedForNewerPrefetch'*
 
 #### PREFETCH_FAILED_INELIGIBLE_REDIRECT *= 'PrefetchFailedIneligibleRedirect'*
 
@@ -320,6 +295,10 @@ filter out the ones that aren’t necessary to the developers.
 
 #### PREFETCH_FAILED_PER_PAGE_LIMIT_EXCEEDED *= 'PrefetchFailedPerPageLimitExceeded'*
 
+#### PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED *= 'PrefetchEvictedAfterCandidateRemoved'*
+
+#### PREFETCH_EVICTED_FOR_NEWER_PREFETCH *= 'PrefetchEvictedForNewerPrefetch'*
+
 #### PREFETCH_HELDBACK *= 'PrefetchHeldback'*
 
 #### PREFETCH_INELIGIBLE_RETRY_AFTER *= 'PrefetchIneligibleRetryAfter'*
@@ -327,8 +306,6 @@ filter out the ones that aren’t necessary to the developers.
 #### PREFETCH_IS_PRIVACY_DECOY *= 'PrefetchIsPrivacyDecoy'*
 
 #### PREFETCH_IS_STALE *= 'PrefetchIsStale'*
-
-#### PREFETCH_NOT_ELIGIBLE_BATTERY_SAVER_ENABLED *= 'PrefetchNotEligibleBatterySaverEnabled'*
 
 #### PREFETCH_NOT_ELIGIBLE_BROWSER_CONTEXT_OFF_THE_RECORD *= 'PrefetchNotEligibleBrowserContextOffTheRecord'*
 
@@ -340,8 +317,6 @@ filter out the ones that aren’t necessary to the developers.
 
 #### PREFETCH_NOT_ELIGIBLE_NON_DEFAULT_STORAGE_PARTITION *= 'PrefetchNotEligibleNonDefaultStoragePartition'*
 
-#### PREFETCH_NOT_ELIGIBLE_PRELOADING_DISABLED *= 'PrefetchNotEligiblePreloadingDisabled'*
-
 #### PREFETCH_NOT_ELIGIBLE_SAME_SITE_CROSS_ORIGIN_PREFETCH_REQUIRED_PROXY *= 'PrefetchNotEligibleSameSiteCrossOriginPrefetchRequiredProxy'*
 
 #### PREFETCH_NOT_ELIGIBLE_SCHEME_IS_NOT_HTTPS *= 'PrefetchNotEligibleSchemeIsNotHttps'*
@@ -350,13 +325,15 @@ filter out the ones that aren’t necessary to the developers.
 
 #### PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER *= 'PrefetchNotEligibleUserHasServiceWorker'*
 
+#### PREFETCH_NOT_ELIGIBLE_BATTERY_SAVER_ENABLED *= 'PrefetchNotEligibleBatterySaverEnabled'*
+
+#### PREFETCH_NOT_ELIGIBLE_PRELOADING_DISABLED *= 'PrefetchNotEligiblePreloadingDisabled'*
+
 #### PREFETCH_NOT_FINISHED_IN_TIME *= 'PrefetchNotFinishedInTime'*
 
 #### PREFETCH_NOT_STARTED *= 'PrefetchNotStarted'*
 
 #### PREFETCH_NOT_USED_COOKIES_CHANGED *= 'PrefetchNotUsedCookiesChanged'*
-
-#### PREFETCH_NOT_USED_PROBE_FAILED *= 'PrefetchNotUsedProbeFailed'*
 
 #### PREFETCH_PROXY_NOT_AVAILABLE *= 'PrefetchProxyNotAvailable'*
 
@@ -364,20 +341,17 @@ filter out the ones that aren’t necessary to the developers.
 
 #### PREFETCH_SUCCESSFUL_BUT_NOT_USED *= 'PrefetchSuccessfulButNotUsed'*
 
+#### PREFETCH_NOT_USED_PROBE_FAILED *= 'PrefetchNotUsedProbeFailed'*
+
 ### *class* PrerenderMismatchedHeaders(header_name, initial_value=None, activation_value=None)
 
 Information of headers to be displayed when the header mismatch occurred.
 
-* **Parameters:**
-  * **header_name** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **initial_value** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **activation_value** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
+#### header_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### activation_value*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### initial_value *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
-#### header_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
-
-#### initial_value*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### activation_value *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 ## Commands
 
@@ -410,97 +384,65 @@ you use the event’s attributes.
 
 Upsert. Currently, it is only emitted when a rule set added.
 
-* **Parameters:**
-  **rule_set** ([*RuleSet*](#nodriver.cdp.preload.RuleSet)) – 
-
-#### rule_set*: [`RuleSet`](#nodriver.cdp.preload.RuleSet)*
+#### rule_set *: [`RuleSet`](#nodriver.cdp.preload.RuleSet)*
 
 ### *class* RuleSetRemoved(id_)
 
-* **Parameters:**
-  **id_** ([*RuleSetId*](#nodriver.cdp.preload.RuleSetId)) – 
-
-#### id_*: [`RuleSetId`](#nodriver.cdp.preload.RuleSetId)*
+#### id_ *: [`RuleSetId`](#nodriver.cdp.preload.RuleSetId)*
 
 ### *class* PreloadEnabledStateUpdated(disabled_by_preference, disabled_by_data_saver, disabled_by_battery_saver, disabled_by_holdback_prefetch_speculation_rules, disabled_by_holdback_prerender_speculation_rules)
 
 Fired when a preload enabled state is updated.
 
-* **Parameters:**
-  * **disabled_by_preference** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – 
-  * **disabled_by_data_saver** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – 
-  * **disabled_by_battery_saver** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – 
-  * **disabled_by_holdback_prefetch_speculation_rules** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – 
-  * **disabled_by_holdback_prerender_speculation_rules** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – 
+#### disabled_by_preference *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### disabled_by_battery_saver*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### disabled_by_data_saver *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### disabled_by_data_saver*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### disabled_by_battery_saver *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### disabled_by_holdback_prefetch_speculation_rules*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### disabled_by_holdback_prefetch_speculation_rules *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### disabled_by_holdback_prerender_speculation_rules*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
-
-#### disabled_by_preference*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### disabled_by_holdback_prerender_speculation_rules *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 ### *class* PrefetchStatusUpdated(key, initiating_frame_id, prefetch_url, status, prefetch_status, request_id)
 
 Fired when a prefetch attempt is updated.
 
-* **Parameters:**
-  * **key** ([*PreloadingAttemptKey*](#nodriver.cdp.preload.PreloadingAttemptKey)) – 
-  * **initiating_frame_id** ([*FrameId*](page.md#nodriver.cdp.page.FrameId)) – 
-  * **prefetch_url** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **status** ([*PreloadingStatus*](#nodriver.cdp.preload.PreloadingStatus)) – 
-  * **prefetch_status** ([*PrefetchStatus*](#nodriver.cdp.preload.PrefetchStatus)) – 
-  * **request_id** ([*RequestId*](network.md#nodriver.cdp.network.RequestId)) – 
+#### key *: [`PreloadingAttemptKey`](#nodriver.cdp.preload.PreloadingAttemptKey)*
 
-#### initiating_frame_id*: [`FrameId`](page.md#nodriver.cdp.page.FrameId)*
+#### initiating_frame_id *: [`FrameId`](page.md#nodriver.cdp.page.FrameId)*
 
 The frame id of the frame initiating prefetch.
 
-#### key*: [`PreloadingAttemptKey`](#nodriver.cdp.preload.PreloadingAttemptKey)*
+#### prefetch_url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### prefetch_status*: [`PrefetchStatus`](#nodriver.cdp.preload.PrefetchStatus)*
+#### status *: [`PreloadingStatus`](#nodriver.cdp.preload.PreloadingStatus)*
 
-#### prefetch_url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### prefetch_status *: [`PrefetchStatus`](#nodriver.cdp.preload.PrefetchStatus)*
 
-#### request_id*: [`RequestId`](network.md#nodriver.cdp.network.RequestId)*
-
-#### status*: [`PreloadingStatus`](#nodriver.cdp.preload.PreloadingStatus)*
+#### request_id *: [`RequestId`](network.md#nodriver.cdp.network.RequestId)*
 
 ### *class* PrerenderStatusUpdated(key, status, prerender_status, disallowed_mojo_interface, mismatched_headers)
 
 Fired when a prerender attempt is updated.
 
-* **Parameters:**
-  * **key** ([*PreloadingAttemptKey*](#nodriver.cdp.preload.PreloadingAttemptKey)) – 
-  * **status** ([*PreloadingStatus*](#nodriver.cdp.preload.PreloadingStatus)) – 
-  * **prerender_status** ([*PrerenderFinalStatus*](#nodriver.cdp.preload.PrerenderFinalStatus) *|* *None*) – 
-  * **disallowed_mojo_interface** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **mismatched_headers** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*PrerenderMismatchedHeaders*](#nodriver.cdp.preload.PrerenderMismatchedHeaders)*]* *|* *None*) – 
+#### key *: [`PreloadingAttemptKey`](#nodriver.cdp.preload.PreloadingAttemptKey)*
 
-#### disallowed_mojo_interface*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### status *: [`PreloadingStatus`](#nodriver.cdp.preload.PreloadingStatus)*
+
+#### prerender_status *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PrerenderFinalStatus`](#nodriver.cdp.preload.PrerenderFinalStatus)]*
+
+#### disallowed_mojo_interface *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 This is used to give users more information about the name of Mojo interface
 that is incompatible with prerender and has caused the cancellation of the attempt.
 
-#### key*: [`PreloadingAttemptKey`](#nodriver.cdp.preload.PreloadingAttemptKey)*
-
-#### mismatched_headers*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PrerenderMismatchedHeaders`](#nodriver.cdp.preload.PrerenderMismatchedHeaders)]]*
-
-#### prerender_status*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PrerenderFinalStatus`](#nodriver.cdp.preload.PrerenderFinalStatus)]*
-
-#### status*: [`PreloadingStatus`](#nodriver.cdp.preload.PreloadingStatus)*
+#### mismatched_headers *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PrerenderMismatchedHeaders`](#nodriver.cdp.preload.PrerenderMismatchedHeaders)]]*
 
 ### *class* PreloadingAttemptSourcesUpdated(loader_id, preloading_attempt_sources)
 
 Send a list of sources for all preloading attempts in a document.
 
-* **Parameters:**
-  * **loader_id** ([*LoaderId*](network.md#nodriver.cdp.network.LoaderId)) – 
-  * **preloading_attempt_sources** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*PreloadingAttemptSource*](#nodriver.cdp.preload.PreloadingAttemptSource)*]*) – 
+#### loader_id *: [`LoaderId`](network.md#nodriver.cdp.network.LoaderId)*
 
-#### loader_id*: [`LoaderId`](network.md#nodriver.cdp.network.LoaderId)*
-
-#### preloading_attempt_sources*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PreloadingAttemptSource`](#nodriver.cdp.preload.PreloadingAttemptSource)]*
+#### preloading_attempt_sources *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PreloadingAttemptSource`](#nodriver.cdp.preload.PreloadingAttemptSource)]*

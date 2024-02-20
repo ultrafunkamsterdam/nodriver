@@ -20,53 +20,42 @@ Configuration for memory dump. Used only when “memory-infra” category is ena
 
 ### *class* TraceConfig(record_mode=None, trace_buffer_size_in_kb=None, enable_sampling=None, enable_systrace=None, enable_argument_filter=None, included_categories=None, excluded_categories=None, synthetic_delays=None, memory_dump_config=None)
 
-* **Parameters:**
-  * **record_mode** ([*str*](https://docs.python.org/3/library/stdtypes.html#str) *|* *None*) – 
-  * **trace_buffer_size_in_kb** ([*float*](https://docs.python.org/3/library/functions.html#float) *|* *None*) – 
-  * **enable_sampling** ([*bool*](https://docs.python.org/3/library/functions.html#bool) *|* *None*) – 
-  * **enable_systrace** ([*bool*](https://docs.python.org/3/library/functions.html#bool) *|* *None*) – 
-  * **enable_argument_filter** ([*bool*](https://docs.python.org/3/library/functions.html#bool) *|* *None*) – 
-  * **included_categories** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*str*](https://docs.python.org/3/library/stdtypes.html#str)*]* *|* *None*) – 
-  * **excluded_categories** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*str*](https://docs.python.org/3/library/stdtypes.html#str)*]* *|* *None*) – 
-  * **synthetic_delays** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*str*](https://docs.python.org/3/library/stdtypes.html#str)*]* *|* *None*) – 
-  * **memory_dump_config** ([*MemoryDumpConfig*](#nodriver.cdp.tracing.MemoryDumpConfig) *|* *None*) – 
-
-#### enable_argument_filter*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
-
-Turns on argument filter.
-
-#### enable_sampling*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
-
-Turns on JavaScript stack sampling.
-
-#### enable_systrace*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
-
-Turns on system tracing.
-
-#### excluded_categories*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
-
-Excluded category filters.
-
-#### included_categories*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
-
-Included category filters.
-
-#### memory_dump_config*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`MemoryDumpConfig`](#nodriver.cdp.tracing.MemoryDumpConfig)]* *= None*
-
-Configuration for memory dump triggers. Used only when “memory-infra” category is enabled.
-
-#### record_mode*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### record_mode *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Controls how the trace buffer stores data.
 
-#### synthetic_delays*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
-
-Configuration to synthesize the delays in tracing.
-
-#### trace_buffer_size_in_kb*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### trace_buffer_size_in_kb *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Size of the trace buffer in kilobytes. If not specified or zero is passed, a default value
 of 200 MB would be used.
+
+#### enable_sampling *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+Turns on JavaScript stack sampling.
+
+#### enable_systrace *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+Turns on system tracing.
+
+#### enable_argument_filter *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+Turns on argument filter.
+
+#### included_categories *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
+
+Included category filters.
+
+#### excluded_categories *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
+
+Excluded category filters.
+
+#### synthetic_delays *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
+
+Configuration to synthesize the delays in tracing.
+
+#### memory_dump_config *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`MemoryDumpConfig`](#nodriver.cdp.tracing.MemoryDumpConfig)]* *= None*
+
+Configuration for memory dump triggers. Used only when “memory-infra” category is enabled.
 
 ### *class* StreamFormat(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -81,9 +70,9 @@ protocol buffer format. Note that the JSON format will be deprecated soon.
 
 Compression type to use for traces returned via streams.
 
-#### GZIP *= 'gzip'*
-
 #### NONE *= 'none'*
+
+#### GZIP *= 'gzip'*
 
 ### *class* MemoryDumpLevelOfDetail(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -93,9 +82,9 @@ memory_instrumentation.mojom
 
 #### BACKGROUND *= 'background'*
 
-#### DETAILED *= 'detailed'*
-
 #### LIGHT *= 'light'*
+
+#### DETAILED *= 'detailed'*
 
 ### *class* TracingBackend(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -152,8 +141,8 @@ Record a clock sync marker in the trace.
 Request a global memory dump.
 
 * **Parameters:**
-  * **deterministic** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Enables more deterministic results by forcing garbage collection
-  * **level_of_detail** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`MemoryDumpLevelOfDetail`](#nodriver.cdp.tracing.MemoryDumpLevelOfDetail)]) – *(Optional)* Specifies level of details in memory dump. Defaults to “detailed”.
+  * **deterministic** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Enables more deterministic results by forcing garbage collection
+  * **level_of_detail** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`MemoryDumpLevelOfDetail`](#nodriver.cdp.tracing.MemoryDumpLevelOfDetail)]) –  *(Optional)* Specifies level of details in memory dump. Defaults to “detailed”.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`bool`](https://docs.python.org/3/library/functions.html#bool)]]
 * **Returns:**
@@ -166,15 +155,15 @@ Request a global memory dump.
 Start trace events collection.
 
 * **Parameters:**
-  * **categories** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(DEPRECATED)** *(Optional)* Category/tag filter
-  * **options** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(DEPRECATED)** *(Optional)* Tracing options
-  * **buffer_usage_reporting_interval** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* If set, the agent will issue bufferUsage events at this interval, specified in milliseconds
-  * **transfer_mode** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Whether to report trace events as series of dataCollected events or to save trace to a stream (defaults to ``ReportEvents```).
-  * **stream_format** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StreamFormat`](#nodriver.cdp.tracing.StreamFormat)]) – *(Optional)* Trace data format to use. This only applies when using ```ReturnAsStream``` transfer mode (defaults to ```json```).
-  * **stream_compression** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StreamCompression`](#nodriver.cdp.tracing.StreamCompression)]) – *(Optional)* Compression format to use. This only applies when using ```ReturnAsStream``` transfer mode (defaults to ```none```)
-  * **trace_config** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TraceConfig`](#nodriver.cdp.tracing.TraceConfig)]) – *(Optional)*
-  * **perfetto_config** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Base64-encoded serialized perfetto.protos.TraceConfig protobuf message When specified, the parameters ```categories```, ```options```, ```traceConfig``` are ignored. (Encoded as a base64 string when passed over JSON)
-  * **tracing_backend** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TracingBackend`](#nodriver.cdp.tracing.TracingBackend)]) – *(Optional)* Backend type (defaults to ```auto``)
+  * **categories** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(DEPRECATED)**  *(Optional)* Category/tag filter
+  * **options** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(DEPRECATED)**  *(Optional)* Tracing options
+  * **buffer_usage_reporting_interval** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* If set, the agent will issue bufferUsage events at this interval, specified in milliseconds
+  * **transfer_mode** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Whether to report trace events as series of dataCollected events or to save trace to a stream (defaults to ``ReportEvents```).
+  * **stream_format** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StreamFormat`](#nodriver.cdp.tracing.StreamFormat)]) –  *(Optional)* Trace data format to use. This only applies when using ```ReturnAsStream``` transfer mode (defaults to ```json```).
+  * **stream_compression** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StreamCompression`](#nodriver.cdp.tracing.StreamCompression)]) –  *(Optional)* Compression format to use. This only applies when using ```ReturnAsStream``` transfer mode (defaults to ```none```)
+  * **trace_config** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TraceConfig`](#nodriver.cdp.tracing.TraceConfig)]) –  *(Optional)*
+  * **perfetto_config** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Base64-encoded serialized perfetto.protos.TraceConfig protobuf message When specified, the parameters ```categories```, ```options```, ```traceConfig``` are ignored. (Encoded as a base64 string when passed over JSON)
+  * **tracing_backend** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TracingBackend`](#nodriver.cdp.tracing.TracingBackend)]) –  *(Optional)* Backend type (defaults to ```auto``)
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -186,21 +175,16 @@ you use the event’s attributes.
 
 ### *class* BufferUsage(percent_full, event_count, value)
 
-* **Parameters:**
-  * **percent_full** ([*float*](https://docs.python.org/3/library/functions.html#float) *|* *None*) – 
-  * **event_count** ([*float*](https://docs.python.org/3/library/functions.html#float) *|* *None*) – 
-  * **value** ([*float*](https://docs.python.org/3/library/functions.html#float) *|* *None*) – 
-
-#### event_count*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]*
-
-An approximate number of events in the trace log.
-
-#### percent_full*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]*
+#### percent_full *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]*
 
 A number in range [0..1] that indicates the used size of event buffer as a fraction of its
 total size.
 
-#### value*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]*
+#### event_count *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]*
+
+An approximate number of events in the trace log.
+
+#### value *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]*
 
 A number in range [0..1] that indicates the used size of event buffer as a fraction of its
 total size.
@@ -210,35 +194,26 @@ total size.
 Contains a bucket of collected trace events. When tracing is stopped collected events will be
 sent as a sequence of dataCollected events followed by tracingComplete event.
 
-* **Parameters:**
-  **value** ([*List*](https://docs.python.org/3/library/typing.html#typing.List)*[*[*dict*](https://docs.python.org/3/library/stdtypes.html#dict)*]*) – 
-
-#### value*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]*
+#### value *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]*
 
 ### *class* TracingComplete(data_loss_occurred, stream, trace_format, stream_compression)
 
 Signals that tracing is stopped and there is no trace buffers pending flush, all data were
 delivered via dataCollected events.
 
-* **Parameters:**
-  * **data_loss_occurred** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – 
-  * **stream** ([*StreamHandle*](io.md#nodriver.cdp.io.StreamHandle) *|* *None*) – 
-  * **trace_format** ([*StreamFormat*](#nodriver.cdp.tracing.StreamFormat) *|* *None*) – 
-  * **stream_compression** ([*StreamCompression*](#nodriver.cdp.tracing.StreamCompression) *|* *None*) – 
-
-#### data_loss_occurred*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### data_loss_occurred *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Indicates whether some trace data is known to have been lost, e.g. because the trace ring
 buffer wrapped around.
 
-#### stream*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StreamHandle`](io.md#nodriver.cdp.io.StreamHandle)]*
+#### stream *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StreamHandle`](io.md#nodriver.cdp.io.StreamHandle)]*
 
 A handle of the stream that holds resulting trace data.
 
-#### stream_compression*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StreamCompression`](#nodriver.cdp.tracing.StreamCompression)]*
-
-Compression format of returned stream.
-
-#### trace_format*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StreamFormat`](#nodriver.cdp.tracing.StreamFormat)]*
+#### trace_format *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StreamFormat`](#nodriver.cdp.tracing.StreamFormat)]*
 
 Trace data format of returned stream.
+
+#### stream_compression *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StreamCompression`](#nodriver.cdp.tracing.StreamCompression)]*
+
+Compression format of returned stream.
