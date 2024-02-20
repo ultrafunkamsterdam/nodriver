@@ -272,29 +272,3 @@ shows a script to create a twitter account
         uc.loop().run_until_complete(main())
 
 
-.. toctree::
-    :caption: getting started
-    :titlesonly:
-
-    nodriver/quickstart
-
-
-.. toctree::
-    :caption: nodriver object reference
-    :titlesonly:
-    :glob:
-
-    nodriver/classes/*
-
-
-.. toctree::
-    :caption: nodriver cdp reference
-    :glob:
-    :maxdepth: 1
-
-    nodriver/cdp/*
-
-
-
-
-
