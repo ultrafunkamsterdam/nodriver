@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Accessibility" href="../cdp/accessibility.html" /><link rel="prev" title="Other classes and Helper classes" href="others_and_helpers.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Element class" href="element.html" /><link rel="prev" title="Browser class" href="browser.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
-        <title>some useful, often needed and simply required methods - nodriver documentation</title>
+        <title>Tab class - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -161,20 +161,15 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">getting started</span></p>
-<ul>
+  <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#usage-example">usage example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#components-and-interaction">Components and interaction</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">nodriver object reference</span></p>
-<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="browser.html">Browser class</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Tab class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="element.html">Element class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="others_and_helpers.html">Other classes and Helper classes</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">Tab</span></code></a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../cdp/accessibility.html">Accessibility</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cdp/animation.html">Animation</a></li>
@@ -259,10 +254,12 @@
           </label>
         </div>
         <article role="main">
-          <dl class="py class" id="tab">
+          <section id="tab-class">
+<span id="tab"></span><h1>Tab class<a class="headerlink" href="#tab-class" title="Link to this heading">#</a></h1>
+<dl class="py class">
 <dt class="sig sig-object py" id="nodriver.Tab">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Tab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">websocket_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">browser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab" title="Link to this definition">#</a></dt>
-<dd><p><span class="xref std std-ref">tab</span> is the controlling mechanism/connection to a ‘target’,
+<dd><p><a class="reference internal" href="#tab"><span class="std std-ref">Tab class</span></a> is the controlling mechanism/connection to a ‘target’,
 for most of us ‘target’ can be read as ‘tab’. however it could also
 be an iframe, serviceworker or background script for example,
 although there isn’t much to control for those.</p>
@@ -271,6 +268,8 @@ your url will open a new window. this window is a ‘tab’.
 When you browse to another page, the tab will be the same (it is an browser view).</p>
 <p>So it’s important to keep some reference to tab objects, in case you’re
 done interacting with elements and want to operate on the page level again.</p>
+<section id="custom-cdp-commands">
+<h2>Custom CDP commands<a class="headerlink" href="#custom-cdp-commands" title="Link to this heading">#</a></h2>
 <p>Tab object provide many useful and often-used methods. It is also
 possible to utilize the included cdp classes to to something totally custom.</p>
 <p>the cdp package is a set of so-called “domains” with each having methods, events and types.
@@ -285,27 +284,52 @@ this way you can build very detailed and customized commands.
 (note: finding correct command combo’s can be a time consuming task, luckily i added a whole bunch
 of useful methods, preferably having the same api’s or lookalikes, as in selenium)</p>
 <section id="some-useful-often-needed-and-simply-required-methods">
-<h1>some useful, often needed and simply required methods<a class="headerlink" href="#some-useful-often-needed-and-simply-required-methods" title="Link to this heading">#</a></h1>
-<section id="query-selector-all">
-<h2><a class="reference internal" href="#nodriver.Tab.query_selector_all" title="nodriver.Tab.query_selector_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">query_selector_all()</span></code></a><a class="headerlink" href="#query-selector-all" title="Link to this heading">#</a></h2>
-<p>this is just like javascripts’ document.querySelectorAll, which you can use
-to quickly select elements based a css selector.</p>
-<p>tip: you can also use <code class="xref any docutils literal notranslate"><span class="pre">await</span> <span class="pre">page('.your-css-selector')</span></code></p>
+<h3>some useful, often needed and simply required methods<a class="headerlink" href="#some-useful-often-needed-and-simply-required-methods" title="Link to this heading">#</a></h3>
 </section>
-<section id="find-element-by-text">
-<h2><a class="reference internal" href="#nodriver.Tab.find_element_by_text" title="nodriver.Tab.find_element_by_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_element_by_text()</span></code></a><a class="headerlink" href="#find-element-by-text" title="Link to this heading">#</a></h2>
-<p>this is almost like query_selector all, but performs a text search and returns
-any elements that matches. This is case insensitive.</p>
-<p>tip: you can also use <code class="xref any docutils literal notranslate"><span class="pre">await</span> <span class="pre">page(text='sign</span> <span class="pre">up')</span></code></p>
 </section>
-<section id="await-page">
-<h2>await <code class="xref py py-obj docutils literal notranslate"><span class="pre">Page</span></code><a class="headerlink" href="#await-page" title="Link to this heading">#</a></h2>
-<p>calling <code class="xref any docutils literal notranslate"><span class="pre">await</span> <span class="pre">page</span></code> will do a lot of stuff under the hood, and ensures all references
+<section id="find-find-text">
+<h2><a class="reference internal" href="#nodriver.Tab.find" title="nodriver.Tab.find"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find()</span></code></a>  |  find(text)<a class="headerlink" href="#find-find-text" title="Link to this heading">#</a></h2>
+<p>find and returns a single element by text match. by default returns the first element found.
+much more powerful is the best_match flag, although also much more expensive.
+when no match is found, it will retry for &lt;timeout&gt; seconds (default: 10), so
+this is also suitable to use as wait condition.</p>
+</section>
+<section id="find-find-text-best-match-true-or-find-text-true">
+<h2><a class="reference internal" href="#nodriver.Tab.find" title="nodriver.Tab.find"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find()</span></code></a> |  find(text, best_match=True) or find(text, True)<a class="headerlink" href="#find-find-text-best-match-true-or-find-text-true" title="Link to this heading">#</a></h2>
+<p>Much more powerful (and expensive!!) than the above, is the use of the <code class="xref any docutils literal notranslate"><span class="pre">find(text,</span> <span class="pre">best_match=True)</span></code> flag.
+It will still return 1 element, but when multiple matches are found, picks the one having the
+most similar text length.
+How would that help?
+For example, you search for “login”, you’d probably want the “login” button element,
+and not thousands of scripts,meta,headings which happens to contain a string of “login”.</p>
+<p>when no match is found, it will retry for &lt;timeout&gt; seconds (default: 10), so
+this is also suitable to use as wait condition.</p>
+</section>
+<section id="select-select-selector">
+<h2><a class="reference internal" href="#nodriver.Tab.select" title="nodriver.Tab.select"><code class="xref py py-meth docutils literal notranslate"><span class="pre">select()</span></code></a> | select(selector)<a class="headerlink" href="#select-select-selector" title="Link to this heading">#</a></h2>
+<p>find and returns a single element by css selector match.
+when no match is found, it will retry for &lt;timeout&gt; seconds (default: 10), so
+this is also suitable to use as wait condition.</p>
+</section>
+<section id="select-all-select-all-selector">
+<h2><a class="reference internal" href="#nodriver.Tab.select_all" title="nodriver.Tab.select_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">select_all()</span></code></a> | select_all(selector)<a class="headerlink" href="#select-all-select-all-selector" title="Link to this heading">#</a></h2>
+<p>find and returns all elements by css selector match.
+when no match is found, it will retry for &lt;timeout&gt; seconds (default: 10), so
+this is also suitable to use as wait condition.</p>
+</section>
+<section id="await-tab">
+<h2>await <a class="reference internal" href="#nodriver.Tab" title="nodriver.Tab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tab</span></code></a><a class="headerlink" href="#await-tab" title="Link to this heading">#</a></h2>
+<p>calling <code class="xref any docutils literal notranslate"><span class="pre">await</span> <span class="pre">tab</span></code> will do a lot of stuff under the hood, and ensures all references
 are up to date. also it allows for the script to “breathe”, as it is oftentime faster than your browser or
 webpage. So whenever you get stuck and things crashes or element could not be found, you should probably let
 it “breathe”  by calling <code class="xref any docutils literal notranslate"><span class="pre">await</span> <span class="pre">page</span></code>  and/or <code class="xref any docutils literal notranslate"><span class="pre">await</span> <span class="pre">page.sleep()</span></code></p>
 <p>also, it’s ensuring <code class="xref py py-obj docutils literal notranslate"><span class="pre">url</span></code> will be updated to the most recent one, which is quite important in some
 other methods.</p>
+<section id="using-other-and-custom-cdp-commands">
+<h3>Using other and custom CDP commands<a class="headerlink" href="#using-other-and-custom-cdp-commands" title="Link to this heading">#</a></h3>
+<p>using the included cdp module, you can easily craft commands, which will always return an generator object.
+this generator object can be easily sent to the <a class="reference internal" href="#nodriver.Tab.send" title="nodriver.Tab.send"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send()</span></code></a>  method.</p>
+</section>
 </section>
 <section id="send">
 <h2><a class="reference internal" href="#nodriver.Tab.send" title="nodriver.Tab.send"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send()</span></code></a><a class="headerlink" href="#send" title="Link to this heading">#</a></h2>
@@ -959,32 +983,32 @@ an TimeoutError will be raised</p>
 <dd></dd></dl>
 
 </section>
-</section>
 </dd></dl>
 
+</section>
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../cdp/accessibility.html">
+          <a class="next-page" href="element.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Accessibility</div>
+                <div class="title">Element class</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="others_and_helpers.html">
+          <a class="prev-page" href="browser.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Other classes and Helper classes</div>
+                <div class="title">Browser class</div>
                 
               </div>
             </a>
@@ -1018,7 +1042,8 @@ an TimeoutError will be raised</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">Tab</span></code></a><ul>
+<li><a class="reference internal" href="#">Tab class</a><ul>
+<li><a class="reference internal" href="#nodriver.Tab"><code class="docutils literal notranslate"><span class="pre">Tab</span></code></a><ul>
 <li><a class="reference internal" href="#nodriver.Tab.aclose"><code class="docutils literal notranslate"><span class="pre">Tab.aclose()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.activate"><code class="docutils literal notranslate"><span class="pre">Tab.activate()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.add_handler"><code class="docutils literal notranslate"><span class="pre">Tab.add_handler()</span></code></a></li>
@@ -1065,6 +1090,8 @@ an TimeoutError will be raised</p>
 <li><a class="reference internal" href="#nodriver.Tab.wait"><code class="docutils literal notranslate"><span class="pre">Tab.wait()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.wait_for"><code class="docutils literal notranslate"><span class="pre">Tab.wait_for()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.websocket"><code class="docutils literal notranslate"><span class="pre">Tab.websocket</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

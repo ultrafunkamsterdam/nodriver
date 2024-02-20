@@ -30,6 +30,8 @@ class Tab(Connection):
     So it's important to keep some reference to tab objects, in case you're
     done interacting with elements and want to operate on the page level again.
 
+    Custom CDP commands
+    ---------------------------
     Tab object provide many useful and often-used methods. It is also
     possible to utilize the included cdp classes to to something totally custom.
 
@@ -52,24 +54,45 @@ class Tab(Connection):
     some useful, often needed and simply required methods
     ===================================================================
 
-    :py:meth:`~query_selector_all`
+
+    :py:meth:`~find`  |  find(text)
     ----------------------------------------
-    this is just like javascripts' document.querySelectorAll, which you can use
-    to quickly select elements based a css selector.
+    find and returns a single element by text match. by default returns the first element found.
+    much more powerful is the best_match flag, although also much more expensive.
+    when no match is found, it will retry for <timeout> seconds (default: 10), so
+    this is also suitable to use as wait condition.
 
-    tip: you can also use `await page('.your-css-selector')`
+
+    :py:meth:`~find` |  find(text, best_match=True) or find(text, True)
+    ---------------------------------------------------------------------------------
+    Much more powerful (and expensive!!) than the above, is the use of the `find(text, best_match=True)` flag.
+    It will still return 1 element, but when multiple matches are found, picks the one having the
+    most similar text length.
+    How would that help?
+    For example, you search for "login", you'd probably want the "login" button element,
+    and not thousands of scripts,meta,headings which happens to contain a string of "login".
+
+    when no match is found, it will retry for <timeout> seconds (default: 10), so
+    this is also suitable to use as wait condition.
 
 
-    :py:meth:`~find_element_by_text`
-    -----------------------------------------
-    this is almost like query_selector all, but performs a text search and returns
-    any elements that matches. This is case insensitive.
+    :py:meth:`~select` | select(selector)
+    ----------------------------------------
+    find and returns a single element by css selector match.
+    when no match is found, it will retry for <timeout> seconds (default: 10), so
+    this is also suitable to use as wait condition.
 
-    tip: you can also use `await page(text='sign up')`
 
-    await :py:obj:`Page`
+    :py:meth:`~select_all` | select_all(selector)
+    ------------------------------------------------
+    find and returns all elements by css selector match.
+    when no match is found, it will retry for <timeout> seconds (default: 10), so
+    this is also suitable to use as wait condition.
+    
+
+    await :py:obj:`Tab`
     ---------------------------
-    calling `await page` will do a lot of stuff under the hood, and ensures all references
+    calling `await tab` will do a lot of stuff under the hood, and ensures all references
     are up to date. also it allows for the script to "breathe", as it is oftentime faster than your browser or
     webpage. So whenever you get stuck and things crashes or element could not be found, you should probably let
     it "breathe"  by calling `await page`  and/or `await page.sleep()`
@@ -77,6 +100,10 @@ class Tab(Connection):
     also, it's ensuring :py:obj:`~url` will be updated to the most recent one, which is quite important in some
     other methods.
 
+    Using other and custom CDP commands
+    ======================================================
+    using the included cdp module, you can easily craft commands, which will always return an generator object.
+    this generator object can be easily sent to the :py:meth:`~send`  method.
 
     :py:meth:`~send`
     ---------------------------
@@ -86,8 +113,6 @@ class Tab(Connection):
 
     when you import * from this package, cdp will be in your namespace, and contains all domains/actions/events
     you can act upon.
-
-
     """
 
     browser: nodriver.core.browser.Browser

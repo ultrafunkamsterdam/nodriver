@@ -160,20 +160,15 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">getting started</span></p>
-<ul>
+  <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#usage-example">usage example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#components-and-interaction">Components and interaction</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">nodriver object reference</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/tab.html">Tab class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/element.html">Element class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/others_and_helpers.html">Other classes and Helper classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/tab.html"><code class="docutils literal notranslate"><span class="pre">Tab</span></code></a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">nodriver cdp reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/accessibility.html">Accessibility</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/cdp/animation.html">Animation</a></li>
@@ -292,6 +287,8 @@
 <span class="sd">    So it&#39;s important to keep some reference to tab objects, in case you&#39;re</span>
 <span class="sd">    done interacting with elements and want to operate on the page level again.</span>
 
+<span class="sd">    Custom CDP commands</span>
+<span class="sd">    ---------------------------</span>
 <span class="sd">    Tab object provide many useful and often-used methods. It is also</span>
 <span class="sd">    possible to utilize the included cdp classes to to something totally custom.</span>
 
@@ -314,24 +311,45 @@
 <span class="sd">    some useful, often needed and simply required methods</span>
 <span class="sd">    ===================================================================</span>
 
-<span class="sd">    :py:meth:`~query_selector_all`</span>
+
+<span class="sd">    :py:meth:`~find`  |  find(text)</span>
 <span class="sd">    ----------------------------------------</span>
-<span class="sd">    this is just like javascripts&#39; document.querySelectorAll, which you can use</span>
-<span class="sd">    to quickly select elements based a css selector.</span>
+<span class="sd">    find and returns a single element by text match. by default returns the first element found.</span>
+<span class="sd">    much more powerful is the best_match flag, although also much more expensive.</span>
+<span class="sd">    when no match is found, it will retry for &lt;timeout&gt; seconds (default: 10), so</span>
+<span class="sd">    this is also suitable to use as wait condition.</span>
 
-<span class="sd">    tip: you can also use `await page(&#39;.your-css-selector&#39;)`</span>
+
+<span class="sd">    :py:meth:`~find` |  find(text, best_match=True) or find(text, True)</span>
+<span class="sd">    ---------------------------------------------------------------------------------</span>
+<span class="sd">    Much more powerful (and expensive!!) than the above, is the use of the `find(text, best_match=True)` flag.</span>
+<span class="sd">    It will still return 1 element, but when multiple matches are found, picks the one having the</span>
+<span class="sd">    most similar text length.</span>
+<span class="sd">    How would that help?</span>
+<span class="sd">    For example, you search for &quot;login&quot;, you&#39;d probably want the &quot;login&quot; button element,</span>
+<span class="sd">    and not thousands of scripts,meta,headings which happens to contain a string of &quot;login&quot;.</span>
+
+<span class="sd">    when no match is found, it will retry for &lt;timeout&gt; seconds (default: 10), so</span>
+<span class="sd">    this is also suitable to use as wait condition.</span>
 
 
-<span class="sd">    :py:meth:`~find_element_by_text`</span>
-<span class="sd">    -----------------------------------------</span>
-<span class="sd">    this is almost like query_selector all, but performs a text search and returns</span>
-<span class="sd">    any elements that matches. This is case insensitive.</span>
+<span class="sd">    :py:meth:`~select` | select(selector)</span>
+<span class="sd">    ----------------------------------------</span>
+<span class="sd">    find and returns a single element by css selector match.</span>
+<span class="sd">    when no match is found, it will retry for &lt;timeout&gt; seconds (default: 10), so</span>
+<span class="sd">    this is also suitable to use as wait condition.</span>
 
-<span class="sd">    tip: you can also use `await page(text=&#39;sign up&#39;)`</span>
 
-<span class="sd">    await :py:obj:`Page`</span>
+<span class="sd">    :py:meth:`~select_all` | select_all(selector)</span>
+<span class="sd">    ------------------------------------------------</span>
+<span class="sd">    find and returns all elements by css selector match.</span>
+<span class="sd">    when no match is found, it will retry for &lt;timeout&gt; seconds (default: 10), so</span>
+<span class="sd">    this is also suitable to use as wait condition.</span>
+<span class="sd">    </span>
+
+<span class="sd">    await :py:obj:`Tab`</span>
 <span class="sd">    ---------------------------</span>
-<span class="sd">    calling `await page` will do a lot of stuff under the hood, and ensures all references</span>
+<span class="sd">    calling `await tab` will do a lot of stuff under the hood, and ensures all references</span>
 <span class="sd">    are up to date. also it allows for the script to &quot;breathe&quot;, as it is oftentime faster than your browser or</span>
 <span class="sd">    webpage. So whenever you get stuck and things crashes or element could not be found, you should probably let</span>
 <span class="sd">    it &quot;breathe&quot;  by calling `await page`  and/or `await page.sleep()`</span>
@@ -339,6 +357,10 @@
 <span class="sd">    also, it&#39;s ensuring :py:obj:`~url` will be updated to the most recent one, which is quite important in some</span>
 <span class="sd">    other methods.</span>
 
+<span class="sd">    Using other and custom CDP commands</span>
+<span class="sd">    ======================================================</span>
+<span class="sd">    using the included cdp module, you can easily craft commands, which will always return an generator object.</span>
+<span class="sd">    this generator object can be easily sent to the :py:meth:`~send`  method.</span>
 
 <span class="sd">    :py:meth:`~send`</span>
 <span class="sd">    ---------------------------</span>
@@ -348,8 +370,6 @@
 
 <span class="sd">    when you import * from this package, cdp will be in your namespace, and contains all domains/actions/events</span>
 <span class="sd">    you can act upon.</span>
-
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">browser</span><span class="p">:</span> <span class="n">nodriver</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">Browser</span>
@@ -835,7 +855,7 @@
                 <span class="n">results</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">text_all</span><span class="p">))</span>
             <span class="p">)</span>
             <span class="n">elem</span> <span class="o">=</span> <span class="n">closest_by_length</span> <span class="ow">or</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RETURNING ELEME&quot;</span><span class="p">,</span> <span class="n">elem</span><span class="p">)</span>
+
             <span class="k">return</span> <span class="n">elem</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># naively just return the first result</span>

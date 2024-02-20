@@ -1,5 +1,7 @@
 .. _tab:
 
+Tab class
+-------------
 .. autoclass::  nodriver.Tab
     :members:
     :inherited-members:
