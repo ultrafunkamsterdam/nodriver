@@ -36,9 +36,15 @@ entry point for creating an instance
 * **Return type:**
   [`Browser`](#nodriver.Browser)
 
+#### config *: [`Config`](others_and_helpers.md#nodriver.Config)*
+
 #### targets *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)*
 
 current targets (all types
+
+#### connection *: `Connection`*
+
+#### *property* websocket_url
 
 #### *property* main_tab *: [Tab](tab.md#nodriver.Tab)*
 
@@ -48,6 +54,10 @@ returns the target which was launched with the browser
 
 returns the current targets which are of type “page”
 :return:
+
+#### *property* cookies *: CookieJar*
+
+#### *property* stopped
 
 #### *async* wait(time=1)
 
@@ -119,3 +129,9 @@ grant permissions for:
   wakeLockScreen
   wakeLockSystem
   windowManagement
+
+#### *async* tile_windows(max_columns=0)
+
+#### *async* update_targets()
+
+#### stop()

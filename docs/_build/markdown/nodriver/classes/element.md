@@ -6,12 +6,80 @@ Some words about the Element class
 
 ### *class* Element(node, tab, tree=None)
 
+#### *property* tag
+
+#### *property* tag_name
+
+#### *property* node_id
+
+#### *property* backend_node_id
+
+#### *property* node_type
+
+#### *property* node_name
+
+#### *property* local_name
+
+#### *property* node_value
+
+#### *property* parent_id
+
+#### *property* child_node_count
+
+#### *property* attributes
+
+#### *property* document_url
+
+#### *property* base_url
+
+#### *property* public_id
+
+#### *property* system_id
+
+#### *property* internal_subset
+
+#### *property* xml_version
+
+#### *property* value
+
+#### *property* pseudo_type
+
+#### *property* pseudo_identifier
+
+#### *property* shadow_root_type
+
+#### *property* frame_id
+
+#### *property* content_document
+
+#### *property* shadow_roots
+
+#### *property* template_content
+
+#### *property* pseudo_elements
+
+#### *property* imported_document
+
+#### *property* distributed_nodes
+
+#### *property* is_svg
+
+#### *property* compatibility_mode
+
+#### *property* assigned_slot
+
+#### *property* tab
+
+#### *async* save_to_dom()
+
+#### *async* remove_from_dom()
+
 #### *async* update(\_node=None)
 
 updates element to retrieve more properties. for example this enables
-[`children`](#nodriver.Element.children) and `parent` attributes.
+[`children`](#nodriver.Element.children) and [`parent`](#nodriver.Element.parent) attributes.
 
-also resolves js opbject which is stored object in `remote_object`
+also resolves js opbject which is stored object in [`remote_object`](#nodriver.Element.remote_object)
 
 usually you will get element nodes by the usage of
 
@@ -29,6 +97,12 @@ therefore, it is not advised to call this method on a bunch of blocks (100+) at 
 * **Returns:**
 * **Return type:**
 
+#### *property* node
+
+#### *property* tree *: [Node](../cdp/dom.md#nodriver.cdp.dom.Node)*
+
+#### *property* parent *: [Element](#nodriver.Element) | [None](https://docs.python.org/3/library/constants.html#None)*
+
 #### *property* attrs
 
 attributes are stored here, however, you can set them directly on the element object as well.
@@ -42,12 +116,18 @@ so you can browse through the entire tree as well.
 :return:
 :rtype:
 
+#### *property* remote_object *: [RemoteObject](../cdp/runtime.md#nodriver.cdp.runtime.RemoteObject)*
+
+#### *property* object_id *: [RemoteObjectId](../cdp/runtime.md#nodriver.cdp.runtime.RemoteObjectId)*
+
 #### *async* click()
 
 Click the element.
 
 * **Returns:**
 * **Return type:**
+
+#### *async* get_js_attributes()
 
 #### *async* apply(js_function, return_by_value=True)
 
@@ -63,6 +143,11 @@ eg:
   * **return_by_value** – 
 * **Returns:**
 * **Return type:**
+
+#### *async* get_position(abs=False)
+
+* **Return type:**
+  `Position`
 
 #### *async* mouse_click(button='left', buttons=1, modifiers=0, \_until_event=None)
 
@@ -123,6 +208,12 @@ for form (select) fields. when you have queried the options you can call this me
 calling `option.select_option()` will use that option as selected value.
 does not work in all cases.
 
+#### *async* set_value(value)
+
+#### *async* set_text(value)
+
+#### *async* get_html()
+
 #### *property* text *: [str](https://docs.python.org/3/library/stdtypes.html#str)*
 
 gets the text contents of this element
@@ -137,6 +228,10 @@ gets the text contents of this element, and it’s children in a concatenated st
 note: this includes text in the form of script content, as those are also just ‘text nodes’
 :return:
 :rtype:
+
+#### *async* query_selector_all(selector)
+
+#### *async* query_selector(selector)
 
 #### *async* save_screenshot(filename='auto', format='jpeg', scale=1)
 
@@ -182,3 +277,5 @@ when any of the follow happens:
 - video stops
 
 the video recorded will be downloaded.
+
+#### *async* is_recording()

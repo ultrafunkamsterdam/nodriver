@@ -1,8 +1,10 @@
 <a id="tab"></a>
 
+# Tab class
+
 ### *class* Tab(websocket_url, target, browser=None, \*\*kwargs)
 
-tab is the controlling mechanism/connection to a ‘target’,
+[Tab class](#tab) is the controlling mechanism/connection to a ‘target’,
 for most of us ‘target’ can be read as ‘tab’. however it could also
 be an iframe, serviceworker or background script for example,
 although there isn’t much to control for those.
@@ -13,6 +15,8 @@ When you browse to another page, the tab will be the same (it is an browser view
 
 So it’s important to keep some reference to tab objects, in case you’re
 done interacting with elements and want to operate on the page level again.
+
+## Custom CDP commands
 
 Tab object provide many useful and often-used methods. It is also
 possible to utilize the included cdp classes to to something totally custom.
@@ -32,31 +36,53 @@ this way you can build very detailed and customized commands.
 (note: finding correct command combo’s can be a time consuming task, luckily i added a whole bunch
 of useful methods, preferably having the same api’s or lookalikes, as in selenium)
 
-# some useful, often needed and simply required methods
+### some useful, often needed and simply required methods
 
-## [`query_selector_all()`](#nodriver.Tab.query_selector_all)
+## [`find()`](#nodriver.Tab.find)  |  find(text)
 
-this is just like javascripts’ document.querySelectorAll, which you can use
-to quickly select elements based a css selector.
+find and returns a single element by text match. by default returns the first element found.
+much more powerful is the best_match flag, although also much more expensive.
+when no match is found, it will retry for <timeout> seconds (default: 10), so
+this is also suitable to use as wait condition.
 
-tip: you can also use `await page('.your-css-selector')`
+## [`find()`](#nodriver.Tab.find) |  find(text, best_match=True) or find(text, True)
 
-## [`find_element_by_text()`](#nodriver.Tab.find_element_by_text)
+Much more powerful (and expensive!!) than the above, is the use of the `find(text, best_match=True)` flag.
+It will still return 1 element, but when multiple matches are found, picks the one having the
+most similar text length.
+How would that help?
+For example, you search for “login”, you’d probably want the “login” button element,
+and not thousands of scripts,meta,headings which happens to contain a string of “login”.
 
-this is almost like query_selector all, but performs a text search and returns
-any elements that matches. This is case insensitive.
+when no match is found, it will retry for <timeout> seconds (default: 10), so
+this is also suitable to use as wait condition.
 
-tip: you can also use `await page(text='sign up')`
+## [`select()`](#nodriver.Tab.select) | select(selector)
 
-## await `Page`
+find and returns a single element by css selector match.
+when no match is found, it will retry for <timeout> seconds (default: 10), so
+this is also suitable to use as wait condition.
 
-calling `await page` will do a lot of stuff under the hood, and ensures all references
+## [`select_all()`](#nodriver.Tab.select_all) | select_all(selector)
+
+find and returns all elements by css selector match.
+when no match is found, it will retry for <timeout> seconds (default: 10), so
+this is also suitable to use as wait condition.
+
+## await [`Tab`](#nodriver.Tab)
+
+calling `await tab` will do a lot of stuff under the hood, and ensures all references
 are up to date. also it allows for the script to “breathe”, as it is oftentime faster than your browser or
 webpage. So whenever you get stuck and things crashes or element could not be found, you should probably let
 it “breathe”  by calling `await page`  and/or `await page.sleep()`
 
 also, it’s ensuring `url` will be updated to the most recent one, which is quite important in some
 other methods.
+
+### Using other and custom CDP commands
+
+using the included cdp module, you can easily craft commands, which will always return an generator object.
+this generator object can be easily sent to the [`send()`](#nodriver.Tab.send)  method.
 
 ## [`send()`](#nodriver.Tab.send)
 

@@ -1,4 +1,6 @@
-# Installation
+# Quickstart guide
+
+## Installation
 
 Since it’s a part of undetected-chromedriver, installation goes via
 
@@ -7,6 +9,12 @@ pip install undetected-chromedriver
 ```
 
 ---
+
+Or as a seperate package via:
+
+```default
+pip install nodriver
+```
 
 <a id="getting-started-commands"></a>
 
@@ -180,25 +188,3 @@ if __name__ == "__main__":
     # i use
     uc.loop().run_until_complete(main())
 ```
-
-# Components and interaction
-
-There are a couple of layers. But the package
-will keep it as easy as possible (compared to plain cdp)
-
-## Browser
-
-[Browser class](classes/browser.md#browser) object holds your entire session and should be
-seen as “root”
-
-## Tab
-
-\_tab
-
-## Element
-
-[Element class](classes/element.md#element)s are (html) elements (nodes) on a page.
-like page object, you can interact with elements.
-since element does have a reference to page,
-you can interact with elements directly. They offer
-different set of methods compared page.
