@@ -547,7 +547,7 @@ class Tab(Connection):
                 results, key=lambda el: abs(len(text) - len(el.text_all))
             )
             elem = closest_by_length or results[0]
-            print("RETURNING ELEME", elem)
+
             return elem
         else:
             # naively just return the first result
