@@ -359,7 +359,7 @@ class Tab(Connection):
             node_ids = await self.send(
                 cdp.dom.query_selector_all(doc.node_id, selector)
             )
-            await self.send(cdp.dom.disable())
+            # await self.send(cdp.dom.disable())
 
         except ProtocolException as e:
             if _node is not None:
@@ -414,7 +414,7 @@ class Tab(Connection):
         node_id = None
         try:
             node_id = await self.send(cdp.dom.query_selector(doc.node_id, selector))
-            await self.send(cdp.dom.disable())
+            # await self.send(cdp.dom.disable())
         except ProtocolException as e:
             if _node is not None:
                 if "could not find node" in e.message.lower():
@@ -454,15 +454,25 @@ class Tab(Connection):
         :return:
         :rtype:
         """
+
         doc = await self.send(cdp.dom.get_document(-1, True))
         search_id, nresult = await self.send(cdp.dom.perform_search(text, True))
-        if nresult == 0:
-            return []
-        node_ids = await self.send(cdp.dom.get_search_results(search_id, 0, nresult))
+        if nresult:
+            node_ids = await self.send(cdp.dom.get_search_results(search_id, 0, nresult))
+        else:
+            node_ids = []
+
         await self.send(cdp.dom.discard_search_results(search_id))
+        await self.send(cdp.dom.disable())
         results = []
         for nid in node_ids:
             node = util.filter_recurse(doc, lambda n: n.node_id == nid)
+            if not node:
+                node = await self.send(cdp.dom.resolve_node(node_id=nid))
+                if not node:
+                    continue
+                # remote_object = await self.send(cdp.dom.resolve_node(backend_node_id=node.backend_node_id))
+                # node_id = await self.send(cdp.dom.request_node(object_id=remote_object.object_id))
             try:
                 elem = element.create(node, self, doc)
             except:  # noqa
@@ -488,15 +498,17 @@ class Tab(Connection):
         # let's also search through the iframes
         iframes = util.filter_recurse_all(doc, lambda node: node.node_name == "IFRAME")
         if iframes:
-            iframes_elems = [element.create(iframe, self, doc) for iframe in iframes]
+            iframes_elems = [element.create(iframe, self, iframe.content_document) for iframe in iframes]
             for iframe_elem in iframes_elems:
                 iframe_text_nodes = util.filter_recurse_all(
-                    iframe_elem.node,
+                    iframe_elem.content_document,
                     lambda node: node.node_type == 3  # noqa
-                    and text.lower() in node.node_value.lower(),
+                                 and text.lower() in node.node_value.lower(),
                 )
                 if iframe_text_nodes:
-                    results.extend(text_node.parent for text_node in iframe_text_nodes)
+                    iframe_text_elems = [element.create(text_node, self, iframe_elem.tree) for text_node in
+                                         iframe_text_nodes]
+                    results.extend(text_node.parent for text_node in iframe_text_elems)
         return results or []
 
     async def find_element_by_text(
@@ -523,11 +535,13 @@ class Tab(Connection):
         """
         doc = await self.send(cdp.dom.get_document(-1, True))
         search_id, nresult = await self.send(cdp.dom.perform_search(text, True))
-        if nresult == 0:
-            return
+        # if nresult == 0:
+        #     return
         node_ids = await self.send(cdp.dom.get_search_results(search_id, 0, nresult))
         await self.send(cdp.dom.discard_search_results(search_id))
         await self.send(cdp.dom.disable())
+        if not node_ids:
+            node_ids = []
         results = []
         for nid in node_ids:
             node = util.filter_recurse(doc, lambda n: n.node_id == nid)
@@ -556,15 +570,16 @@ class Tab(Connection):
         # let's also search through the iframes
         iframes = util.filter_recurse_all(doc, lambda node: node.node_name == "IFRAME")
         if iframes:
-            iframes_elems = [element.create(iframe, self, doc) for iframe in iframes]
+            iframes_elems = [element.create(iframe, self, iframe.content_document) for iframe in iframes]
             for iframe_elem in iframes_elems:
                 iframe_text_nodes = util.filter_recurse_all(
-                    iframe_elem.node,
+                    iframe_elem.content_document,
                     lambda node: node.node_type == 3  # noqa
                     and text.lower() in node.node_value.lower(),
                 )
                 if iframe_text_nodes:
-                    results.extend(text_node.parent for text_node in iframe_text_nodes)
+                    iframe_text_elems = [element.create(text_node, self, iframe_elem.tree) for text_node in iframe_text_nodes]
+                    results.extend(text_node.parent for text_node in iframe_text_elems)
         if not results:
             return
         if best_match:
