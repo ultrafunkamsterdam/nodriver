@@ -355,11 +355,11 @@ class Tab(Connection):
             if _node.node_name == "IFRAME":
                 doc = _node.content_document
         node_ids = []
+
         try:
             node_ids = await self.send(
                 cdp.dom.query_selector_all(doc.node_id, selector)
             )
-            # await self.send(cdp.dom.disable())
 
         except ProtocolException as e:
             if _node is not None:
@@ -375,6 +375,7 @@ class Tab(Connection):
                     )
                     return await self.query_selector_all(selector, _node)
             else:
+                await self.send(cdp.dom.disable())
                 raise
         if not node_ids:
             return []
@@ -412,9 +413,10 @@ class Tab(Connection):
             if _node.node_name == "IFRAME":
                 doc = _node.content_document
         node_id = None
+
         try:
             node_id = await self.send(cdp.dom.query_selector(doc.node_id, selector))
-            # await self.send(cdp.dom.disable())
+
         except ProtocolException as e:
             if _node is not None:
                 if "could not find node" in e.message.lower():
@@ -429,6 +431,7 @@ class Tab(Connection):
                     )
                     return await self.query_selector(selector, _node)
             else:
+                await self.send(cdp.dom.disable())
                 raise
         if not node_id:
             return
@@ -463,7 +466,7 @@ class Tab(Connection):
             node_ids = []
 
         await self.send(cdp.dom.discard_search_results(search_id))
-        await self.send(cdp.dom.disable())
+
         results = []
         for nid in node_ids:
             node = util.filter_recurse(doc, lambda n: n.node_id == nid)
@@ -509,6 +512,7 @@ class Tab(Connection):
                     iframe_text_elems = [element.create(text_node, self, iframe_elem.tree) for text_node in
                                          iframe_text_nodes]
                     results.extend(text_node.parent for text_node in iframe_text_elems)
+        await self.send(cdp.dom.disable())
         return results or []
 
     async def find_element_by_text(
@@ -539,7 +543,7 @@ class Tab(Connection):
         #     return
         node_ids = await self.send(cdp.dom.get_search_results(search_id, 0, nresult))
         await self.send(cdp.dom.discard_search_results(search_id))
-        await self.send(cdp.dom.disable())
+
         if not node_ids:
             node_ids = []
         results = []
@@ -580,20 +584,23 @@ class Tab(Connection):
                 if iframe_text_nodes:
                     iframe_text_elems = [element.create(text_node, self, iframe_elem.tree) for text_node in iframe_text_nodes]
                     results.extend(text_node.parent for text_node in iframe_text_elems)
-        if not results:
-            return
-        if best_match:
-            closest_by_length = min(
-                results, key=lambda el: abs(len(text) - len(el.text_all))
-            )
-            elem = closest_by_length or results[0]
+        try:
+            if not results:
+                return
+            if best_match:
+                closest_by_length = min(
+                    results, key=lambda el: abs(len(text) - len(el.text_all))
+                )
+                elem = closest_by_length or results[0]
 
-            return elem
-        else:
-            # naively just return the first result
-            for elem in results:
-                if elem:
-                    return elem
+                return elem
+            else:
+                # naively just return the first result
+                for elem in results:
+                    if elem:
+                        return elem
+        finally:
+            await self.send(cdp.dom.disable())
 
     async def back(self):
         """

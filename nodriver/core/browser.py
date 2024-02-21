@@ -638,6 +638,8 @@ class CookieJar:
                 continue
             connection = tab
             break
+        else:
+            connection = self._browser.connection
         cookies = await connection.send(cdp.storage.get_cookies())
         if requests_cookie_format:
             import requests.cookies
@@ -670,6 +672,8 @@ class CookieJar:
                 continue
             connection = tab
             break
+        else:
+            connection = self._browser.connection
         cookies = await connection.send(cdp.storage.get_cookies())
         await connection.send(cdp.storage.set_cookies(cookies))
 
@@ -701,6 +705,8 @@ class CookieJar:
                 continue
             connection = tab
             break
+        else:
+            connection = self._browser.connection
         cookies = await connection.send(cdp.storage.get_cookies())
         # if not connection:
         #     return
@@ -752,6 +758,8 @@ class CookieJar:
                 continue
             connection = tab
             break
+        else:
+            connection = self._browser.connection
         cookies = await connection.send(cdp.storage.get_cookies())
         for cookie in cookies:
             for match in pattern.finditer(str(cookie.__dict__)):
@@ -780,6 +788,8 @@ class CookieJar:
                 continue
             connection = tab
             break
+        else:
+            connection = self._browser.connection
         cookies = await connection.send(cdp.storage.get_cookies())
         await connection.send(cdp.storage.clear_cookies())
 
