@@ -88,7 +88,7 @@ class Tab(Connection):
     find and returns all elements by css selector match.
     when no match is found, it will retry for <timeout> seconds (default: 10), so
     this is also suitable to use as wait condition.
-    
+
 
     await :py:obj:`Tab`
     ---------------------------
@@ -461,7 +461,9 @@ class Tab(Connection):
         doc = await self.send(cdp.dom.get_document(-1, True))
         search_id, nresult = await self.send(cdp.dom.perform_search(text, True))
         if nresult:
-            node_ids = await self.send(cdp.dom.get_search_results(search_id, 0, nresult))
+            node_ids = await self.send(
+                cdp.dom.get_search_results(search_id, 0, nresult)
+            )
         else:
             node_ids = []
 
@@ -501,17 +503,23 @@ class Tab(Connection):
         # let's also search through the iframes
         iframes = util.filter_recurse_all(doc, lambda node: node.node_name == "IFRAME")
         if iframes:
-            iframes_elems = [element.create(iframe, self, iframe.content_document) for iframe in iframes]
+            iframes_elems = [
+                element.create(iframe, self, iframe.content_document)
+                for iframe in iframes
+            ]
             for iframe_elem in iframes_elems:
-                iframe_text_nodes = util.filter_recurse_all(
-                    iframe_elem.content_document,
-                    lambda node: node.node_type == 3  # noqa
-                                 and text.lower() in node.node_value.lower(),
-                )
-                if iframe_text_nodes:
-                    iframe_text_elems = [element.create(text_node, self, iframe_elem.tree) for text_node in
-                                         iframe_text_nodes]
-                    results.extend(text_node.parent for text_node in iframe_text_elems)
+                if iframe_elem.content_document:
+                    iframe_text_nodes = util.filter_recurse_all(
+                        iframe_elem,
+                        lambda node: node.node_type == 3  # noqa
+                        and text.lower() in node.node_value.lower(),
+                    )
+                    if iframe_text_nodes:
+                        iframe_text_elems = [
+                            element.create(text_node, self, iframe_elem.tree)
+                            for text_node in iframe_text_nodes
+                        ]
+                        results.extend(text_node.parent for text_node in iframe_text_elems)
         await self.send(cdp.dom.disable())
         return results or []
 
@@ -574,15 +582,21 @@ class Tab(Connection):
         # let's also search through the iframes
         iframes = util.filter_recurse_all(doc, lambda node: node.node_name == "IFRAME")
         if iframes:
-            iframes_elems = [element.create(iframe, self, iframe.content_document) for iframe in iframes]
+            iframes_elems = [
+                element.create(iframe, self, iframe.content_document)
+                for iframe in iframes
+            ]
             for iframe_elem in iframes_elems:
                 iframe_text_nodes = util.filter_recurse_all(
-                    iframe_elem.content_document,
+                    iframe_elem,
                     lambda node: node.node_type == 3  # noqa
                     and text.lower() in node.node_value.lower(),
                 )
                 if iframe_text_nodes:
-                    iframe_text_elems = [element.create(text_node, self, iframe_elem.tree) for text_node in iframe_text_nodes]
+                    iframe_text_elems = [
+                        element.create(text_node, self, iframe_elem.tree)
+                        for text_node in iframe_text_nodes
+                    ]
                     results.extend(text_node.parent for text_node in iframe_text_elems)
         try:
             if not results:

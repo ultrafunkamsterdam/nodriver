@@ -502,6 +502,7 @@ class Listener:
                     event = cdp.util.parse_json_event(message)
                     # self.history.append(event)
                     event_tx = EventTransaction(event)
+                    # getattr(globals(), event.__class__.__module__)
                     if not self.connection.mapper:
                         self.connection.__count__ = itertools.count(0)
                     event_tx.id = next(self.connection.__count__)
