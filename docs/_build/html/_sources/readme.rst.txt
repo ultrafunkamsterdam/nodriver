@@ -144,7 +144,6 @@ shows a script to create a twitter account
 
 .. code-block:: python
 
-    import asyncio
     import random
     import string
     import logging

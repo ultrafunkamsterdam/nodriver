@@ -47,7 +47,7 @@ this is also suitable to use as wait condition.
 
 ## [`find()`](#nodriver.Tab.find) |  find(text, best_match=True) or find(text, True)
 
-Much more powerful (and expensive!!) than the above, is the use of the `find(text, best_match=True)` flag.
+Much more powerful (and expensive!!) than the above, is the use of the find(text, best_match=True) flag.
 It will still return 1 element, but when multiple matches are found, picks the one having the
 most similar text length.
 How would that help?
@@ -71,10 +71,10 @@ this is also suitable to use as wait condition.
 
 ## await [`Tab`](#nodriver.Tab)
 
-calling `await tab` will do a lot of stuff under the hood, and ensures all references
+calling await tab will do a lot of stuff under the hood, and ensures all references
 are up to date. also it allows for the script to “breathe”, as it is oftentime faster than your browser or
 webpage. So whenever you get stuck and things crashes or element could not be found, you should probably let
-it “breathe”  by calling `await page`  and/or `await page.sleep()`
+it “breathe”  by calling await page  and/or await page.sleep()
 
 also, it’s ensuring `url` will be updated to the most recent one, which is quite important in some
 other methods.
@@ -128,7 +128,7 @@ the next time you make network traffic you will see your console print like craz
   **kw** – 
 * **Returns:**
 
-#### attached *: bool* *= None*
+#### attached*: bool* *= None*
 
 #### *async* back()
 
@@ -138,7 +138,7 @@ history back
 
 alias to self.activate
 
-#### browser *: nodriver.core.browser.Browser*
+#### browser*: nodriver.core.browser.Browser*
 
 #### *async* close()
 
@@ -165,16 +165,14 @@ can also be used to wait for such element to appear.
 
 * **Parameters:**
   * **text** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – text to search for. note: script contents are also considered text
-  * **best_match** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – 
-
-    when True, which is MUCH more expensive (thus much slower),
+  * **best_match** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – when True, which is MUCH more expensive (thus much slower),
     : will find the closest match based on length.
       this could help tremendously, when for example you search for “login”, you’d probably want the login button element,
       and not thousands of scripts,meta,headings containing a string of “login”.
 
     * **type best_match:**
       bool
-  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float)*,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
 
 #### *async* find_all(text, timeout=10)
 
@@ -183,7 +181,7 @@ can also be used to wait for such element to appear.
 
 * **Parameters:**
   * **text** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – text to search for. note: script contents are also considered text
-  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float)*,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
 * **Return type:**
   [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Element`](element.md#nodriver.Element)]
 
@@ -383,7 +381,7 @@ can also be used to wait for such element to appear.
 
 * **Parameters:**
   * **selector** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – css selector, eg a[href], button[class\*=close], a > img[src]
-  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float)*,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
 * **Return type:**
   [`Element`](element.md#nodriver.Element)
 
@@ -394,7 +392,7 @@ can also be used to wait for such element to appear.
 
 * **Parameters:**
   * **selector** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – css selector, eg a[href], button[class\*=close], a > img[src]
-  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float)*,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
 * **Return type:**
   [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Element`](element.md#nodriver.Element)]
 
@@ -444,9 +442,7 @@ in case state is set other than “normal”, the left, top, width, and height a
   * **top** ([*int*](https://docs.python.org/3/library/functions.html#int)) – desired offset from the top, in pixels
   * **width** ([*int*](https://docs.python.org/3/library/functions.html#int)) – desired width in pixels
   * **height** ([*int*](https://docs.python.org/3/library/functions.html#int)) – desired height in pixels
-  * **state** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-
-    can be one of the following strings:
+  * **state** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – can be one of the following strings:
     : - normal
       - fullscreen
       - maximized
@@ -454,7 +450,7 @@ in case state is set other than “normal”, the left, top, width, and height a
 
 #### *async* sleep(t=0.25)
 
-#### *property* target *: [TargetInfo](../cdp/target.md#nodriver.cdp.target.TargetInfo)*
+#### *property* target*: [TargetInfo](../cdp/target.md#nodriver.cdp.target.TargetInfo)*
 
 #### *async* update_target()
 
@@ -489,4 +485,4 @@ an TimeoutError will be raised
 * **Raises:**
   asyncio.TimeoutError
 
-#### websocket *: websockets.WebSocketClientProtocol*
+#### websocket*: websockets.WebSocketClientProtocol*

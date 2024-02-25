@@ -121,7 +121,6 @@ A more concrete example, which can be found in the ./example/ folder,
 shows a script to create a twitter account
 
 ```python
-import asyncio
 import random
 import string
 import logging

@@ -99,9 +99,9 @@ therefore, it is not advised to call this method on a bunch of blocks (100+) at 
 
 #### *property* node
 
-#### *property* tree *: [Node](../cdp/dom.md#nodriver.cdp.dom.Node)*
+#### *property* tree*: [Node](../cdp/dom.md#nodriver.cdp.dom.Node)*
 
-#### *property* parent *: [Element](#nodriver.Element) | [None](https://docs.python.org/3/library/constants.html#None)*
+#### *property* parent*: [Element](#nodriver.Element) | [None](https://docs.python.org/3/library/constants.html#None)*
 
 #### *property* attrs
 
@@ -109,16 +109,16 @@ attributes are stored here, however, you can set them directly on the element ob
 :return:
 :rtype:
 
-#### *property* children *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[Element](#nodriver.Element)] | [str](https://docs.python.org/3/library/stdtypes.html#str)*
+#### *property* children*: [List](https://docs.python.org/3/library/typing.html#typing.List)[[Element](#nodriver.Element)] | [str](https://docs.python.org/3/library/stdtypes.html#str)*
 
 returns the elements’ children. those children also have a children property
 so you can browse through the entire tree as well.
 :return:
 :rtype:
 
-#### *property* remote_object *: [RemoteObject](../cdp/runtime.md#nodriver.cdp.runtime.RemoteObject)*
+#### *property* remote_object*: [RemoteObject](../cdp/runtime.md#nodriver.cdp.runtime.RemoteObject)*
 
-#### *property* object_id *: [RemoteObjectId](../cdp/runtime.md#nodriver.cdp.runtime.RemoteObjectId)*
+#### *property* object_id*: [RemoteObjectId](../cdp/runtime.md#nodriver.cdp.runtime.RemoteObjectId)*
 
 #### *async* click()
 
@@ -156,7 +156,7 @@ native click (on element) . note: this likely does not work atm, use click() ins
 * **Parameters:**
   * **button** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – str (default = “left”)
   * **buttons** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – which button (default 1 = left)
-  * **modifiers** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Bit field representing pressed modifier keys.
+  * **modifiers** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Bit field representing pressed modifier keys.
     Alt=1, Ctrl=2, Meta/Command=4, Shift=8 (default: 0).
   * **\_until_event** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`type`](https://docs.python.org/3/library/functions.html#type)]) – internal. event to wait for before returning
 * **Returns:**
@@ -178,7 +178,7 @@ clears an input field
 
 send text to an input field, or any other html element.
 
-hint, if you ever get stuck where using py:meth:`~click`
+hint, if you ever get stuck where using py:meth:~click
 does not work, sending the keystroke n or rn or a spacebar work wonders!
 
 * **Parameters:**
@@ -195,7 +195,7 @@ needles to say, but make sure the field accepts multiple files if you want to se
 otherwise the browser might crash.
 
 example :
-`await fileinputElement.send_file('c:/temp/image.png', 'c:/users/myuser/lol.gif')`
+await fileinputElement.send_file(‘c:/temp/image.png’, ‘c:/users/myuser/lol.gif’)
 
 #### *async* focus()
 
@@ -214,7 +214,7 @@ does not work in all cases.
 
 #### *async* get_html()
 
-#### *property* text *: [str](https://docs.python.org/3/library/stdtypes.html#str)*
+#### *property* text*: [str](https://docs.python.org/3/library/stdtypes.html#str)*
 
 gets the text contents of this element
 note: this includes text in the form of script content, as those are also just ‘text nodes’
@@ -254,7 +254,7 @@ When the element is hidden, or has no size, or is otherwise not capturable, a Ru
 displays for a short time a red dot on the element (only if the element itself is visible)
 
 * **Parameters:**
-  * **coords** (*x* *,**y*) – x,y
+  * **coords** (*x**,**y*) – x,y
   * **duration** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`float`](https://docs.python.org/3/library/functions.html#float), [`int`](https://docs.python.org/3/library/functions.html#int)]) – seconds (default 0.5)
 * **Returns:**
 * **Return type:**
