@@ -260,7 +260,29 @@
         <article role="main">
           <section id="browser-class">
 <span id="browser"></span><h1>Browser class<a class="headerlink" href="#browser-class" title="Link to this heading">#</a></h1>
-<p>Some words about the Browser class</p>
+<section id="cookies">
+<h2>cookies<a class="headerlink" href="#cookies" title="Link to this heading">#</a></h2>
+<p>You can load and save all cookies from the browser.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># save. when no filepath is given, it is saved in &#39;.session.dat&#39;</span>
+<span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># load. when no filepath is given, it is loaded from &#39;.session.dat&#39;</span>
+<span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># export for requests or other library</span>
+<span class="n">requests_style_cookies</span> <span class="o">=</span> <span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span><span class="n">requests_cookie_format</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># use in requests:</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">cookie</span> <span class="ow">in</span> <span class="n">requests_style_cookies</span><span class="p">:</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">set_cookie</span><span class="p">(</span><span class="n">cookie</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h2>Browser class<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="nodriver.Browser">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Browser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/browser.html#Browser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Browser" title="Link to this definition">#</a></dt>
@@ -455,6 +477,7 @@ windowManagement</p>
 </dd></dl>
 
 </section>
+</section>
 
         </article>
       </div>
@@ -512,6 +535,8 @@ windowManagement</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Browser class</a><ul>
+<li><a class="reference internal" href="#cookies">cookies</a></li>
+<li><a class="reference internal" href="#id1">Browser class</a><ul>
 <li><a class="reference internal" href="#nodriver.Browser"><code class="docutils literal notranslate"><span class="pre">Browser</span></code></a><ul>
 <li><a class="reference internal" href="#nodriver.Browser.create"><code class="docutils literal notranslate"><span class="pre">Browser.create()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Browser.config"><code class="docutils literal notranslate"><span class="pre">Browser.config</span></code></a></li>
@@ -530,6 +555,8 @@ windowManagement</p>
 <li><a class="reference internal" href="#nodriver.Browser.tile_windows"><code class="docutils literal notranslate"><span class="pre">Browser.tile_windows()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Browser.update_targets"><code class="docutils literal notranslate"><span class="pre">Browser.update_targets()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Browser.stop"><code class="docutils literal notranslate"><span class="pre">Browser.stop()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

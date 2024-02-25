@@ -2,7 +2,31 @@
 
 # Browser class
 
-Some words about the Browser class
+## cookies
+
+You can load and save all cookies from the browser.
+
+```default
+# save. when no filepath is given, it is saved in '.session.dat'
+await browser.cookies.save()
+```
+
+```default
+# load. when no filepath is given, it is loaded from '.session.dat'
+await browser.cookies.load()
+```
+
+```default
+# export for requests or other library
+requests_style_cookies = await browser.cookies.get_all(requests_cookie_format=True)
+
+# use in requests:
+session = requests.Session()
+for cookie in requests_style_cookies:
+    session.cookies.set_cookie(cookie)
+```
+
+## Browser class
 
 ### *class* Browser(config, \*\*kwargs)
 

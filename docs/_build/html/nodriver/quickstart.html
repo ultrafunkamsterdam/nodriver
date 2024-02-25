@@ -263,7 +263,8 @@
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
 <p>Since it’s a part of undetected-chromedriver, installation goes via</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">undetected</span><span class="o">-</span><span class="n">chromedriver</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># todo. use pip install nodriver instead</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">undetected</span><span class="o">-</span><span class="n">chromedriver</span>
 </pre></div>
 </div>
 <hr class="docutils" />
@@ -278,8 +279,7 @@
 <p>The aim of this project (just like undetected-chromedriver, somewhere long ago)
 is to keep it short and simple, so you can quickly open an editor or interactive session,
 type or paste a few lines and off you go.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">nodriver</span> <span class="k">as</span> <span class="nn">uc</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nodriver</span> <span class="k">as</span> <span class="nn">uc</span>
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="n">browser</span> <span class="o">=</span> <span class="k">await</span> <span class="n">uc</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -288,17 +288,17 @@ type or paste a few lines and off you go.</p>
     <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">()</span>
     <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span>
     <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">scroll_down</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
-    <span class="n">elems</span> <span class="o">=</span> <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="s1">&#39;*[src]&#39;</span><span class="p">)</span>
+    <span class="n">elems</span> <span class="o">=</span> <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">select_all</span><span class="p">(</span><span class="s1">&#39;*[src]&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elems</span><span class="p">:</span>
         <span class="k">await</span> <span class="n">elem</span><span class="o">.</span><span class="n">flash</span><span class="p">()</span>
 
     <span class="n">page2</span> <span class="o">=</span> <span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://twitter.com&#39;</span><span class="p">,</span> <span class="n">new_tab</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">page3</span> <span class="o">=</span> <span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://pornhub.com&#39;</span><span class="p">,</span> <span class="n">new_window</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">page3</span> <span class="o">=</span> <span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://github.com/ultrafunkamsterdam/nodriver&#39;</span><span class="p">,</span> <span class="n">new_window</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">page2</span><span class="p">,</span> <span class="n">page3</span><span class="p">):</span>
        <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">bring_to_front</span><span class="p">()</span>
        <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">scroll_down</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
-       <span class="k">await</span> <span class="n">p</span>  <span class="c1"># waits for most events to be processed</span>
+       <span class="k">await</span> <span class="n">p</span>   <span class="c1"># wait for events to be processed</span>
        <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
        <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="n">page3</span><span class="p">:</span>
            <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
