@@ -754,16 +754,15 @@ class CookieJar:
             break
         else:
             connection = self._browser.connection
-        cookies = await connection.send(cdp.storage.get_cookies())
         for cookie in cookies:
             for match in pattern.finditer(str(cookie.__dict__)):
+                included_cookies.append(cookie)
                 logger.debug(
                     "loaded cookie for matching pattern '%s' => (%s: %s)",
                     pattern.pattern,
                     cookie.name,
                     cookie.value,
                 )
-                included_cookies.append(cookie)
                 break
         await connection.send(cdp.storage.set_cookies(included_cookies))
 
