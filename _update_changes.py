@@ -82,6 +82,6 @@ commit = input('commit?:')
 if commit:
     subprocess.run(f'git commit -m "{commit}"')
 
-subprocess.run('python -m build')
-subprocess.run('twine upload dist\\*')
+    subprocess.run('python -m build')
+    subprocess.run('twine upload dist\\*')
 
