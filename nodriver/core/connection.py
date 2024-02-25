@@ -280,7 +280,6 @@ class Connection(metaclass=CantTouchThis):
                 logger.debug(
                     "exception during opening of websocket : %s", e, exc_info=True
                 )
-
                 if self.listener:
                     self.listener.cancel()
                 raise
@@ -350,7 +349,7 @@ class Connection(metaclass=CantTouchThis):
         target_info: cdp.target.TargetInfo = await self.send(
             cdp.target.get_target_info(self.target_id), _is_update=True
         )
-        self.target.__dict__.update(target_info.__dict__)
+        self.target = target_info
 
     async def send(
         self, cdp_obj: Generator[dict[str, Any], dict[str, Any], Any], _is_update=False
@@ -381,8 +380,6 @@ class Connection(metaclass=CantTouchThis):
 
             if not _is_update:
                 await self._register_handlers()
-
-            # send out
             await self.websocket.send(tx.message)
             try:
                 return await tx

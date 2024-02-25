@@ -288,46 +288,16 @@ class Tab(Connection):
         :param new_window:  open new window
         :return: Page
         """
-
         if not self.browser:
             await AttributeError(
                 "this page/tab has no browser attribute, so you can't use get()"
             )
-
-        if new_window and not new_tab:
-            new_tab = True
-
-        # get first tab
-        tab = next(filter(lambda item: item.type_ == "page", self.browser.targets))
-
         if new_tab:
-            target_id = await self.browser.connection.send(
-                cdp.target.create_target(
-                    url, new_window=new_window, enable_begin_frame_control=True
-                )
-            )
-            tab = next(
-                filter(
-                    lambda item: item.type_ == "page" and item.target_id == target_id,
-                    self.browser.targets,
-                )
-            )
-            while not tab:
-                await self.browser.wait()
-                tab = next(
-                    filter(
-                        lambda item: item.type_ == "page"
-                        and item.target_id == target_id,
-                        self.browser.targets,
-                    )
-                )
-            return tab
-
+            return await self.browser.get(url, new_tab, new_window)
         else:
-            frame_id, loader_id, *_ = await tab.send(cdp.page.navigate(url))
-            tab.frame_id = frame_id
-            await self.wait()
-            return tab
+            frame_id, loader_id, *_ = await self.send(cdp.page.navigate(url))
+            await self
+            return self
 
     async def query_selector_all(
         self,
@@ -1149,6 +1119,12 @@ class Tab(Connection):
         :rtype:
         """
         return self.wait_for(text, selector, timeout)
+
+    def __eq__(self, other: Tab):
+        try:
+            return other.target == self.target
+        except (AttributeError,TypeError):
+            return False
 
     def __getattr__(self, item):
         try:

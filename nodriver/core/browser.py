@@ -188,6 +188,7 @@ class Browser:
             )
             current_tab.target = target_info
 
+
         elif isinstance(event, cdp.target.TargetCreated):
             target_info: cdp.target.TargetInfo = event.target_info
             from .tab import Tab
@@ -203,6 +204,7 @@ class Browser:
             )
 
             self.targets.append(new_target)
+
             logger.debug("target #%d created => %s", len(self.targets), new_target)
 
         elif isinstance(event, cdp.target.TargetDestroyed):
@@ -243,11 +245,10 @@ class Browser:
                     self.targets,
                 )
             )
-
             # if for some reason the connection could not be found (not updated or too fast/slow),
             # just loop until the connection matches the target id
             while not connection:
-                print("while not tab")
+
                 # update targets
                 await self
                 # get the connection matching the new target_id from our inventory
@@ -258,8 +259,8 @@ class Browser:
                         self.targets,
                     )
                 )
-            await connection.sleep(0.25)
-            return connection
+
+
         else:
             # first tab from browser.tabs
             connection = next(filter(lambda item: item.type_ == "page", self.targets))
@@ -267,8 +268,9 @@ class Browser:
             frame_id, loader_id, *_ = await connection.send(cdp.page.navigate(url))
             # update the frame_id on the tab
             connection.frame_id = frame_id
-            await connection.sleep(0.25)
-            return connection
+
+        await connection.sleep(0.25)
+        return connection
 
     async def start(self=None) -> Browser:
         """launches the actual browser"""
@@ -359,32 +361,34 @@ class Browser:
         self.connection = Connection(self.info.webSocketDebuggerUrl, _owner=self)
 
         if self.config.autodiscover_targets:
-            self.connection.add_handler(
-                cdp.target.TargetInfoChanged, self._handle_target_update
-            )
-            self.connection.add_handler(
-                cdp.target.TargetCreated, self._handle_target_update
-            )
-            self.connection.add_handler(
-                cdp.target.TargetDestroyed, self._handle_target_update
-            )
-            self.connection.add_handler(
-                cdp.target.TargetCreated, self._handle_target_update
-            )
-            # self.connection.handlers[cdp.target.TargetInfoChanged] = [
-            #     self._handle_target_update
-            # ]
-            # self.connection.handlers[cdp.target.TargetCreated] = [
-            #     self._handle_target_update
-            # ]
-            # self.connection.handlers[cdp.target.TargetDestroyed] = [
-            #     self._handle_target_update
-            # ]
-            # self.connection.handlers[cdp.target.TargetCrashed] = [
-            #     self._handle_target_update
-            # ]
             logger.info("enabling autodiscover targets")
-            await self.connection.send(cdp.target.set_discover_targets(True))
+
+            # self.connection.add_handler(
+            #     cdp.target.TargetInfoChanged, self._handle_target_update
+            # )
+            # self.connection.add_handler(
+            #     cdp.target.TargetCreated, self._handle_target_update
+            # )
+            # self.connection.add_handler(
+            #     cdp.target.TargetDestroyed, self._handle_target_update
+            # )
+            # self.connection.add_handler(
+            #     cdp.target.TargetCreated, self._handle_target_update
+            # )
+            #
+            self.connection.handlers[cdp.target.TargetInfoChanged] = [
+                self._handle_target_update
+            ]
+            self.connection.handlers[cdp.target.TargetCreated] = [
+                self._handle_target_update
+            ]
+            self.connection.handlers[cdp.target.TargetDestroyed] = [
+                self._handle_target_update
+            ]
+            self.connection.handlers[cdp.target.TargetCrashed] = [
+                self._handle_target_update
+            ]
+            await self.connection.send(cdp.target.set_discover_targets(discover=True))
 
         # self.connection.handlers[cdp.inspector.Detached] = [self.stop]
         # return self
@@ -450,19 +454,6 @@ class Browser:
         while req_cols * req_rows < num_windows:
             req_rows += 1
 
-        # print(num_windows)
-        # print(req_cols, req_rows, max_columns)
-        # # req_rows = math.ceil(num_windows / max_columns)
-        # # req_cols = math.ceil(num_windows / req_rows)
-        # # req_cols = math.floor(num_windows / max_columns)
-        # # while (req_rows * req_cols) < num_windows:
-        # #     columns += 1
-        # # while (req_cols * rows) < num_windows:
-        # #     req_cols += 1
-        # # req_rows = math.floor(num_windows / columns)
-        # # while (req_rows * req_cols) < num_windows:
-        # #     req_rows += 1
-
         box_w = math.floor((screen_width / req_cols) - 1)
         box_h = math.floor(screen_height / req_rows)
 
@@ -504,6 +495,7 @@ class Browser:
     async def update_targets(self):
         targets: List[cdp.target.TargetInfo]
         targets = await self._get_targets()
+
         for t in targets:
             for existing_tab in self.targets:
                 existing_target = existing_tab.target
@@ -511,6 +503,7 @@ class Browser:
                     existing_tab.target.__dict__.update(t.__dict__)
                     break
             else:
+
                 self.targets.append(
                     Connection(
                         (
@@ -519,13 +512,14 @@ class Browser:
                             f"/{t.target_id}"
                         ),
                         target=t,
+                        _owner=self,
                     )
                 )
 
         await asyncio.sleep(0)
 
     async def __aenter__(self):
-        print("x")
+
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
