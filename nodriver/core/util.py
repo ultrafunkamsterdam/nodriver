@@ -7,11 +7,11 @@ import types
 import typing
 from typing import Optional, List, Set, Union, Callable
 
-import typing_extensions
+import typing
 
 from .element import Element
 
-if typing_extensions.TYPE_CHECKING:
+if typing.TYPE_CHECKING:
     from .browser import Browser, PathLike
 from .config import Config
 from .. import cdp
