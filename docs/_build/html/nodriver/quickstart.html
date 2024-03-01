@@ -164,6 +164,9 @@
   <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Quickstart guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#more-complete-example">More complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#custom-starting-options">Custom starting options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#alternative-custom-options">Alternative custom options</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="classes/browser.html">Browser class</a></li>
@@ -282,13 +285,32 @@ type or paste a few lines and off you go.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nodriver</span> <span class="k">as</span> <span class="nn">uc</span>
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
     <span class="n">browser</span> <span class="o">=</span> <span class="k">await</span> <span class="n">uc</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://www.nowsecure.nl&#39;</span><span class="p">)</span>
+
+    <span class="o">...</span> <span class="n">further</span> <span class="n">code</span> <span class="o">...</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># since asyncio.run never worked (for me)</span>
+    <span class="n">uc</span><span class="o">.</span><span class="n">loop</span><span class="p">()</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="more-complete-example">
+<h1>More complete example<a class="headerlink" href="#more-complete-example" title="Link to this heading">#</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nodriver</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
+    <span class="n">browser</span> <span class="o">=</span> <span class="k">await</span> <span class="n">nodriver</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
     <span class="n">page</span> <span class="o">=</span> <span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://www.nowsecure.nl&#39;</span><span class="p">)</span>
 
     <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">()</span>
     <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span>
     <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">scroll_down</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
     <span class="n">elems</span> <span class="o">=</span> <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">select_all</span><span class="p">(</span><span class="s1">&#39;*[src]&#39;</span><span class="p">)</span>
+
     <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elems</span><span class="p">:</span>
         <span class="k">await</span> <span class="n">elem</span><span class="o">.</span><span class="n">flash</span><span class="p">()</span>
 
@@ -303,11 +325,41 @@ type or paste a few lines and off you go.</p>
        <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="n">page3</span><span class="p">:</span>
            <span class="k">await</span> <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
 
     <span class="c1"># since asyncio.run never worked (for me)</span>
     <span class="n">uc</span><span class="o">.</span><span class="n">loop</span><span class="p">()</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-starting-options">
+<h1>Custom starting options<a class="headerlink" href="#custom-starting-options" title="Link to this heading">#</a></h1>
+<p>I’ll leave out the async boilerplate here</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nodriver</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">browser</span> <span class="o">=</span> <span class="k">await</span> <span class="n">start</span><span class="p">(</span>
+    <span class="n">headless</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">user_data_dir</span><span class="o">=</span><span class="s2">&quot;/path/to/existing/profile&quot;</span><span class="p">,</span>  <span class="c1"># by specifying it, it won&#39;t be automatically cleaned up when finished</span>
+    <span class="n">browser_executable_path</span><span class="o">=</span><span class="s2">&quot;/path/to/some/other/browser&quot;</span><span class="p">,</span>
+    <span class="n">browser_args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;--some-browser-arg=true&#39;</span><span class="p">,</span> <span class="s1">&#39;--some-other-option&#39;</span><span class="p">],</span>
+    <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;en-US&quot;</span>   <span class="c1"># this could set iso-language-code in navigator, not recommended to change</span>
+<span class="p">)</span>
+<span class="n">tab</span> <span class="o">=</span> <span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://somewebsite.com&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="alternative-custom-options">
+<h1>Alternative custom options<a class="headerlink" href="#alternative-custom-options" title="Link to this heading">#</a></h1>
+<p>I’ll leave out the async boilerplate here</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nodriver</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">headless</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">config</span><span class="o">.</span><span class="n">user_data_dir</span><span class="o">=</span><span class="s2">&quot;/path/to/existing/profile&quot;</span><span class="p">,</span>  <span class="c1"># by specifying it, it won&#39;t be automatically cleaned up when finished</span>
+<span class="n">config</span><span class="o">.</span><span class="n">browser_executable_path</span><span class="o">=</span><span class="s2">&quot;/path/to/some/other/browser&quot;</span><span class="p">,</span>
+<span class="n">config</span><span class="o">.</span><span class="n">browser_args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;--some-browser-arg=true&#39;</span><span class="p">,</span> <span class="s1">&#39;--some-other-option&#39;</span><span class="p">],</span>
+<span class="n">config</span><span class="o">.</span><span class="n">lang</span><span class="o">=</span><span class="s2">&quot;en-US&quot;</span>   <span class="c1"># this could set iso-language-code in navigator, not recommended to change</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>A more concrete example, which can be found in the ./example/ folder,
@@ -502,6 +554,9 @@ shows a script to create a twitter account</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#usage-example">usage example</a></li>
+<li><a class="reference internal" href="#more-complete-example">More complete example</a></li>
+<li><a class="reference internal" href="#custom-starting-options">Custom starting options</a></li>
+<li><a class="reference internal" href="#alternative-custom-options">Alternative custom options</a></li>
 </ul>
 
           </div>

@@ -136,22 +136,6 @@ class EventTransaction(Transaction):
         return fmt
 
 
-def update_targets(fn: types.MethodType):
-    # instance = fn.__self__
-    print("fn = ", fn)
-    globals()["fn"] = fn
-
-    @functools.wraps(fn)
-    async def wrapped(*args, **kwargs):
-        self = args[0]
-        res = await fn(*args, **kwargs)
-        targets = await fn(self.send(cdp.target.get_targets()))
-        print("targets = ", targets)
-        return res
-
-    return wrapped
-
-
 class CantTouchThis(type):
     def __setattr__(cls, attr, value):
         """

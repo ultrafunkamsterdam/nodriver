@@ -124,7 +124,7 @@ def deconstruct_browser():
             _.stop()
         for attempt in range(5):
             try:
-                if _.config and not _.config.custom_data_dir:
+                if _.config and not _.config.uses_custom_data_dir:
                     shutil.rmtree(_.config.user_data_dir, ignore_errors=False)
             except FileNotFoundError as e:
                 break

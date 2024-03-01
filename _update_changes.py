@@ -5,13 +5,13 @@ from packaging.version import Version
 
 import subprocess
 
-docs = Path('docs')
-example = Path('example')
-dist = Path('dist')
-egg = Path('nodriver.egg-info')
+docs = Path("docs")
+example = Path("example")
+dist = Path("dist")
+egg = Path("nodriver.egg-info")
 
 
-def find_file(pattern: str , root: str ='.', recursive: bool =True):
+def find_file(pattern: str, root: str = ".", recursive: bool = True):
     root = Path(root).resolve()
     glob = root.glob if not recursive else root.rglob
     for o in glob(pattern):
@@ -37,12 +37,13 @@ def find_replace_in_file(file, search, repl):
     else:
         file.write_text(re.sub(search, repl, content))
 
+
 def remove(path):
     path = Path(path).resolve()
     if path.is_file():
         path.unlink()
         return True
-    for item in path.rglob('*'):
+    for item in path.rglob("*"):
         if item.is_file():
             item.unlink()
             continue
@@ -57,31 +58,32 @@ def change_version():
     new_version = None
     while not new_version:
         try:
-            new_version = Version(input(f'change version (current: {current})? : '))
+            new_version = Version(input(f"change version (current: {current})? : "))
         except:
             continue
     if new_version != current:
-        find_replace_in_file(project_file, 'version = [\"\']([^\s]+)[\"\']', f'version = "{new_version}"')
+        find_replace_in_file(
+            project_file, "version = [\"']([^\s]+)[\"']", f'version = "{new_version}"'
+        )
 
 
 def get_version(project_file: Path):
     content = project_file.read_text()
-    return re.search('version = [\"\']([^\s]+)[\"\']', content)[1]
+    return re.search("version = [\"']([^\s]+)[\"']", content)[1]
 
 
-project_file = find_file('pyproject.toml')
+project_file = find_file("pyproject.toml")
 
-
-subprocess.run('make.bat html', shell=True, cwd='./docs')
-subprocess.run('make.bat markdown', shell=True, cwd='./docs')
-subprocess.run('copy docs\\_build\\markdown\\README.md .', shell=True)
+subprocess.run("make.bat html", shell=True, cwd="./docs")
+subprocess.run("make.bat markdown", shell=True, cwd="./docs")
+subprocess.run("copy docs\\_build\\markdown\\README.md .", shell=True)
 change_version()
-subprocess.run('git add docs nodriver pyproject.toml example README.md')
-subprocess.run('git status')
-commit = input('commit?:')
+subprocess.run("black nodriver/core *.py")
+subprocess.run("git add docs nodriver pyproject.toml example README.md")
+subprocess.run("git status")
+commit = input("commit?:")
 if commit:
     subprocess.run(f'git commit -m "{commit}"')
 
-    subprocess.run('python -m build')
-    subprocess.run('twine upload dist\\*')
-
+    subprocess.run("python -m build")
+    subprocess.run("twine upload dist\\*")

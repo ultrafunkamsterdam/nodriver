@@ -107,14 +107,13 @@ class Browser:
 
         self.targets: List = []
         """current targets (all types"""
-
-        self._process = None
-        self._process_pid = None
         self.info = None
         self._target = None
+        self._process = None
+        self._process_pid = None
         self._keep_user_data_dir = None
-        self.connection: Connection = None
         self._is_updating = asyncio.Event()
+        self.connection: Connection = None
         logger.debug("Session object initialized: %s" % vars(self))
 
     @property
@@ -188,7 +187,6 @@ class Browser:
             )
             current_tab.target = target_info
 
-
         elif isinstance(event, cdp.target.TargetCreated):
             target_info: cdp.target.TargetInfo = event.target_info
             from .tab import Tab
@@ -260,7 +258,6 @@ class Browser:
                     )
                 )
 
-
         else:
             # first tab from browser.tabs
             connection = next(filter(lambda item: item.type_ == "page", self.targets))
@@ -284,9 +281,9 @@ class Browser:
             return
 
         # self.config.update(kwargs)
-        connect_exisiting = False
+        connect_existing = False
         if self.config.host and self.config.port:
-            connect_exisiting = True
+            connect_existing = True
         self.config.host = self.config.host or "127.0.0.1"
         self.config.port = self.config.port or util.free_port()
 
@@ -313,7 +310,7 @@ class Browser:
         logger.info(
             "starting\n\texecutable :%s\n\narguments:\n%s", exe, "\n\t".join(params)
         )
-        if not connect_exisiting:
+        if not connect_existing:
             self._process: asyncio.subprocess.Process = (
                 await asyncio.create_subprocess_exec(
                     # self.config.browser_executable_path,

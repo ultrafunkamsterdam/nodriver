@@ -163,6 +163,9 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html">Quickstart guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -263,6 +266,7 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">MethodType</span>
 
 <span class="kn">from</span> <span class="nn">._contradict</span> <span class="kn">import</span> <span class="n">ContraDict</span>
 
@@ -284,8 +288,10 @@
 
 <div class="viewcode-block" id="Config">
 <a class="viewcode-back" href="../../../nodriver/classes/others_and_helpers.html#nodriver.Config">[docs]</a>
-<span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">ContraDict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Config object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -294,7 +300,7 @@
         <span class="n">browser_executable_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PathLike</span><span class="p">]</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
         <span class="n">browser_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
         <span class="n">sandbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">lang</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;en-US,en;q=0.9&quot;</span><span class="p">,</span>
+        <span class="n">lang</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;en-US&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -329,16 +335,17 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">browser_args</span><span class="p">:</span>
             <span class="n">browser_args</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="n">custom_data_dir</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">user_data_dir</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">user_data_dir</span><span class="p">:</span>
-            <span class="n">user_data_dir</span> <span class="o">=</span> <span class="n">temp_profile_dir</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_user_data_dir</span> <span class="o">=</span> <span class="n">temp_profile_dir</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_custom_data_dir</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user_data_dir</span> <span class="o">=</span> <span class="n">user_data_dir</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">browser_executable_path</span><span class="p">:</span>
             <span class="n">browser_executable_path</span> <span class="o">=</span> <span class="n">find_chrome_executable</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">browser_args</span> <span class="o">=</span> <span class="n">browser_args</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">user_data_dir</span> <span class="o">=</span> <span class="n">user_data_dir</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">custom_data_dir</span> <span class="o">=</span> <span class="n">custom_data_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_browser_args</span> <span class="o">=</span> <span class="n">browser_args</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">browser_executable_path</span> <span class="o">=</span> <span class="n">browser_executable_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">headless</span> <span class="o">=</span> <span class="n">headless</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sandbox</span> <span class="o">=</span> <span class="n">sandbox</span>
@@ -357,6 +364,41 @@
         <span class="c1"># other keyword args will be accessible by attribute</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_default_browser_args</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;--remote-allow-origins=*&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--no-first-run&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--no-service-autorun&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--no-default-browser-check&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--homepage=about:blank&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--no-pings&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--password-store=basic&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--disable-infobars&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--disable-breakpad&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--disable-component-update&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--disable-backgrounding-occluded-windows&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--disable-renderer-backgrounding&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--disable-background-networking&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--disable-dev-shm-usage&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--disable-features=IsolateOrigins,site-per-process&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--disable-session-crashed-bubble&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">browser_args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_browser_args</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser_args</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">user_data_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_data_dir</span>
+
+    <span class="nd">@user_data_dir</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">user_data_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">PathLike</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_data_dir</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_custom_data_dir</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">uses_custom_data_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_data_dir</span>
 
     <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
@@ -366,31 +408,13 @@
         <span class="c1"># the host and port will be added when starting</span>
         <span class="c1"># the browser, as by the time it starts, the port</span>
         <span class="c1"># is probably already taken</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_browser_args</span>
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--user-data-dir=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_data_dir</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--remote-allow-origins=*&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--no-first-run&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--no-service-autorun&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--no-default-browser-check&quot;</span><span class="p">]</span>
-
-        <span class="c1"># args += [&quot;--process-per-tab&quot;]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--homepage=about:blank&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--no-pings&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--password-store=basic&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-infobars&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-breakpad&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-component-update&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-backgrounding-occluded-windows&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-renderer-backgrounding&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-background-networking&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-dev-shm-usage&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-features=IsolateOrigins&quot;</span><span class="p">]</span>
-        <span class="c1"># args += [&quot;--disable-ipc-flooding-protection&quot;]</span>
+        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-features=IsolateOrigins,site-per-process&quot;</span><span class="p">]</span>
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-session-crashed-bubble&quot;</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser_args</span><span class="p">:</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser_args</span> <span class="k">if</span> <span class="n">arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="p">])</span>
-            <span class="c1"># args.extend(self.browser_args)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser_args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser_args</span> <span class="k">if</span> <span class="n">arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="p">])</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">headless</span><span class="p">:</span>
             <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--headless=new&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sandbox</span><span class="p">:</span>
@@ -419,15 +443,28 @@
                 <span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot; not allowed. please use one of the attributes of the Config object to set it&#39;</span>
                 <span class="o">%</span> <span class="n">arg</span>
             <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">browser_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_browser_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
-        <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;browser_args&quot;</span><span class="p">)</span>
-        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;browser_args&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">ContraDict</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
+        <span class="n">s</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">({</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;_&quot;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">v</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">property</span><span class="p">):</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\t</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">s</span></div>
 
+
+    <span class="c1">#     d = self.__dict__.copy()</span>
+    <span class="c1">#     d.pop(&quot;browser_args&quot;)</span>
+    <span class="c1">#     d[&quot;browser_args&quot;] = self()</span>
+    <span class="c1">#     return d</span>
 
 
 <span class="k">def</span> <span class="nf">is_root</span><span class="p">():</span>

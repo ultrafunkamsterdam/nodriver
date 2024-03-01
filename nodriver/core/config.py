@@ -4,6 +4,7 @@ import pathlib
 import sys
 import tempfile
 from typing import Union, List, Optional
+from types import MethodType
 
 from ._contradict import ContraDict
 
@@ -23,8 +24,10 @@ PathLike = Union[str, pathlib.Path]
 AUTO = None
 
 
-class Config(ContraDict):
-    """ """
+class Config:
+    """
+    Config object
+    """
 
     def __init__(
         self,
@@ -33,7 +36,7 @@ class Config(ContraDict):
         browser_executable_path: Optional[PathLike] = AUTO,
         browser_args: Optional[List[str]] = AUTO,
         sandbox: Optional[bool] = True,
-        lang: Optional[str] = "en-US,en;q=0.9",
+        lang: Optional[str] = "en-US",
         **kwargs: dict,
     ):
         """
@@ -68,16 +71,17 @@ class Config(ContraDict):
         if not browser_args:
             browser_args = []
 
-        custom_data_dir = bool(user_data_dir)
         if not user_data_dir:
-            user_data_dir = temp_profile_dir()
+            self._user_data_dir = temp_profile_dir()
+            self._custom_data_dir = False
+        else:
+            self.user_data_dir = user_data_dir
 
         if not browser_executable_path:
             browser_executable_path = find_chrome_executable()
 
-        self.browser_args = browser_args
-        self.user_data_dir = user_data_dir
-        self.custom_data_dir = custom_data_dir
+        self._browser_args = browser_args
+
         self.browser_executable_path = browser_executable_path
         self.headless = headless
         self.sandbox = sandbox
@@ -96,6 +100,41 @@ class Config(ContraDict):
         # other keyword args will be accessible by attribute
         self.__dict__.update(kwargs)
         super().__init__()
+        self._default_browser_args = [
+            "--remote-allow-origins=*",
+            "--no-first-run",
+            "--no-service-autorun",
+            "--no-default-browser-check",
+            "--homepage=about:blank",
+            "--no-pings",
+            "--password-store=basic",
+            "--disable-infobars",
+            "--disable-breakpad",
+            "--disable-component-update",
+            "--disable-backgrounding-occluded-windows",
+            "--disable-renderer-backgrounding",
+            "--disable-background-networking",
+            "--disable-dev-shm-usage",
+            "--disable-features=IsolateOrigins,site-per-process",
+            "--disable-session-crashed-bubble",
+        ]
+
+    @property
+    def browser_args(self):
+        return sorted(self._default_browser_args + self._browser_args)
+
+    @property
+    def user_data_dir(self):
+        return self._user_data_dir
+
+    @user_data_dir.setter
+    def user_data_dir(self, path: PathLike):
+        self._user_data_dir = str(path)
+        self._custom_data_dir = True
+
+    @property
+    def uses_custom_data_dir(self) -> bool:
+        return self._custom_data_dir
 
     def __getattr__(self, item):
         if item not in self.__dict__:
@@ -105,31 +144,13 @@ class Config(ContraDict):
         # the host and port will be added when starting
         # the browser, as by the time it starts, the port
         # is probably already taken
-        args = []
+        args = self._default_browser_args
         args += ["--user-data-dir=%s" % self.user_data_dir]
-        args += ["--remote-allow-origins=*"]
-        args += ["--no-first-run"]
-        args += ["--no-service-autorun"]
-        args += ["--no-default-browser-check"]
-
-        # args += ["--process-per-tab"]
-        args += ["--homepage=about:blank"]
-        args += ["--no-pings"]
-        args += ["--password-store=basic"]
-        args += ["--disable-infobars"]
-        args += ["--disable-breakpad"]
-        args += ["--disable-component-update"]
-        args += ["--disable-backgrounding-occluded-windows"]
-        args += ["--disable-renderer-backgrounding"]
-        args += ["--disable-background-networking"]
-        args += ["--disable-dev-shm-usage"]
-        args += ["--disable-features=IsolateOrigins"]
-        # args += ["--disable-ipc-flooding-protection"]
+        args += ["--disable-features=IsolateOrigins,site-per-process"]
         args += ["--disable-session-crashed-bubble"]
 
-        if self.browser_args:
-            args.extend([arg for arg in self.browser_args if arg not in args])
-            # args.extend(self.browser_args)
+        if self._browser_args:
+            args.extend([arg for arg in self._browser_args if arg not in args])
         if self.headless:
             args.append("--headless=new")
         if not self.sandbox:
@@ -156,13 +177,26 @@ class Config(ContraDict):
                 '"%s" not allowed. please use one of the attributes of the Config object to set it'
                 % arg
             )
-        self.browser_args.append(arg)
+        self._browser_args.append(arg)
 
     def __repr__(self):
-        d = self.__dict__
-        d.pop("browser_args")
-        d["browser_args"] = self()
-        return ContraDict.__repr__(d)
+        s = f"{self.__class__.__name__}"
+        for k, v in ({**self.__dict__, **self.__class__.__dict__}).items():
+            if k[0] == "_":
+                continue
+            if not v:
+                continue
+            if isinstance(v, property):
+                v = getattr(self, k)
+            if callable(v):
+                continue
+            s += f"\n\t{k} = {v}"
+        return s
+
+    #     d = self.__dict__.copy()
+    #     d.pop("browser_args")
+    #     d["browser_args"] = self()
+    #     return d
 
 
 def is_root():

@@ -130,6 +130,19 @@ class Tab(Connection):
         self._dom = None
         self._window_id = None
 
+    @property
+    def inspector_url(self):
+        return f"http://{self.browser.config.host}:{self.browser.config.port}/devtools/inspector.html?ws={self.websocket_url[5:]}"
+
+    async def open_external_inspector(self):
+        """
+        opens the system's browser containing the devtools inspector page
+        for this tab. could be handy, especially to debug in headless mode.
+        """
+        import webbrowser
+
+        webbrowser.open(self.inspector_url)
+
     async def find(
         self,
         text: str,
@@ -489,7 +502,9 @@ class Tab(Connection):
                             element.create(text_node, self, iframe_elem.tree)
                             for text_node in iframe_text_nodes
                         ]
-                        results.extend(text_node.parent for text_node in iframe_text_elems)
+                        results.extend(
+                            text_node.parent for text_node in iframe_text_elems
+                        )
         await self.send(cdp.dom.disable())
         return results or []
 
@@ -621,7 +636,7 @@ class Tab(Connection):
         )
 
     async def evaluate(
-        self, expression: str, await_promise=False, return_by_value=False
+        self, expression: str, await_promise=False, return_by_value=True
     ):
         remote_object, *exc = await self.send(
             cdp.runtime.evaluate(
@@ -1123,7 +1138,7 @@ class Tab(Connection):
     def __eq__(self, other: Tab):
         try:
             return other.target == self.target
-        except (AttributeError,TypeError):
+        except (AttributeError, TypeError):
             return False
 
     def __getattr__(self, item):

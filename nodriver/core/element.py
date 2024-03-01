@@ -18,16 +18,6 @@ if typing.TYPE_CHECKING:
     from .tab import Tab
 
 
-class Registry(ContraDict):
-    def __setitem__(self, key, value):
-        print("registry setitem", key)
-        super().__setitem__(key, value)
-
-    def __getitem__(self, item):
-        print("registry getitem", item)
-        return super().__getitem__(item)
-
-
 def create(node: cdp.dom.Node, tab: Tab, tree: typing.Optional[cdp.dom.Node] = None):
     """
     factory for Elements
