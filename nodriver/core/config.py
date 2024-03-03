@@ -1,11 +1,13 @@
 import logging
 import os
 import pathlib
+import secrets
 import sys
 import tempfile
 from typing import Union, List, Optional
 from types import MethodType
-
+import zipfile
+import tempfile
 from ._contradict import ContraDict
 
 __all__ = [
@@ -87,7 +89,7 @@ class Config:
         self.sandbox = sandbox
         self.host = None
         self.port = None
-
+        self._extensions = []
         # when using posix-ish operating system and running as root
         # you must use no_sandbox = True, which in case is corrected here
         if is_posix and is_root() and sandbox:
@@ -135,6 +137,34 @@ class Config:
     @property
     def uses_custom_data_dir(self) -> bool:
         return self._custom_data_dir
+
+
+    def add_extension(self, extension_path: PathLike):
+        """
+        adds an extension to load, you could point extension_path
+        to a folder (containing the manifest), or extension file (crx)
+
+        :param extension_path:
+        :type extension_path:
+        :return:
+        :rtype:
+        """
+        path = pathlib.Path(extension_path)
+
+        if not path.exists():
+            raise FileNotFoundError("could not find anything here: %s" % str(path))
+
+        if path.is_file():
+            tf = tempfile.mkdtemp(prefix=f'extension_', suffix=secrets.token_hex(4))
+            with zipfile.ZipFile(path, 'r') as z:
+                z.extractall(tf)
+                self._extensions.append(tf)
+
+        elif path.is_dir():
+            for item in path.rglob('manifest.*'):
+                path = item.parent
+            self._extensions.append(path)
+
 
     def __getattr__(self, item):
         if item not in self.__dict__:

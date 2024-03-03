@@ -305,8 +305,12 @@ class Browser:
                 )
             )
 
+        if getattr(self.config, '_extensions', None): # noqa
+            self.config.add_argument('--load-extension=%s' % ','.join( str(_) for _ in self.config._extensions)) # noqa
+
         exe = self.config.browser_executable_path
         params = self.config()
+
         logger.info(
             "starting\n\texecutable :%s\n\narguments:\n%s", exe, "\n\t".join(params)
         )

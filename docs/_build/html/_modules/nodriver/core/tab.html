@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.core.tab - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -265,6 +265,7 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
@@ -396,7 +397,20 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">inspector_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the inspector url. this url can be used in another browser to show you the devtools interface for</span>
+<span class="sd">        current tab. useful for debugging (and headless)</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">/devtools/inspector.html?ws=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">websocket_url</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<div class="viewcode-block" id="Tab.inspector_open">
+<a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.inspector_open">[docs]</a>
+    <span class="k">def</span> <span class="nf">inspector_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">webbrowser</span>
+        <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inspector_url</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="Tab.open_external_inspector">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.open_external_inspector">[docs]</a>
@@ -943,7 +957,7 @@
     <span class="k">async</span> <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">expression</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">await_promise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_by_value</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">):</span>
-        <span class="n">remote_object</span><span class="p">,</span> <span class="o">*</span><span class="n">exc</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+        <span class="n">remote_object</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
             <span class="n">cdp</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
                 <span class="n">expression</span><span class="o">=</span><span class="n">expression</span><span class="p">,</span>
                 <span class="n">user_gesture</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -951,54 +965,201 @@
                 <span class="n">return_by_value</span><span class="o">=</span><span class="n">return_by_value</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ProtocolException</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">return_by_value</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">remote_object</span><span class="p">,</span> <span class="n">errors</span>
+            <span class="k">return</span> <span class="n">errors</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">remote_object</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">remote_object</span><span class="p">,</span> <span class="s2">&quot;subtype&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span>
-                <span class="n">val</span> <span class="o">=</span> <span class="n">remote_object</span><span class="o">.</span><span class="n">description</span>
-                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="n">val</span><span class="p">,</span> <span class="s2">&quot;stack&quot;</span><span class="p">:</span> <span class="n">exc</span><span class="p">}</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">remote_object</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">remote_object</span><span class="o">.</span><span class="n">value</span>
-        <span class="k">if</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">exc</span></div>
+            <span class="k">if</span> <span class="n">return_by_value</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">remote_object</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">remote_object</span><span class="o">.</span><span class="n">value</span>
 
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">remote_object</span><span class="p">,</span> <span class="n">errors</span></div>
+
+            <span class="c1"># if getattr(remote_object, &quot;subtype&quot;, None) == &quot;error&quot;:</span>
+            <span class="c1">#     val = remote_object.description</span>
+            <span class="c1">#     return {&quot;error&quot;: val, &quot;stack&quot;: errors}</span>
+        <span class="c1">#     try:</span>
+        <span class="c1">#         return json.loads(remote_object.value)</span>
+        <span class="c1">#     except:</span>
+        <span class="c1">#         return remote_object.value</span>
+        <span class="c1"># if exc:</span>
+        <span class="c1">#     return exc</span>
 
 <div class="viewcode-block" id="Tab.js_dumps">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.js_dumps">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">js_dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">js_dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">return_by_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span>
+                <span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">,</span>
+                <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObject</span><span class="p">,</span> <span class="n">cdp</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">ExceptionDetails</span><span class="p">]</span>
+            <span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        get properties of a js variable.</span>
-<span class="sd">        since data is transferred in JSON, expect</span>
-<span class="sd">        complex objects to not have all properties.</span>
-<span class="sd">        functions for example are hard to serialize.</span>
+<span class="sd">        dump given js object with its properties and values as a dict</span>
+
+<span class="sd">        note: complex objects might not be serializable, therefore this method is not a &quot;source of thruth&quot;</span>
+
+<span class="sd">        :param obj_name: the js object to dump</span>
+<span class="sd">        :type obj_name: str</span>
+
+<span class="sd">        :param return_by_value: if you want an tuple of cdp objects (returnvalue, errors), set this to False</span>
+<span class="sd">        :type return_by_value: bool</span>
 
 <span class="sd">        example</span>
 <span class="sd">        ------</span>
 
-<span class="sd">        &gt;&gt;&gt; x = await self.js_dumps(&#39;window&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; x</span>
-<span class="sd">        &#39;...{</span>
-<span class="sd">        &#39;pageYOffset&#39;: 0,</span>
-<span class="sd">        &#39;visualViewport&#39;: {},</span>
-<span class="sd">        &#39;screenX&#39;: 10,</span>
-<span class="sd">        &#39;screenY&#39;: 10,</span>
-<span class="sd">        &#39;outerWidth&#39;: 1050,</span>
-<span class="sd">        &#39;outerHeight&#39;: 832,</span>
-<span class="sd">        &#39;devicePixelRatio&#39;: 1,</span>
-<span class="sd">        &#39;screenLeft&#39;: 10,</span>
-<span class="sd">        &#39;screenTop&#39;: 10,</span>
-<span class="sd">        &#39;styleMedia&#39;: {},</span>
-<span class="sd">        &#39;onsearch&#39;: None,</span>
-<span class="sd">        &#39;isSecureContext&#39;: True,</span>
-<span class="sd">        &#39;trustedTypes&#39;: {},</span>
-<span class="sd">        &#39;performance&#39;: {&#39;timeOrigin&#39;: 1707823094767.9,</span>
-<span class="sd">        &#39;timing&#39;: {&#39;connectStart&#39;: 0,</span>
-<span class="sd">        &#39;navigationStart&#39;: 1707823094768,</span>
-<span class="sd">        ]...&#39;</span>
-
-<span class="sd">        :param obj: the object to fetch</span>
+<span class="sd">        x = await self.js_dumps(&#39;window&#39;)</span>
+<span class="sd">        print(x)</span>
+<span class="sd">            &#39;...{</span>
+<span class="sd">            &#39;pageYOffset&#39;: 0,</span>
+<span class="sd">            &#39;visualViewport&#39;: {},</span>
+<span class="sd">            &#39;screenX&#39;: 10,</span>
+<span class="sd">            &#39;screenY&#39;: 10,</span>
+<span class="sd">            &#39;outerWidth&#39;: 1050,</span>
+<span class="sd">            &#39;outerHeight&#39;: 832,</span>
+<span class="sd">            &#39;devicePixelRatio&#39;: 1,</span>
+<span class="sd">            &#39;screenLeft&#39;: 10,</span>
+<span class="sd">            &#39;screenTop&#39;: 10,</span>
+<span class="sd">            &#39;styleMedia&#39;: {},</span>
+<span class="sd">            &#39;onsearch&#39;: None,</span>
+<span class="sd">            &#39;isSecureContext&#39;: True,</span>
+<span class="sd">            &#39;trustedTypes&#39;: {},</span>
+<span class="sd">            &#39;performance&#39;: {&#39;timeOrigin&#39;: 1707823094767.9,</span>
+<span class="sd">            &#39;timing&#39;: {&#39;connectStart&#39;: 0,</span>
+<span class="sd">            &#39;navigationStart&#39;: 1707823094768,</span>
+<span class="sd">            ]...</span>
+<span class="sd">            &#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">js_helpers</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span></div>
+        <span class="n">js_code_a</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                           function ___dump(obj, _d = 0) {</span>
+<span class="s2">                               let _typesA = [&#39;object&#39;, &#39;function&#39;];</span>
+<span class="s2">                               let _typesB = [&#39;number&#39;, &#39;string&#39;, &#39;boolean&#39;];</span>
+<span class="s2">                               if (_d == 2) {</span>
+<span class="s2">                                   console.log(&#39;maxdepth reached for &#39;, obj);</span>
+<span class="s2">                                   return</span>
+<span class="s2">                               }</span>
+<span class="s2">                               let tmp = </span><span class="si">{}</span>
+<span class="s2">                               for (let k in obj) {</span>
+<span class="s2">                                   if (obj[k] == window) continue;</span>
+<span class="s2">                                   let v;</span>
+<span class="s2">                                   try {</span>
+<span class="s2">                                       if (obj[k] === null || obj[k] === undefined || obj[k] === NaN) {</span>
+<span class="s2">                                           console.log(&#39;obj[k] is null or undefined or Nan&#39;, k, &#39;=&gt;&#39;, obj[k])</span>
+<span class="s2">                                           tmp[k] = obj[k];</span>
+<span class="s2">                                           continue</span>
+<span class="s2">                                       }</span>
+<span class="s2">                                   } catch (e) {</span>
+<span class="s2">                                       tmp[k] = null;</span>
+<span class="s2">                                       continue</span>
+<span class="s2">                                   }</span>
+
+
+<span class="s2">                                   if (_typesB.includes(typeof obj[k])) {</span>
+<span class="s2">                                       tmp[k] = obj[k]</span>
+<span class="s2">                                       continue</span>
+<span class="s2">                                   }</span>
+
+<span class="s2">                                   try {</span>
+<span class="s2">                                       if (typeof obj[k] === &#39;function&#39;) {</span>
+<span class="s2">                                           tmp[k] = obj[k].toString()</span>
+<span class="s2">                                           continue</span>
+<span class="s2">                                       }</span>
+
+
+<span class="s2">                                       if (typeof obj[k] === &#39;object&#39;) {</span>
+<span class="s2">                                           tmp[k] = ___dump(obj[k], _d + 1);</span>
+<span class="s2">                                           continue</span>
+<span class="s2">                                       }</span>
+
+
+<span class="s2">                                   } catch (e) </span><span class="si">{}</span>
+
+<span class="s2">                                   try {</span>
+<span class="s2">                                       tmp[k] = JSON.stringify(obj[k])</span>
+<span class="s2">                                       continue</span>
+<span class="s2">                                   } catch (e) {</span>
+
+<span class="s2">                                   }</span>
+<span class="s2">                                   try {</span>
+<span class="s2">                                       tmp[k] = obj[k].toString();</span>
+<span class="s2">                                       continue</span>
+<span class="s2">                                   } catch (e) </span><span class="si">{}</span>
+<span class="s2">                               }</span>
+<span class="s2">                               return tmp</span>
+<span class="s2">                           }</span>
+
+<span class="s2">                           function ___dumpY(obj) {</span>
+<span class="s2">                               var objKeys = (obj) =&gt; {</span>
+<span class="s2">                                   var [target, result] = [obj, []];</span>
+<span class="s2">                                   while (target !== null) {</span>
+<span class="s2">                                       result = result.concat(Object.getOwnPropertyNames(target));</span>
+<span class="s2">                                       target = Object.getPrototypeOf(target);</span>
+<span class="s2">                                   }</span>
+<span class="s2">                                   return result;</span>
+<span class="s2">                               }</span>
+<span class="s2">                               return Object.fromEntries(</span>
+<span class="s2">                                   objKeys(obj).map(_ =&gt; [_, ___dump(obj[_])]))</span>
+
+<span class="s2">                           }</span>
+<span class="s2">                           ___dumpY( </span><span class="si">%s</span><span class="s2"> )</span>
+<span class="s2">                   &quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">obj_name</span>
+        <span class="n">js_code_b</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            ((obj, visited = new WeakSet()) =&gt; {</span>
+<span class="s2">                 if (visited.has(obj)) {</span>
+<span class="s2">                     return </span><span class="si">{}</span>
+<span class="s2">                 }</span>
+<span class="s2">                 visited.add(obj)</span>
+<span class="s2">                 var result = </span><span class="si">{}</span><span class="s2">, _tmp;</span>
+<span class="s2">                 for (var i in obj) {</span>
+<span class="s2">                         try {</span>
+<span class="s2">                             if (i === &#39;enabledPlugin&#39; || typeof obj[i] === &#39;function&#39;) {</span>
+<span class="s2">                                 continue;</span>
+<span class="s2">                             } else if (typeof obj[i] === &#39;object&#39;) {</span>
+<span class="s2">                                 _tmp = recurse(obj[i], visited);</span>
+<span class="s2">                                 if (Object.keys(_tmp).length) {</span>
+<span class="s2">                                     result[i] = _tmp;</span>
+<span class="s2">                                 }</span>
+<span class="s2">                             } else {</span>
+<span class="s2">                                 result[i] = obj[i];</span>
+<span class="s2">                             }</span>
+<span class="s2">                         } catch (error) {</span>
+<span class="s2">                             // console.error(&#39;Error:&#39;, error);</span>
+<span class="s2">                         }</span>
+<span class="s2">                     }</span>
+<span class="s2">                return result;</span>
+<span class="s2">            })(</span><span class="si">%s</span><span class="s2">)</span>
+<span class="s2">        &quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">obj_name</span>
+
+
+
+        <span class="c1"># we&#39;re purposely not calling self.evaluate here to prevent infinite loop on certain expressions</span>
+
+        <span class="n">remote_object</span><span class="p">,</span> <span class="n">exception_details</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+            <span class="n">cdp</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+                <span class="n">js_code_a</span><span class="p">,</span>
+                <span class="n">await_promise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">return_by_value</span><span class="o">=</span><span class="n">return_by_value</span><span class="p">,</span>
+                <span class="n">allow_unsafe_eval_blocked_by_csp</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">exception_details</span><span class="p">:</span>
+
+            <span class="c1"># try second variant</span>
+
+            <span class="n">remote_object</span><span class="p">,</span> <span class="n">exception_details</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+                    <span class="n">js_code_b</span><span class="p">,</span>
+                    <span class="n">await_promise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">return_by_value</span><span class="o">=</span><span class="n">return_by_value</span><span class="p">,</span>
+                    <span class="n">allow_unsafe_eval_blocked_by_csp</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">exception_details</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ProtocolException</span><span class="p">(</span><span class="n">exception_details</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">return_by_value</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">remote_object</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">remote_object</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">remote_object</span><span class="p">,</span> <span class="n">exception_details</span></div>
+
 
 
 <div class="viewcode-block" id="Tab.close">

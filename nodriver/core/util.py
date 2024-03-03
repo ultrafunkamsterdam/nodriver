@@ -253,33 +253,3 @@ def cdp_get_module(domain: Union[str, types.ModuleType]):
                 )
     return domain_mod
 
-
-class js_helpers:
-    @staticmethod
-    def dumps(obj: str, indent: int = 4):
-        return """
-        (
-           (value, space) => {
-               var cache = [];
-               var output = JSON.stringify(value, function(key, value) {
-                   if (key && key.length > 0 && (key.charAt(0) == "$" || key.charAt(0) == "_")) {
-                       return;
-                   }
-                   if (typeof value === 'object' && value !== null) {
-                       if (cache.indexOf(value) !== -1) {
-                           // Circular reference found, discard key
-                           return;
-                       }
-                       // Store value in our collection
-                       cache.push(value);
-                   }
-                   return value;
-               }, space)
-               cache = null; // Enable garbage collection
-               return output;
-           }
-    )(%s, %d)
-    """ % (
-            obj,
-            indent,
-        )

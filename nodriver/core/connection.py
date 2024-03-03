@@ -34,17 +34,37 @@ TargetType = Union[cdp.target.TargetInfo, cdp.target.TargetID]
 logger = logging.getLogger("uc.connection")
 
 
-class ProtocolException(ValueError):
+class ProtocolException(Exception):
     def __init__(self, *args, **kwargs):  # real signature unknown
+        print('args', args, 'kwargs', kwargs)
         self.message = None
         self.code = None
         self.args = args
         if isinstance(args[0], dict):
+
             self.message = args[0].get("message", None)  # noqa
             self.code = args[0].get("code", None)
 
+        elif hasattr(args[0], 'to_json'):
+            def serialize(obj, _d = 0):
+                res = "\n"
+                for k,v in obj.items():
+                    space = '\t' * _d
+                    if isinstance(v, dict):
+                        res += f"{space}{k}: {serialize(v, _d + 1)}\n"
+                    else:
+                        res += f"{space}{k}: {v}\n"
+
+                return res
+            self.message = serialize(args[0].to_json())
+
+        else:
+            print(3)
+            self.message = "| ".join(str(x) for x in args)
+
+
     def __str__(self):
-        return f"{self.message} " f"[code: {self.code}]" if self.code else ""
+        return f"{self.message} [code: {self.code}]" if self.code else f"{self.message}"
 
 
 class SettingClassVarNotAllowedException(PermissionError):

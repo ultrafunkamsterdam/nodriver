@@ -3,6 +3,7 @@ import asyncio
 import json
 import logging
 import pathlib
+import typing
 import warnings
 from typing import List, Union, Optional, Tuple
 
@@ -132,7 +133,17 @@ class Tab(Connection):
 
     @property
     def inspector_url(self):
+        """
+        get the inspector url. this url can be used in another browser to show you the devtools interface for
+        current tab. useful for debugging (and headless)
+        :return:
+        :rtype:
+        """
         return f"http://{self.browser.config.host}:{self.browser.config.port}/devtools/inspector.html?ws={self.websocket_url[5:]}"
+
+    def inspector_open(self):
+        import webbrowser
+        webbrowser.open(self.inspector_url, new=2)
 
     async def open_external_inspector(self):
         """
@@ -638,7 +649,7 @@ class Tab(Connection):
     async def evaluate(
         self, expression: str, await_promise=False, return_by_value=True
     ):
-        remote_object, *exc = await self.send(
+        remote_object, errors = await self.send(
             cdp.runtime.evaluate(
                 expression=expression,
                 user_gesture=True,
@@ -646,51 +657,198 @@ class Tab(Connection):
                 return_by_value=return_by_value,
             )
         )
+        if errors:
+            raise ProtocolException(errors)
+            if not return_by_value:
+                return remote_object, errors
+            return errors.to_json()
         if remote_object:
-            if getattr(remote_object, "subtype", None) == "error":
-                val = remote_object.description
-                return {"error": val, "stack": exc}
-            try:
-                return json.loads(remote_object.value)
-            except:
-                return remote_object.value
-        if exc:
-            return exc
+            if return_by_value:
+                if remote_object.value:
+                    return remote_object.value
 
-    async def js_dumps(self, obj: str):
+            else:
+                return remote_object, errors
+            # if getattr(remote_object, "subtype", None) == "error":
+            #     val = remote_object.description
+            #     return {"error": val, "stack": errors}
+        #     try:
+        #         return json.loads(remote_object.value)
+        #     except:
+        #         return remote_object.value
+        # if exc:
+        #     return exc
+
+    async def js_dumps(self, obj_name: str, return_by_value: Optional[bool] = True) \
+            -> typing.Union[
+                typing.Dict,
+                typing.Tuple[cdp.runtime.RemoteObject, cdp.runtime.ExceptionDetails]
+            ]:
         """
-        get properties of a js variable.
-        since data is transferred in JSON, expect
-        complex objects to not have all properties.
-        functions for example are hard to serialize.
+        dump given js object with its properties and values as a dict
+
+        note: complex objects might not be serializable, therefore this method is not a "source of thruth"
+
+        :param obj_name: the js object to dump
+        :type obj_name: str
+
+        :param return_by_value: if you want an tuple of cdp objects (returnvalue, errors), set this to False
+        :type return_by_value: bool
 
         example
         ------
 
-        >>> x = await self.js_dumps('window')
-        >>> x
-        '...{
-        'pageYOffset': 0,
-        'visualViewport': {},
-        'screenX': 10,
-        'screenY': 10,
-        'outerWidth': 1050,
-        'outerHeight': 832,
-        'devicePixelRatio': 1,
-        'screenLeft': 10,
-        'screenTop': 10,
-        'styleMedia': {},
-        'onsearch': None,
-        'isSecureContext': True,
-        'trustedTypes': {},
-        'performance': {'timeOrigin': 1707823094767.9,
-        'timing': {'connectStart': 0,
-        'navigationStart': 1707823094768,
-        ]...'
-
-        :param obj: the object to fetch
+        x = await self.js_dumps('window')
+        print(x)
+            '...{
+            'pageYOffset': 0,
+            'visualViewport': {},
+            'screenX': 10,
+            'screenY': 10,
+            'outerWidth': 1050,
+            'outerHeight': 832,
+            'devicePixelRatio': 1,
+            'screenLeft': 10,
+            'screenTop': 10,
+            'styleMedia': {},
+            'onsearch': None,
+            'isSecureContext': True,
+            'trustedTypes': {},
+            'performance': {'timeOrigin': 1707823094767.9,
+            'timing': {'connectStart': 0,
+            'navigationStart': 1707823094768,
+            ]...
+            '
         """
-        return await self.evaluate(util.js_helpers.dumps(obj))
+        js_code_a = """
+                           function ___dump(obj, _d = 0) {
+                               let _typesA = ['object', 'function'];
+                               let _typesB = ['number', 'string', 'boolean'];
+                               if (_d == 2) {
+                                   console.log('maxdepth reached for ', obj);
+                                   return
+                               }
+                               let tmp = {}
+                               for (let k in obj) {
+                                   if (obj[k] == window) continue;
+                                   let v;
+                                   try {
+                                       if (obj[k] === null || obj[k] === undefined || obj[k] === NaN) {
+                                           console.log('obj[k] is null or undefined or Nan', k, '=>', obj[k])
+                                           tmp[k] = obj[k];
+                                           continue
+                                       }
+                                   } catch (e) {
+                                       tmp[k] = null;
+                                       continue
+                                   }
+
+
+                                   if (_typesB.includes(typeof obj[k])) {
+                                       tmp[k] = obj[k]
+                                       continue
+                                   }
+
+                                   try {
+                                       if (typeof obj[k] === 'function') {
+                                           tmp[k] = obj[k].toString()
+                                           continue
+                                       }
+
+
+                                       if (typeof obj[k] === 'object') {
+                                           tmp[k] = ___dump(obj[k], _d + 1);
+                                           continue
+                                       }
+
+
+                                   } catch (e) {}
+
+                                   try {
+                                       tmp[k] = JSON.stringify(obj[k])
+                                       continue
+                                   } catch (e) {
+
+                                   }
+                                   try {
+                                       tmp[k] = obj[k].toString();
+                                       continue
+                                   } catch (e) {}
+                               }
+                               return tmp
+                           }
+
+                           function ___dumpY(obj) {
+                               var objKeys = (obj) => {
+                                   var [target, result] = [obj, []];
+                                   while (target !== null) {
+                                       result = result.concat(Object.getOwnPropertyNames(target));
+                                       target = Object.getPrototypeOf(target);
+                                   }
+                                   return result;
+                               }
+                               return Object.fromEntries(
+                                   objKeys(obj).map(_ => [_, ___dump(obj[_])]))
+
+                           }
+                           ___dumpY( %s )
+                   """ % obj_name
+        js_code_b = """
+            ((obj, visited = new WeakSet()) => {
+                 if (visited.has(obj)) {
+                     return {}
+                 }
+                 visited.add(obj)
+                 var result = {}, _tmp;
+                 for (var i in obj) {
+                         try {
+                             if (i === 'enabledPlugin' || typeof obj[i] === 'function') {
+                                 continue;
+                             } else if (typeof obj[i] === 'object') {
+                                 _tmp = recurse(obj[i], visited);
+                                 if (Object.keys(_tmp).length) {
+                                     result[i] = _tmp;
+                                 }
+                             } else {
+                                 result[i] = obj[i];
+                             }
+                         } catch (error) {
+                             // console.error('Error:', error);
+                         }
+                     }
+                return result;
+            })(%s)
+        """ % obj_name
+
+
+
+        # we're purposely not calling self.evaluate here to prevent infinite loop on certain expressions
+
+        remote_object, exception_details = await self.send(
+            cdp.runtime.evaluate(
+                js_code_a,
+                await_promise=True,
+                return_by_value=return_by_value,
+                allow_unsafe_eval_blocked_by_csp=True))
+        if exception_details:
+
+            # try second variant
+
+            remote_object, exception_details = await self.send(
+                cdp.runtime.evaluate(
+                    js_code_b,
+                    await_promise=True,
+                    return_by_value=return_by_value,
+                    allow_unsafe_eval_blocked_by_csp=True))
+
+        if exception_details:
+            raise ProtocolException(exception_details)
+        if return_by_value:
+            if remote_object.value:
+                return remote_object.value
+        else:
+            return remote_object, exception_details
+
 
     async def close(self):
         """
