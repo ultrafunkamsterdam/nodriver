@@ -29,13 +29,32 @@ type or paste a few lines and off you go.
 import nodriver as uc
 
 async def main():
+
     browser = await uc.start()
+    page = await browser.get('https://www.nowsecure.nl')
+
+    ... further code ...
+
+if __name__ == '__main__':
+    # since asyncio.run never worked (for me)
+    uc.loop().run_until_complete(main())
+```
+
+# More complete example
+
+```default
+import nodriver
+
+async def main():
+
+    browser = await nodriver.start()
     page = await browser.get('https://www.nowsecure.nl')
 
     await page.save_screenshot()
     await page.get_content()
     await page.scroll_down(150)
     elems = await page.select_all('*[src]')
+
     for elem in elems:
         await elem.flash()
 
@@ -50,11 +69,43 @@ async def main():
        if p != page3:
            await p.close()
 
-
 if __name__ == '__main__':
 
     # since asyncio.run never worked (for me)
     uc.loop().run_until_complete(main())
+```
+
+# Custom starting options
+
+I’ll leave out the async boilerplate here
+
+```default
+from nodriver import *
+
+browser = await start(
+    headless=False,
+    user_data_dir="/path/to/existing/profile",  # by specifying it, it won't be automatically cleaned up when finished
+    browser_executable_path="/path/to/some/other/browser",
+    browser_args=['--some-browser-arg=true', '--some-other-option'],
+    lang="en-US"   # this could set iso-language-code in navigator, not recommended to change
+)
+tab = await browser.get('https://somewebsite.com')
+```
+
+# Alternative custom options
+
+I’ll leave out the async boilerplate here
+
+```default
+from nodriver import *
+
+config = Config()
+config.headless = False
+config.user_data_dir="/path/to/existing/profile",  # by specifying it, it won't be automatically cleaned up when finished
+config.browser_executable_path="/path/to/some/other/browser",
+config.browser_args=['--some-browser-arg=true', '--some-other-option'],
+config.lang="en-US"   # this could set iso-language-code in navigator, not recommended to change
+)
 ```
 
 A more concrete example, which can be found in the ./example/ folder,

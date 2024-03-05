@@ -156,7 +156,7 @@ an argument of type `y`, and it returns type `z`. In
 this library, types `x` and `y` are the same for all
 commands, and `z` is the return type you should pay attention
 to. For more information, see
-[Getting Started: Commands](../quickstart.md#getting-started-commands).
+[Getting Started: Commands](../../readme.md#getting-started-commands).
 
 ### clear_object_store(database_name, object_store_name, security_origin=None, storage_key=None, storage_bucket=None)
 

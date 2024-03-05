@@ -18,16 +18,6 @@ if typing.TYPE_CHECKING:
     from .tab import Tab
 
 
-class Registry(ContraDict):
-    def __setitem__(self, key, value):
-        print("registry setitem", key)
-        super().__setitem__(key, value)
-
-    def __getitem__(self, item):
-        print("registry getitem", item)
-        return super().__getitem__(item)
-
-
 def create(node: cdp.dom.Node, tab: Tab, tree: typing.Optional[cdp.dom.Node] = None):
     """
     factory for Elements
@@ -489,31 +479,26 @@ class Element:
                 cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
             )
             # await self.update()
-        try:
-            quads = await self.tab.send(
-                cdp.dom.get_content_quads(object_id=self.remote_object.object_id)
-            )
-            pos = Position(quads[0])
-            if abs:
-                scroll_y = (await self.conn.evaluate("window.scrollY")).value
-                scroll_x = (await self.conn.evaluate("window.scrollX")).value
-                abs_x = pos.left + scroll_x + (pos.width / 2)
-                abs_y = pos.top + scroll_y + (pos.height / 2)
-                pos.abs_x = abs_x
-                pos.abs_y = abs_y
-            return pos
-        except IndexError:
-            logger.debug(
-                "no content quads for %s. mostly caused by element which is not 'in plain sight'"
-                % self
-            )
+        quads = await self.tab.send(
+            cdp.dom.get_content_quads(object_id=self.remote_object.object_id)
+        )
+        pos = Position(quads[0])
+        if abs:
+            scroll_y = (await self.conn.evaluate("window.scrollY")).value
+            scroll_x = (await self.conn.evaluate("window.scrollX")).value
+            abs_x = pos.left + scroll_x + (pos.width / 2)
+            abs_y = pos.top + scroll_y + (pos.height / 2)
+            pos.abs_x = abs_x
+            pos.abs_y = abs_y
+        return pos
+
 
     async def mouse_click(
-        self,
-        button: str = "left",
-        buttons: typing.Optional[int] = 1,
-        modifiers: typing.Optional[int] = 0,
-        _until_event: typing.Optional[type] = None,
+            self,
+            button: str = "left",
+            buttons: typing.Optional[int] = 1,
+            modifiers: typing.Optional[int] = 0,
+            _until_event: typing.Optional[type] = None,
     ):
         """native click (on element) . note: this likely does not work atm, use click() instead
 
@@ -710,10 +695,10 @@ class Element:
 
     #
     async def save_screenshot(
-        self,
-        filename: typing.Optional[PathLike] = "auto",
-        format: typing.Optional[str] = "jpeg",
-        scale: typing.Optional[typing.Union[int, float]] = 1,
+            self,
+            filename: typing.Optional[PathLike] = "auto",
+            format: typing.Optional[str] = "jpeg",
+            scale: typing.Optional[typing.Union[int, float]] = 1,
     ):
         """
         Saves a screenshot of this element (only)
@@ -787,18 +772,30 @@ class Element:
 
         if not self.remote_object:
             try:
-                self._remote_object = await self._tab.send(
+                self._remote_object = await self.tab.send(
                     cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
                 )
             except ProtocolException:
                 return
+        try:
+            pos = await self.get_position()
+            if not pos:
+                return
+
+        except (Exception,):
+            logger.debug('flash() : could not determine position')
+            return
 
         style = (
-            "position:absolute;z-index:99999999;padding:0;margin:0; left:50% ;"
-            "transform: translate(-50%, -50%);"
-            "top: 50% ; width:1em;height:1em;border-radius:50%;background:red;opacity:0;"
+            "position:absolute;z-index:99999999;padding:0;margin:0;"
+            "left:{:.1f}px; top: {:.1f}px;"
+            "opacity:1;"
+            "width:16px;height:16px;border-radius:50%;background:red;"
             "animation:show-pointer-ani {:.2f}s ease 1;"
-        ).format(duration)
+        ).format(
+            pos.center[0] - 8,  # -8 to account for drawn circle itself (w,h)
+            pos.center[1]  - 8,
+            duration)
         script = (
             """
             (targetElement) => {{
@@ -821,7 +818,7 @@ class Element:
                 var _d = document.createElement('div');
                 _d.style = `{0:s}`;
                 _d.id = `{1:s}`;
-                targetElement.insertAdjacentElement('afterBegin', _d);
+                document.body.insertAdjacentElement('afterBegin', _d);
                                 
                 setTimeout( () => document.getElementById('{1:s}').remove(), {2:d});
             }}
@@ -833,6 +830,7 @@ class Element:
             .replace("  ", "")
             .replace("\n", "")
         )
+
         arguments = [cdp.runtime.CallArgument(object_id=self._remote_object.object_id)]
         await self._tab.send(
             cdp.runtime.call_function_on(
@@ -845,10 +843,10 @@ class Element:
         )
 
     async def record_video(
-        self,
-        filename: typing.Optional[str] = None,
-        folder: typing.Optional[str] = None,
-        duration: typing.Optional[typing.Union[int, float]] = None,
+            self,
+            filename: typing.Optional[str] = None,
+            folder: typing.Optional[str] = None,
+            duration: typing.Optional[typing.Union[int, float]] = None,
     ):
         """
         experimental option.

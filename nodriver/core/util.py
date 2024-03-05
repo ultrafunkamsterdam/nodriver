@@ -7,11 +7,11 @@ import types
 import typing
 from typing import Optional, List, Set, Union, Callable
 
-import typing_extensions
+import typing
 
 from .element import Element
 
-if typing_extensions.TYPE_CHECKING:
+if typing.TYPE_CHECKING:
     from .browser import Browser, PathLike
 from .config import Config
 from .. import cdp
@@ -23,15 +23,15 @@ T = typing.TypeVar("T")
 
 
 async def start(
-    config: Optional[Config] = None,
-    *,
-    user_data_dir: Optional[PathLike] = None,
-    headless: Optional[bool] = False,
-    browser_executable_path: Optional[PathLike] = None,
-    browser_args: Optional[List[str]] = None,
-    sandbox: Optional[bool] = True,
-    lang: Optional[str] = None,
-    **kwargs: Optional[dict],
+        config: Optional[Config] = None,
+        *,
+        user_data_dir: Optional[PathLike] = None,
+        headless: Optional[bool] = False,
+        browser_executable_path: Optional[PathLike] = None,
+        browser_args: Optional[List[str]] = None,
+        sandbox: Optional[bool] = True,
+        lang: Optional[str] = None,
+        **kwargs: Optional[dict],
 ) -> Browser:
     """
     helper function to launch a browser. it accepts several keyword parameters.
@@ -75,7 +75,7 @@ async def start(
 
 
 async def create_from_undetected_chromedriver(
-    driver: "undetected_chromedriver.Chrome",
+        driver: "undetected_chromedriver.Chrome",
 ) -> Browser:
     """
     create a nodriver.Browser instance from a running undetected_chromedriver.Chrome instance.
@@ -102,6 +102,12 @@ def get_registered_instances():
     return __registered__instances__
 
 
+def get_browsers() -> List:
+    return list(
+        __registered__instances__
+    )
+
+
 def free_port() -> int:
     """
     Determines a free port using sockets.
@@ -124,7 +130,7 @@ def deconstruct_browser():
             _.stop()
         for attempt in range(5):
             try:
-                if _.config and not _.config.custom_data_dir:
+                if _.config and not _.config.uses_custom_data_dir:
                     shutil.rmtree(_.config.user_data_dir, ignore_errors=False)
             except FileNotFoundError as e:
                 break
@@ -142,7 +148,7 @@ def deconstruct_browser():
 
 
 def filter_recurse_all(
-    doc: T, predicate: Callable[[cdp.dom.Node, Element], bool]
+        doc: T, predicate: Callable[[cdp.dom.Node, Element], bool]
 ) -> List[T]:
     """
     test each child using predicate(child), and return all children for which predicate(child) == True
@@ -252,34 +258,3 @@ def cdp_get_module(domain: Union[str, types.ModuleType]):
                     "could not find cdp module from input '%s'" % domain
                 )
     return domain_mod
-
-
-class js_helpers:
-    @staticmethod
-    def dumps(obj: str, indent: int = 4):
-        return """
-        (
-           (value, space) => {
-               var cache = [];
-               var output = JSON.stringify(value, function(key, value) {
-                   if (key && key.length > 0 && (key.charAt(0) == "$" || key.charAt(0) == "_")) {
-                       return;
-                   }
-                   if (typeof value === 'object' && value !== null) {
-                       if (cache.indexOf(value) !== -1) {
-                           // Circular reference found, discard key
-                           return;
-                       }
-                       // Store value in our collection
-                       cache.push(value);
-                   }
-                   return value;
-               }, space)
-               cache = null; // Enable garbage collection
-               return output;
-           }
-    )(%s, %d)
-    """ % (
-            obj,
-            indent,
-        )
