@@ -7,6 +7,7 @@ import inspect
 import itertools
 import json
 import logging
+import sys
 import types
 from asyncio import iscoroutine, iscoroutinefunction
 from typing import (
@@ -26,7 +27,7 @@ from .. import cdp
 T = TypeVar("T")
 
 GLOBAL_DELAY = 0.005
-MAX_SIZE: int = 2**28
+MAX_SIZE: int = 2 ** 28
 PING_TIMEOUT: int = 900  # 15 minutes
 
 TargetType = Union[cdp.target.TargetInfo, cdp.target.TargetID]
@@ -36,7 +37,6 @@ logger = logging.getLogger("uc.connection")
 
 class ProtocolException(Exception):
     def __init__(self, *args, **kwargs):  # real signature unknown
-        print('args', args, 'kwargs', kwargs)
         self.message = None
         self.code = None
         self.args = args
@@ -46,9 +46,9 @@ class ProtocolException(Exception):
             self.code = args[0].get("code", None)
 
         elif hasattr(args[0], 'to_json'):
-            def serialize(obj, _d = 0):
+            def serialize(obj, _d=0):
                 res = "\n"
-                for k,v in obj.items():
+                for k, v in obj.items():
                     space = '\t' * _d
                     if isinstance(v, dict):
                         res += f"{space}{k}: {serialize(v, _d + 1)}\n"
@@ -56,12 +56,11 @@ class ProtocolException(Exception):
                         res += f"{space}{k}: {v}\n"
 
                 return res
+
             self.message = serialize(args[0].to_json())
 
         else:
-            print(3)
             self.message = "| ".join(str(x) for x in args)
-
 
     def __str__(self):
         return f"{self.message} [code: {self.code}]" if self.code else f"{self.message}"
@@ -181,11 +180,11 @@ class Connection(metaclass=CantTouchThis):
     _target: cdp.target.TargetInfo
 
     def __init__(
-        self,
-        websocket_url: str,
-        target: cdp.target.TargetInfo = None,
-        _owner: "Browser" = None,
-        **kwargs,
+            self,
+            websocket_url: str,
+            target: cdp.target.TargetInfo = None,
+            _owner: "Browser" = None,
+            **kwargs,
     ):
         super().__init__()
         self._target = target
@@ -223,9 +222,9 @@ class Connection(metaclass=CantTouchThis):
         return self.websocket.closed
 
     def add_handler(
-        self,
-        event_type_or_domain: Union[type, types.ModuleType],
-        handler: Union[Callable, Awaitable],
+            self,
+            event_type_or_domain: Union[type, types.ModuleType],
+            handler: Union[Callable, Awaitable],
     ):
         """
         add a handler for given event
@@ -268,6 +267,8 @@ class Connection(metaclass=CantTouchThis):
 
     async def aopen(self, **kw):
         """
+        opens the websocket connection. should not be called manually by users.
+
         :param kw:
         :return:
         """
@@ -290,9 +291,15 @@ class Connection(metaclass=CantTouchThis):
         if not self.listener or not self.listener.running:
             self.listener = Listener(self)
             logger.debug("\n✅  opened websocket connection to %s", self.websocket_url)
+        # when an websocket connection is closed (either by error or on purpose)
+        # and reconnected, the registered event listeners (if any), should be
+        # registered again, so the browser sends those events
         await self._register_handlers()
 
     async def aclose(self):
+        """
+        closes the websocket connection. should not be called manually by users.
+        """
         if self.websocket and not self.websocket.closed:
             if self.listener and self.listener.running:
                 self.listener.cancel()
@@ -306,8 +313,9 @@ class Connection(metaclass=CantTouchThis):
 
     async def wait(self, t: Union[int, float] = None):
         """
-        updates targets and
-        waits until the event listener reports idle (when no new events are received for 1 second)
+        waits until the event listener
+        reports idle (which is when no new events had been received in .5 seconds
+        or, 1 second when in interactive mode)
 
         :param t:
         :type t:
@@ -316,11 +324,16 @@ class Connection(metaclass=CantTouchThis):
         """
         await self.update_target()
         try:
-            await self.listener.idle.wait()
+            await asyncio.wait_for(self.listener.idle.wait(), timeout=t)
+        except asyncio.TimeoutError:
+            if t is not None:
+                # explicit time is given, which is now passed
+                # so bail out early
+                return
         except AttributeError:
             # no listener created yet
             pass
-        if t:
+        if t is not None:
             await self.sleep(t)
 
     def __getattr__(self, item):
@@ -356,7 +369,7 @@ class Connection(metaclass=CantTouchThis):
         self.target = target_info
 
     async def send(
-        self, cdp_obj: Generator[dict[str, Any], dict[str, Any], Any], _is_update=False
+            self, cdp_obj: Generator[dict[str, Any], dict[str, Any], Any], _is_update=False
     ) -> Any:
         """
         send a protocol command. the commands are made using any of the cdp.<domain>.<method>()'s
@@ -447,7 +460,7 @@ class Connection(metaclass=CantTouchThis):
             # we started with a copy of self.enabled_domains and removed a domain from this
             # temp variable when we registered it or saw handlers for it.
             # items still present at this point are unused and need removal
-            print("remove ", ed, "from enabled domains")
+
             self.enabled_domains.remove(ed)
 
 
@@ -457,14 +470,31 @@ class Listener:
         self.history = collections.deque()
         self.max_history = 1000
         self.task: asyncio.Future = None
+
+        # when in interactive mode, the loop is paused
+        # therefore, allow more time before considering idle
+
+        is_interactive = getattr(sys, 'ps1', sys.flags.interactive)
+
+        self._time_before_considered_idle = 0.5 if not is_interactive else 1.0
+
         self.idle = asyncio.Event()
         self.run()
 
     def run(self):
         self.task = asyncio.create_task(self.listener_loop())
 
+    @property
+    def time_before_considered_idle(self):
+        return self._time_before_considered_idle
+
+    @time_before_considered_idle.setter
+    def time_before_considered_idle(self, seconds: Union[int, float]):
+        self._time_before_considered_idle = seconds
+
     def cancel(self):
-        self.task.cancel()
+        if self.task and not self.task.cancelled():
+            self.task.cancel()
 
     @property
     def running(self):
@@ -477,18 +507,22 @@ class Listener:
     async def listener_loop(self):
         if not self.connection.websocket:
             await self.connection.aopen()
+
         while True:
             try:
-                msg = await asyncio.wait_for(self.connection.websocket.recv(), 0.5)
+                msg = await asyncio.wait_for(self.connection.websocket.recv(), self.time_before_considered_idle)
             except asyncio.TimeoutError:
-                await asyncio.sleep(0.05)
                 self.idle.set()
+                # breathe
+                await asyncio.sleep(self.time_before_considered_idle / 10)
                 continue
-            except Exception:
+            except (Exception,):
+                # break on any other exception
+                # which is mostly socket is closed or does not exist
+                # or is not allowed
                 break
             # async for msg in self.connection.websocket:
             if not self.running:
-                print("not running")
                 break
             self.idle.clear()
             message = json.loads(msg)
@@ -501,21 +535,11 @@ class Listener:
                 # probably an event
                 try:
                     event = cdp.util.parse_json_event(message)
-                    # self.history.append(event)
                     event_tx = EventTransaction(event)
-                    # getattr(globals(), event.__class__.__module__)
                     if not self.connection.mapper:
                         self.connection.__count__ = itertools.count(0)
                     event_tx.id = next(self.connection.__count__)
                     self.connection.mapper[event_tx.id] = event_tx
-                    # while len(self.connection.mapper) > self.max_history:
-                    #     for k,v in self.connection.mapper.copy().items():
-                    #         # only remove old events
-                    #         if type(v) is not Transaction:
-                    #             self.connection.mapper.pop(k)
-
-                    # while len(self.history) >= self.max_history:
-                    #     self.history.popleft()
                 except Exception as e:
                     logger.info(
                         "%s: %s  during parsing of json from event : %s"
@@ -552,7 +576,6 @@ class Listener:
                             )
                             raise
                 except asyncio.CancelledError:
-                    print("listener loop cancelled")
                     break
                 except Exception:
                     raise

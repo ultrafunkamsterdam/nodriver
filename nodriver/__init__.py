@@ -15,7 +15,7 @@ from .core import browser
 from .core.browser import Browser
 
 from .core import util
-from .core.util import start
+from .core.util import start, get_browsers
 
 from .core._contradict import ContraDict  # noqa
 from .core.util import loop
@@ -30,4 +30,5 @@ __all__ = [
     "util",
     "Element",
     "ContraDict",
+    "get_browsers",
 ]

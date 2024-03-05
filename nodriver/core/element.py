@@ -479,24 +479,19 @@ class Element:
                 cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
             )
             # await self.update()
-        try:
-            quads = await self.tab.send(
-                cdp.dom.get_content_quads(object_id=self.remote_object.object_id)
-            )
-            pos = Position(quads[0])
-            if abs:
-                scroll_y = (await self.conn.evaluate("window.scrollY")).value
-                scroll_x = (await self.conn.evaluate("window.scrollX")).value
-                abs_x = pos.left + scroll_x + (pos.width / 2)
-                abs_y = pos.top + scroll_y + (pos.height / 2)
-                pos.abs_x = abs_x
-                pos.abs_y = abs_y
-            return pos
-        except IndexError:
-            logger.debug(
-                "no content quads for %s. mostly caused by element which is not 'in plain sight'"
-                % self
-            )
+        quads = await self.tab.send(
+            cdp.dom.get_content_quads(object_id=self.remote_object.object_id)
+        )
+        pos = Position(quads[0])
+        if abs:
+            scroll_y = (await self.conn.evaluate("window.scrollY")).value
+            scroll_x = (await self.conn.evaluate("window.scrollX")).value
+            abs_x = pos.left + scroll_x + (pos.width / 2)
+            abs_y = pos.top + scroll_y + (pos.height / 2)
+            pos.abs_x = abs_x
+            pos.abs_y = abs_y
+        return pos
+
 
     async def mouse_click(
             self,
@@ -784,6 +779,8 @@ class Element:
                 return
         try:
             pos = await self.get_position()
+            if not pos:
+                return
 
         except (Exception,):
             logger.debug('flash() : could not determine position')

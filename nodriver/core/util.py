@@ -23,15 +23,15 @@ T = typing.TypeVar("T")
 
 
 async def start(
-    config: Optional[Config] = None,
-    *,
-    user_data_dir: Optional[PathLike] = None,
-    headless: Optional[bool] = False,
-    browser_executable_path: Optional[PathLike] = None,
-    browser_args: Optional[List[str]] = None,
-    sandbox: Optional[bool] = True,
-    lang: Optional[str] = None,
-    **kwargs: Optional[dict],
+        config: Optional[Config] = None,
+        *,
+        user_data_dir: Optional[PathLike] = None,
+        headless: Optional[bool] = False,
+        browser_executable_path: Optional[PathLike] = None,
+        browser_args: Optional[List[str]] = None,
+        sandbox: Optional[bool] = True,
+        lang: Optional[str] = None,
+        **kwargs: Optional[dict],
 ) -> Browser:
     """
     helper function to launch a browser. it accepts several keyword parameters.
@@ -75,7 +75,7 @@ async def start(
 
 
 async def create_from_undetected_chromedriver(
-    driver: "undetected_chromedriver.Chrome",
+        driver: "undetected_chromedriver.Chrome",
 ) -> Browser:
     """
     create a nodriver.Browser instance from a running undetected_chromedriver.Chrome instance.
@@ -100,6 +100,12 @@ async def create_from_undetected_chromedriver(
 
 def get_registered_instances():
     return __registered__instances__
+
+
+def get_browsers() -> List:
+    return list(
+        __registered__instances__
+    )
 
 
 def free_port() -> int:
@@ -142,7 +148,7 @@ def deconstruct_browser():
 
 
 def filter_recurse_all(
-    doc: T, predicate: Callable[[cdp.dom.Node, Element], bool]
+        doc: T, predicate: Callable[[cdp.dom.Node, Element], bool]
 ) -> List[T]:
     """
     test each child using predicate(child), and return all children for which predicate(child) == True
@@ -252,4 +258,3 @@ def cdp_get_module(domain: Union[str, types.ModuleType]):
                     "could not find cdp module from input '%s'" % domain
                 )
     return domain_mod
-
