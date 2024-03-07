@@ -438,7 +438,7 @@ class Browser:
         permissions.remove(cdp.browser.PermissionType.CAPTURED_SURFACE_CONTROL)
         await self.connection.send(cdp.browser.grant_permissions(permissions))
 
-    async def tile_windows(self, windows=None, max_columns: int = 0):
+    async def tile_windows(self, max_columns: int = 0, _windows=None):
         import mss
         import math
 
