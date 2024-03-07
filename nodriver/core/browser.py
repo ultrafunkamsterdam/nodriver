@@ -177,14 +177,19 @@ class Browser:
                 )
             )
             current_target = current_tab.target
-            logger.debug(
-                "target for #%d to target changed from %s to: %s"
-                % (
-                    self.targets.index(current_tab),
-                    current_target.target_id,
-                    target_info.target_id,
+            if logger.getEffectiveLevel() <= 10:
+                changes = util.compare_target_info(current_target, target_info)
+                changes_string = ""
+                for change in changes:
+                    key, old, new = change
+                    changes_string += f"\n{key}: {old} => {new}\n"
+                logger.debug(
+                    "target #%d has changed: %s"
+                    % (
+                        self.targets.index(current_tab),
+                        changes_string
+                    )
                 )
-            )
             current_tab.target = target_info
 
         elif isinstance(event, cdp.target.TargetCreated):
@@ -229,13 +234,17 @@ class Browser:
         :param new_window:  open new window
         :return: Page
         """
+
         if new_tab or new_window:
+
             # creat new target using the browser session
+
             target_id = await self.connection.send(
                 cdp.target.create_target(
                     url, new_window=new_window, enable_begin_frame_control=True
                 )
             )
+
             # get the connection matching the new target_id from our inventory
             connection = next(
                 filter(
@@ -243,21 +252,21 @@ class Browser:
                     self.targets,
                 )
             )
-            # if for some reason the connection could not be found (not updated or too fast/slow),
-            # just loop until the connection matches the target id
-            while not connection:
 
-                # update targets
-                await self
-                # get the connection matching the new target_id from our inventory
-                connection = next(
-                    filter(
-                        lambda item: item.type_ == "page"
-                        and item.target_id == target_id,
-                        self.targets,
-                    )
-                )
-
+            # # if for some reason the connection could not be found (not updated or too fast/slow),
+            # # just loop until the connection matches the target id
+            #
+            # while not connection:
+            #     # update targets
+            #     await self
+            #     # get the connection matching the new target_id from our inventory
+            #     connection = next(
+            #         filter(
+            #             lambda item: item.type_ == "page"
+            #             and item.target_id == target_id,
+            #             self.targets,
+            #         )
+            #     )
         else:
             # first tab from browser.tabs
             connection = next(filter(lambda item: item.type_ == "page", self.targets))
@@ -429,7 +438,7 @@ class Browser:
         permissions.remove(cdp.browser.PermissionType.CAPTURED_SURFACE_CONTROL)
         await self.connection.send(cdp.browser.grant_permissions(permissions))
 
-    async def tile_windows(self, max_columns: int = 0):
+    async def tile_windows(self, windows=None, max_columns: int = 0):
         import mss
         import math
 
@@ -444,7 +453,11 @@ class Browser:
             return
         await self
         distinct_windows = defaultdict(list)
-        for tab in self.tabs:
+        if windows:
+            tabs = windows
+        else:
+            tabs = self.tabs
+        for tab in tabs:
             window_id, bounds = await tab.get_window()
             distinct_windows[window_id].append(tab)
 

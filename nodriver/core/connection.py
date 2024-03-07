@@ -283,7 +283,7 @@ class Connection(metaclass=CantTouchThis):
                 self.listener = Listener(self)
             except (Exception,) as e:
                 logger.debug(
-                    "exception during opening of websocket : %s", e, exc_info=True
+                    "exception during opening of websocket : %s", e
                 )
                 if self.listener:
                     self.listener.cancel()
@@ -471,12 +471,21 @@ class Listener:
         self.max_history = 1000
         self.task: asyncio.Future = None
 
-        # when in interactive mode, the loop is paused
-        # therefore, allow more time before considering idle
+        # when in interactive mode, the loop is paused after each return
+        # and when the next call is made, it might still have to process some events
+        # from the previous call as well.
+
+        # while in "production" the loop keeps running constantly
+        # (and so events are continuous processed)
+
+        # therefore we should give it some breathing room in interactive mode
+        # and we can tighten that room when in production.
+
+        # /example/demo.py runs ~ 5 seconds faster, which is quite a lot.
 
         is_interactive = getattr(sys, 'ps1', sys.flags.interactive)
 
-        self._time_before_considered_idle = 0.5 if not is_interactive else 1.0
+        self._time_before_considered_idle = 0.10 if not is_interactive else 0.75
 
         self.idle = asyncio.Event()
         self.run()
@@ -505,8 +514,8 @@ class Listener:
         return True
 
     async def listener_loop(self):
-        if not self.connection.websocket:
-            await self.connection.aopen()
+        # if not self.connection.websocket:
+        #     await self.connection.aopen()
 
         while True:
             try:
@@ -559,12 +568,12 @@ class Listener:
                     if not len(callbacks):
                         continue
 
-                    for handler in self.connection.handlers[type(event)]:
+                    for callback in callbacks:
                         try:
-                            if iscoroutinefunction(handler) or iscoroutine(handler):
-                                await handler(event)
+                            if iscoroutinefunction(callback) or iscoroutine(callback):
+                                await callback(event)
                             else:
-                                handler(event)
+                                callback(event)
 
                         except Exception as e:
                             logger.warning(

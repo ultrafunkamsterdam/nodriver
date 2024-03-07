@@ -221,12 +221,70 @@ async def html_from_tree(tree: Union[cdp.dom.Node, Element], target: "nodriver.T
     return out
 
 
+def circle(x, y=None, radius=10, num=10, dir=0) -> typing.Generator[typing.Tuple[float, float], None, None]:
+    """
+    a generator will calculate coordinates around a circle.
+
+    :param x: start x position
+    :type x: int
+    :param y: start y position
+    :type y: int
+    :param radius: size of the circle
+    :type radius: int
+    :param num: the amount of points calculated (higher => slower, more cpu, but more detailed)
+    :type num: int
+    :return:
+    :rtype:
+    """
+    import math
+
+    r = radius
+    w = num
+    if not y:
+        y = x
+    a = int(x - r * 2)
+    b = int(y - r * 2)
+    m = (2 * math.pi) / w
+    if dir == 0:
+        # regular direction
+        ran = 0, w + 1, 1
+    else:
+        # opposite ?
+        ran = w + 1, 0, -1
+    for i in range(*ran):
+
+        x = (a + r * math.sin(m * i))
+        y = (b + r * math.cos(m * i))
+        yield x, y
+
+
+def compare_target_info(
+        info1: cdp.target.TargetInfo,
+        info2: cdp.target.TargetInfo) -> List[typing.Tuple[str, typing.Any, typing.Any]]:
+    """
+    when logging mode is set to debug, browser object will log when target info
+    is changed. To provide more meaningful log messages, this function is called to
+    check what has actually changed between the 2 (by simple dict comparison).
+    it returns a list of tuples [ ... ( key_which_has_changed, old_value, new_value) ]
+
+    :param info1:
+    :type info1:
+    :param info2:
+    :type info2:
+    :return:
+    :rtype:
+    """
+    d1 = info1.__dict__
+    d2 = info2.__dict__
+    return [(k, v, d2[k]) for (k, v) in d1.items() if d2[k] != v]
+
+
 def loop():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     return loop
 
-
+l4
 def cdp_get_module(domain: Union[str, types.ModuleType]):
     """
     get cdp module by given string

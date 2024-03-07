@@ -157,7 +157,7 @@ class Tab(Connection):
     async def find(
         self,
         text: str,
-        best_match: bool = False,
+        best_match: bool = True,
         return_enclosing_element=True,
         timeout: Union[int, float] = 10,
     ):
@@ -167,10 +167,11 @@ class Tab(Connection):
 
         :param text: text to search for. note: script contents are also considered text
         :type text: str
-        :param best_match:  when True, which is MUCH more expensive (thus much slower),
-                             will find the closest match based on length.
-                             this could help tremendously, when for example you search for "login", you'd probably want the login button element,
-                             and not thousands of scripts,meta,headings containing a string of "login".
+        :param best_match:  when True (default), it will return the element which has the most
+                            comparable string length. this could help tremendously, when for example
+                            you search for "login", you'd probably want the login button element,
+                            and not thousands of scripts,meta,headings containing a string of "login".
+                            When False, it will return naively just the first match (but is way faster).
 
          :type best_match: bool
          :param return_enclosing_element:
@@ -290,7 +291,7 @@ class Tab(Connection):
         results = await self.query_selector_all(selector)
         while not results:
             await self
-            items = await self.query_selector_all(selector)
+            results = await self.query_selector_all(selector)
             if loop.time() - now > timeout:
                 raise asyncio.TimeoutError(
                     "time ran out while waiting for %s" % selector
@@ -313,11 +314,16 @@ class Tab(Connection):
         :return: Page
         """
         if not self.browser:
-            await AttributeError(
+            raise AttributeError(
                 "this page/tab has no browser attribute, so you can't use get()"
             )
+
+        if new_window and not new_tab:
+            new_tab = True
+
         if new_tab:
-            return await self.browser.get(url, new_tab, new_window)
+            return await self.browser.get(url, new_tab=new_tab, new_window=new_window)
+
         else:
             frame_id, loader_id, *_ = await self.send(cdp.page.navigate(url))
             await self
@@ -1199,9 +1205,12 @@ class Tab(Connection):
         data = await self.send(
             cdp.page.capture_screenshot(format_=format, capture_beyond_viewport=True)
         )
+        if not data:
+            raise ProtocolException("could not take screenshot. most possible cause is the page has not finished loading yet.")
         import base64
 
         data_bytes = base64.b64decode(data)
+
         if not path:
             raise RuntimeError("invalid filename or path: '%s'" % filename)
         path.write_bytes(data_bytes)
