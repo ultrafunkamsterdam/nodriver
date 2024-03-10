@@ -255,6 +255,27 @@ async def html_from_tree(tree: Union[cdp.dom.Node, Element], target: "nodriver.T
     return out
 
 
+def compare_target_info(
+    info1: cdp.target.TargetInfo, info2: cdp.target.TargetInfo
+) -> List[typing.Tuple[str, typing.Any, typing.Any]]:
+    """
+    when logging mode is set to debug, browser object will log when target info
+    is changed. To provide more meaningful log messages, this function is called to
+    check what has actually changed between the 2 (by simple dict comparison).
+    it returns a list of tuples [ ... ( key_which_has_changed, old_value, new_value) ]
+
+    :param info1:
+    :type info1:
+    :param info2:
+    :type info2:
+    :return:
+    :rtype:
+    """
+    d1 = info1.__dict__
+    d2 = info2.__dict__
+    return [(k, v, d2[k]) for (k, v) in d1.items() if d2[k] != v]
+
+
 def loop():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
