@@ -7,6 +7,7 @@ import inspect
 import itertools
 import json
 import logging
+import sys
 import types
 from asyncio import iscoroutine, iscoroutinefunction
 from typing import (
@@ -36,7 +37,7 @@ logger = logging.getLogger("uc.connection")
 
 class ProtocolException(Exception):
     def __init__(self, *args, **kwargs):  # real signature unknown
-        print('args', args, 'kwargs', kwargs)
+
         self.message = None
         self.code = None
         self.args = args
@@ -45,23 +46,23 @@ class ProtocolException(Exception):
             self.message = args[0].get("message", None)  # noqa
             self.code = args[0].get("code", None)
 
-        elif hasattr(args[0], 'to_json'):
-            def serialize(obj, _d = 0):
+        elif hasattr(args[0], "to_json"):
+
+            def serialize(obj, _d=0):
                 res = "\n"
-                for k,v in obj.items():
-                    space = '\t' * _d
+                for k, v in obj.items():
+                    space = "\t" * _d
                     if isinstance(v, dict):
                         res += f"{space}{k}: {serialize(v, _d + 1)}\n"
                     else:
                         res += f"{space}{k}: {v}\n"
 
                 return res
+
             self.message = serialize(args[0].to_json())
 
         else:
-            print(3)
             self.message = "| ".join(str(x) for x in args)
-
 
     def __str__(self):
         return f"{self.message} [code: {self.code}]" if self.code else f"{self.message}"
@@ -96,6 +97,15 @@ class Transaction(asyncio.Future):
     def message(self):
         return json.dumps({"method": self.method, "params": self.params, "id": self.id})
 
+    @property
+    def has_exception(self):
+        try:
+            if self.exception():
+                return True
+        except:  # noqa
+            return True
+        return False
+
     def __call__(self, **response: dict):
         """
         parsed the response message and marks the future
@@ -117,7 +127,7 @@ class Transaction(asyncio.Future):
         raise ProtocolException("could not parse the cdp response:\n%s" % response)
 
     def __repr__(self):
-        success = False if (self.done() and self.exception()) else True
+        success = False if (self.done() and self.has_exception) else True
         if self.done():
             status = "finished"
         else:
@@ -268,6 +278,7 @@ class Connection(metaclass=CantTouchThis):
 
     async def aopen(self, **kw):
         """
+        opens the websocket connection. should not be called manually by users
         :param kw:
         :return:
         """
@@ -281,18 +292,25 @@ class Connection(metaclass=CantTouchThis):
                 )
                 self.listener = Listener(self)
             except (Exception,) as e:
-                logger.debug(
-                    "exception during opening of websocket : %s", e, exc_info=True
-                )
+                logger.debug("exception during opening of websocket : %s", e)
                 if self.listener:
                     self.listener.cancel()
                 raise
         if not self.listener or not self.listener.running:
             self.listener = Listener(self)
             logger.debug("\n✅  opened websocket connection to %s", self.websocket_url)
+
+        # when a websocket connection is closed (either by error or on purpose)
+        # and reconnected, the registered event listeners (if any), should be
+        # registered again, so the browser sends those events
+
         await self._register_handlers()
 
     async def aclose(self):
+        """
+        closes the websocket connection. should not be called manually by users.
+        """
+
         if self.websocket and not self.websocket.closed:
             if self.listener and self.listener.running:
                 self.listener.cancel()
@@ -306,8 +324,9 @@ class Connection(metaclass=CantTouchThis):
 
     async def wait(self, t: Union[int, float] = None):
         """
-        updates targets and
-        waits until the event listener reports idle (when no new events are received for 1 second)
+        waits until the event listener
+        reports idle (which is when no new events had been received in .5 seconds
+        or, 1 second when in interactive mode)
 
         :param t:
         :type t:
@@ -315,12 +334,19 @@ class Connection(metaclass=CantTouchThis):
         :rtype:
         """
         await self.update_target()
+
         try:
-            await self.listener.idle.wait()
+
+            await asyncio.wait_for(self.listener.idle.wait(), timeout=t)
+        except asyncio.TimeoutError:
+            if t is not None:
+                # explicit time is given, which is now passed
+                # so bail out early
+                return
         except AttributeError:
             # no listener created yet
             pass
-        if t:
+        if t is not None:
             await self.sleep(t)
 
     def __getattr__(self, item):
@@ -447,7 +473,7 @@ class Connection(metaclass=CantTouchThis):
             # we started with a copy of self.enabled_domains and removed a domain from this
             # temp variable when we registered it or saw handlers for it.
             # items still present at this point are unused and need removal
-            print("remove ", ed, "from enabled domains")
+
             self.enabled_domains.remove(ed)
 
 
@@ -457,14 +483,38 @@ class Listener:
         self.history = collections.deque()
         self.max_history = 1000
         self.task: asyncio.Future = None
+
+        # when in interactive mode, the loop is paused after each return
+        # and when the next call is made, it might still have to process some events
+        # from the previous call as well.
+
+        # while in "production" the loop keeps running constantly
+        # (and so events are continuous processed)
+
+        # therefore we should give it some breathing room in interactive mode
+        # and we can tighten that room when in production.
+
+        # /example/demo.py runs ~ 5 seconds faster, which is quite a lot.
+
+        is_interactive = getattr(sys, "ps1", sys.flags.interactive)
+        self._time_before_considered_idle = 0.10 if not is_interactive else 0.75
         self.idle = asyncio.Event()
         self.run()
 
     def run(self):
         self.task = asyncio.create_task(self.listener_loop())
 
+    @property
+    def time_before_considered_idle(self):
+        return self._time_before_considered_idle
+
+    @time_before_considered_idle.setter
+    def time_before_considered_idle(self, seconds: Union[int, float]):
+        self._time_before_considered_idle = seconds
+
     def cancel(self):
-        self.task.cancel()
+        if self.task and not self.task.cancelled():
+            self.task.cancel()
 
     @property
     def running(self):
@@ -475,20 +525,25 @@ class Listener:
         return True
 
     async def listener_loop(self):
-        if not self.connection.websocket:
-            await self.connection.aopen()
+
         while True:
             try:
-                msg = await asyncio.wait_for(self.connection.websocket.recv(), 0.5)
+                msg = await asyncio.wait_for(
+                    self.connection.websocket.recv(), self.time_before_considered_idle
+                )
             except asyncio.TimeoutError:
-                await asyncio.sleep(0.05)
                 self.idle.set()
+                # breathe
+                await asyncio.sleep(self.time_before_considered_idle / 10)
                 continue
-            except Exception:
+            except (Exception,):
+                # break on any other exception
+                # which is mostly socket is closed or does not exist
+                # or is not allowed
                 break
+
             # async for msg in self.connection.websocket:
             if not self.running:
-                print("not running")
                 break
             self.idle.clear()
             message = json.loads(msg)
@@ -535,28 +590,26 @@ class Listener:
                     if not len(callbacks):
                         continue
 
-                    for handler in self.connection.handlers[type(event)]:
+                    for callback in callbacks:
                         try:
-                            if iscoroutinefunction(handler) or iscoroutine(handler):
-                                await handler(event)
+                            if iscoroutinefunction(callback) or iscoroutine(callback):
+                                await callback(event)
                             else:
-                                handler(event)
+                                callback(event)
 
                         except Exception as e:
                             logger.warning(
-                                "exception in handler %s for event %s => %s",
-                                handler,
+                                "exception in callback %s for event %s => %s",
+                                callback,
                                 event.__class__.__name__,
                                 e,
                                 exc_info=True,
                             )
                             raise
                 except asyncio.CancelledError:
-                    print("listener loop cancelled")
                     break
                 except Exception:
                     raise
-
                 continue
 
     def __repr__(self):

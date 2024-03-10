@@ -177,15 +177,19 @@ class Browser:
                 )
             )
             current_target = current_tab.target
-            logger.debug(
-                "target for #%d to target changed from %s to: %s"
-                % (
-                    self.targets.index(current_tab),
-                    current_target.target_id,
-                    target_info.target_id,
+
+            if logger.getEffectiveLevel() <= 10:
+                changes = util.compare_target_info(current_target, target_info)
+                changes_string = ""
+                for change in changes:
+                    key, old, new = change
+                    changes_string += f"\n{key}: {old} => {new}\n"
+                logger.debug(
+                    "target #%d has changed: %s"
+                    % (self.targets.index(current_tab), changes_string)
                 )
-            )
-            current_tab.target = target_info
+
+                current_tab.target = target_info
 
         elif isinstance(event, cdp.target.TargetCreated):
             target_info: cdp.target.TargetInfo = event.target_info
@@ -243,20 +247,6 @@ class Browser:
                     self.targets,
                 )
             )
-            # if for some reason the connection could not be found (not updated or too fast/slow),
-            # just loop until the connection matches the target id
-            while not connection:
-
-                # update targets
-                await self
-                # get the connection matching the new target_id from our inventory
-                connection = next(
-                    filter(
-                        lambda item: item.type_ == "page"
-                        and item.target_id == target_id,
-                        self.targets,
-                    )
-                )
 
         else:
             # first tab from browser.tabs
@@ -305,8 +295,11 @@ class Browser:
                 )
             )
 
-        if getattr(self.config, '_extensions', None): # noqa
-            self.config.add_argument('--load-extension=%s' % ','.join( str(_) for _ in self.config._extensions)) # noqa
+        if getattr(self.config, "_extensions", None):  # noqa
+            self.config.add_argument(
+                "--load-extension=%s"
+                % ",".join(str(_) for _ in self.config._extensions)
+            )  # noqa
 
         exe = self.config.browser_executable_path
         params = self.config()
@@ -390,7 +383,7 @@ class Browser:
                 self._handle_target_update
             ]
             await self.connection.send(cdp.target.set_discover_targets(discover=True))
-
+        await self
         # self.connection.handlers[cdp.inspector.Detached] = [self.stop]
         # return self
 
@@ -429,7 +422,7 @@ class Browser:
         permissions.remove(cdp.browser.PermissionType.CAPTURED_SURFACE_CONTROL)
         await self.connection.send(cdp.browser.grant_permissions(permissions))
 
-    async def tile_windows(self, max_columns: int = 0):
+    async def tile_windows(self, windows=None, max_columns: int = 0):
         import mss
         import math
 
@@ -444,7 +437,12 @@ class Browser:
             return
         await self
         distinct_windows = defaultdict(list)
-        for tab in self.tabs:
+
+        if windows:
+            tabs = windows
+        else:
+            tabs = self.tabs
+        for tab in tabs:
             window_id, bounds = await tab.get_window()
             distinct_windows[window_id].append(tab)
 
@@ -481,13 +479,6 @@ class Browser:
                     )
                     continue
         return grid
-        # yield tab
-        # yield (
-        #     x * box_w,
-        #     y * box_h,
-        #     box_w,
-        #     box_h )
-        # return req_rows, req_cols, screen
 
     async def _get_targets(self) -> List[cdp.target.TargetInfo]:
         info = await self.connection.send(cdp.target.get_targets(), _is_update=True)
@@ -599,8 +590,8 @@ class Browser:
                         pass
                     except (Exception,):
                         raise
-        self._process = None
-        self._process_pid = None
+            self._process = None
+            self._process_pid = None
 
     def __await__(self):
         # return ( asyncio.sleep(0)).__await__()

@@ -2,23 +2,59 @@
 
 
 import asyncio
+import logging
 import logging.handlers
 import random
+import mss
 
-import nodriver as uc
+logger = logging.getLogger("demo")
+# logging.basicConfig(level=10)
 
-logging.basicConfig(level=10)
+try:
+    import nodriver as uc
+except (ModuleNotFoundError, ImportError):
+    import sys, os
+
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+    import nodriver as uc
+
+import time
+
+_monitor = mss.mss().monitors[0]
+SCREEN_WIDTH = _monitor["width"]
+NUM_WINS = SCREEN_WIDTH // 325  # as to not fill up the screen to much
+
+
+class Timing:
+
+    def __init__(self):
+        self.start = None
+        self.stop = None
+        self.taken = None
+
+    def __enter__(self):
+        self.start = time.monotonic()
+        return self
+
+    def __exit__(self, *args, **kwargs):
+        self.stop = time.monotonic()
+        self.taken = self.stop - self.start
+        print("taken:", self.taken, "seconds")
 
 
 async def main():
+
     driver = await uc.start()
 
     URL1 = "https://www.bet365.com"
     URL2 = "https://www.nowsecure.nl"
 
+    print(
+        "the startup speed of the windows depend on the line speed and availability/load on the servers"
+    )
     await driver.get(URL2)
 
-    for _ in range(10):
+    for _ in range(NUM_WINS):
         if _ % 2 == 0:
             await driver.get(URL1, new_window=True)
         else:
@@ -26,7 +62,10 @@ async def main():
 
     await driver
 
-    grid = await driver.tile_windows(5)
+    grid = await driver.tile_windows(max_columns=NUM_WINS)
+    await driver.sleep(5)
+    for tab in driver.tabs:
+        await tab.maximize()
 
     for _ in range(15):
         randbox = lambda: random.choice(grid)
@@ -41,12 +80,25 @@ async def main():
         await tab.set_window_size(*grid[i])
         await tab.sleep()
 
+    await asyncio.gather(
+        *[move_circle(tab, i % 2) for (i, tab) in enumerate(driver.tabs)]
+    )
+
+    nowsecure_pages = [tab for tab in driver.tabs if "nowsecure" in tab.url]
+
+    await asyncio.gather(
+        *[tab.get("https://nowsecure.nl/mouse.html") for tab in nowsecure_pages]
+    )
+    await driver.tile_windows(max_columns=NUM_WINS)
+    await asyncio.gather(*[mouse_move(tab) for tab in nowsecure_pages])
+
     b365pages = [tab for tab in driver.tabs if "bet365" in tab.url]
+    # await driver.tile_windows()
+    await driver.sleep(1)
 
-    await driver.tile_windows(12)
-
+    positions = await driver.tile_windows(b365pages)
+    # await asyncio.gather(*[tab.set_window_size(*pos) for (tab, pos) in zip(b365pages, positions)])
     await asyncio.gather(*[flash_spans(tab, i) for (i, tab) in enumerate(b365pages)])
-
     await asyncio.gather(*[scroll_task(tab) for tab in b365pages])
 
     for i, tab in enumerate(driver):
@@ -72,19 +124,55 @@ async def main():
 
         except:
             pass
-
+    print("TBCI=", driver.connection.listener.time_before_considered_idle)
     driver.stop()
 
 
 async def scroll_task(tab):
     await tab.scroll_up(200)
     spans = await tab.select_all("span")
-    [await s.scroll_into_view() or await s.flash(duration=1) for s in reversed(spans)]
+    [
+        await s.scroll_into_view()
+        # since scroll_into_view does not return a value
+        # we can abuse 'or' to run 2 functions in a list comprehension
+        or await s.flash()
+        for s in reversed(spans)
+    ]
     [
         (await tab.scroll_up(n // 2) or await tab.scroll_down(n))
+        # since the above does not return a value
+        # we can abuse 'or' to run even more while doing a list comprehension
         or print("tab %s scrolling down : %d" % (tab, n))
         for n in range(0, 75, 15)
     ]
+
+
+async def mouse_move(tab):
+    await tab.activate()
+    boxes = await tab.select_all(".box")
+    for box in boxes:
+        await box.mouse_move()
+
+
+async def move_circle(tab, x=0):
+
+    window_id, bounds = await tab.get_window()
+
+    old_left, old_top = bounds.left, bounds.top
+    old_width, old_height = bounds.width, bounds.height
+
+    center = int(old_left), int(old_top)
+
+    for coord in uc.util.circle(*center, radius=100, num=1050, dir=x):
+        new_left, new_top = int(coord[0]), int(coord[1])
+        await tab.set_window_size(new_left, new_top)
+
+    for coord in uc.util.circle(*center, radius=250, num=500, dir=x):
+        new_left, new_top = int(coord[0] / 2), int(coord[1] / 2)
+        # await tab.set_window_size(old_left, old_top)
+        await tab.set_window_size(new_left, new_top)
+
+    await tab.set_window_size(old_left, old_top, old_width, old_height)
 
 
 async def flash_spans(tab, i):
@@ -99,8 +187,5 @@ async def flash_spans(tab, i):
 
 
 if __name__ == "__main__":
-    import logging
-
-    logger = logging.getLogger("demo")
-
-    uc.loop().run_until_complete(main())
+    with Timing() as t:
+        uc.loop().run_until_complete(main())

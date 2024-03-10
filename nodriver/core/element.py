@@ -311,9 +311,21 @@ class Element:
         self._tree = tree
 
     @property
+    def attrs(self):
+        """
+        attributes are stored here, however, you can set them directly on the element object as well.
+        :return:
+        :rtype:
+        """
+        return self._attrs
+
+    @property
     def parent(self) -> typing.Union[Element, None]:
-        # if self._parent:
-        #     return self._parent
+        """
+        get the parent element (node) of current element(node)
+        :return:
+        :rtype:
+        """
         if not self.tree:
             raise RuntimeError("could not get parent since the element has no tree set")
         parent_node = util.filter_recurse(
@@ -323,17 +335,6 @@ class Element:
             return None
         parent_element = create(parent_node, tab=self._tab, tree=self.tree)
         return parent_element
-        # self._parent = parent_element
-        # return self._parent
-
-    @property
-    def attrs(self):
-        """
-        attributes are stored here, however, you can set them directly on the element object as well.
-        :return:
-        :rtype:
-        """
-        return self._attrs
 
     @property
     def children(self) -> typing.Union[typing.List[Element], str]:
@@ -483,10 +484,12 @@ class Element:
             quads = await self.tab.send(
                 cdp.dom.get_content_quads(object_id=self.remote_object.object_id)
             )
+            if not quads:
+                raise Exception("could not find position for %s " % self)
             pos = Position(quads[0])
             if abs:
-                scroll_y = (await self.conn.evaluate("window.scrollY")).value
-                scroll_x = (await self.conn.evaluate("window.scrollX")).value
+                scroll_y = (await self.tab.evaluate("window.scrollY")).value
+                scroll_x = (await self.tab.evaluate("window.scrollX")).value
                 abs_x = pos.left + scroll_x + (pos.width / 2)
                 abs_y = pos.top + scroll_y + (pos.height / 2)
                 pos.abs_x = abs_x
@@ -499,11 +502,11 @@ class Element:
             )
 
     async def mouse_click(
-            self,
-            button: str = "left",
-            buttons: typing.Optional[int] = 1,
-            modifiers: typing.Optional[int] = 0,
-            _until_event: typing.Optional[type] = None,
+        self,
+        button: str = "left",
+        buttons: typing.Optional[int] = 1,
+        modifiers: typing.Optional[int] = 0,
+        _until_event: typing.Optional[type] = None,
     ):
         """native click (on element) . note: this likely does not work atm, use click() instead
 
@@ -686,24 +689,26 @@ class Element:
         return " ".join([n.node_value for n in text_nodes])
 
     async def query_selector_all(self, selector: str):
-        if self.node_name == "IFRAME":
-            return await self.tab.query_selector_all(selector, _node=self.tree)
-        # await self
-        return await self._tab.query_selector_all(selector, self)
+        """
+        like js querySelectorAll()
+        """
+        await self.update()
+        return await self.tab.query_selector_all(selector, _node=self)
 
     async def query_selector(self, selector):
-        if self.node_name == "IFRAME":
-            return await self.tab.query_selector(selector, self.tree)
+        """
+        like js querySelector()
+        """
 
-        # await self
-        return await self._tab.query_selector(selector, self)
+        await self.update()
+        return await self.tab.query_selector(selector, self)
 
     #
     async def save_screenshot(
-            self,
-            filename: typing.Optional[PathLike] = "auto",
-            format: typing.Optional[str] = "jpeg",
-            scale: typing.Optional[typing.Union[int, float]] = 1,
+        self,
+        filename: typing.Optional[PathLike] = "auto",
+        format: typing.Optional[str] = "jpeg",
+        scale: typing.Optional[typing.Union[int, float]] = 1,
     ):
         """
         Saves a screenshot of this element (only)
@@ -756,6 +761,13 @@ class Element:
                 format, clip=viewport, capture_beyond_viewport=True
             )
         )
+        if not data:
+            from .connection import ProtocolException
+
+            raise ProtocolException(
+                "could not take screenshot. most possible cause is the page has not finished loading yet."
+            )
+
         data_bytes = base64.b64decode(data)
         if not path:
             raise RuntimeError("invalid filename or path: '%s'" % filename)
@@ -786,7 +798,7 @@ class Element:
             pos = await self.get_position()
 
         except (Exception,):
-            logger.debug('flash() : could not determine position')
+            logger.debug("flash() : could not determine position")
             return
 
         style = (
@@ -797,8 +809,9 @@ class Element:
             "animation:show-pointer-ani {:.2f}s ease 1;"
         ).format(
             pos.center[0] - 8,  # -8 to account for drawn circle itself (w,h)
-            pos.center[1]  - 8,
-            duration)
+            pos.center[1] - 8,
+            duration,
+        )
         script = (
             """
             (targetElement) => {{
@@ -846,10 +859,10 @@ class Element:
         )
 
     async def record_video(
-            self,
-            filename: typing.Optional[str] = None,
-            folder: typing.Optional[str] = None,
-            duration: typing.Optional[typing.Union[int, float]] = None,
+        self,
+        filename: typing.Optional[str] = None,
+        folder: typing.Optional[str] = None,
+        duration: typing.Optional[typing.Union[int, float]] = None,
     ):
         """
         experimental option.

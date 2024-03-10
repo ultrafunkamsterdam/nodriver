@@ -138,7 +138,6 @@ class Config:
     def uses_custom_data_dir(self) -> bool:
         return self._custom_data_dir
 
-
     def add_extension(self, extension_path: PathLike):
         """
         adds an extension to load, you could point extension_path
@@ -155,16 +154,15 @@ class Config:
             raise FileNotFoundError("could not find anything here: %s" % str(path))
 
         if path.is_file():
-            tf = tempfile.mkdtemp(prefix=f'extension_', suffix=secrets.token_hex(4))
-            with zipfile.ZipFile(path, 'r') as z:
+            tf = tempfile.mkdtemp(prefix=f"extension_", suffix=secrets.token_hex(4))
+            with zipfile.ZipFile(path, "r") as z:
                 z.extractall(tf)
                 self._extensions.append(tf)
 
         elif path.is_dir():
-            for item in path.rglob('manifest.*'):
+            for item in path.rglob("manifest.*"):
                 path = item.parent
             self._extensions.append(path)
-
 
     def __getattr__(self, item):
         if item not in self.__dict__:

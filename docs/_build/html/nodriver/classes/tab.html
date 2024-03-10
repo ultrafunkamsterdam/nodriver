@@ -348,7 +348,8 @@ you can act upon.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.aclose">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aclose</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Tab.aclose" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>closes the websocket connection. should not be called manually by users.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.activate">
@@ -388,14 +389,10 @@ for example, you want to check the network traffic:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.aopen">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aopen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Tab.aopen" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>kw</strong> – </p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p></p>
-</dd>
-</dl>
+<dd><p>opens the websocket connection. should not be called manually by users
+:type kw: 
+:param kw:
+:return:</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -454,22 +451,23 @@ for example, you want to check the network traffic:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.find">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">best_match</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_enclosing_element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.find"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.find" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">best_match</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_enclosing_element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.find"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.find" title="Link to this definition">#</a></dt>
 <dd><p>find single element by text
 can also be used to wait for such element to appear.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – text to search for. note: script contents are also considered text</p></li>
-<li><p><strong>best_match</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – <dl class="simple">
-<dt>when True, which is MUCH more expensive (thus much slower),</dt><dd><p>will find the closest match based on length.
-this could help tremendously, when for example you search for “login”, you’d probably want the login button element,
-and not thousands of scripts,meta,headings containing a string of “login”.</p>
+<li><p><strong>best_match</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – <dl class="field-list simple">
+<dt class="field-odd">param best_match<span class="colon">:</span></dt>
+<dd class="field-odd"><p>when True (default), it will return the element which has the most
+comparable string length. this could help tremendously, when for example
+you search for “login”, you’d probably want the login button element,
+and not thousands of scripts,meta,headings containing a string of “login”.
+When False, it will return naively just the first match (but is way faster).</p>
 </dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">type best_match<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dt class="field-even">type best_match<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </p></li>
@@ -967,8 +965,9 @@ in case state is set other than “normal”, the left, top, width, and height a
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.wait">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Tab.wait" title="Link to this definition">#</a></dt>
-<dd><p>updates targets and
-waits until the event listener reports idle (when no new events are received for 1 second)</p>
+<dd><p>waits until the event listener
+reports idle (which is when no new events had been received in .5 seconds
+or, 1 second when in interactive mode)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>t</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – </p>

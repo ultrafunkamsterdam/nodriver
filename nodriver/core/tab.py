@@ -143,6 +143,7 @@ class Tab(Connection):
 
     def inspector_open(self):
         import webbrowser
+
         webbrowser.open(self.inspector_url, new=2)
 
     async def open_external_inspector(self):
@@ -157,7 +158,7 @@ class Tab(Connection):
     async def find(
         self,
         text: str,
-        best_match: bool = False,
+        best_match: bool = True,
         return_enclosing_element=True,
         timeout: Union[int, float] = 10,
     ):
@@ -167,11 +168,11 @@ class Tab(Connection):
 
         :param text: text to search for. note: script contents are also considered text
         :type text: str
-        :param best_match:  when True, which is MUCH more expensive (thus much slower),
-                             will find the closest match based on length.
-                             this could help tremendously, when for example you search for "login", you'd probably want the login button element,
-                             and not thousands of scripts,meta,headings containing a string of "login".
-
+        :param best_match:  :param best_match:  when True (default), it will return the element which has the most
+                                               comparable string length. this could help tremendously, when for example
+                                               you search for "login", you'd probably want the login button element,
+                                               and not thousands of scripts,meta,headings containing a string of "login".
+                                               When False, it will return naively just the first match (but is way faster).
          :type best_match: bool
          :param return_enclosing_element:
                  since we deal with nodes instead of elements, the find function most often returns
@@ -262,7 +263,7 @@ class Tab(Connection):
         results = await self.find_elements_by_text(text)
         while not results:
             await self
-            items = await self.find_elements_by_text(text)
+            results = await self.find_elements_by_text(text)
             if loop.time() - now > timeout:
                 raise asyncio.TimeoutError(
                     "time ran out while waiting for text: %s" % text
@@ -290,7 +291,7 @@ class Tab(Connection):
         results = await self.query_selector_all(selector)
         while not results:
             await self
-            items = await self.query_selector_all(selector)
+            results = await self.query_selector_all(selector)
             if loop.time() - now > timeout:
                 raise asyncio.TimeoutError(
                     "time ran out while waiting for %s" % selector
@@ -313,9 +314,12 @@ class Tab(Connection):
         :return: Page
         """
         if not self.browser:
-            await AttributeError(
+            raise AttributeError(
                 "this page/tab has no browser attribute, so you can't use get()"
             )
+        if new_window and not new_tab:
+            new_tab = True
+
         if new_tab:
             return await self.browser.get(url, new_tab, new_window)
         else:
@@ -679,11 +683,12 @@ class Tab(Connection):
         # if exc:
         #     return exc
 
-    async def js_dumps(self, obj_name: str, return_by_value: Optional[bool] = True) \
-            -> typing.Union[
-                typing.Dict,
-                typing.Tuple[cdp.runtime.RemoteObject, cdp.runtime.ExceptionDetails]
-            ]:
+    async def js_dumps(
+        self, obj_name: str, return_by_value: Optional[bool] = True
+    ) -> typing.Union[
+        typing.Dict,
+        typing.Tuple[cdp.runtime.RemoteObject, cdp.runtime.ExceptionDetails],
+    ]:
         """
         dump given js object with its properties and values as a dict
 
@@ -720,7 +725,8 @@ class Tab(Connection):
             ]...
             '
         """
-        js_code_a = """
+        js_code_a = (
+            """
                            function ___dump(obj, _d = 0) {
                                let _typesA = ['object', 'function'];
                                let _typesB = ['number', 'string', 'boolean'];
@@ -792,8 +798,11 @@ class Tab(Connection):
 
                            }
                            ___dumpY( %s )
-                   """ % obj_name
-        js_code_b = """
+                   """
+            % obj_name
+        )
+        js_code_b = (
+            """
             ((obj, visited = new WeakSet()) => {
                  if (visited.has(obj)) {
                      return {}
@@ -818,9 +827,9 @@ class Tab(Connection):
                      }
                 return result;
             })(%s)
-        """ % obj_name
-
-
+        """
+            % obj_name
+        )
 
         # we're purposely not calling self.evaluate here to prevent infinite loop on certain expressions
 
@@ -829,7 +838,9 @@ class Tab(Connection):
                 js_code_a,
                 await_promise=True,
                 return_by_value=return_by_value,
-                allow_unsafe_eval_blocked_by_csp=True))
+                allow_unsafe_eval_blocked_by_csp=True,
+            )
+        )
         if exception_details:
 
             # try second variant
@@ -839,7 +850,9 @@ class Tab(Connection):
                     js_code_b,
                     await_promise=True,
                     return_by_value=return_by_value,
-                    allow_unsafe_eval_blocked_by_csp=True))
+                    allow_unsafe_eval_blocked_by_csp=True,
+                )
+            )
 
         if exception_details:
             raise ProtocolException(exception_details)
@@ -848,7 +861,6 @@ class Tab(Connection):
                 return remote_object.value
         else:
             return remote_object, exception_details
-
 
     async def close(self):
         """
@@ -1199,6 +1211,10 @@ class Tab(Connection):
         data = await self.send(
             cdp.page.capture_screenshot(format_=format, capture_beyond_viewport=True)
         )
+        if not data:
+            raise ProtocolException(
+                "could not take screenshot. most possible cause is the page has not finished loading yet."
+            )
         import base64
 
         data_bytes = base64.b64decode(data)

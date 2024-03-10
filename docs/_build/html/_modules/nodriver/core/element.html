@@ -584,9 +584,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span> <span class="o">=</span> <span class="n">tree</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        attributes are stored here, however, you can set them directly on the element object as well.</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">parent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">Element</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-        <span class="c1"># if self._parent:</span>
-        <span class="c1">#     return self._parent</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the parent element (node) of current element(node)</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;could not get parent since the element has no tree set&quot;</span><span class="p">)</span>
         <span class="n">parent_node</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">filter_recurse</span><span class="p">(</span>
@@ -596,17 +608,6 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="n">parent_element</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="n">parent_node</span><span class="p">,</span> <span class="n">tab</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tab</span><span class="p">,</span> <span class="n">tree</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">parent_element</span>
-        <span class="c1"># self._parent = parent_element</span>
-        <span class="c1"># return self._parent</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        attributes are stored here, however, you can set them directly on the element object as well.</span>
-<span class="sd">        :return:</span>
-<span class="sd">        :rtype:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">Element</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
@@ -767,10 +768,12 @@
             <span class="n">quads</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
                 <span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">get_content_quads</span><span class="p">(</span><span class="n">object_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">remote_object</span><span class="o">.</span><span class="n">object_id</span><span class="p">)</span>
             <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">quads</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;could not find position for </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="p">)</span>
             <span class="n">pos</span> <span class="o">=</span> <span class="n">Position</span><span class="p">(</span><span class="n">quads</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">if</span> <span class="nb">abs</span><span class="p">:</span>
-                <span class="n">scroll_y</span> <span class="o">=</span> <span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="s2">&quot;window.scrollY&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
-                <span class="n">scroll_x</span> <span class="o">=</span> <span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="s2">&quot;window.scrollX&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">scroll_y</span> <span class="o">=</span> <span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="s2">&quot;window.scrollY&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">scroll_x</span> <span class="o">=</span> <span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="s2">&quot;window.scrollX&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
                 <span class="n">abs_x</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">scroll_x</span> <span class="o">+</span> <span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
                 <span class="n">abs_y</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">scroll_y</span> <span class="o">+</span> <span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
                 <span class="n">pos</span><span class="o">.</span><span class="n">abs_x</span> <span class="o">=</span> <span class="n">abs_x</span>
@@ -786,11 +789,11 @@
 <div class="viewcode-block" id="Element.mouse_click">
 <a class="viewcode-back" href="../../../nodriver/classes/element.html#nodriver.Element.mouse_click">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">mouse_click</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">button</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span>
-            <span class="n">buttons</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="n">modifiers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="n">_until_event</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">button</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span>
+        <span class="n">buttons</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">modifiers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">_until_event</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;native click (on element) . note: this likely does not work atm, use click() instead</span>
 
@@ -1006,30 +1009,32 @@
 <div class="viewcode-block" id="Element.query_selector_all">
 <a class="viewcode-back" href="../../../nodriver/classes/element.html#nodriver.Element.query_selector_all">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">query_selector_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selector</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_name</span> <span class="o">==</span> <span class="s2">&quot;IFRAME&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">,</span> <span class="n">_node</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
-        <span class="c1"># await self</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tab</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        like js querySelectorAll()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">,</span> <span class="n">_node</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Element.query_selector">
 <a class="viewcode-back" href="../../../nodriver/classes/element.html#nodriver.Element.query_selector">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">query_selector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selector</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_name</span> <span class="o">==</span> <span class="s2">&quot;IFRAME&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">query_selector</span><span class="p">(</span><span class="n">selector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        like js querySelector()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># await self</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tab</span><span class="o">.</span><span class="n">query_selector</span><span class="p">(</span><span class="n">selector</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">query_selector</span><span class="p">(</span><span class="n">selector</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
 
     <span class="c1">#</span>
 <div class="viewcode-block" id="Element.save_screenshot">
 <a class="viewcode-back" href="../../../nodriver/classes/element.html#nodriver.Element.save_screenshot">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">save_screenshot</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">filename</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">PathLike</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
-            <span class="nb">format</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;jpeg&quot;</span><span class="p">,</span>
-            <span class="n">scale</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">PathLike</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="nb">format</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;jpeg&quot;</span><span class="p">,</span>
+        <span class="n">scale</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Saves a screenshot of this element (only)</span>
@@ -1082,6 +1087,13 @@
                 <span class="nb">format</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="n">viewport</span><span class="p">,</span> <span class="n">capture_beyond_viewport</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">.connection</span> <span class="kn">import</span> <span class="n">ProtocolException</span>
+
+            <span class="k">raise</span> <span class="n">ProtocolException</span><span class="p">(</span>
+                <span class="s2">&quot;could not take screenshot. most possible cause is the page has not finished loading yet.&quot;</span>
+            <span class="p">)</span>
+
         <span class="n">data_bytes</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;invalid filename or path: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
@@ -1115,7 +1127,7 @@
             <span class="n">pos</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
 
         <span class="k">except</span> <span class="p">(</span><span class="ne">Exception</span><span class="p">,):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;flash() : could not determine position&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;flash() : could not determine position&quot;</span><span class="p">)</span>
             <span class="k">return</span>
 
         <span class="n">style</span> <span class="o">=</span> <span class="p">(</span>
@@ -1126,8 +1138,9 @@
             <span class="s2">&quot;animation:show-pointer-ani </span><span class="si">{:.2f}</span><span class="s2">s ease 1;&quot;</span>
         <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">pos</span><span class="o">.</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">8</span><span class="p">,</span>  <span class="c1"># -8 to account for drawn circle itself (w,h)</span>
-            <span class="n">pos</span><span class="o">.</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="o">-</span> <span class="mi">8</span><span class="p">,</span>
-            <span class="n">duration</span><span class="p">)</span>
+            <span class="n">pos</span><span class="o">.</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="n">duration</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">script</span> <span class="o">=</span> <span class="p">(</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            (targetElement) =&gt; {{</span>
@@ -1178,10 +1191,10 @@
 <div class="viewcode-block" id="Element.record_video">
 <a class="viewcode-back" href="../../../nodriver/classes/element.html#nodriver.Element.record_video">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">record_video</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">filename</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">folder</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">duration</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">folder</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">duration</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        experimental option.</span>

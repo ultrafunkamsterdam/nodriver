@@ -409,6 +409,7 @@
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.inspector_open">[docs]</a>
     <span class="k">def</span> <span class="nf">inspector_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">webbrowser</span>
+
         <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inspector_url</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
 
 
@@ -429,7 +430,7 @@
     <span class="k">async</span> <span class="k">def</span> <span class="nf">find</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">best_match</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">best_match</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">return_enclosing_element</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">timeout</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="p">):</span>
@@ -439,11 +440,11 @@
 
 <span class="sd">        :param text: text to search for. note: script contents are also considered text</span>
 <span class="sd">        :type text: str</span>
-<span class="sd">        :param best_match:  when True, which is MUCH more expensive (thus much slower),</span>
-<span class="sd">                             will find the closest match based on length.</span>
-<span class="sd">                             this could help tremendously, when for example you search for &quot;login&quot;, you&#39;d probably want the login button element,</span>
-<span class="sd">                             and not thousands of scripts,meta,headings containing a string of &quot;login&quot;.</span>
-
+<span class="sd">        :param best_match:  :param best_match:  when True (default), it will return the element which has the most</span>
+<span class="sd">                                               comparable string length. this could help tremendously, when for example</span>
+<span class="sd">                                               you search for &quot;login&quot;, you&#39;d probably want the login button element,</span>
+<span class="sd">                                               and not thousands of scripts,meta,headings containing a string of &quot;login&quot;.</span>
+<span class="sd">                                               When False, it will return naively just the first match (but is way faster).</span>
 <span class="sd">         :type best_match: bool</span>
 <span class="sd">         :param return_enclosing_element:</span>
 <span class="sd">                 since we deal with nodes instead of elements, the find function most often returns</span>
@@ -540,7 +541,7 @@
         <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
         <span class="k">while</span> <span class="ow">not</span> <span class="n">results</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span>
-            <span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">now</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span>
                     <span class="s2">&quot;time ran out while waiting for text: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">text</span>
@@ -571,7 +572,7 @@
         <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
         <span class="k">while</span> <span class="ow">not</span> <span class="n">results</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span>
-            <span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">now</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span>
                     <span class="s2">&quot;time ran out while waiting for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">selector</span>
@@ -597,9 +598,12 @@
 <span class="sd">        :return: Page</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="p">:</span>
-            <span class="k">await</span> <span class="ne">AttributeError</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
                 <span class="s2">&quot;this page/tab has no browser attribute, so you can&#39;t use get()&quot;</span>
             <span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_window</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">new_tab</span><span class="p">:</span>
+            <span class="n">new_tab</span> <span class="o">=</span> <span class="kc">True</span>
+
         <span class="k">if</span> <span class="n">new_tab</span><span class="p">:</span>
             <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">new_tab</span><span class="p">,</span> <span class="n">new_window</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -990,11 +994,12 @@
 
 <div class="viewcode-block" id="Tab.js_dumps">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.js_dumps">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">js_dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">return_by_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> \
-            <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span>
-                <span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">,</span>
-                <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObject</span><span class="p">,</span> <span class="n">cdp</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">ExceptionDetails</span><span class="p">]</span>
-            <span class="p">]:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">js_dumps</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">return_by_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Dict</span><span class="p">,</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObject</span><span class="p">,</span> <span class="n">cdp</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">ExceptionDetails</span><span class="p">],</span>
+    <span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        dump given js object with its properties and values as a dict</span>
 
@@ -1031,107 +1036,111 @@
 <span class="sd">            ]...</span>
 <span class="sd">            &#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">js_code_a</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                           function ___dump(obj, _d = 0) {</span>
-<span class="s2">                               let _typesA = [&#39;object&#39;, &#39;function&#39;];</span>
-<span class="s2">                               let _typesB = [&#39;number&#39;, &#39;string&#39;, &#39;boolean&#39;];</span>
-<span class="s2">                               if (_d == 2) {</span>
-<span class="s2">                                   console.log(&#39;maxdepth reached for &#39;, obj);</span>
-<span class="s2">                                   return</span>
-<span class="s2">                               }</span>
-<span class="s2">                               let tmp = </span><span class="si">{}</span>
-<span class="s2">                               for (let k in obj) {</span>
-<span class="s2">                                   if (obj[k] == window) continue;</span>
-<span class="s2">                                   let v;</span>
-<span class="s2">                                   try {</span>
-<span class="s2">                                       if (obj[k] === null || obj[k] === undefined || obj[k] === NaN) {</span>
-<span class="s2">                                           console.log(&#39;obj[k] is null or undefined or Nan&#39;, k, &#39;=&gt;&#39;, obj[k])</span>
-<span class="s2">                                           tmp[k] = obj[k];</span>
-<span class="s2">                                           continue</span>
-<span class="s2">                                       }</span>
-<span class="s2">                                   } catch (e) {</span>
-<span class="s2">                                       tmp[k] = null;</span>
-<span class="s2">                                       continue</span>
-<span class="s2">                                   }</span>
+        <span class="n">js_code_a</span> <span class="o">=</span> <span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                           function ___dump(obj, _d = 0) {</span>
+<span class="sd">                               let _typesA = [&#39;object&#39;, &#39;function&#39;];</span>
+<span class="sd">                               let _typesB = [&#39;number&#39;, &#39;string&#39;, &#39;boolean&#39;];</span>
+<span class="sd">                               if (_d == 2) {</span>
+<span class="sd">                                   console.log(&#39;maxdepth reached for &#39;, obj);</span>
+<span class="sd">                                   return</span>
+<span class="sd">                               }</span>
+<span class="sd">                               let tmp = {}</span>
+<span class="sd">                               for (let k in obj) {</span>
+<span class="sd">                                   if (obj[k] == window) continue;</span>
+<span class="sd">                                   let v;</span>
+<span class="sd">                                   try {</span>
+<span class="sd">                                       if (obj[k] === null || obj[k] === undefined || obj[k] === NaN) {</span>
+<span class="sd">                                           console.log(&#39;obj[k] is null or undefined or Nan&#39;, k, &#39;=&gt;&#39;, obj[k])</span>
+<span class="sd">                                           tmp[k] = obj[k];</span>
+<span class="sd">                                           continue</span>
+<span class="sd">                                       }</span>
+<span class="sd">                                   } catch (e) {</span>
+<span class="sd">                                       tmp[k] = null;</span>
+<span class="sd">                                       continue</span>
+<span class="sd">                                   }</span>
 
 
-<span class="s2">                                   if (_typesB.includes(typeof obj[k])) {</span>
-<span class="s2">                                       tmp[k] = obj[k]</span>
-<span class="s2">                                       continue</span>
-<span class="s2">                                   }</span>
+<span class="sd">                                   if (_typesB.includes(typeof obj[k])) {</span>
+<span class="sd">                                       tmp[k] = obj[k]</span>
+<span class="sd">                                       continue</span>
+<span class="sd">                                   }</span>
 
-<span class="s2">                                   try {</span>
-<span class="s2">                                       if (typeof obj[k] === &#39;function&#39;) {</span>
-<span class="s2">                                           tmp[k] = obj[k].toString()</span>
-<span class="s2">                                           continue</span>
-<span class="s2">                                       }</span>
-
-
-<span class="s2">                                       if (typeof obj[k] === &#39;object&#39;) {</span>
-<span class="s2">                                           tmp[k] = ___dump(obj[k], _d + 1);</span>
-<span class="s2">                                           continue</span>
-<span class="s2">                                       }</span>
+<span class="sd">                                   try {</span>
+<span class="sd">                                       if (typeof obj[k] === &#39;function&#39;) {</span>
+<span class="sd">                                           tmp[k] = obj[k].toString()</span>
+<span class="sd">                                           continue</span>
+<span class="sd">                                       }</span>
 
 
-<span class="s2">                                   } catch (e) </span><span class="si">{}</span>
-
-<span class="s2">                                   try {</span>
-<span class="s2">                                       tmp[k] = JSON.stringify(obj[k])</span>
-<span class="s2">                                       continue</span>
-<span class="s2">                                   } catch (e) {</span>
-
-<span class="s2">                                   }</span>
-<span class="s2">                                   try {</span>
-<span class="s2">                                       tmp[k] = obj[k].toString();</span>
-<span class="s2">                                       continue</span>
-<span class="s2">                                   } catch (e) </span><span class="si">{}</span>
-<span class="s2">                               }</span>
-<span class="s2">                               return tmp</span>
-<span class="s2">                           }</span>
-
-<span class="s2">                           function ___dumpY(obj) {</span>
-<span class="s2">                               var objKeys = (obj) =&gt; {</span>
-<span class="s2">                                   var [target, result] = [obj, []];</span>
-<span class="s2">                                   while (target !== null) {</span>
-<span class="s2">                                       result = result.concat(Object.getOwnPropertyNames(target));</span>
-<span class="s2">                                       target = Object.getPrototypeOf(target);</span>
-<span class="s2">                                   }</span>
-<span class="s2">                                   return result;</span>
-<span class="s2">                               }</span>
-<span class="s2">                               return Object.fromEntries(</span>
-<span class="s2">                                   objKeys(obj).map(_ =&gt; [_, ___dump(obj[_])]))</span>
-
-<span class="s2">                           }</span>
-<span class="s2">                           ___dumpY( </span><span class="si">%s</span><span class="s2"> )</span>
-<span class="s2">                   &quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">obj_name</span>
-        <span class="n">js_code_b</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">            ((obj, visited = new WeakSet()) =&gt; {</span>
-<span class="s2">                 if (visited.has(obj)) {</span>
-<span class="s2">                     return </span><span class="si">{}</span>
-<span class="s2">                 }</span>
-<span class="s2">                 visited.add(obj)</span>
-<span class="s2">                 var result = </span><span class="si">{}</span><span class="s2">, _tmp;</span>
-<span class="s2">                 for (var i in obj) {</span>
-<span class="s2">                         try {</span>
-<span class="s2">                             if (i === &#39;enabledPlugin&#39; || typeof obj[i] === &#39;function&#39;) {</span>
-<span class="s2">                                 continue;</span>
-<span class="s2">                             } else if (typeof obj[i] === &#39;object&#39;) {</span>
-<span class="s2">                                 _tmp = recurse(obj[i], visited);</span>
-<span class="s2">                                 if (Object.keys(_tmp).length) {</span>
-<span class="s2">                                     result[i] = _tmp;</span>
-<span class="s2">                                 }</span>
-<span class="s2">                             } else {</span>
-<span class="s2">                                 result[i] = obj[i];</span>
-<span class="s2">                             }</span>
-<span class="s2">                         } catch (error) {</span>
-<span class="s2">                             // console.error(&#39;Error:&#39;, error);</span>
-<span class="s2">                         }</span>
-<span class="s2">                     }</span>
-<span class="s2">                return result;</span>
-<span class="s2">            })(</span><span class="si">%s</span><span class="s2">)</span>
-<span class="s2">        &quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">obj_name</span>
+<span class="sd">                                       if (typeof obj[k] === &#39;object&#39;) {</span>
+<span class="sd">                                           tmp[k] = ___dump(obj[k], _d + 1);</span>
+<span class="sd">                                           continue</span>
+<span class="sd">                                       }</span>
 
 
+<span class="sd">                                   } catch (e) {}</span>
+
+<span class="sd">                                   try {</span>
+<span class="sd">                                       tmp[k] = JSON.stringify(obj[k])</span>
+<span class="sd">                                       continue</span>
+<span class="sd">                                   } catch (e) {</span>
+
+<span class="sd">                                   }</span>
+<span class="sd">                                   try {</span>
+<span class="sd">                                       tmp[k] = obj[k].toString();</span>
+<span class="sd">                                       continue</span>
+<span class="sd">                                   } catch (e) {}</span>
+<span class="sd">                               }</span>
+<span class="sd">                               return tmp</span>
+<span class="sd">                           }</span>
+
+<span class="sd">                           function ___dumpY(obj) {</span>
+<span class="sd">                               var objKeys = (obj) =&gt; {</span>
+<span class="sd">                                   var [target, result] = [obj, []];</span>
+<span class="sd">                                   while (target !== null) {</span>
+<span class="sd">                                       result = result.concat(Object.getOwnPropertyNames(target));</span>
+<span class="sd">                                       target = Object.getPrototypeOf(target);</span>
+<span class="sd">                                   }</span>
+<span class="sd">                                   return result;</span>
+<span class="sd">                               }</span>
+<span class="sd">                               return Object.fromEntries(</span>
+<span class="sd">                                   objKeys(obj).map(_ =&gt; [_, ___dump(obj[_])]))</span>
+
+<span class="sd">                           }</span>
+<span class="sd">                           ___dumpY( %s )</span>
+<span class="sd">                   &quot;&quot;&quot;</span>
+            <span class="o">%</span> <span class="n">obj_name</span>
+        <span class="p">)</span>
+        <span class="n">js_code_b</span> <span class="o">=</span> <span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            ((obj, visited = new WeakSet()) =&gt; {</span>
+<span class="sd">                 if (visited.has(obj)) {</span>
+<span class="sd">                     return {}</span>
+<span class="sd">                 }</span>
+<span class="sd">                 visited.add(obj)</span>
+<span class="sd">                 var result = {}, _tmp;</span>
+<span class="sd">                 for (var i in obj) {</span>
+<span class="sd">                         try {</span>
+<span class="sd">                             if (i === &#39;enabledPlugin&#39; || typeof obj[i] === &#39;function&#39;) {</span>
+<span class="sd">                                 continue;</span>
+<span class="sd">                             } else if (typeof obj[i] === &#39;object&#39;) {</span>
+<span class="sd">                                 _tmp = recurse(obj[i], visited);</span>
+<span class="sd">                                 if (Object.keys(_tmp).length) {</span>
+<span class="sd">                                     result[i] = _tmp;</span>
+<span class="sd">                                 }</span>
+<span class="sd">                             } else {</span>
+<span class="sd">                                 result[i] = obj[i];</span>
+<span class="sd">                             }</span>
+<span class="sd">                         } catch (error) {</span>
+<span class="sd">                             // console.error(&#39;Error:&#39;, error);</span>
+<span class="sd">                         }</span>
+<span class="sd">                     }</span>
+<span class="sd">                return result;</span>
+<span class="sd">            })(%s)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+            <span class="o">%</span> <span class="n">obj_name</span>
+        <span class="p">)</span>
 
         <span class="c1"># we&#39;re purposely not calling self.evaluate here to prevent infinite loop on certain expressions</span>
 
@@ -1140,7 +1149,9 @@
                 <span class="n">js_code_a</span><span class="p">,</span>
                 <span class="n">await_promise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">return_by_value</span><span class="o">=</span><span class="n">return_by_value</span><span class="p">,</span>
-                <span class="n">allow_unsafe_eval_blocked_by_csp</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+                <span class="n">allow_unsafe_eval_blocked_by_csp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">exception_details</span><span class="p">:</span>
 
             <span class="c1"># try second variant</span>
@@ -1150,7 +1161,9 @@
                     <span class="n">js_code_b</span><span class="p">,</span>
                     <span class="n">await_promise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">return_by_value</span><span class="o">=</span><span class="n">return_by_value</span><span class="p">,</span>
-                    <span class="n">allow_unsafe_eval_blocked_by_csp</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+                    <span class="n">allow_unsafe_eval_blocked_by_csp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">exception_details</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ProtocolException</span><span class="p">(</span><span class="n">exception_details</span><span class="p">)</span>
@@ -1159,7 +1172,6 @@
                 <span class="k">return</span> <span class="n">remote_object</span><span class="o">.</span><span class="n">value</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">remote_object</span><span class="p">,</span> <span class="n">exception_details</span></div>
-
 
 
 <div class="viewcode-block" id="Tab.close">
@@ -1558,6 +1570,10 @@
         <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
             <span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">capture_screenshot</span><span class="p">(</span><span class="n">format_</span><span class="o">=</span><span class="nb">format</span><span class="p">,</span> <span class="n">capture_beyond_viewport</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ProtocolException</span><span class="p">(</span>
+                <span class="s2">&quot;could not take screenshot. most possible cause is the page has not finished loading yet.&quot;</span>
+            <span class="p">)</span>
         <span class="kn">import</span> <span class="nn">base64</span>
 
         <span class="n">data_bytes</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
