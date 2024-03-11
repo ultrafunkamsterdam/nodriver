@@ -32,9 +32,10 @@ def create(node: cdp.dom.Node, tab: Tab, tree: typing.Optional[cdp.dom.Node] = N
                 when not provided, you need to call `await elem.update()` before using .children / .parent
     :type tree:
     """
-
     elem = Element(node, tab, tree)
-
+    if node.node_name == "IFRAME" and node.node_type == 1:
+        elem._content_document = Element(node.content_document, tab, node.content_document)
+        elem._content_document._parent = elem  # noqa
     return elem
 
 
@@ -59,6 +60,11 @@ class Element:
         self._parent = None
         self._remote_object = None
         self._attrs = ContraDict(silent=True)
+        # while we delegate most attributes to our _node attribute,
+        # an exception to this is content_document.
+        # since this is an attribute we'd want to overwrite when element is an iframe
+        self._content_document: typing.Union[cdp.dom.Node, Element] = None
+
         self._make_attrs()
 
     @property
@@ -152,7 +158,7 @@ class Element:
 
     @property
     def content_document(self):
-        return self.node.content_document
+        return self._content_document or self.node.content_document
 
     @property
     def shadow_roots(self):
@@ -320,6 +326,8 @@ class Element:
             self.tree, lambda n: n.node_id == self.parent_id
         )
         if not parent_node:
+            if self._parent is not None:
+                return self._parent
             return None
         parent_element = create(parent_node, tab=self._tab, tree=self.tree)
         return parent_element
@@ -491,7 +499,6 @@ class Element:
             pos.abs_x = abs_x
             pos.abs_y = abs_y
         return pos
-
 
     async def mouse_click(
             self,
@@ -681,6 +688,11 @@ class Element:
         return " ".join([n.node_value for n in text_nodes])
 
     async def query_selector_all(self, selector: str):
+        if self.node_type == 9:
+            # document type, cannot be used
+            # you should use the iframe element itself
+            if self.parent:
+                return await self.tab.query_selector_all(selector, _node=self.parent)
         if self.node_name == "IFRAME":
             return await self.tab.query_selector_all(selector, _node=self.tree)
         # await self
