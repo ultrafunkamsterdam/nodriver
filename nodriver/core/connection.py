@@ -201,7 +201,6 @@ class Connection(metaclass=CantTouchThis):
         self._target = target
         self.__count__ = itertools.count(0)
         self._owner = _owner
-
         self.websocket_url: str = websocket_url
         self.websocket = None
         self.mapper = {}
@@ -210,7 +209,6 @@ class Connection(metaclass=CantTouchThis):
         self.enabled_domains = []
         self._last_result = []
         self.listener: Listener = None
-
         self.__dict__.update(**kwargs)
 
     @property
@@ -251,9 +249,7 @@ class Connection(metaclass=CantTouchThis):
 
             page.add_handler(cdp.network.RequestWillBeSent, lambda event: print('network event => %s' % event.request))
 
-
         the next time you make network traffic you will see your console print like crazy.
-
 
         :param event_type_or_domain:
         :type event_type_or_domain:
@@ -310,7 +306,6 @@ class Connection(metaclass=CantTouchThis):
         """
         closes the websocket connection. should not be called manually by users.
         """
-
         if self.websocket and not self.websocket.closed:
             if self.listener and self.listener.running:
                 self.listener.cancel()
@@ -338,8 +333,8 @@ class Connection(metaclass=CantTouchThis):
         try:
             if isinstance(t, (int, float)):
                 await asyncio.wait_for(self.listener.idle.wait(), timeout=t)
-                while (loop.time() - start_time ) < t:
-                    await asyncio.sleep(.1)
+                while (loop.time() - start_time) < t:
+                    await asyncio.sleep(0.1)
             else:
                 await self.listener.idle.wait()
         except asyncio.TimeoutError:
@@ -409,7 +404,6 @@ class Connection(metaclass=CantTouchThis):
                 self.__count__ = itertools.count(0)
             tx.id = next(self.__count__)
             self.mapper.update({tx.id: tx})
-
             if not _is_update:
                 await self._register_handlers()
             await self.websocket.send(tx.message)
@@ -418,7 +412,6 @@ class Connection(metaclass=CantTouchThis):
             except ProtocolException as e:
                 e.message += f"\ncommand:{tx.method}\nparams:{tx.params}"
                 raise e
-
         except Exception:
             await self.aclose()
 
@@ -429,14 +422,12 @@ class Connection(metaclass=CantTouchThis):
 
         """
         seen = []
-
         # save a copy of current enabled domains in a variable
         # domains will be removed from this variable
         # if it is still needed according to the set handlers
         # so at the end this variable will hold the domains that
         # are not represented by handlers, and can be removed
         enabled_domains = self.enabled_domains.copy()
-
         for event_type in self.handlers.copy():
             domain_mod = None
             if len(self.handlers[event_type]) == 0:
@@ -475,7 +466,6 @@ class Connection(metaclass=CantTouchThis):
             # we started with a copy of self.enabled_domains and removed a domain from this
             # temp variable when we registered it or saw handlers for it.
             # items still present at this point are unused and need removal
-
             self.enabled_domains.remove(ed)
 
 
@@ -536,43 +526,45 @@ class Listener:
             except asyncio.TimeoutError:
                 self.idle.set()
                 # breathe
-                await asyncio.sleep(self.time_before_considered_idle / 10)
+                # await asyncio.sleep(self.time_before_considered_idle / 10)
                 continue
-            except (Exception,):
+            except (Exception,) as e:
                 # break on any other exception
                 # which is mostly socket is closed or does not exist
                 # or is not allowed
+
+                logger.debug(
+                    "connection listener exception while reading websocket:\n%s", e
+                )
                 break
 
-            # async for msg in self.connection.websocket:
             if not self.running:
+                # if we have been cancelled or otherwise stopped running
+                # break this loop
                 break
+
+            # since we are at this point, we are not "idle" anymore.
             self.idle.clear()
+
             message = json.loads(msg)
             if "id" in message:
                 # response to our command
                 if message["id"] in self.connection.mapper:
+                    # get the corresponding Transaction
                     tx = self.connection.mapper[message["id"]]
+                    logger.debug("got answer for %s", tx)
+                    # complete the transaction, which is a Future object
+                    # and thus will return to anyone awaiting it.
                     tx(**message)
             else:
                 # probably an event
                 try:
                     event = cdp.util.parse_json_event(message)
-                    # self.history.append(event)
                     event_tx = EventTransaction(event)
-                    # getattr(globals(), event.__class__.__module__)
                     if not self.connection.mapper:
                         self.connection.__count__ = itertools.count(0)
                     event_tx.id = next(self.connection.__count__)
                     self.connection.mapper[event_tx.id] = event_tx
-                    # while len(self.connection.mapper) > self.max_history:
-                    #     for k,v in self.connection.mapper.copy().items():
-                    #         # only remove old events
-                    #         if type(v) is not Transaction:
-                    #             self.connection.mapper.pop(k)
-
-                    # while len(self.history) >= self.max_history:
-                    #     self.history.popleft()
                 except Exception as e:
                     logger.info(
                         "%s: %s  during parsing of json from event : %s"
@@ -588,17 +580,14 @@ class Listener:
                         callbacks = self.connection.handlers[type(event)]
                     else:
                         continue
-
                     if not len(callbacks):
                         continue
-
                     for callback in callbacks:
                         try:
                             if iscoroutinefunction(callback) or iscoroutine(callback):
                                 await callback(event)
                             else:
                                 callback(event)
-
                         except Exception as e:
                             logger.warning(
                                 "exception in callback %s for event %s => %s",

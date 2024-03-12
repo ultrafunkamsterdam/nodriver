@@ -551,7 +551,6 @@ class Browser:
                     asyncio.run(self.connection.aclose())
                     logger.debug("closed the connection using asyncio.run()")
                 except Exception:
-                    logger.exception("exccc while closing", exc_info=True)
                     pass
 
         for _ in range(3):

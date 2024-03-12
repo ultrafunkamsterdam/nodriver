@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>nodriver.core.tab - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -467,7 +467,9 @@
 <span class="sd">        :type timeout: float,int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
-        <span class="n">now</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
         <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_element_by_text</span><span class="p">(</span>
             <span class="n">text</span><span class="p">,</span> <span class="n">best_match</span><span class="p">,</span> <span class="n">return_enclosing_element</span>
@@ -477,7 +479,7 @@
             <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_element_by_text</span><span class="p">(</span>
                 <span class="n">text</span><span class="p">,</span> <span class="n">best_match</span><span class="p">,</span> <span class="n">return_enclosing_element</span>
             <span class="p">)</span>
-            <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">now</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span>
                     <span class="s2">&quot;time ran out while waiting for text: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">text</span>
                 <span class="p">)</span>
@@ -504,13 +506,15 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
-        <span class="n">now</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
+        <span class="n">selector</span> <span class="o">=</span> <span class="n">selector</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
+
         <span class="k">while</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span>
             <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">now</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span>
                     <span class="s2">&quot;time ran out while waiting for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">selector</span>
                 <span class="p">)</span>
@@ -538,8 +542,10 @@
         <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
         <span class="n">now</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-        <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="k">while</span> <span class="ow">not</span> <span class="n">results</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">items</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span>
             <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">now</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
@@ -547,7 +553,7 @@
                     <span class="s2">&quot;time ran out while waiting for text: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">text</span>
                 <span class="p">)</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">results</span></div>
+        <span class="k">return</span> <span class="n">items</span></div>
 
 
 <div class="viewcode-block" id="Tab.select_all">
@@ -569,16 +575,18 @@
 
         <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
         <span class="n">now</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
-        <span class="k">while</span> <span class="ow">not</span> <span class="n">results</span><span class="p">:</span>
+        <span class="n">selector</span> <span class="o">=</span> <span class="n">selector</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">items</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span>
-            <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">now</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span>
                     <span class="s2">&quot;time ran out while waiting for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">selector</span>
                 <span class="p">)</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">results</span></div>
+        <span class="k">return</span> <span class="n">items</span></div>
 
 
 <div class="viewcode-block" id="Tab.get">
@@ -664,7 +672,7 @@
                 <span class="k">raise</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">node_ids</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
-        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">nid</span> <span class="ow">in</span> <span class="n">node_ids</span><span class="p">:</span>
             <span class="n">node</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">filter_recurse</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">node_id</span> <span class="o">==</span> <span class="n">nid</span><span class="p">)</span>
@@ -673,9 +681,9 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">elem</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span>
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+            <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">results</span></div>
+        <span class="k">return</span> <span class="n">items</span></div>
 
 
 <div class="viewcode-block" id="Tab.query_selector">
@@ -693,6 +701,7 @@
 <span class="sd">        :return:</span>
 <span class="sd">        :rtype:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">selector</span> <span class="o">=</span> <span class="n">selector</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_node</span><span class="p">:</span>
             <span class="n">doc</span><span class="p">:</span> <span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">Node</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">get_document</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
@@ -748,7 +757,7 @@
 <span class="sd">        :return:</span>
 <span class="sd">        :rtype:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">doc</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">get_document</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
         <span class="n">search_id</span><span class="p">,</span> <span class="n">nresult</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">perform_search</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">nresult</span><span class="p">:</span>
@@ -760,7 +769,7 @@
 
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">discard_search_results</span><span class="p">(</span><span class="n">search_id</span><span class="p">))</span>
 
-        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">nid</span> <span class="ow">in</span> <span class="n">node_ids</span><span class="p">:</span>
             <span class="n">node</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">filter_recurse</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">node_id</span> <span class="o">==</span> <span class="n">nid</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
@@ -782,13 +791,13 @@
                     <span class="c1"># check if parent actually has a parent and update it to be absolutely sure</span>
                     <span class="k">await</span> <span class="n">elem</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">elem</span><span class="o">.</span><span class="n">parent</span> <span class="ow">or</span> <span class="n">elem</span>
                 <span class="p">)</span>  <span class="c1"># when it really has no parent, use the text node itself</span>
                 <span class="k">continue</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># just add the element itself</span>
-                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
 
         <span class="c1"># since we already fetched the entire doc, including shadow and frames</span>
         <span class="c1"># let&#39;s also search through the iframes</span>
@@ -810,11 +819,11 @@
                             <span class="n">element</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">text_node</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">iframe_elem</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
                             <span class="k">for</span> <span class="n">text_node</span> <span class="ow">in</span> <span class="n">iframe_text_nodes</span>
                         <span class="p">]</span>
-                        <span class="n">results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                        <span class="n">items</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
                             <span class="n">text_node</span><span class="o">.</span><span class="n">parent</span> <span class="k">for</span> <span class="n">text_node</span> <span class="ow">in</span> <span class="n">iframe_text_elems</span>
                         <span class="p">)</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">disable</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">results</span> <span class="ow">or</span> <span class="p">[]</span></div>
+        <span class="k">return</span> <span class="n">items</span> <span class="ow">or</span> <span class="p">[]</span></div>
 
 
 <div class="viewcode-block" id="Tab.find_element_by_text">
@@ -843,14 +852,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">doc</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">get_document</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
         <span class="n">search_id</span><span class="p">,</span> <span class="n">nresult</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">perform_search</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
-        <span class="c1"># if nresult == 0:</span>
-        <span class="c1">#     return</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
         <span class="n">node_ids</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">get_search_results</span><span class="p">(</span><span class="n">search_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nresult</span><span class="p">))</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">discard_search_results</span><span class="p">(</span><span class="n">search_id</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">node_ids</span><span class="p">:</span>
             <span class="n">node_ids</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">nid</span> <span class="ow">in</span> <span class="n">node_ids</span><span class="p">:</span>
             <span class="n">node</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">filter_recurse</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">node_id</span> <span class="o">==</span> <span class="n">nid</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
@@ -866,13 +875,13 @@
                     <span class="c1"># check if parent actually has a parent and update it to be absolutely sure</span>
                     <span class="k">await</span> <span class="n">elem</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">elem</span><span class="o">.</span><span class="n">parent</span> <span class="ow">or</span> <span class="n">elem</span>
                 <span class="p">)</span>  <span class="c1"># when it really has no parent, use the text node itself</span>
                 <span class="k">continue</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># just add the element itself</span>
-                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
 
         <span class="c1"># since we already fetched the entire doc, including shadow and frames</span>
         <span class="c1"># let&#39;s also search through the iframes</span>
@@ -893,20 +902,20 @@
                         <span class="n">element</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">text_node</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">iframe_elem</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">text_node</span> <span class="ow">in</span> <span class="n">iframe_text_nodes</span>
                     <span class="p">]</span>
-                    <span class="n">results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">text_node</span><span class="o">.</span><span class="n">parent</span> <span class="k">for</span> <span class="n">text_node</span> <span class="ow">in</span> <span class="n">iframe_text_elems</span><span class="p">)</span>
+                    <span class="n">items</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">text_node</span><span class="o">.</span><span class="n">parent</span> <span class="k">for</span> <span class="n">text_node</span> <span class="ow">in</span> <span class="n">iframe_text_elems</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">results</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">items</span><span class="p">:</span>
                 <span class="k">return</span>
             <span class="k">if</span> <span class="n">best_match</span><span class="p">:</span>
                 <span class="n">closest_by_length</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
-                    <span class="n">results</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">text_all</span><span class="p">))</span>
+                    <span class="n">items</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">text_all</span><span class="p">))</span>
                 <span class="p">)</span>
-                <span class="n">elem</span> <span class="o">=</span> <span class="n">closest_by_length</span> <span class="ow">or</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">elem</span> <span class="o">=</span> <span class="n">closest_by_length</span> <span class="ow">or</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
                 <span class="k">return</span> <span class="n">elem</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># naively just return the first result</span>
-                <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">elem</span><span class="p">:</span>
                         <span class="k">return</span> <span class="n">elem</span>
         <span class="k">finally</span><span class="p">:</span>
@@ -1291,7 +1300,10 @@
         <span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1280</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">720</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        sets the window size and state.</span>
+<span class="sd">        sets the window size or state.</span>
+
+<span class="sd">        for state you can provide the full name like minimized, maximized, normal, fullscreen, or</span>
+<span class="sd">        something which leads to either of those, like min, mini, mi,  max, ma, maxi, full, fu, no, nor</span>
 <span class="sd">        in case state is set other than &quot;normal&quot;, the left, top, width, and height are ignored.</span>
 
 <span class="sd">        :param left:</span>
@@ -1339,11 +1351,9 @@
         <span class="k">if</span> <span class="n">window_state</span> <span class="o">==</span> <span class="n">cdp</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">WindowState</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">:</span>
             <span class="n">bounds</span> <span class="o">=</span> <span class="n">cdp</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">Bounds</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">window_state</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">window_id</span><span class="p">,</span> <span class="n">current_bounds</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">current_bounds</span><span class="o">.</span><span class="n">window_state</span> <span class="o">!=</span> <span class="n">cdp</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">WindowState</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">:</span>
-                <span class="c1"># min, max, full can only be used when current state == NORMAL</span>
-                <span class="c1"># therefore we first switch to NORMAL</span>
-                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_window_state</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">)</span>
+            <span class="c1"># min, max, full can only be used when current state == NORMAL</span>
+            <span class="c1"># therefore we first switch to NORMAL</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_window_state</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">)</span>
             <span class="n">bounds</span> <span class="o">=</span> <span class="n">cdp</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">Bounds</span><span class="p">(</span><span class="n">window_state</span><span class="o">=</span><span class="n">window_state</span><span class="p">)</span>
 
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">set_window_bounds</span><span class="p">(</span><span class="n">window_id</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">))</span></div>
