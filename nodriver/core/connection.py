@@ -324,9 +324,8 @@ class Connection(metaclass=CantTouchThis):
 
     async def wait(self, t: Union[int, float] = None):
         """
-        waits until the event listener
-        reports idle (which is when no new events had been received in .5 seconds
-        or, 1 second when in interactive mode)
+        waits until the event listener reports idle (no new events received in certain timespan).
+        when `t` is provided, ensures waiting for `t` seconds, no matter what.
 
         :param t:
         :type t:
@@ -334,20 +333,23 @@ class Connection(metaclass=CantTouchThis):
         :rtype:
         """
         await self.update_target()
-
+        loop = asyncio.get_running_loop()
+        start_time = loop.time()
         try:
-
-            await asyncio.wait_for(self.listener.idle.wait(), timeout=t)
+            if isinstance(t, (int, float)):
+                await asyncio.wait_for(self.listener.idle.wait(), timeout=t)
+                while (loop.time() - start_time ) < t:
+                    await asyncio.sleep(.1)
+            else:
+                await self.listener.idle.wait()
         except asyncio.TimeoutError:
-            if t is not None:
+            if isinstance(t, (int, float)):
                 # explicit time is given, which is now passed
                 # so bail out early
                 return
         except AttributeError:
             # no listener created yet
             pass
-        if t is not None:
-            await self.sleep(t)
 
     def __getattr__(self, item):
         """:meta private:"""

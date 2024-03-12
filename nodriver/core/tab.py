@@ -195,7 +195,9 @@ class Tab(Connection):
         :type timeout: float,int
         """
         loop = asyncio.get_running_loop()
-        now = loop.time()
+        start_time = loop.time()
+
+        text = text.strip()
 
         item = await self.find_element_by_text(
             text, best_match, return_enclosing_element
@@ -205,7 +207,7 @@ class Tab(Connection):
             item = await self.find_element_by_text(
                 text, best_match, return_enclosing_element
             )
-            if loop.time() - now > timeout:
+            if loop.time() - start_time > timeout:
                 raise asyncio.TimeoutError(
                     "time ran out while waiting for text: %s" % text
                 )
@@ -229,13 +231,15 @@ class Tab(Connection):
 
         """
         loop = asyncio.get_running_loop()
-        now = loop.time()
+        start_time = loop.time()
 
+        selector = selector.strip()
         item = await self.query_selector(selector)
+
         while not item:
             await self
             item = await self.query_selector(selector)
-            if loop.time() - now > timeout:
+            if loop.time() - start_time > timeout:
                 raise asyncio.TimeoutError(
                     "time ran out while waiting for %s" % selector
                 )
@@ -260,8 +264,10 @@ class Tab(Connection):
         loop = asyncio.get_running_loop()
         now = loop.time()
 
-        results = await self.find_elements_by_text(text)
-        while not results:
+        text = text.strip()
+        items = await self.find_elements_by_text(text)
+
+        while not items:
             await self
             results = await self.find_elements_by_text(text)
             if loop.time() - now > timeout:
@@ -269,7 +275,7 @@ class Tab(Connection):
                     "time ran out while waiting for text: %s" % text
                 )
             await self.sleep(0.5)
-        return results
+        return items
 
     async def select_all(
         self,
@@ -288,16 +294,18 @@ class Tab(Connection):
 
         loop = asyncio.get_running_loop()
         now = loop.time()
-        results = await self.query_selector_all(selector)
-        while not results:
+        selector = selector.strip()
+
+        items = await self.query_selector_all(selector)
+        while not items:
             await self
-            results = await self.query_selector_all(selector)
+            items = await self.query_selector_all(selector)
             if loop.time() - now > timeout:
                 raise asyncio.TimeoutError(
                     "time ran out while waiting for %s" % selector
                 )
             await self.sleep(0.5)
-        return results
+        return items
 
     async def get(
         self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
@@ -377,7 +385,7 @@ class Tab(Connection):
                 raise
         if not node_ids:
             return []
-        results = []
+        items = []
 
         for nid in node_ids:
             node = util.filter_recurse(doc, lambda n: n.node_id == nid)
@@ -386,9 +394,9 @@ class Tab(Connection):
             if not node:
                 continue
             elem = element.create(node, self, doc)
-            results.append(elem)
+            items.append(elem)
 
-        return results
+        return items
 
     async def query_selector(
         self,
@@ -403,6 +411,7 @@ class Tab(Connection):
         :return:
         :rtype:
         """
+        selector = selector.strip()
 
         if not _node:
             doc: cdp.dom.Node = await self.send(cdp.dom.get_document(-1, True))
@@ -455,7 +464,7 @@ class Tab(Connection):
         :return:
         :rtype:
         """
-
+        text = text.strip()
         doc = await self.send(cdp.dom.get_document(-1, True))
         search_id, nresult = await self.send(cdp.dom.perform_search(text, True))
         if nresult:
@@ -467,7 +476,7 @@ class Tab(Connection):
 
         await self.send(cdp.dom.discard_search_results(search_id))
 
-        results = []
+        items = []
         for nid in node_ids:
             node = util.filter_recurse(doc, lambda n: n.node_id == nid)
             if not node:
@@ -489,13 +498,13 @@ class Tab(Connection):
                     # check if parent actually has a parent and update it to be absolutely sure
                     await elem.update()
 
-                results.append(
+                items.append(
                     elem.parent or elem
                 )  # when it really has no parent, use the text node itself
                 continue
             else:
                 # just add the element itself
-                results.append(elem)
+                items.append(elem)
 
         # since we already fetched the entire doc, including shadow and frames
         # let's also search through the iframes
@@ -517,11 +526,11 @@ class Tab(Connection):
                             element.create(text_node, self, iframe_elem.tree)
                             for text_node in iframe_text_nodes
                         ]
-                        results.extend(
+                        items.extend(
                             text_node.parent for text_node in iframe_text_elems
                         )
         await self.send(cdp.dom.disable())
-        return results or []
+        return items or []
 
     async def find_element_by_text(
         self,
@@ -547,14 +556,14 @@ class Tab(Connection):
         """
         doc = await self.send(cdp.dom.get_document(-1, True))
         search_id, nresult = await self.send(cdp.dom.perform_search(text, True))
-        # if nresult == 0:
-        #     return
+        text = text.strip()
+
         node_ids = await self.send(cdp.dom.get_search_results(search_id, 0, nresult))
         await self.send(cdp.dom.discard_search_results(search_id))
 
         if not node_ids:
             node_ids = []
-        results = []
+        items = []
         for nid in node_ids:
             node = util.filter_recurse(doc, lambda n: n.node_id == nid)
             try:
@@ -570,13 +579,13 @@ class Tab(Connection):
                     # check if parent actually has a parent and update it to be absolutely sure
                     await elem.update()
 
-                results.append(
+                items.append(
                     elem.parent or elem
                 )  # when it really has no parent, use the text node itself
                 continue
             else:
                 # just add the element itself
-                results.append(elem)
+                items.append(elem)
 
         # since we already fetched the entire doc, including shadow and frames
         # let's also search through the iframes
@@ -597,20 +606,20 @@ class Tab(Connection):
                         element.create(text_node, self, iframe_elem.tree)
                         for text_node in iframe_text_nodes
                     ]
-                    results.extend(text_node.parent for text_node in iframe_text_elems)
+                    items.extend(text_node.parent for text_node in iframe_text_elems)
         try:
-            if not results:
+            if not items:
                 return
             if best_match:
                 closest_by_length = min(
-                    results, key=lambda el: abs(len(text) - len(el.text_all))
+                    items, key=lambda el: abs(len(text) - len(el.text_all))
                 )
-                elem = closest_by_length or results[0]
+                elem = closest_by_length or items[0]
 
                 return elem
             else:
                 # naively just return the first result
-                for elem in results:
+                for elem in items:
                     if elem:
                         return elem
         finally:
@@ -947,7 +956,10 @@ class Tab(Connection):
         self, left=0, top=0, width=1280, height=720, state="normal"
     ):
         """
-        sets the window size and state.
+        sets the window size or state.
+
+        for state you can provide the full name like minimized, maximized, normal, fullscreen, or
+        something which leads to either of those, like min, mini, mi,  max, ma, maxi, full, fu, no, nor
         in case state is set other than "normal", the left, top, width, and height are ignored.
 
         :param left:
@@ -995,11 +1007,9 @@ class Tab(Connection):
         if window_state == cdp.browser.WindowState.NORMAL:
             bounds = cdp.browser.Bounds(left, top, width, height, window_state)
         else:
-            window_id, current_bounds = await self.get_window()
-            if current_bounds.window_state != cdp.browser.WindowState.NORMAL:
-                # min, max, full can only be used when current state == NORMAL
-                # therefore we first switch to NORMAL
-                await self.set_window_state(state="normal")
+            # min, max, full can only be used when current state == NORMAL
+            # therefore we first switch to NORMAL
+            await self.set_window_state(state="normal")
             bounds = cdp.browser.Bounds(window_state=window_state)
 
         await self.send(cdp.browser.set_window_bounds(window_id, bounds=bounds))
