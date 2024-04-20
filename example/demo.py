@@ -8,7 +8,7 @@ import random
 import mss
 
 logger = logging.getLogger("demo")
-# logging.basicConfig(level=10)
+logging.basicConfig(level=10)
 
 try:
     import nodriver as uc

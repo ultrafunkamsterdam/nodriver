@@ -227,6 +227,11 @@ class Element:
         return self.attrs.get(item, None)
 
     async def save_to_dom(self):
+        """
+        saves a screenshot of this element only
+        :return:
+        :rtype:
+        """
         self._remote_object = await self._tab.send(
             cdp.dom.resolve_node(backend_node_id=self.backend_node_id)
         )
@@ -857,6 +862,32 @@ class Element:
                 user_gesture=True,
             )
         )
+
+    async def highlight_overlay(self):
+        """
+        highlights the element devtools-style. To remove the highlight,
+        call the method again.
+        :return:
+        :rtype:
+        """
+
+        if getattr(self, "_is_highlighted", False):
+            del self._is_highlighted
+            await self.tab.send(cdp.overlay.hide_highlight())
+            await self.tab.send(cdp.dom.disable())
+            await self.tab.send(cdp.overlay.disable())
+            return
+        await self.tab.send(cdp.dom.enable())
+        await self.tab.send(cdp.overlay.enable())
+        conf = cdp.overlay.HighlightConfig(
+            show_info=True, show_extension_lines=True, show_styles=True
+        )
+        await self.tab.send(
+            cdp.overlay.highlight_node(
+                highlight_config=conf, backend_node_id=self.backend_node_id
+            )
+        )
+        setattr(self, "_is_highlighted", 1)
 
     async def record_video(
         self,

@@ -668,13 +668,12 @@ class Tab(Connection):
                 user_gesture=True,
                 await_promise=await_promise,
                 return_by_value=return_by_value,
+                allow_unsafe_eval_blocked_by_csp=True,
             )
         )
         if errors:
             raise ProtocolException(errors)
-            if not return_by_value:
-                return remote_object, errors
-            return errors.to_json()
+
         if remote_object:
             if return_by_value:
                 if remote_object.value:
@@ -682,15 +681,6 @@ class Tab(Connection):
 
             else:
                 return remote_object, errors
-            # if getattr(remote_object, "subtype", None) == "error":
-            #     val = remote_object.description
-            #     return {"error": val, "stack": errors}
-        #     try:
-        #         return json.loads(remote_object.value)
-        #     except:
-        #         return remote_object.value
-        # if exc:
-        #     return exc
 
     async def js_dumps(
         self, obj_name: str, return_by_value: Optional[bool] = True
@@ -1219,7 +1209,9 @@ class Tab(Connection):
             path = pathlib.Path(filename)
         path.parent.mkdir(parents=True, exist_ok=True)
         data = await self.send(
-            cdp.page.capture_screenshot(format_=format, capture_beyond_viewport=True)
+            cdp.page.capture_screenshot(
+                format_=format, capture_beyond_viewport=full_page
+            )
         )
         if not data:
             raise ProtocolException(
@@ -1290,6 +1282,7 @@ class Tab(Connection):
         return res
 
     async def verify_cf(self):
+        """an attempt.."""
         checkbox = None
         checkbox_sibling = await self.wait_for(text="verify you are human")
         if checkbox_sibling:

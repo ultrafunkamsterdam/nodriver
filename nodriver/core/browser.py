@@ -198,7 +198,7 @@ class Browser:
             new_target = Tab(
                 (
                     f"ws://{self.config.host}:{self.config.port}"
-                    f"/devtools/{target_info.type_.lower()}"
+                    f"/devtools/page"  # all types are 'page' internally in chrome apparently
                     f"/{target_info.target_id}"
                 ),
                 target=target_info,
@@ -500,7 +500,7 @@ class Browser:
                     Connection(
                         (
                             f"ws://{self.config.host}:{self.config.port}"
-                            f"/devtools/{t.type_.lower()}"
+                            f"/devtools/page"  # all types are 'page' somehow
                             f"/{t.target_id}"
                         ),
                         target=t,
@@ -796,7 +796,9 @@ class HTTPApi:
         return await self._request(endpoint, data)
 
     async def _request(self, endpoint, method: str = "get", data: dict = None):
-        url = urllib.parse.urljoin(self.api, "/".join(["json", endpoint]))
+        url = urllib.parse.urljoin(
+            self.api, f"json/{endpoint}" if endpoint else "/json"
+        )
         if data and method.lower() == "get":
             raise ValueError("get requests cannot contain data")
         if not url:

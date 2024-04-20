@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.core.element - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -493,6 +493,11 @@
 <div class="viewcode-block" id="Element.save_to_dom">
 <a class="viewcode-back" href="../../../nodriver/classes/element.html#nodriver.Element.save_to_dom">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">save_to_dom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        saves a screenshot of this element only</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_remote_object</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
             <span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">resolve_node</span><span class="p">(</span><span class="n">backend_node_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_node_id</span><span class="p">)</span>
         <span class="p">)</span>
@@ -1186,6 +1191,32 @@
                 <span class="n">user_gesture</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Element.highlight_overlay">
+<a class="viewcode-back" href="../../../nodriver/classes/element.html#nodriver.Element.highlight_overlay">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">highlight_overlay</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        highlights the element devtools-style. To remove the highlight,</span>
+<span class="sd">        call the method again.</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_is_highlighted&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_highlighted</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">overlay</span><span class="o">.</span><span class="n">hide_highlight</span><span class="p">())</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">disable</span><span class="p">())</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">overlay</span><span class="o">.</span><span class="n">disable</span><span class="p">())</span>
+            <span class="k">return</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">enable</span><span class="p">())</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">overlay</span><span class="o">.</span><span class="n">enable</span><span class="p">())</span>
+        <span class="n">conf</span> <span class="o">=</span> <span class="n">cdp</span><span class="o">.</span><span class="n">overlay</span><span class="o">.</span><span class="n">HighlightConfig</span><span class="p">(</span><span class="n">show_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_extension_lines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_styles</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">overlay</span><span class="o">.</span><span class="n">highlight_node</span><span class="p">(</span><span class="n">highlight_config</span><span class="o">=</span><span class="n">conf</span><span class="p">,</span> <span class="n">backend_node_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_node_id</span><span class="p">))</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_is_highlighted&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
+
+
+
 
 
 <div class="viewcode-block" id="Element.record_video">
