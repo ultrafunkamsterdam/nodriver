@@ -228,7 +228,7 @@ class Element:
 
     async def save_to_dom(self):
         """
-        saves a screenshot of this element only
+        saves element to dom
         :return:
         :rtype:
         """
@@ -239,6 +239,7 @@ class Element:
         await self.update()
 
     async def remove_from_dom(self):
+        """removes the element from dom"""
         await self.update()  # ensure we have latest node_id
         node = util.filter_recurse(
             self._tree, lambda node: node.backend_node_id == self.backend_node_id
@@ -511,6 +512,7 @@ class Element:
         button: str = "left",
         buttons: typing.Optional[int] = 1,
         modifiers: typing.Optional[int] = 0,
+        hold: bool = False,
         _until_event: typing.Optional[type] = None,
     ):
         """native click (on element) . note: this likely does not work atm, use click() instead
@@ -579,6 +581,100 @@ class Element:
         await self._tab.sleep(0.05)
         await self._tab.send(
             cdp.input_.dispatch_mouse_event("mouseReleased", x=center[0], y=center[1])
+        )
+
+    async def mouse_drag(
+        self,
+        destination: typing.Union[Element, typing.Tuple[int, int]],
+        relative: bool = False,
+        steps: int = 1,
+    ):
+        """
+        drag an element to another element or target coordinates. dragging of elements should be supported  by the site of course
+
+
+        :param destination: another element where to drag to, or a tuple (x,y) of ints representing coordinate
+        :type destination: Element or coordinate as x,y tuple
+
+        :param relative: when True, treats coordinate as relative. for example (-100, 200) will move left 100px and down 200px
+        :type relative:
+
+        :param steps: move in <steps> points, this could make it look more "natural" (default 1),
+               but also a lot slower.
+               for very smooth action use 50-100
+        :type steps: int
+        :return:
+        :rtype:
+        """
+        try:
+            start_point = (await self.get_position()).center
+        except AttributeError:
+            return
+        if not start_point:
+            logger.warning("could not calculate box model for %s", self)
+            return
+        end_point = None
+        if isinstance(destination, Element):
+            try:
+                end_point = (await destination.get_position()).center
+            except AttributeError:
+                return
+            if not end_point:
+                logger.warning("could not calculate box model for %s", destination)
+                return
+        elif isinstance(destination, (tuple, list)):
+            if relative:
+                end_point = (
+                    start_point[0] + destination[0],
+                    start_point[1] + destination[1],
+                )
+            else:
+                end_point = destination
+
+        await self._tab.send(
+            cdp.input_.dispatch_mouse_event(
+                "mousePressed",
+                x=start_point[0],
+                y=start_point[1],
+                button=cdp.input_.MouseButton("left"),
+            )
+        )
+
+        steps = 1 if (not steps or steps < 1) else steps
+        if steps == 1:
+            await self._tab.send(
+                cdp.input_.dispatch_mouse_event(
+                    "mouseMoved",
+                    x=end_point[0],
+                    y=end_point[1],
+                )
+            )
+        elif steps > 1:
+            # probably the worst waay of calculating this. but couldn't think of a better solution today.
+            step_size_x = (end_point[0] - start_point[0]) / steps
+            step_size_y = (end_point[1] - start_point[1]) / steps
+            pathway = [
+                (start_point[0] + step_size_x * i, start_point[1] + step_size_y * i)
+                for i in range(steps + 1)
+            ]
+
+            for point in pathway:
+                await self._tab.send(
+                    cdp.input_.dispatch_mouse_event(
+                        "mouseMoved",
+                        x=point[0],
+                        y=point[1],
+                    )
+                )
+                await asyncio.sleep(0)
+
+        await self._tab.send(
+            cdp.input_.dispatch_mouse_event(
+                type_="mouseReleased",
+                x=end_point[0],
+                y=end_point[1],
+                button=cdp.input_.MouseButton("left"),
+            )
         )
 
     async def scroll_into_view(self):
