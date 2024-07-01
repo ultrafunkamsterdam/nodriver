@@ -6,12 +6,10 @@
 # CDP domain: Network
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
-
-from deprecated.sphinx import deprecated  # type: ignore
+from .util import event_class, T_JSON_DICT
 
 from . import debugger
 from . import emulation
@@ -19,7 +17,7 @@ from . import io
 from . import page
 from . import runtime
 from . import security
-from .util import event_class, T_JSON_DICT
+from deprecated.sphinx import deprecated  # type: ignore
 
 
 class ResourceType(enum.Enum):
@@ -320,6 +318,12 @@ class ResourceTiming:
     #: Finished receiving response headers.
     receive_headers_end: float
 
+    #: Started ServiceWorker static routing source evaluation.
+    worker_router_evaluation_start: typing.Optional[float] = None
+
+    #: Started cache lookup when the source was evaluated to ``cache``.
+    worker_cache_lookup_start: typing.Optional[float] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json["requestTime"] = self.request_time
@@ -341,6 +345,10 @@ class ResourceTiming:
         json["pushEnd"] = self.push_end
         json["receiveHeadersStart"] = self.receive_headers_start
         json["receiveHeadersEnd"] = self.receive_headers_end
+        if self.worker_router_evaluation_start is not None:
+            json["workerRouterEvaluationStart"] = self.worker_router_evaluation_start
+        if self.worker_cache_lookup_start is not None:
+            json["workerCacheLookupStart"] = self.worker_cache_lookup_start
         return json
 
     @classmethod
@@ -365,6 +373,16 @@ class ResourceTiming:
             push_end=float(json["pushEnd"]),
             receive_headers_start=float(json["receiveHeadersStart"]),
             receive_headers_end=float(json["receiveHeadersEnd"]),
+            worker_router_evaluation_start=(
+                float(json["workerRouterEvaluationStart"])
+                if json.get("workerRouterEvaluationStart", None) is not None
+                else None
+            ),
+            worker_cache_lookup_start=(
+                float(json["workerCacheLookupStart"])
+                if json.get("workerCacheLookupStart", None) is not None
+                else None
+            ),
         )
 
 
@@ -433,12 +451,13 @@ class Request:
     url_fragment: typing.Optional[str] = None
 
     #: HTTP POST request data.
+    #: Use postDataEntries instead.
     post_data: typing.Optional[str] = None
 
     #: True when the request has POST data. Note that postData might still be omitted when this flag is true when the data is too long.
     has_post_data: typing.Optional[bool] = None
 
-    #: Request body elements. This will be converted from base64 to binary
+    #: Request body elements (post data broken into individual entries).
     post_data_entries: typing.Optional[typing.List[PostDataEntry]] = None
 
     #: The mixed content type of the request.
@@ -452,7 +471,7 @@ class Request:
     trust_token_params: typing.Optional[TrustTokenParams] = None
 
     #: True if this resource request is considered to be the 'same site' as the
-    #: request correspondinfg to the main frame.
+    #: request corresponding to the main frame.
     is_same_site: typing.Optional[bool] = None
 
     def to_json(self) -> T_JSON_DICT:
@@ -738,6 +757,12 @@ class BlockedReason(enum.Enum):
     CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_COEP = (
         "corp-not-same-origin-after-defaulted-to-same-origin-by-coep"
     )
+    CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_DIP = (
+        "corp-not-same-origin-after-defaulted-to-same-origin-by-dip"
+    )
+    CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_COEP_AND_DIP = (
+        "corp-not-same-origin-after-defaulted-to-same-origin-by-coep-and-dip"
+    )
     CORP_NOT_SAME_SITE = "corp-not-same-site"
 
     def to_json(self) -> str:
@@ -914,19 +939,65 @@ class AlternateProtocolUsage(enum.Enum):
         return cls(json)
 
 
+class ServiceWorkerRouterSource(enum.Enum):
+    """
+    Source of service worker router.
+    """
+
+    NETWORK = "network"
+    CACHE = "cache"
+    FETCH_EVENT = "fetch-event"
+    RACE_NETWORK_AND_FETCH_HANDLER = "race-network-and-fetch-handler"
+
+    def to_json(self) -> str:
+        return self.value
+
+    @classmethod
+    def from_json(cls, json: str) -> ServiceWorkerRouterSource:
+        return cls(json)
+
+
 @dataclass
 class ServiceWorkerRouterInfo:
-    rule_id_matched: int
+    #: ID of the rule matched. If there is a matched rule, this field will
+    #: be set, otherwiser no value will be set.
+    rule_id_matched: typing.Optional[int] = None
+
+    #: The router source of the matched rule. If there is a matched rule, this
+    #: field will be set, otherwise no value will be set.
+    matched_source_type: typing.Optional[ServiceWorkerRouterSource] = None
+
+    #: The actual router source used.
+    actual_source_type: typing.Optional[ServiceWorkerRouterSource] = None
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["ruleIdMatched"] = self.rule_id_matched
+        if self.rule_id_matched is not None:
+            json["ruleIdMatched"] = self.rule_id_matched
+        if self.matched_source_type is not None:
+            json["matchedSourceType"] = self.matched_source_type.to_json()
+        if self.actual_source_type is not None:
+            json["actualSourceType"] = self.actual_source_type.to_json()
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ServiceWorkerRouterInfo:
         return cls(
-            rule_id_matched=int(json["ruleIdMatched"]),
+            rule_id_matched=(
+                int(json["ruleIdMatched"])
+                if json.get("ruleIdMatched", None) is not None
+                else None
+            ),
+            matched_source_type=(
+                ServiceWorkerRouterSource.from_json(json["matchedSourceType"])
+                if json.get("matchedSourceType", None) is not None
+                else None
+            ),
+            actual_source_type=(
+                ServiceWorkerRouterSource.from_json(json["actualSourceType"])
+                if json.get("actualSourceType", None) is not None
+                else None
+            ),
         )
 
 
@@ -990,7 +1061,13 @@ class Response:
     #: Specifies that the request was served from the prefetch cache.
     from_prefetch_cache: typing.Optional[bool] = None
 
-    #: Infomation about how Service Worker Static Router was used.
+    #: Specifies that the request was served from the prefetch cache.
+    from_early_hints: typing.Optional[bool] = None
+
+    #: Information about how ServiceWorker Static Router API was used. If this
+    #: field is set with ``matchedSourceType`` field, a matching rule is found.
+    #: If this field is set without ``matchedSource``, no matching rule is found.
+    #: Otherwise, the API is not used.
     service_worker_router_info: typing.Optional[ServiceWorkerRouterInfo] = None
 
     #: Timing information for the given request.
@@ -1042,6 +1119,8 @@ class Response:
             json["fromServiceWorker"] = self.from_service_worker
         if self.from_prefetch_cache is not None:
             json["fromPrefetchCache"] = self.from_prefetch_cache
+        if self.from_early_hints is not None:
+            json["fromEarlyHints"] = self.from_early_hints
         if self.service_worker_router_info is not None:
             json["serviceWorkerRouterInfo"] = self.service_worker_router_info.to_json()
         if self.timing is not None:
@@ -1113,6 +1192,11 @@ class Response:
             from_prefetch_cache=(
                 bool(json["fromPrefetchCache"])
                 if json.get("fromPrefetchCache", None) is not None
+                else None
+            ),
+            from_early_hints=(
+                bool(json["fromEarlyHints"])
+                if json.get("fromEarlyHints", None) is not None
                 else None
             ),
             service_worker_router_info=(
@@ -1386,6 +1470,34 @@ class Initiator:
 
 
 @dataclass
+class CookiePartitionKey:
+    """
+    cookiePartitionKey object
+    The representation of the components of the key that are created by the cookiePartitionKey class contained in net/cookies/cookie_partition_key.h.
+    """
+
+    #: The site of the top-level URL the browser was visiting at the start
+    #: of the request to the endpoint that set the cookie.
+    top_level_site: str
+
+    #: Indicates if the cookie has any ancestors that are cross-site to the topLevelSite.
+    has_cross_site_ancestor: bool
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json["topLevelSite"] = self.top_level_site
+        json["hasCrossSiteAncestor"] = self.has_cross_site_ancestor
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> CookiePartitionKey:
+        return cls(
+            top_level_site=str(json["topLevelSite"]),
+            has_cross_site_ancestor=bool(json["hasCrossSiteAncestor"]),
+        )
+
+
+@dataclass
 class Cookie:
     """
     Cookie object
@@ -1435,9 +1547,8 @@ class Cookie:
     #: Cookie SameSite type.
     same_site: typing.Optional[CookieSameSite] = None
 
-    #: Cookie partition key. The site of the top-level URL the browser was visiting at the start
-    #: of the request to the endpoint that set the cookie.
-    partition_key: typing.Optional[str] = None
+    #: Cookie partition key.
+    partition_key: typing.Optional[CookiePartitionKey] = None
 
     #: True if cookie partition key is opaque.
     partition_key_opaque: typing.Optional[bool] = None
@@ -1461,7 +1572,7 @@ class Cookie:
         if self.same_site is not None:
             json["sameSite"] = self.same_site.to_json()
         if self.partition_key is not None:
-            json["partitionKey"] = self.partition_key
+            json["partitionKey"] = self.partition_key.to_json()
         if self.partition_key_opaque is not None:
             json["partitionKeyOpaque"] = self.partition_key_opaque
         return json
@@ -1492,7 +1603,7 @@ class Cookie:
                 else None
             ),
             partition_key=(
-                str(json["partitionKey"])
+                CookiePartitionKey.from_json(json["partitionKey"])
                 if json.get("partitionKey", None) is not None
                 else None
             ),
@@ -1574,6 +1685,30 @@ class CookieBlockedReason(enum.Enum):
         return cls(json)
 
 
+class CookieExemptionReason(enum.Enum):
+    """
+    Types of reasons why a cookie should have been blocked by 3PCD but is exempted for the request.
+    """
+
+    NONE = "None"
+    USER_SETTING = "UserSetting"
+    TPCD_METADATA = "TPCDMetadata"
+    TPCD_DEPRECATION_TRIAL = "TPCDDeprecationTrial"
+    TPCD_HEURISTICS = "TPCDHeuristics"
+    ENTERPRISE_POLICY = "EnterprisePolicy"
+    STORAGE_ACCESS = "StorageAccess"
+    TOP_LEVEL_STORAGE_ACCESS = "TopLevelStorageAccess"
+    CORS_OPT_IN = "CorsOptIn"
+    SCHEME = "Scheme"
+
+    def to_json(self) -> str:
+        return self.value
+
+    @classmethod
+    def from_json(cls, json: str) -> CookieExemptionReason:
+        return cls(json)
+
+
 @dataclass
 class BlockedSetCookieWithReason:
     """
@@ -1616,30 +1751,74 @@ class BlockedSetCookieWithReason:
 
 
 @dataclass
-class BlockedCookieWithReason:
+class ExemptedSetCookieWithReason:
     """
-    A cookie with was not sent with a request with the corresponding reason.
+    A cookie should have been blocked by 3PCD but is exempted and stored from a response with the
+    corresponding reason. A cookie could only have at most one exemption reason.
     """
 
-    #: The reason(s) the cookie was blocked.
-    blocked_reasons: typing.List[CookieBlockedReason]
+    #: The reason the cookie was exempted.
+    exemption_reason: CookieExemptionReason
 
-    #: The cookie object representing the cookie which was not sent.
+    #: The string representing this individual cookie as it would appear in the header.
+    cookie_line: str
+
+    #: The cookie object representing the cookie.
     cookie: Cookie
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["blockedReasons"] = [i.to_json() for i in self.blocked_reasons]
+        json["exemptionReason"] = self.exemption_reason.to_json()
+        json["cookieLine"] = self.cookie_line
         json["cookie"] = self.cookie.to_json()
         return json
 
     @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> BlockedCookieWithReason:
+    def from_json(cls, json: T_JSON_DICT) -> ExemptedSetCookieWithReason:
         return cls(
+            exemption_reason=CookieExemptionReason.from_json(json["exemptionReason"]),
+            cookie_line=str(json["cookieLine"]),
+            cookie=Cookie.from_json(json["cookie"]),
+        )
+
+
+@dataclass
+class AssociatedCookie:
+    """
+    A cookie associated with the request which may or may not be sent with it.
+    Includes the cookies itself and reasons for blocking or exemption.
+    """
+
+    #: The cookie object representing the cookie which was not sent.
+    cookie: Cookie
+
+    #: The reason(s) the cookie was blocked. If empty means the cookie is included.
+    blocked_reasons: typing.List[CookieBlockedReason]
+
+    #: The reason the cookie should have been blocked by 3PCD but is exempted. A cookie could
+    #: only have at most one exemption reason.
+    exemption_reason: typing.Optional[CookieExemptionReason] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json["cookie"] = self.cookie.to_json()
+        json["blockedReasons"] = [i.to_json() for i in self.blocked_reasons]
+        if self.exemption_reason is not None:
+            json["exemptionReason"] = self.exemption_reason.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> AssociatedCookie:
+        return cls(
+            cookie=Cookie.from_json(json["cookie"]),
             blocked_reasons=[
                 CookieBlockedReason.from_json(i) for i in json["blockedReasons"]
             ],
-            cookie=Cookie.from_json(json["cookie"]),
+            exemption_reason=(
+                CookieExemptionReason.from_json(json["exemptionReason"])
+                if json.get("exemptionReason", None) is not None
+                else None
+            ),
         )
 
 
@@ -1691,10 +1870,8 @@ class CookieParam:
     #: This is a temporary ability and it will be removed in the future.
     source_port: typing.Optional[int] = None
 
-    #: Cookie partition key. The site of the top-level URL the browser was visiting at the start
-    #: of the request to the endpoint that set the cookie.
-    #: If not set, the cookie will be set as not partitioned.
-    partition_key: typing.Optional[str] = None
+    #: Cookie partition key. If not set, the cookie will be set as not partitioned.
+    partition_key: typing.Optional[CookiePartitionKey] = None
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
@@ -1723,7 +1900,7 @@ class CookieParam:
         if self.source_port is not None:
             json["sourcePort"] = self.source_port
         if self.partition_key is not None:
-            json["partitionKey"] = self.partition_key
+            json["partitionKey"] = self.partition_key.to_json()
         return json
 
     @classmethod
@@ -1775,7 +1952,7 @@ class CookieParam:
                 else None
             ),
             partition_key=(
-                str(json["partitionKey"])
+                CookiePartitionKey.from_json(json["partitionKey"])
                 if json.get("partitionKey", None) is not None
                 else None
             ),
@@ -2125,7 +2302,7 @@ class SignedExchangeInfo:
     #: Security details for the signed exchange header.
     security_details: typing.Optional[SecurityDetails] = None
 
-    #: Errors occurred while handling the signed exchagne.
+    #: Errors occurred while handling the signed exchange.
     errors: typing.Optional[typing.List[SignedExchangeError]] = None
 
     def to_json(self) -> T_JSON_DICT:
@@ -2806,14 +2983,16 @@ def delete_cookies(
     url: typing.Optional[str] = None,
     domain: typing.Optional[str] = None,
     path: typing.Optional[str] = None,
+    partition_key: typing.Optional[CookiePartitionKey] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
-    Deletes browser cookies with matching name and url or domain/path pair.
+    Deletes browser cookies with matching name and url or domain/path/partitionKey pair.
 
     :param name: Name of the cookies to remove.
     :param url: *(Optional)* If specified, deletes all the cookies with the given name where domain and path match provided URL.
     :param domain: *(Optional)* If specified, deletes only cookies with the exact domain.
     :param path: *(Optional)* If specified, deletes only cookies with the exact path.
+    :param partition_key: **(EXPERIMENTAL)** *(Optional)* If specified, deletes only cookies with the the given name and partitionKey where all partition key attributes match the cookie partition key attribute.
     """
     params: T_JSON_DICT = dict()
     params["name"] = name
@@ -2823,6 +3002,8 @@ def delete_cookies(
         params["domain"] = domain
     if path is not None:
         params["path"] = path
+    if partition_key is not None:
+        params["partitionKey"] = partition_key.to_json()
     cmd_dict: T_JSON_DICT = {
         "method": "Network.deleteCookies",
         "params": params,
@@ -2846,6 +3027,9 @@ def emulate_network_conditions(
     download_throughput: float,
     upload_throughput: float,
     connection_type: typing.Optional[ConnectionType] = None,
+    packet_loss: typing.Optional[float] = None,
+    packet_queue_length: typing.Optional[int] = None,
+    packet_reordering: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Activates emulation of network conditions.
@@ -2855,6 +3039,9 @@ def emulate_network_conditions(
     :param download_throughput: Maximal aggregated download throughput (bytes/sec). -1 disables download throttling.
     :param upload_throughput: Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling.
     :param connection_type: *(Optional)* Connection type if known.
+    :param packet_loss: **(EXPERIMENTAL)** *(Optional)* WebRTC packet loss (percent, 0-100). 0 disables packet loss emulation, 100 drops all the packets.
+    :param packet_queue_length: **(EXPERIMENTAL)** *(Optional)* WebRTC packet queue length (packet). 0 removes any queue length limitations.
+    :param packet_reordering: **(EXPERIMENTAL)** *(Optional)* WebRTC packetReordering feature.
     """
     params: T_JSON_DICT = dict()
     params["offline"] = offline
@@ -2863,6 +3050,12 @@ def emulate_network_conditions(
     params["uploadThroughput"] = upload_throughput
     if connection_type is not None:
         params["connectionType"] = connection_type.to_json()
+    if packet_loss is not None:
+        params["packetLoss"] = packet_loss
+    if packet_queue_length is not None:
+        params["packetQueueLength"] = packet_queue_length
+    if packet_reordering is not None:
+        params["packetReordering"] = packet_reordering
     cmd_dict: T_JSON_DICT = {
         "method": "Network.emulateNetworkConditions",
         "params": params,
@@ -3167,7 +3360,7 @@ def set_cookie(
     same_party: typing.Optional[bool] = None,
     source_scheme: typing.Optional[CookieSourceScheme] = None,
     source_port: typing.Optional[int] = None,
-    partition_key: typing.Optional[str] = None,
+    partition_key: typing.Optional[CookiePartitionKey] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, bool]:
     """
     Sets a cookie with the given cookie data; may overwrite equivalent cookies if they exist.
@@ -3185,7 +3378,7 @@ def set_cookie(
     :param same_party: **(EXPERIMENTAL)** *(Optional)* True if cookie is SameParty.
     :param source_scheme: **(EXPERIMENTAL)** *(Optional)* Cookie source scheme type.
     :param source_port: **(EXPERIMENTAL)** *(Optional)* Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port. An unspecified port value allows protocol clients to emulate legacy cookie scope for the port. This is a temporary ability and it will be removed in the future.
-    :param partition_key: **(EXPERIMENTAL)** *(Optional)* Cookie partition key. The site of the top-level URL the browser was visiting at the start of the request to the endpoint that set the cookie. If not set, the cookie will be set as not partitioned.
+    :param partition_key: **(EXPERIMENTAL)** *(Optional)* Cookie partition key. If not set, the cookie will be set as not partitioned.
     :returns: Always set to true. If an error occurs, the response indicates protocol error.
     """
     params: T_JSON_DICT = dict()
@@ -3214,7 +3407,7 @@ def set_cookie(
     if source_port is not None:
         params["sourcePort"] = source_port
     if partition_key is not None:
-        params["partitionKey"] = partition_key
+        params["partitionKey"] = partition_key.to_json()
     cmd_dict: T_JSON_DICT = {
         "method": "Network.setCookie",
         "params": params,
@@ -3491,7 +3684,7 @@ class LoadingFailed:
     timestamp: MonotonicTime
     #: Resource type.
     type_: ResourceType
-    #: User friendly error message.
+    #: Error message. List of network errors: https://cs.chromium.org/chromium/src/net/base/net_error_list.h
     error_text: str
     #: True if loading was canceled.
     canceled: typing.Optional[bool]
@@ -4058,8 +4251,8 @@ class RequestWillBeSentExtraInfo:
     #: Request identifier. Used to match this information to an existing requestWillBeSent event.
     request_id: RequestId
     #: A list of cookies potentially associated to the requested URL. This includes both cookies sent with
-    #: the request and the ones not sent; the latter are distinguished by having blockedReason field set.
-    associated_cookies: typing.List[BlockedCookieWithReason]
+    #: the request and the ones not sent; the latter are distinguished by having blockedReasons field set.
+    associated_cookies: typing.List[AssociatedCookie]
     #: Raw request headers as they will be sent over the wire.
     headers: Headers
     #: Connection timing information for the request.
@@ -4074,7 +4267,7 @@ class RequestWillBeSentExtraInfo:
         return cls(
             request_id=RequestId.from_json(json["requestId"]),
             associated_cookies=[
-                BlockedCookieWithReason.from_json(i) for i in json["associatedCookies"]
+                AssociatedCookie.from_json(i) for i in json["associatedCookies"]
             ],
             headers=Headers.from_json(json["headers"]),
             connect_timing=ConnectTiming.from_json(json["connectTiming"]),
@@ -4122,9 +4315,12 @@ class ResponseReceivedExtraInfo:
     headers_text: typing.Optional[str]
     #: The cookie partition key that will be used to store partitioned cookies set in this response.
     #: Only sent when partitioned cookies are enabled.
-    cookie_partition_key: typing.Optional[str]
-    #: True if partitioned cookies are enabled, but the partition key is not serializeable to string.
+    cookie_partition_key: typing.Optional[CookiePartitionKey]
+    #: True if partitioned cookies are enabled, but the partition key is not serializable to string.
     cookie_partition_key_opaque: typing.Optional[bool]
+    #: A list of cookies which should have been blocked by 3PCD but are exempted and stored from
+    #: the response with the corresponding reason.
+    exempted_cookies: typing.Optional[typing.List[ExemptedSetCookieWithReason]]
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ResponseReceivedExtraInfo:
@@ -4144,7 +4340,7 @@ class ResponseReceivedExtraInfo:
                 else None
             ),
             cookie_partition_key=(
-                str(json["cookiePartitionKey"])
+                CookiePartitionKey.from_json(json["cookiePartitionKey"])
                 if json.get("cookiePartitionKey", None) is not None
                 else None
             ),
@@ -4153,6 +4349,38 @@ class ResponseReceivedExtraInfo:
                 if json.get("cookiePartitionKeyOpaque", None) is not None
                 else None
             ),
+            exempted_cookies=(
+                [
+                    ExemptedSetCookieWithReason.from_json(i)
+                    for i in json["exemptedCookies"]
+                ]
+                if json.get("exemptedCookies", None) is not None
+                else None
+            ),
+        )
+
+
+@event_class("Network.responseReceivedEarlyHints")
+@dataclass
+class ResponseReceivedEarlyHints:
+    """
+    **EXPERIMENTAL**
+
+    Fired when 103 Early Hints headers is received in addition to the common response.
+    Not every responseReceived event will have an responseReceivedEarlyHints fired.
+    Only one responseReceivedEarlyHints may be fired for eached responseReceived event.
+    """
+
+    #: Request identifier. Used to match this information to another responseReceived event.
+    request_id: RequestId
+    #: Raw response headers as they were received over the wire.
+    headers: Headers
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> ResponseReceivedEarlyHints:
+        return cls(
+            request_id=RequestId.from_json(json["requestId"]),
+            headers=Headers.from_json(json["headers"]),
         )
 
 
@@ -4204,6 +4432,20 @@ class TrustTokenOperationDone:
                 else None
             ),
         )
+
+
+@event_class("Network.policyUpdated")
+@dataclass
+class PolicyUpdated:
+    """
+    **EXPERIMENTAL**
+
+    Fired once security policy has been updated.
+    """
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> PolicyUpdated:
+        return cls()
 
 
 @event_class("Network.subresourceWebBundleMetadataReceived")

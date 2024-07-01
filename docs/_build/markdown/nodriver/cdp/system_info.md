@@ -20,35 +20,35 @@ arguments to other commands.
 
 Describes a single graphics processor (GPU).
 
-#### vendor_id *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### vendor_id*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 PCI ID of the GPU vendor, if available; 0 otherwise.
 
-#### device_id *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### device_id*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 PCI ID of the GPU device, if available; 0 otherwise.
 
-#### vendor_string *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### vendor_string*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 String description of the GPU vendor, if the PCI ID is not available.
 
-#### device_string *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### device_string*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 String description of the GPU device, if the PCI ID is not available.
 
-#### driver_vendor *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### driver_vendor*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 String description of the GPU driver vendor.
 
-#### driver_version *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### driver_version*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 String description of the GPU driver version.
 
-#### sub_sys_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### sub_sys_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Sub sys ID of the GPU, only available on Windows.
 
-#### revision *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### revision*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Revision of the GPU, only available on Windows.
 
@@ -56,11 +56,11 @@ Revision of the GPU, only available on Windows.
 
 Describes the width and height dimensions of an entity.
 
-#### width *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### width*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Width in pixels.
 
-#### height *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### height*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Height in pixels.
 
@@ -69,15 +69,15 @@ Height in pixels.
 Describes a supported video decoding profile with its associated minimum and
 maximum resolutions.
 
-#### profile *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### profile*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Video codec profile that is supported, e.g. VP9 Profile 2.
 
-#### max_resolution *: [`Size`](#nodriver.cdp.system_info.Size)*
+#### max_resolution*: [`Size`](#nodriver.cdp.system_info.Size)*
 
 Maximum video dimensions in pixels supported for this `profile`.
 
-#### min_resolution *: [`Size`](#nodriver.cdp.system_info.Size)*
+#### min_resolution*: [`Size`](#nodriver.cdp.system_info.Size)*
 
 Minimum video dimensions in pixels supported for this `profile`.
 
@@ -86,21 +86,21 @@ Minimum video dimensions in pixels supported for this `profile`.
 Describes a supported video encoding profile with its associated maximum
 resolution and maximum framerate.
 
-#### profile *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### profile*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Video codec profile that is supported, e.g H264 Main.
 
-#### max_resolution *: [`Size`](#nodriver.cdp.system_info.Size)*
+#### max_resolution*: [`Size`](#nodriver.cdp.system_info.Size)*
 
 Maximum video dimensions in pixels supported for this `profile`.
 
-#### max_framerate_numerator *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### max_framerate_numerator*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Maximum encoding framerate in frames per second supported for this
 `profile`, as fraction’s numerator and denominator, e.g. 24/1 fps,
 24000/1001 fps, etc.
 
-#### max_framerate_denominator *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### max_framerate_denominator*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 ### *class* SubsamplingFormat(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -127,19 +127,19 @@ Image format of a given image.
 Describes a supported image decoding profile with its associated minimum and
 maximum resolutions and subsampling.
 
-#### image_type *: [`ImageType`](#nodriver.cdp.system_info.ImageType)*
+#### image_type*: [`ImageType`](#nodriver.cdp.system_info.ImageType)*
 
 Image coded, e.g. Jpeg.
 
-#### max_dimensions *: [`Size`](#nodriver.cdp.system_info.Size)*
+#### max_dimensions*: [`Size`](#nodriver.cdp.system_info.Size)*
 
 Maximum supported dimensions of the image in pixels.
 
-#### min_dimensions *: [`Size`](#nodriver.cdp.system_info.Size)*
+#### min_dimensions*: [`Size`](#nodriver.cdp.system_info.Size)*
 
 Minimum supported dimensions of the image in pixels.
 
-#### subsamplings *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SubsamplingFormat`](#nodriver.cdp.system_info.SubsamplingFormat)]*
+#### subsamplings*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SubsamplingFormat`](#nodriver.cdp.system_info.SubsamplingFormat)]*
 
 0, if known.
 
@@ -152,31 +152,31 @@ Minimum supported dimensions of the image in pixels.
 
 Provides information about the GPU(s) on the system.
 
-#### devices *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`GPUDevice`](#nodriver.cdp.system_info.GPUDevice)]*
+#### devices*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`GPUDevice`](#nodriver.cdp.system_info.GPUDevice)]*
 
 The graphics devices on the system. Element 0 is the primary GPU.
 
-#### driver_bug_workarounds *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### driver_bug_workarounds*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 An optional array of GPU driver bug workarounds.
 
-#### video_decoding *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`VideoDecodeAcceleratorCapability`](#nodriver.cdp.system_info.VideoDecodeAcceleratorCapability)]*
+#### video_decoding*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`VideoDecodeAcceleratorCapability`](#nodriver.cdp.system_info.VideoDecodeAcceleratorCapability)]*
 
 Supported accelerated video decoding capabilities.
 
-#### video_encoding *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`VideoEncodeAcceleratorCapability`](#nodriver.cdp.system_info.VideoEncodeAcceleratorCapability)]*
+#### video_encoding*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`VideoEncodeAcceleratorCapability`](#nodriver.cdp.system_info.VideoEncodeAcceleratorCapability)]*
 
 Supported accelerated video encoding capabilities.
 
-#### image_decoding *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ImageDecodeAcceleratorCapability`](#nodriver.cdp.system_info.ImageDecodeAcceleratorCapability)]*
+#### image_decoding*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ImageDecodeAcceleratorCapability`](#nodriver.cdp.system_info.ImageDecodeAcceleratorCapability)]*
 
 Supported accelerated image decoding capabilities.
 
-#### aux_attributes *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]* *= None*
+#### aux_attributes*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]* *= None*
 
 An optional dictionary of additional GPU related attributes.
 
-#### feature_status *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]* *= None*
+#### feature_status*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]* *= None*
 
 An optional dictionary of graphics features and their status.
 
@@ -184,15 +184,15 @@ An optional dictionary of graphics features and their status.
 
 Represents process info.
 
-#### type_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Specifies process type.
 
-#### id_ *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### id_*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Specifies process id.
 
-#### cpu_time *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### cpu_time*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Specifies cumulative CPU usage in seconds across all threads of the
 process since the process start.

@@ -6,17 +6,15 @@
 # CDP domain: Overlay (experimental)
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
-
-from deprecated.sphinx import deprecated  # type: ignore
+from .util import event_class, T_JSON_DICT
 
 from . import dom
 from . import page
 from . import runtime
-from .util import event_class, T_JSON_DICT
+from deprecated.sphinx import deprecated  # type: ignore
 
 
 @dataclass
@@ -25,7 +23,7 @@ class SourceOrderConfig:
     Configuration data for drawing the source order of an elements children.
     """
 
-    #: the color to outline the givent element in.
+    #: the color to outline the given element in.
     parent_outline_color: dom.RGBA
 
     #: the color to outline the child elements in.
@@ -900,7 +898,7 @@ class WindowControlsOverlayConfig:
     #: Whether the title bar CSS should be shown when emulating the Window Controls Overlay.
     show_css: bool
 
-    #: Seleted platforms to show the overlay.
+    #: Selected platforms to show the overlay.
     selected_platform: str
 
     #: The theme color defined in app manifest.
@@ -1174,8 +1172,8 @@ def highlight_frame(
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Highlights owner element of the frame with given id.
-    Deprecated: Doesn't work reliablity and cannot be fixed due to process
-    separatation (the owner node might be in a different process). Determine
+    Deprecated: Doesn't work reliably and cannot be fixed due to process
+    separation (the owner node might be in a different process). Determine
     the owner node in the client and use highlightNode.
 
     .. deprecated:: 1.3

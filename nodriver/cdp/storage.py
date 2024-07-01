@@ -6,15 +6,14 @@
 # CDP domain: Storage (experimental)
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
+from .util import event_class, T_JSON_DICT
 
 from . import browser
 from . import network
 from . import page
-from .util import event_class, T_JSON_DICT
 
 
 class SerializedStorageKey(str):
@@ -108,6 +107,22 @@ class TrustTokens:
         )
 
 
+class InterestGroupAuctionId(str):
+    """
+    Protected audience interest group auction identifier.
+    """
+
+    def to_json(self) -> str:
+        return self
+
+    @classmethod
+    def from_json(cls, json: str) -> InterestGroupAuctionId:
+        return cls(json)
+
+    def __repr__(self):
+        return "InterestGroupAuctionId({})".format(super().__repr__())
+
+
 class InterestGroupAccessType(enum.Enum):
     """
     Enum of interest group access types.
@@ -121,6 +136,8 @@ class InterestGroupAccessType(enum.Enum):
     WIN = "win"
     ADDITIONAL_BID = "additionalBid"
     ADDITIONAL_BID_WIN = "additionalBidWin"
+    TOP_LEVEL_BID = "topLevelBid"
+    TOP_LEVEL_ADDITIONAL_BID = "topLevelAdditionalBid"
     CLEAR = "clear"
 
     def to_json(self) -> str:
@@ -131,126 +148,39 @@ class InterestGroupAccessType(enum.Enum):
         return cls(json)
 
 
-@dataclass
-class InterestGroupAd:
+class InterestGroupAuctionEventType(enum.Enum):
     """
-    Ad advertising element inside an interest group.
+    Enum of auction events.
     """
 
-    render_url: str
+    STARTED = "started"
+    CONFIG_RESOLVED = "configResolved"
 
-    metadata: typing.Optional[str] = None
-
-    def to_json(self) -> T_JSON_DICT:
-        json: T_JSON_DICT = dict()
-        json["renderURL"] = self.render_url
-        if self.metadata is not None:
-            json["metadata"] = self.metadata
-        return json
+    def to_json(self) -> str:
+        return self.value
 
     @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> InterestGroupAd:
-        return cls(
-            render_url=str(json["renderURL"]),
-            metadata=(
-                str(json["metadata"])
-                if json.get("metadata", None) is not None
-                else None
-            ),
-        )
+    def from_json(cls, json: str) -> InterestGroupAuctionEventType:
+        return cls(json)
 
 
-@dataclass
-class InterestGroupDetails:
+class InterestGroupAuctionFetchType(enum.Enum):
     """
-    The full details of an interest group.
+    Enum of network fetches auctions can do.
     """
 
-    owner_origin: str
+    BIDDER_JS = "bidderJs"
+    BIDDER_WASM = "bidderWasm"
+    SELLER_JS = "sellerJs"
+    BIDDER_TRUSTED_SIGNALS = "bidderTrustedSignals"
+    SELLER_TRUSTED_SIGNALS = "sellerTrustedSignals"
 
-    name: str
-
-    expiration_time: network.TimeSinceEpoch
-
-    joining_origin: str
-
-    trusted_bidding_signals_keys: typing.List[str]
-
-    ads: typing.List[InterestGroupAd]
-
-    ad_components: typing.List[InterestGroupAd]
-
-    bidding_logic_url: typing.Optional[str] = None
-
-    bidding_wasm_helper_url: typing.Optional[str] = None
-
-    update_url: typing.Optional[str] = None
-
-    trusted_bidding_signals_url: typing.Optional[str] = None
-
-    user_bidding_signals: typing.Optional[str] = None
-
-    def to_json(self) -> T_JSON_DICT:
-        json: T_JSON_DICT = dict()
-        json["ownerOrigin"] = self.owner_origin
-        json["name"] = self.name
-        json["expirationTime"] = self.expiration_time.to_json()
-        json["joiningOrigin"] = self.joining_origin
-        json["trustedBiddingSignalsKeys"] = [
-            i for i in self.trusted_bidding_signals_keys
-        ]
-        json["ads"] = [i.to_json() for i in self.ads]
-        json["adComponents"] = [i.to_json() for i in self.ad_components]
-        if self.bidding_logic_url is not None:
-            json["biddingLogicURL"] = self.bidding_logic_url
-        if self.bidding_wasm_helper_url is not None:
-            json["biddingWasmHelperURL"] = self.bidding_wasm_helper_url
-        if self.update_url is not None:
-            json["updateURL"] = self.update_url
-        if self.trusted_bidding_signals_url is not None:
-            json["trustedBiddingSignalsURL"] = self.trusted_bidding_signals_url
-        if self.user_bidding_signals is not None:
-            json["userBiddingSignals"] = self.user_bidding_signals
-        return json
+    def to_json(self) -> str:
+        return self.value
 
     @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> InterestGroupDetails:
-        return cls(
-            owner_origin=str(json["ownerOrigin"]),
-            name=str(json["name"]),
-            expiration_time=network.TimeSinceEpoch.from_json(json["expirationTime"]),
-            joining_origin=str(json["joiningOrigin"]),
-            trusted_bidding_signals_keys=[
-                str(i) for i in json["trustedBiddingSignalsKeys"]
-            ],
-            ads=[InterestGroupAd.from_json(i) for i in json["ads"]],
-            ad_components=[InterestGroupAd.from_json(i) for i in json["adComponents"]],
-            bidding_logic_url=(
-                str(json["biddingLogicURL"])
-                if json.get("biddingLogicURL", None) is not None
-                else None
-            ),
-            bidding_wasm_helper_url=(
-                str(json["biddingWasmHelperURL"])
-                if json.get("biddingWasmHelperURL", None) is not None
-                else None
-            ),
-            update_url=(
-                str(json["updateURL"])
-                if json.get("updateURL", None) is not None
-                else None
-            ),
-            trusted_bidding_signals_url=(
-                str(json["trustedBiddingSignalsURL"])
-                if json.get("trustedBiddingSignalsURL", None) is not None
-                else None
-            ),
-            user_bidding_signals=(
-                str(json["userBiddingSignals"])
-                if json.get("userBiddingSignals", None) is not None
-                else None
-            ),
-        )
+    def from_json(cls, json: str) -> InterestGroupAuctionFetchType:
+        return cls(json)
 
 
 class SharedStorageAccessType(enum.Enum):
@@ -265,6 +195,7 @@ class SharedStorageAccessType(enum.Enum):
     DOCUMENT_APPEND = "documentAppend"
     DOCUMENT_DELETE = "documentDelete"
     DOCUMENT_CLEAR = "documentClear"
+    DOCUMENT_GET = "documentGet"
     WORKLET_SET = "workletSet"
     WORKLET_APPEND = "workletAppend"
     WORKLET_DELETE = "workletDelete"
@@ -274,6 +205,10 @@ class SharedStorageAccessType(enum.Enum):
     WORKLET_ENTRIES = "workletEntries"
     WORKLET_LENGTH = "workletLength"
     WORKLET_REMAINING_BUDGET = "workletRemainingBudget"
+    HEADER_SET = "headerSet"
+    HEADER_APPEND = "headerAppend"
+    HEADER_DELETE = "headerDelete"
+    HEADER_CLEAR = "headerClear"
 
     def to_json(self) -> str:
         return self.value
@@ -313,17 +248,25 @@ class SharedStorageMetadata:
     Details for an origin's shared storage.
     """
 
+    #: Time when the origin's shared storage was last created.
     creation_time: network.TimeSinceEpoch
 
+    #: Number of key-value pairs stored in origin's shared storage.
     length: int
 
+    #: Current amount of bits of entropy remaining in the navigation budget.
     remaining_budget: float
+
+    #: Total number of bytes stored as key-value pairs in origin's shared
+    #: storage.
+    bytes_used: int
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json["creationTime"] = self.creation_time.to_json()
         json["length"] = self.length
         json["remainingBudget"] = self.remaining_budget
+        json["bytesUsed"] = self.bytes_used
         return json
 
     @classmethod
@@ -332,6 +275,7 @@ class SharedStorageMetadata:
             creation_time=network.TimeSinceEpoch.from_json(json["creationTime"]),
             length=int(json["length"]),
             remaining_budget=float(json["remainingBudget"]),
+            bytes_used=int(json["bytesUsed"]),
         )
 
 
@@ -421,20 +365,26 @@ class SharedStorageAccessParams:
     #: SharedStorageAccessType.documentDelete,
     #: SharedStorageAccessType.workletSet,
     #: SharedStorageAccessType.workletAppend,
-    #: SharedStorageAccessType.workletDelete, and
-    #: SharedStorageAccessType.workletGet.
+    #: SharedStorageAccessType.workletDelete,
+    #: SharedStorageAccessType.workletGet,
+    #: SharedStorageAccessType.headerSet,
+    #: SharedStorageAccessType.headerAppend, and
+    #: SharedStorageAccessType.headerDelete.
     key: typing.Optional[str] = None
 
     #: Value for a specific entry in an origin's shared storage.
     #: Present only for SharedStorageAccessType.documentSet,
     #: SharedStorageAccessType.documentAppend,
-    #: SharedStorageAccessType.workletSet, and
-    #: SharedStorageAccessType.workletAppend.
+    #: SharedStorageAccessType.workletSet,
+    #: SharedStorageAccessType.workletAppend,
+    #: SharedStorageAccessType.headerSet, and
+    #: SharedStorageAccessType.headerAppend.
     value: typing.Optional[str] = None
 
     #: Whether or not to set an entry for a key if that key is already present.
-    #: Present only for SharedStorageAccessType.documentSet and
-    #: SharedStorageAccessType.workletSet.
+    #: Present only for SharedStorageAccessType.documentSet,
+    #: SharedStorageAccessType.workletSet, and
+    #: SharedStorageAccessType.headerSet.
     ignore_if_present: typing.Optional[bool] = None
 
     def to_json(self) -> T_JSON_DICT:
@@ -861,6 +811,10 @@ class AttributionReportingSourceRegistrationResult(enum.Enum):
     DESTINATION_BOTH_LIMITS_REACHED = "destinationBothLimitsReached"
     REPORTING_ORIGINS_PER_SITE_LIMIT_REACHED = "reportingOriginsPerSiteLimitReached"
     EXCEEDS_MAX_CHANNEL_CAPACITY = "exceedsMaxChannelCapacity"
+    EXCEEDS_MAX_TRIGGER_STATE_CARDINALITY = "exceedsMaxTriggerStateCardinality"
+    DESTINATION_PER_DAY_REPORTING_LIMIT_REACHED = (
+        "destinationPerDayReportingLimitReached"
+    )
 
     def to_json(self) -> str:
         return self.value
@@ -883,7 +837,7 @@ class AttributionReportingSourceRegistrationTimeConfig(enum.Enum):
 
 
 @dataclass
-class AttributionReportingAggregatableValueEntry:
+class AttributionReportingAggregatableValueDictEntry:
     key: str
 
     #: number instead of integer because not all uint32 can be represented by
@@ -897,10 +851,35 @@ class AttributionReportingAggregatableValueEntry:
         return json
 
     @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> AttributionReportingAggregatableValueEntry:
+    def from_json(
+        cls, json: T_JSON_DICT
+    ) -> AttributionReportingAggregatableValueDictEntry:
         return cls(
             key=str(json["key"]),
             value=float(json["value"]),
+        )
+
+
+@dataclass
+class AttributionReportingAggregatableValueEntry:
+    values: typing.List[AttributionReportingAggregatableValueDictEntry]
+
+    filters: AttributionReportingFilterPair
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json["values"] = [i.to_json() for i in self.values]
+        json["filters"] = self.filters.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> AttributionReportingAggregatableValueEntry:
+        return cls(
+            values=[
+                AttributionReportingAggregatableValueDictEntry.from_json(i)
+                for i in json["values"]
+            ],
+            filters=AttributionReportingFilterPair.from_json(json["filters"]),
         )
 
 
@@ -1126,6 +1105,37 @@ class AttributionReportingAggregatableResult(enum.Enum):
     @classmethod
     def from_json(cls, json: str) -> AttributionReportingAggregatableResult:
         return cls(json)
+
+
+@dataclass
+class RelatedWebsiteSet:
+    """
+    A single Related Website Set object.
+    """
+
+    #: The primary site of this set, along with the ccTLDs if there is any.
+    primary_sites: typing.List[str]
+
+    #: The associated sites of this set, along with the ccTLDs if there is any.
+    associated_sites: typing.List[str]
+
+    #: The service sites of this set, along with the ccTLDs if there is any.
+    service_sites: typing.List[str]
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json["primarySites"] = [i for i in self.primary_sites]
+        json["associatedSites"] = [i for i in self.associated_sites]
+        json["serviceSites"] = [i for i in self.service_sites]
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> RelatedWebsiteSet:
+        return cls(
+            primary_sites=[str(i) for i in json["primarySites"]],
+            associated_sites=[str(i) for i in json["associatedSites"]],
+            service_sites=[str(i) for i in json["serviceSites"]],
+        )
 
 
 def get_storage_key_for_frame(
@@ -1477,7 +1487,7 @@ def clear_trust_tokens(
 
 def get_interest_group_details(
     owner_origin: str, name: str
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, InterestGroupDetails]:
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, dict]:
     """
     Gets details for a named interest group.
 
@@ -1485,7 +1495,7 @@ def get_interest_group_details(
 
     :param owner_origin:
     :param name:
-    :returns:
+    :returns: This largely corresponds to: https://wicg.github.io/turtledove/#dictdef-generatebidinterestgroup but has absolute expirationTime instead of relative lifetimeMs and also adds joiningOrigin.
     """
     params: T_JSON_DICT = dict()
     params["ownerOrigin"] = owner_origin
@@ -1495,7 +1505,7 @@ def get_interest_group_details(
         "params": params,
     }
     json = yield cmd_dict
-    return InterestGroupDetails.from_json(json["details"])
+    return dict(json["details"])
 
 
 def set_interest_group_tracking(
@@ -1512,6 +1522,26 @@ def set_interest_group_tracking(
     params["enable"] = enable
     cmd_dict: T_JSON_DICT = {
         "method": "Storage.setInterestGroupTracking",
+        "params": params,
+    }
+    json = yield cmd_dict
+
+
+def set_interest_group_auction_tracking(
+    enable: bool,
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
+    """
+    Enables/Disables issuing of interestGroupAuctionEventOccurred and
+    interestGroupAuctionNetworkRequestCreated.
+
+    **EXPERIMENTAL**
+
+    :param enable:
+    """
+    params: T_JSON_DICT = dict()
+    params["enable"] = enable
+    cmd_dict: T_JSON_DICT = {
+        "method": "Storage.setInterestGroupAuctionTracking",
         "params": params,
     }
     json = yield cmd_dict
@@ -1761,6 +1791,42 @@ def set_attribution_reporting_tracking(
     json = yield cmd_dict
 
 
+def send_pending_attribution_reports() -> (
+    typing.Generator[T_JSON_DICT, T_JSON_DICT, int]
+):
+    """
+    Sends all pending Attribution Reports immediately, regardless of their
+    scheduled report time.
+
+    **EXPERIMENTAL**
+
+    :returns: The number of reports that were sent.
+    """
+    cmd_dict: T_JSON_DICT = {
+        "method": "Storage.sendPendingAttributionReports",
+    }
+    json = yield cmd_dict
+    return int(json["numSent"])
+
+
+def get_related_website_sets() -> (
+    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[RelatedWebsiteSet]]
+):
+    """
+    Returns the effective Related Website Sets in use by this profile for the browser
+    session. The effective Related Website Sets will not change during a browser session.
+
+    **EXPERIMENTAL**
+
+    :returns:
+    """
+    cmd_dict: T_JSON_DICT = {
+        "method": "Storage.getRelatedWebsiteSets",
+    }
+    json = yield cmd_dict
+    return [RelatedWebsiteSet.from_json(i) for i in json["sets"]]
+
+
 @event_class("Storage.cacheStorageContentUpdated")
 @dataclass
 class CacheStorageContentUpdated:
@@ -1866,13 +1932,22 @@ class IndexedDBListUpdated:
 @dataclass
 class InterestGroupAccessed:
     """
-    One of the interest groups was accessed by the associated page.
+    One of the interest groups was accessed. Note that these events are global
+    to all targets sharing an interest group store.
     """
 
     access_time: network.TimeSinceEpoch
     type_: InterestGroupAccessType
     owner_origin: str
     name: str
+    #: For topLevelBid/topLevelAdditionalBid, and when appropriate,
+    #: win and additionalBidWin
+    component_seller_origin: typing.Optional[str]
+    #: For bid or somethingBid event, if done locally and not on a server.
+    bid: typing.Optional[float]
+    bid_currency: typing.Optional[str]
+    #: For non-global events --- links to interestGroupAuctionEvent
+    unique_auction_id: typing.Optional[InterestGroupAuctionId]
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> InterestGroupAccessed:
@@ -1881,6 +1956,83 @@ class InterestGroupAccessed:
             type_=InterestGroupAccessType.from_json(json["type"]),
             owner_origin=str(json["ownerOrigin"]),
             name=str(json["name"]),
+            component_seller_origin=(
+                str(json["componentSellerOrigin"])
+                if json.get("componentSellerOrigin", None) is not None
+                else None
+            ),
+            bid=float(json["bid"]) if json.get("bid", None) is not None else None,
+            bid_currency=(
+                str(json["bidCurrency"])
+                if json.get("bidCurrency", None) is not None
+                else None
+            ),
+            unique_auction_id=(
+                InterestGroupAuctionId.from_json(json["uniqueAuctionId"])
+                if json.get("uniqueAuctionId", None) is not None
+                else None
+            ),
+        )
+
+
+@event_class("Storage.interestGroupAuctionEventOccurred")
+@dataclass
+class InterestGroupAuctionEventOccurred:
+    """
+    An auction involving interest groups is taking place. These events are
+    target-specific.
+    """
+
+    event_time: network.TimeSinceEpoch
+    type_: InterestGroupAuctionEventType
+    unique_auction_id: InterestGroupAuctionId
+    #: Set for child auctions.
+    parent_auction_id: typing.Optional[InterestGroupAuctionId]
+    #: Set for started and configResolved
+    auction_config: typing.Optional[dict]
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> InterestGroupAuctionEventOccurred:
+        return cls(
+            event_time=network.TimeSinceEpoch.from_json(json["eventTime"]),
+            type_=InterestGroupAuctionEventType.from_json(json["type"]),
+            unique_auction_id=InterestGroupAuctionId.from_json(json["uniqueAuctionId"]),
+            parent_auction_id=(
+                InterestGroupAuctionId.from_json(json["parentAuctionId"])
+                if json.get("parentAuctionId", None) is not None
+                else None
+            ),
+            auction_config=(
+                dict(json["auctionConfig"])
+                if json.get("auctionConfig", None) is not None
+                else None
+            ),
+        )
+
+
+@event_class("Storage.interestGroupAuctionNetworkRequestCreated")
+@dataclass
+class InterestGroupAuctionNetworkRequestCreated:
+    """
+    Specifies which auctions a particular network fetch may be related to, and
+    in what role. Note that it is not ordered with respect to
+    Network.requestWillBeSent (but will happen before loadingFinished
+    loadingFailed).
+    """
+
+    type_: InterestGroupAuctionFetchType
+    request_id: network.RequestId
+    #: This is the set of the auctions using the worklet that issued this
+    #: request.  In the case of trusted signals, it's possible that only some of
+    #: them actually care about the keys being queried.
+    auctions: typing.List[InterestGroupAuctionId]
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> InterestGroupAuctionNetworkRequestCreated:
+        return cls(
+            type_=InterestGroupAuctionFetchType.from_json(json["type"]),
+            request_id=network.RequestId.from_json(json["requestId"]),
+            auctions=[InterestGroupAuctionId.from_json(i) for i in json["auctions"]],
         )
 
 
@@ -1900,7 +2052,7 @@ class SharedStorageAccessed:
     main_frame_id: page.FrameId
     #: Serialized origin for the context that invoked the Shared Storage API.
     owner_origin: str
-    #: The sub-parameters warapped by ``params`` are all optional and their
+    #: The sub-parameters wrapped by ``params`` are all optional and their
     #: presence/absence depends on ``type``.
     params: SharedStorageAccessParams
 

@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.browser - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -163,6 +163,9 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html">Quickstart guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -192,6 +195,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/dom_storage.html">DOMStorage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/emulation.html">Emulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/extensions.html">Extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fed_cm.html">FedCm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fetch.html">Fetch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/headless_experimental.html">HeadlessExperimental</a></li>
@@ -211,6 +215,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/performance_timeline.html">PerformanceTimeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/preload.html">Preload</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/profiler.html">Profiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/pwa.html">PWA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/runtime.html">Runtime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/schema.html">Schema</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/security.html">Security</a></li>
@@ -265,14 +270,13 @@
 <span class="c1"># CDP domain: Browser</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
-
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">page</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">target</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
 
 
 <div class="viewcode-block" id="BrowserContextID">
@@ -406,6 +410,7 @@
     <span class="n">PROTECTED_MEDIA_IDENTIFIER</span> <span class="o">=</span> <span class="s2">&quot;protectedMediaIdentifier&quot;</span>
     <span class="n">SENSORS</span> <span class="o">=</span> <span class="s2">&quot;sensors&quot;</span>
     <span class="n">STORAGE_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;storageAccess&quot;</span>
+    <span class="n">SPEAKER_SELECTION</span> <span class="o">=</span> <span class="s2">&quot;speakerSelection&quot;</span>
     <span class="n">TOP_LEVEL_STORAGE_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;topLevelStorageAccess&quot;</span>
     <span class="n">VIDEO_CAPTURE</span> <span class="o">=</span> <span class="s2">&quot;videoCapture&quot;</span>
     <span class="n">VIDEO_CAPTURE_PAN_TILT_ZOOM</span> <span class="o">=</span> <span class="s2">&quot;videoCapturePanTiltZoom&quot;</span>
@@ -461,6 +466,9 @@
     <span class="c1">#: For &quot;clipboard&quot; permission, may specify allowWithoutSanitization.</span>
     <span class="n">allow_without_sanitization</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="c1">#: For &quot;fullscreen&quot; permission, must specify allowWithoutGesture:true.</span>
+    <span class="n">allow_without_gesture</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
     <span class="c1">#: For &quot;camera&quot; permission, may specify panTiltZoom.</span>
     <span class="n">pan_tilt_zoom</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -473,6 +481,8 @@
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;userVisibleOnly&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_visible_only</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_without_sanitization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;allowWithoutSanitization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_without_sanitization</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_without_gesture</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;allowWithoutGesture&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_without_gesture</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pan_tilt_zoom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;panTiltZoom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pan_tilt_zoom</span>
         <span class="k">return</span> <span class="n">json</span>
@@ -490,6 +500,11 @@
             <span class="n">allow_without_sanitization</span><span class="o">=</span><span class="p">(</span>
                 <span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;allowWithoutSanitization&quot;</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allowWithoutSanitization&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">allow_without_gesture</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;allowWithoutGesture&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allowWithoutGesture&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
             <span class="n">pan_tilt_zoom</span><span class="o">=</span><span class="p">(</span>
@@ -690,7 +705,7 @@
 
 <span class="sd">    **EXPERIMENTAL**</span>
 
-<span class="sd">    :param behavior: Whether to allow all or deny all download requests, or use default Chrome behavior if available (otherwise deny). ``allowAndName`` allows download and names files according to their dowmload guids.</span>
+<span class="sd">    :param behavior: Whether to allow all or deny all download requests, or use default Chrome behavior if available (otherwise deny). ``allowAndName`` allows download and names files according to their download guids.</span>
 <span class="sd">    :param browser_context_id: *(Optional)* BrowserContext to set download behavior. When omitted, default browser context is used.</span>
 <span class="sd">    :param download_path: *(Optional)* The default path to save downloaded files to. This is required if behavior is set to &#39;allow&#39; or &#39;allowAndName&#39;.</span>
 <span class="sd">    :param events_enabled: *(Optional)* Whether to emit download events (defaults to false).</span>

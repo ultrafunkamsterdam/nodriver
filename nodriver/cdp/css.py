@@ -6,14 +6,13 @@
 # CDP domain: CSS (experimental)
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
+from .util import event_class, T_JSON_DICT
 
 from . import dom
 from . import page
-from .util import event_class, T_JSON_DICT
 
 
 class StyleSheetId(str):
@@ -277,7 +276,7 @@ class CSSStyleSheetHeader:
     frame_id: page.FrameId
 
     #: Stylesheet resource URL. Empty if this is a constructed stylesheet created using
-    #: new CSSStyleSheet() (but non-empty if this is a constructed sylesheet imported
+    #: new CSSStyleSheet() (but non-empty if this is a constructed stylesheet imported
     #: as a CSS module script).
     source_url: str
 
@@ -1409,6 +1408,48 @@ class CSSPositionFallbackRule:
 
 
 @dataclass
+class CSSPositionTryRule:
+    """
+    CSS @position-try rule representation.
+    """
+
+    #: The prelude dashed-ident name
+    name: Value
+
+    #: Parent stylesheet's origin.
+    origin: StyleSheetOrigin
+
+    #: Associated style declaration.
+    style: CSSStyle
+
+    #: The css style sheet identifier (absent for user agent stylesheet and user-specified
+    #: stylesheet rules) this rule came from.
+    style_sheet_id: typing.Optional[StyleSheetId] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json["name"] = self.name.to_json()
+        json["origin"] = self.origin.to_json()
+        json["style"] = self.style.to_json()
+        if self.style_sheet_id is not None:
+            json["styleSheetId"] = self.style_sheet_id.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> CSSPositionTryRule:
+        return cls(
+            name=Value.from_json(json["name"]),
+            origin=StyleSheetOrigin.from_json(json["origin"]),
+            style=CSSStyle.from_json(json["style"]),
+            style_sheet_id=(
+                StyleSheetId.from_json(json["styleSheetId"])
+                if json.get("styleSheetId", None) is not None
+                else None
+            ),
+        )
+
+
+@dataclass
 class CSSKeyframesRule:
     """
     CSS keyframes rule representation.
@@ -1853,6 +1894,7 @@ def get_matched_styles_for_node(
         typing.Optional[typing.List[InheritedPseudoElementMatches]],
         typing.Optional[typing.List[CSSKeyframesRule]],
         typing.Optional[typing.List[CSSPositionFallbackRule]],
+        typing.Optional[typing.List[CSSPositionTryRule]],
         typing.Optional[typing.List[CSSPropertyRule]],
         typing.Optional[typing.List[CSSPropertyRegistration]],
         typing.Optional[CSSFontPaletteValuesRule],
@@ -1873,10 +1915,11 @@ def get_matched_styles_for_node(
         5. **inheritedPseudoElements** - *(Optional)* A chain of inherited pseudo element styles (from the immediate node parent up to the DOM tree root).
         6. **cssKeyframesRules** - *(Optional)* A list of CSS keyframed animations matching this node.
         7. **cssPositionFallbackRules** - *(Optional)* A list of CSS position fallbacks matching this node.
-        8. **cssPropertyRules** - *(Optional)* A list of CSS at-property rules matching this node.
-        9. **cssPropertyRegistrations** - *(Optional)* A list of CSS property registrations matching this node.
-        10. **cssFontPaletteValuesRule** - *(Optional)* A font-palette-values rule matching this node.
-        11. **parentLayoutNodeId** - *(Optional)* Id of the first parent element that does not have display: contents.
+        8. **cssPositionTryRules** - *(Optional)* A list of CSS @position-try rules matching this node, based on the position-try-options property.
+        9. **cssPropertyRules** - *(Optional)* A list of CSS at-property rules matching this node.
+        10. **cssPropertyRegistrations** - *(Optional)* A list of CSS property registrations matching this node.
+        11. **cssFontPaletteValuesRule** - *(Optional)* A font-palette-values rule matching this node.
+        12. **parentLayoutNodeId** - *(Optional)* Id of the first parent element that does not have display: contents.
     """
     params: T_JSON_DICT = dict()
     params["nodeId"] = node_id.to_json()
@@ -1930,6 +1973,11 @@ def get_matched_styles_for_node(
                 for i in json["cssPositionFallbackRules"]
             ]
             if json.get("cssPositionFallbackRules", None) is not None
+            else None
+        ),
+        (
+            [CSSPositionTryRule.from_json(i) for i in json["cssPositionTryRules"]]
+            if json.get("cssPositionTryRules", None) is not None
             else None
         ),
         (
@@ -2034,6 +2082,30 @@ def get_layers_for_node(
     }
     json = yield cmd_dict
     return CSSLayerData.from_json(json["rootLayer"])
+
+
+def get_location_for_selector(
+    style_sheet_id: StyleSheetId, selector_text: str
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[SourceRange]]:
+    """
+    Given a CSS selector text and a style sheet ID, getLocationForSelector
+    returns an array of locations of the CSS selector in the style sheet.
+
+    **EXPERIMENTAL**
+
+    :param style_sheet_id:
+    :param selector_text:
+    :returns:
+    """
+    params: T_JSON_DICT = dict()
+    params["styleSheetId"] = style_sheet_id.to_json()
+    params["selectorText"] = selector_text
+    cmd_dict: T_JSON_DICT = {
+        "method": "CSS.getLocationForSelector",
+        "params": params,
+    }
+    json = yield cmd_dict
+    return [SourceRange.from_json(i) for i in json["ranges"]]
 
 
 def track_computed_style_updates(

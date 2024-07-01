@@ -2,6 +2,7 @@
 #
 # This file is generated from the CDP specification. If you need to make
 # changes, edit the generator and regenerate all of the modules.
+
 from . import (
     accessibility,
     animation,
@@ -23,6 +24,7 @@ from . import (
     device_orientation,
     emulation,
     event_breakpoints,
+    extensions,
     fed_cm,
     fetch,
     headless_experimental,
@@ -37,6 +39,7 @@ from . import (
     memory,
     network,
     overlay,
+    pwa,
     page,
     performance,
     performance_timeline,
@@ -54,4 +57,3 @@ from . import (
     web_audio,
     web_authn,
 )
-from . import util

@@ -34,6 +34,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: AccountUrlType
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: Account
       :members:
       :undoc-members:
@@ -58,6 +63,8 @@ to. For more information, see
 .. autofunction:: dismiss_dialog
 
 .. autofunction:: enable
+
+.. autofunction:: open_url
 
 .. autofunction:: reset_cooldown
 

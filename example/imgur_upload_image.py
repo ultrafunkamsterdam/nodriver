@@ -1,4 +1,3 @@
-from nodriver import *
 from pathlib import Path
 
 # interesting, this is a typical site which runs completely on javascript, and that causes
@@ -6,6 +5,15 @@ from pathlib import Path
 # of this fast beast. You have to carefully consider timing.
 
 DELAY = 2
+
+
+try:
+    from nodriver import *
+except (ModuleNotFoundError, ImportError):
+    import sys, os
+
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+    from nodriver import *
 
 
 async def main():

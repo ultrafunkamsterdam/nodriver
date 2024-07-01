@@ -22,19 +22,19 @@ Unique identifier of Database object.
 
 Database object.
 
-#### id_ *: [`DatabaseId`](#nodriver.cdp.database.DatabaseId)*
+#### id_*: [`DatabaseId`](#nodriver.cdp.database.DatabaseId)*
 
 Database ID.
 
-#### domain *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### domain*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Database domain.
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Database name.
 
-#### version *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### version*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Database version.
 
@@ -42,11 +42,11 @@ Database version.
 
 Database error.
 
-#### message *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### message*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Error message.
 
-#### code *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### code*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Error code.
 
@@ -104,4 +104,4 @@ you use the event’s attributes.
 
 ### *class* AddDatabase(database)
 
-#### database *: [`Database`](#nodriver.cdp.database.Database)*
+#### database*: [`Database`](#nodriver.cdp.database.Database)*

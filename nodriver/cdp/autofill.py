@@ -6,14 +6,13 @@
 # CDP domain: Autofill (experimental)
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
+from .util import event_class, T_JSON_DICT
 
 from . import dom
 from . import page
-from .util import event_class, T_JSON_DICT
 
 
 @dataclass
@@ -124,7 +123,7 @@ class AddressUI:
     Munich 81456
     """
 
-    #: A two dimension array containing the repesentation of values from an address profile.
+    #: A two dimension array containing the representation of values from an address profile.
     address_fields: typing.List[AddressFields]
 
     def to_json(self) -> T_JSON_DICT:
@@ -175,6 +174,9 @@ class FilledField:
     #: The filling strategy
     filling_strategy: FillingStrategy
 
+    #: The frame the field belongs to
+    frame_id: page.FrameId
+
     #: The form field's DOM node
     field_id: dom.BackendNodeId
 
@@ -186,6 +188,7 @@ class FilledField:
         json["value"] = self.value
         json["autofillType"] = self.autofill_type
         json["fillingStrategy"] = self.filling_strategy.to_json()
+        json["frameId"] = self.frame_id.to_json()
         json["fieldId"] = self.field_id.to_json()
         return json
 
@@ -198,6 +201,7 @@ class FilledField:
             value=str(json["value"]),
             autofill_type=str(json["autofillType"]),
             filling_strategy=FillingStrategy.from_json(json["fillingStrategy"]),
+            frame_id=page.FrameId.from_json(json["frameId"]),
             field_id=dom.BackendNodeId.from_json(json["fieldId"]),
         )
 

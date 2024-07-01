@@ -6,16 +6,14 @@
 # CDP domain: DOM
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
-
-from deprecated.sphinx import deprecated  # type: ignore
+from .util import event_class, T_JSON_DICT
 
 from . import page
 from . import runtime
-from .util import event_class, T_JSON_DICT
+from deprecated.sphinx import deprecated  # type: ignore
 
 
 class NodeId(int):
@@ -93,11 +91,14 @@ class PseudoType(enum.Enum):
     MARKER = "marker"
     BACKDROP = "backdrop"
     SELECTION = "selection"
+    SEARCH_TEXT = "search-text"
     TARGET_TEXT = "target-text"
     SPELLING_ERROR = "spelling-error"
     GRAMMAR_ERROR = "grammar-error"
     HIGHLIGHT = "highlight"
     FIRST_LINE_INHERITED = "first-line-inherited"
+    SCROLL_MARKER = "scroll-marker"
+    SCROLL_MARKER_GROUP = "scroll-marker-group"
     SCROLLBAR = "scrollbar"
     SCROLLBAR_THUMB = "scrollbar-thumb"
     SCROLLBAR_BUTTON = "scrollbar-button"
@@ -185,6 +186,22 @@ class LogicalAxes(enum.Enum):
 
     @classmethod
     def from_json(cls, json: str) -> LogicalAxes:
+        return cls(json)
+
+
+class ScrollOrientation(enum.Enum):
+    """
+    Physical scroll orientation
+    """
+
+    HORIZONTAL = "horizontal"
+    VERTICAL = "vertical"
+
+    def to_json(self) -> str:
+        return self.value
+
+    @classmethod
+    def from_json(cls, json: str) -> ScrollOrientation:
         return cls(json)
 
 
@@ -871,7 +888,7 @@ def get_attributes(
     """
     Returns attributes for the specified node.
 
-    :param node_id: Id of the node to retrieve attibutes for.
+    :param node_id: Id of the node to retrieve attributes for.
     :returns: An interleaved array of node attribute names and values.
     """
     params: T_JSON_DICT = dict()
@@ -1344,6 +1361,29 @@ def get_top_layer_elements() -> (
     return [NodeId.from_json(i) for i in json["nodeIds"]]
 
 
+def get_element_by_relation(
+    node_id: NodeId, relation: str
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
+    """
+    Returns the NodeId of the matched element according to certain relations.
+
+    **EXPERIMENTAL**
+
+    :param node_id: Id of the node from which to query the relation.
+    :param relation: Type of relation to get.
+    :returns: NodeId of the element matching the queried relation.
+    """
+    params: T_JSON_DICT = dict()
+    params["nodeId"] = node_id.to_json()
+    params["relation"] = relation
+    cmd_dict: T_JSON_DICT = {
+        "method": "DOM.getElementByRelation",
+        "params": params,
+    }
+    json = yield cmd_dict
+    return NodeId.from_json(json["nodeId"])
+
+
 def redo() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Re-does the last undone action.
@@ -1793,6 +1833,31 @@ def get_querying_descendants_for_container(
     }
     json = yield cmd_dict
     return [NodeId.from_json(i) for i in json["nodeIds"]]
+
+
+def get_anchor_element(
+    node_id: NodeId, anchor_specifier: typing.Optional[str] = None
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
+    """
+    Returns the target anchor element of the given anchor query according to
+    https://www.w3.org/TR/css-anchor-position-1/#target.
+
+    **EXPERIMENTAL**
+
+    :param node_id: Id of the positioned element from which to find the anchor.
+    :param anchor_specifier: *(Optional)* An optional anchor specifier, as defined in https://www.w3.org/TR/css-anchor-position-1/#anchor-specifier. If not provided, it will return the implicit anchor element for the given positioned element.
+    :returns: The anchor element of the given anchor query.
+    """
+    params: T_JSON_DICT = dict()
+    params["nodeId"] = node_id.to_json()
+    if anchor_specifier is not None:
+        params["anchorSpecifier"] = anchor_specifier
+    cmd_dict: T_JSON_DICT = {
+        "method": "DOM.getAnchorElement",
+        "params": params,
+    }
+    json = yield cmd_dict
+    return NodeId.from_json(json["nodeId"])
 
 
 @event_class("DOM.attributeModified")

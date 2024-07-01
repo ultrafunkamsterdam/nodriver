@@ -22,6 +22,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: ViewOrScrollTimeline
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: AnimationEffect
       :members:
       :undoc-members:
@@ -87,6 +92,11 @@ you use the event's attributes.
       :exclude-members: from_json, to_json
 
 .. autoclass:: AnimationStarted
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: AnimationUpdated
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

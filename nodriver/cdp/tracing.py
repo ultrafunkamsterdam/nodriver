@@ -3,16 +3,15 @@
 # This file is generated from the CDP specification. If you need to make
 # changes, edit the generator and regenerate all of the modules.
 #
-# CDP domain: Tracing (experimental)
+# CDP domain: Tracing
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
+from .util import event_class, T_JSON_DICT
 
 from . import io
-from .util import event_class, T_JSON_DICT
 
 
 class MemoryDumpConfig(dict):
@@ -221,6 +220,8 @@ def get_categories() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[s
     """
     Gets supported tracing categories.
 
+    **EXPERIMENTAL**
+
     :returns: A list of supported tracing categories.
     """
     cmd_dict: T_JSON_DICT = {
@@ -235,6 +236,8 @@ def record_clock_sync_marker(
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Record a clock sync marker in the trace.
+
+    **EXPERIMENTAL**
 
     :param sync_id: The ID of this clock sync marker
     """
@@ -253,6 +256,8 @@ def request_memory_dump(
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[str, bool]]:
     """
     Request a global memory dump.
+
+    **EXPERIMENTAL**
 
     :param deterministic: *(Optional)* Enables more deterministic results by forcing garbage collection
     :param level_of_detail: *(Optional)* Specifies level of details in memory dump. Defaults to "detailed".
@@ -288,15 +293,15 @@ def start(
     """
     Start trace events collection.
 
-    :param categories: **(DEPRECATED)** *(Optional)* Category/tag filter
-    :param options: **(DEPRECATED)** *(Optional)* Tracing options
-    :param buffer_usage_reporting_interval: *(Optional)* If set, the agent will issue bufferUsage events at this interval, specified in milliseconds
+    :param categories: **(DEPRECATED)** **(EXPERIMENTAL)** *(Optional)* Category/tag filter
+    :param options: **(DEPRECATED)** **(EXPERIMENTAL)** *(Optional)* Tracing options
+    :param buffer_usage_reporting_interval: **(EXPERIMENTAL)** *(Optional)* If set, the agent will issue bufferUsage events at this interval, specified in milliseconds
     :param transfer_mode: *(Optional)* Whether to report trace events as series of dataCollected events or to save trace to a stream (defaults to ```ReportEvents````).
     :param stream_format: *(Optional)* Trace data format to use. This only applies when using ````ReturnAsStream```` transfer mode (defaults to ````json````).
-    :param stream_compression: *(Optional)* Compression format to use. This only applies when using ````ReturnAsStream```` transfer mode (defaults to ````none````)
+    :param stream_compression: **(EXPERIMENTAL)** *(Optional)* Compression format to use. This only applies when using ````ReturnAsStream```` transfer mode (defaults to ````none````)
     :param trace_config: *(Optional)*
-    :param perfetto_config: *(Optional)* Base64-encoded serialized perfetto.protos.TraceConfig protobuf message When specified, the parameters ````categories````, ````options````, ````traceConfig```` are ignored. (Encoded as a base64 string when passed over JSON)
-    :param tracing_backend: *(Optional)* Backend type (defaults to ````auto```)
+    :param perfetto_config: **(EXPERIMENTAL)** *(Optional)* Base64-encoded serialized perfetto.protos.TraceConfig protobuf message When specified, the parameters ````categories````, ````options````, ````traceConfig```` are ignored. (Encoded as a base64 string when passed over JSON)
+    :param tracing_backend: **(EXPERIMENTAL)** *(Optional)* Backend type (defaults to ````auto```)
     """
     params: T_JSON_DICT = dict()
     if categories is not None:
@@ -327,6 +332,12 @@ def start(
 @event_class("Tracing.bufferUsage")
 @dataclass
 class BufferUsage:
+    """
+    **EXPERIMENTAL**
+
+
+    """
+
     #: A number in range [0..1] that indicates the used size of event buffer as a fraction of its
     #: total size.
     percent_full: typing.Optional[float]
@@ -357,6 +368,8 @@ class BufferUsage:
 @dataclass
 class DataCollected:
     """
+    **EXPERIMENTAL**
+
     Contains a bucket of collected trace events. When tracing is stopped collected events will be
     sent as a sequence of dataCollected events followed by tracingComplete event.
     """

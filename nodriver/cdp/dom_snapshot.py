@@ -6,16 +6,15 @@
 # CDP domain: DOMSnapshot (experimental)
 
 from __future__ import annotations
-
+import enum
 import typing
 from dataclasses import dataclass
-
-from deprecated.sphinx import deprecated  # type: ignore
+from .util import event_class, T_JSON_DICT
 
 from . import dom
 from . import dom_debugger
 from . import page
-from .util import T_JSON_DICT
+from deprecated.sphinx import deprecated  # type: ignore
 
 
 @dataclass

@@ -196,6 +196,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../cdp/dom_storage.html">DOMStorage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/emulation.html">Emulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cdp/extensions.html">Extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/fed_cm.html">FedCm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/fetch.html">Fetch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/headless_experimental.html">HeadlessExperimental</a></li>
@@ -215,6 +216,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../cdp/performance_timeline.html">PerformanceTimeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/preload.html">Preload</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/profiler.html">Profiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cdp/pwa.html">PWA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/runtime.html">Runtime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/schema.html">Schema</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/security.html">Security</a></li>
@@ -313,13 +315,23 @@ to a folder (containing the manifest), or extension file (crx)</p>
 <section id="contradict-class">
 <h2>ContraDict class<a class="headerlink" href="#contradict-class" title="Link to this heading">#</a></h2>
 <p>Many components in this package are built using a
-base class of <a class="reference internal" href="#nodriver.core._contradict.ContraDict" title="nodriver.core._contradict.ContraDict"><code class="xref any py py-class docutils literal notranslate"><span class="pre">nodriver.core._contradict.ContraDict</span></code></a>.</p>
+base class of <a class="reference internal" href="#id0" title="nodriver.core._contradict.ContraDict"><code class="xref any py py-class docutils literal notranslate"><span class="pre">nodriver.core._contradict.ContraDict</span></code></a>.</p>
 <p>It’s nothing more than a dictionary which has attribute access AND
 is JSON serializable.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="nodriver.core._contradict.ContraDict">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ContraDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.core._contradict.ContraDict" title="Link to this definition">#</a></dt>
-<dd><dl class="py method">
+<dd><p>directly inherited from dict</p>
+<p>accessible by attribute. o.x == o[‘x’]
+This works also for all corner cases.</p>
+<p>native json.dumps and json.loads work with it</p>
+<p>names like “keys”, “update”, “values” etc won’t overwrite the methods,
+but will just be available using dict lookup notation obj[‘items’] instead of obj.items</p>
+<p>all key names are converted to snake_case
+hyphen’s (-), dot’s (.) or whitespaces are replaced by underscore (_)</p>
+<p>autocomplete works even if the objects comes from a list</p>
+<p>recursive action. dict assignments will be converted too.</p>
+<dl class="py method">
 <dt class="sig sig-object py" id="nodriver.core._contradict.ContraDict.clear">
 <span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None.</span>&#160; <span class="pre">Remove</span> <span class="pre">all</span> <span class="pre">items</span> <span class="pre">from</span> <span class="pre">D.</span></span></span><a class="headerlink" href="#nodriver.core._contradict.ContraDict.clear" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -391,6 +403,94 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 </section>
 <section id="module-nodriver.core._contradict">
 <span id="helper-functions"></span><h2>Helper functions<a class="headerlink" href="#module-nodriver.core._contradict" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.core._contradict.cdict">
+<span class="sig-name descname"><span class="pre">cdict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/_contradict.html#cdict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.core._contradict.cdict" title="Link to this definition">#</a></dt>
+<dd><p>factory function</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ContraDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd><p>directly inherited from dict</p>
+<p>accessible by attribute. o.x == o[‘x’]
+This works also for all corner cases.</p>
+<p>native json.dumps and json.loads work with it</p>
+<p>names like “keys”, “update”, “values” etc won’t overwrite the methods,
+but will just be available using dict lookup notation obj[‘items’] instead of obj.items</p>
+<p>all key names are converted to snake_case
+hyphen’s (-), dot’s (.) or whitespaces are replaced by underscore (_)</p>
+<p>autocomplete works even if the objects comes from a list</p>
+<p>recursive action. dict assignments will be converted too.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None.</span>&#160; <span class="pre">Remove</span> <span class="pre">all</span> <span class="pre">items</span> <span class="pre">from</span> <span class="pre">D.</span></span></span><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">shallow</span> <span class="pre">copy</span> <span class="pre">of</span> <span class="pre">D</span></span></span><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">fromkeys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
+<dd><p>Create a new dictionary with keys from iterable and values set to value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
+<dd><p>Return the value for key if key is in the dictionary, else default.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">items</span></span></span><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">keys</span></span></span><a class="headerlink" href="#id6" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="optional">]</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">v,</span> <span class="pre">remove</span> <span class="pre">specified</span> <span class="pre">key</span> <span class="pre">and</span> <span class="pre">return</span> <span class="pre">the</span> <span class="pre">corresponding</span> <span class="pre">value.</span></span></span><a class="headerlink" href="#id7" title="Link to this definition">#</a></dt>
+<dd><p>If the key is not found, return the default if given; otherwise,
+raise a KeyError.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">popitem</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id8" title="Link to this definition">#</a></dt>
+<dd><p>Remove and return a (key, value) pair as a 2-tuple.</p>
+<p>Pairs are returned in LIFO (last-in, first-out) order.
+Raises KeyError if the dict is empty.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">setdefault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id9" title="Link to this definition">#</a></dt>
+<dd><p>Insert key with a value of default if key is not in the dictionary.</p>
+<p>Return the value for key if key is in the dictionary, else default.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <span class="optional">]</span><em class="sig-param"><span class="n"><span class="pre">**F</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None.</span>&#160; <span class="pre">Update</span> <span class="pre">D</span> <span class="pre">from</span> <span class="pre">dict/iterable</span> <span class="pre">E</span> <span class="pre">and</span> <span class="pre">F.</span></span></span><a class="headerlink" href="#id10" title="Link to this definition">#</a></dt>
+<dd><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
+If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
+In either case, this is followed by: for k in F:  D[k] = F[k]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">an</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">values</span></span></span><a class="headerlink" href="#id11" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -478,7 +578,24 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-nodriver.core._contradict">Helper functions</a></li>
+<li><a class="reference internal" href="#module-nodriver.core._contradict">Helper functions</a><ul>
+<li><a class="reference internal" href="#nodriver.core._contradict.cdict"><code class="docutils literal notranslate"><span class="pre">cdict()</span></code></a></li>
+<li><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">ContraDict</span></code></a><ul>
+<li><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">ContraDict.clear()</span></code></a></li>
+<li><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">ContraDict.copy()</span></code></a></li>
+<li><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">ContraDict.fromkeys()</span></code></a></li>
+<li><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">ContraDict.get()</span></code></a></li>
+<li><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">ContraDict.items()</span></code></a></li>
+<li><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">ContraDict.keys()</span></code></a></li>
+<li><a class="reference internal" href="#id7"><code class="docutils literal notranslate"><span class="pre">ContraDict.pop()</span></code></a></li>
+<li><a class="reference internal" href="#id8"><code class="docutils literal notranslate"><span class="pre">ContraDict.popitem()</span></code></a></li>
+<li><a class="reference internal" href="#id9"><code class="docutils literal notranslate"><span class="pre">ContraDict.setdefault()</span></code></a></li>
+<li><a class="reference internal" href="#id10"><code class="docutils literal notranslate"><span class="pre">ContraDict.update()</span></code></a></li>
+<li><a class="reference internal" href="#id11"><code class="docutils literal notranslate"><span class="pre">ContraDict.values()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

@@ -463,7 +463,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="n">target</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__count__</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span> <span class="o">=</span> <span class="n">_owner</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">websocket_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">websocket_url</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="o">=</span> <span class="p">{}</span>
@@ -472,7 +471,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">enabled_domains</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_result</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">listener</span><span class="p">:</span> <span class="n">Listener</span> <span class="o">=</span> <span class="kc">None</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -513,9 +511,7 @@
 
 <span class="sd">            page.add_handler(cdp.network.RequestWillBeSent, lambda event: print(&#39;network event =&gt; %s&#39; % event.request))</span>
 
-
 <span class="sd">        the next time you make network traffic you will see your console print like crazy.</span>
-
 
 <span class="sd">        :param event_type_or_domain:</span>
 <span class="sd">        :type event_type_or_domain:</span>
@@ -572,7 +568,6 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        closes the websocket connection. should not be called manually by users.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">listener</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">listener</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">listener</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
@@ -586,9 +581,8 @@
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        waits until the event listener</span>
-<span class="sd">        reports idle (which is when no new events had been received in .5 seconds</span>
-<span class="sd">        or, 1 second when in interactive mode)</span>
+<span class="sd">        waits until the event listener reports idle (no new events received in certain timespan).</span>
+<span class="sd">        when `t` is provided, ensures waiting for `t` seconds, no matter what.</span>
 
 <span class="sd">        :param t:</span>
 <span class="sd">        :type t:</span>
@@ -596,20 +590,23 @@
 <span class="sd">        :rtype:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_target</span><span class="p">()</span>
-
+        <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
-
-            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait_for</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listener</span><span class="o">.</span><span class="n">idle</span><span class="o">.</span><span class="n">wait</span><span class="p">(),</span> <span class="n">timeout</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait_for</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listener</span><span class="o">.</span><span class="n">idle</span><span class="o">.</span><span class="n">wait</span><span class="p">(),</span> <span class="n">timeout</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+                <span class="k">while</span> <span class="p">(</span><span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">t</span><span class="p">:</span>
+                    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">listener</span><span class="o">.</span><span class="n">idle</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
                 <span class="c1"># explicit time is given, which is now passed</span>
                 <span class="c1"># so bail out early</span>
                 <span class="k">return</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="c1"># no listener created yet</span>
             <span class="k">pass</span>
-        <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;:meta private:&quot;&quot;&quot;</span>
@@ -669,7 +666,6 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">__count__</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">tx</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__count__</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">tx</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="n">tx</span><span class="p">})</span>
-
             <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_update</span><span class="p">:</span>
                 <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_register_handlers</span><span class="p">()</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">tx</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
@@ -678,7 +674,6 @@
             <span class="k">except</span> <span class="n">ProtocolException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">e</span><span class="o">.</span><span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">command:</span><span class="si">{</span><span class="n">tx</span><span class="o">.</span><span class="n">method</span><span class="si">}</span><span class="se">\n</span><span class="s2">params:</span><span class="si">{</span><span class="n">tx</span><span class="o">.</span><span class="n">params</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">raise</span> <span class="n">e</span>
-
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">aclose</span><span class="p">()</span>
 
@@ -689,14 +684,12 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">seen</span> <span class="o">=</span> <span class="p">[]</span>
-
         <span class="c1"># save a copy of current enabled domains in a variable</span>
         <span class="c1"># domains will be removed from this variable</span>
         <span class="c1"># if it is still needed according to the set handlers</span>
         <span class="c1"># so at the end this variable will hold the domains that</span>
         <span class="c1"># are not represented by handlers, and can be removed</span>
         <span class="n">enabled_domains</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">enabled_domains</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
         <span class="k">for</span> <span class="n">event_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">handlers</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
             <span class="n">domain_mod</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="n">event_type</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -735,7 +728,6 @@
             <span class="c1"># we started with a copy of self.enabled_domains and removed a domain from this</span>
             <span class="c1"># temp variable when we registered it or saw handlers for it.</span>
             <span class="c1"># items still present at this point are unused and need removal</span>
-
             <span class="bp">self</span><span class="o">.</span><span class="n">enabled_domains</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ed</span><span class="p">)</span>
 
 
@@ -796,43 +788,45 @@
             <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">idle</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
                 <span class="c1"># breathe</span>
-                <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_before_considered_idle</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>
+                <span class="c1"># await asyncio.sleep(self.time_before_considered_idle / 10)</span>
                 <span class="k">continue</span>
-            <span class="k">except</span> <span class="p">(</span><span class="ne">Exception</span><span class="p">,):</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">Exception</span><span class="p">,)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="c1"># break on any other exception</span>
                 <span class="c1"># which is mostly socket is closed or does not exist</span>
                 <span class="c1"># or is not allowed</span>
+
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="s2">&quot;connection listener exception while reading websocket:</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span>
+                <span class="p">)</span>
                 <span class="k">break</span>
 
-            <span class="c1"># async for msg in self.connection.websocket:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
+                <span class="c1"># if we have been cancelled or otherwise stopped running</span>
+                <span class="c1"># break this loop</span>
                 <span class="k">break</span>
+
+            <span class="c1"># since we are at this point, we are not &quot;idle&quot; anymore.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">idle</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
             <span class="n">message</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">message</span><span class="p">:</span>
                 <span class="c1"># response to our command</span>
                 <span class="k">if</span> <span class="n">message</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">mapper</span><span class="p">:</span>
+                    <span class="c1"># get the corresponding Transaction</span>
                     <span class="n">tx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">mapper</span><span class="p">[</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]]</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;got answer for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">tx</span><span class="p">)</span>
+                    <span class="c1"># complete the transaction, which is a Future object</span>
+                    <span class="c1"># and thus will return to anyone awaiting it.</span>
                     <span class="n">tx</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># probably an event</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">event</span> <span class="o">=</span> <span class="n">cdp</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">parse_json_event</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-                    <span class="c1"># self.history.append(event)</span>
                     <span class="n">event_tx</span> <span class="o">=</span> <span class="n">EventTransaction</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-                    <span class="c1"># getattr(globals(), event.__class__.__module__)</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">mapper</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">__count__</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
                     <span class="n">event_tx</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">__count__</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">mapper</span><span class="p">[</span><span class="n">event_tx</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_tx</span>
-                    <span class="c1"># while len(self.connection.mapper) &gt; self.max_history:</span>
-                    <span class="c1">#     for k,v in self.connection.mapper.copy().items():</span>
-                    <span class="c1">#         # only remove old events</span>
-                    <span class="c1">#         if type(v) is not Transaction:</span>
-                    <span class="c1">#             self.connection.mapper.pop(k)</span>
-
-                    <span class="c1"># while len(self.history) &gt;= self.max_history:</span>
-                    <span class="c1">#     self.history.popleft()</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                         <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">  during parsing of json from event : </span><span class="si">%s</span><span class="s2">&quot;</span>
@@ -848,17 +842,14 @@
                         <span class="n">callbacks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">event</span><span class="p">)]</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">continue</span>
-
                     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">callbacks</span><span class="p">):</span>
                         <span class="k">continue</span>
-
                     <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="n">callbacks</span><span class="p">:</span>
                         <span class="k">try</span><span class="p">:</span>
                             <span class="k">if</span> <span class="n">iscoroutinefunction</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span> <span class="ow">or</span> <span class="n">iscoroutine</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
                                 <span class="k">await</span> <span class="n">callback</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="n">callback</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-
                         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                                 <span class="s2">&quot;exception in callback </span><span class="si">%s</span><span class="s2"> for event </span><span class="si">%s</span><span class="s2"> =&gt; </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>

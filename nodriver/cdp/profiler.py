@@ -6,13 +6,13 @@
 # CDP domain: Profiler
 
 from __future__ import annotations
-
+import enum
 import typing
 from dataclasses import dataclass
+from .util import event_class, T_JSON_DICT
 
 from . import debugger
 from . import runtime
-from .util import event_class, T_JSON_DICT
 
 
 @dataclass
@@ -254,6 +254,7 @@ class ScriptCoverage:
 
 
 def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
+
     cmd_dict: T_JSON_DICT = {
         "method": "Profiler.disable",
     }
@@ -261,6 +262,7 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
+
     cmd_dict: T_JSON_DICT = {
         "method": "Profiler.enable",
     }
@@ -301,6 +303,7 @@ def set_sampling_interval(
 
 
 def start() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
+
     cmd_dict: T_JSON_DICT = {
         "method": "Profiler.start",
     }

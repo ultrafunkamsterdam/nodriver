@@ -37,43 +37,43 @@ CSP Violation type.
 
 Object event listener.
 
-#### type_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 `EventListener`’s type.
 
-#### use_capture *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### use_capture*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 `EventListener`’s useCapture.
 
-#### passive *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### passive*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 `EventListener`’s passive flag.
 
-#### once *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### once*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 `EventListener`’s once flag.
 
-#### script_id *: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
+#### script_id*: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
 
 Script id of the handler code.
 
-#### line_number *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### line_number*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Line number in the script (0-based).
 
-#### column_number *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### column_number*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Column number in the script (0-based).
 
-#### handler *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)]* *= None*
+#### handler*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)]* *= None*
 
 Event handler function value.
 
-#### original_handler *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)]* *= None*
+#### original_handler*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)]* *= None*
 
 Event original handler function value.
 
-#### backend_node_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
+#### backend_node_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
 
 Node the listener is added to (if any).
 
@@ -94,8 +94,8 @@ Returns event listeners of the given object.
 
 * **Parameters:**
   * **object_id** ([`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)) – Identifier of the object to return listeners for.
-  * **depth** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* The maximum depth at which Node children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
-  * **pierce** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false). Reports listeners for all contexts if pierce is enabled.
+  * **depth** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* The maximum depth at which Node children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
+  * **pierce** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false). Reports listeners for all contexts if pierce is enabled.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`EventListener`](#nodriver.cdp.dom_debugger.EventListener)]]
 * **Returns:**
@@ -117,7 +117,7 @@ Removes breakpoint on particular DOM event.
 
 * **Parameters:**
   * **event_name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Event name.
-  * **target_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)**  *(Optional)* EventTarget interface name.
+  * **target_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)** *(Optional)* EventTarget interface name.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -174,7 +174,7 @@ Sets breakpoint on particular DOM event.
 
 * **Parameters:**
   * **event_name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – DOM Event name to stop on (any DOM event will do).
-  * **target_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)**  *(Optional)* EventTarget interface name to stop on. If equal to ``"*"`` or not provided, will stop on any EventTarget.
+  * **target_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)** *(Optional)* EventTarget interface name to stop on. If equal to ``"*"`` or not provided, will stop on any EventTarget.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 

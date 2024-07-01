@@ -1,73 +1,75 @@
-import inspect
+import re
 import warnings as _warnings
 from collections.abc import Mapping as _Mapping, Sequence as _Sequence
+import logging
+
+__logger__ = logging.getLogger(__name__)
+
+
+__all__ = ["cdict", "ContraDict"]
+
+
+def cdict(*args, **kwargs):
+    """
+    factory function
+    """
+    return ContraDict(*args, **kwargs)
 
 
 class ContraDict(dict):
-    """ """
+    """
+    directly inherited from dict
+
+    accessible by attribute. o.x == o['x']
+    This works also for all corner cases.
+
+    native json.dumps and json.loads work with it
+
+    names like "keys", "update", "values" etc won't overwrite the methods,
+    but will just be available using dict lookup notation obj['items'] instead of obj.items
+
+    all key names are converted to snake_case
+    hyphen's (-), dot's (.) or whitespaces are replaced by underscore (_)
+
+    autocomplete works even if the objects comes from a list
+
+    recursive action. dict assignments will be converted too.
+    """
 
     __module__ = None
-    __hide_properties__ = False
 
     def __init__(self, *args, **kwargs):
-        """
-        ContraDict() -> new ContraDict initialized from a mapping object's
-            (key, value) pairs
-        ContraDict(iterable) -> new ContraDict initialized as if via:
-            d = {}
-            for k, v in iterable:
-                d[k] = v
-        ContraDict(**kwargs) -> new ContraDict initialized with the name=value pairs
-            in the keyword argument list.  For example:  ContraDict(one=1, two=2)
-        """
         super().__init__()
         silent = False
         try:
             silent = kwargs.pop("silent")
         except:  # noqa
             pass
-
-        _ = dict(
-            {
-                k: v
-                for k, v in self.__class__.__dict__.items()
-                if (
-                    type(k) is str
-                    and not k.startswith("_")
-                    and not callable(v)
-                    and k not in self.__class__.__dict__
-                )
-            }
-        )
-        _.update(*args, **kwargs)
-
+        _ = dict(*args, **kwargs)
+        for key, val in _.copy().items():
+            del _[key]
+            key = _camel_to_snake(key)
+            _[key] = val
         super().__setattr__("__dict__", self)
         for k, v in _.items():
             _check_key(k, self, False, silent)
             super().__setitem__(k, _wrap(self.__class__, v))
 
     def __setitem__(self, key, value):
+        key = _camel_to_snake(key)
         super().__setitem__(key, _wrap(self.__class__, value))
-        # self[key] = _wrap(self.__class__, value)
 
     def __setattr__(self, key, value):
+        key = _camel_to_snake(key)
         super().__setitem__(key, _wrap(self.__class__, value))
 
     def __getattribute__(self, attribute):
-        if not _check_key(attribute, self, True, silent=True):
-            # try:
+        attribute = _camel_to_snake(attribute)
+        if not _check_key(attribute, self, boolean=True, silent=True):
             return getattr(super(), attribute)
-            # except:
-            #     raise
+        if attribute in self:
+            return self[attribute]
         return object.__getattribute__(self, attribute)
-
-    def __dir__(self):
-        a = list(self.keys())
-        if self.__hide_properties__:
-            a += [
-                _ for _ in super().__dir__() if inspect.ismethod(getattr(self, _, None))
-            ]
-        return a
 
 
 def _wrap(cls, v):
@@ -101,16 +103,8 @@ _warning_names = (
 )
 
 _warning_names_message = """\n\
-    ------------\n\
-    this is just a warning. not an error\n\
-    ------------\n\
-    a key named '{0}' has been found, which might behave unexpected.\n
-    it either matches a internal method name or contains hyphen(s) or period(s).\n
-    you will only be able to look it up using key, eg. myobject['{0}'].
-    myobject.{0} will not work with that name.
-    \n
-    offending name found in :\n
-    {1}\n\n\
+    While creating a ContraDict object, a key offending key name '{0}' has been found, which might behave unexpected.
+    you will only be able to look it up using key, eg. myobject['{0}']. myobject.{0} will not work with that name.
     """
 
 
@@ -128,8 +122,32 @@ def _check_key(key: str, mapping: _Mapping, boolean: bool = False, silent=False)
         return key
     if key.lower() in _warning_names or any(_ in key for _ in ("-", ".")):
         if not silent:
-            _warnings.warn(_warning_names_message.format(key, {key: mapping}))
+            __logger__.warning(_warning_names_message.format(key))
         e = True
     if not boolean:
         return key
     return not e
+
+
+__RE_CAMEL_TO_SNAKE__ = re.compile("((?!^)(?<!_)[A-Z][a-z]+|(?<=[a-z0-9])[A-Z])")
+__RE_SNAKE_TO_CAMEL__ = re.compile("(.*?)_([a-zA-Z])")
+
+
+def _camel_to_snake(s):
+    """
+    Converts CamelCase/camelCase to snake_case
+    :param str s: string to be converted
+    :return: (str) snake_case version of s
+    """
+    s = s.replace("-", "").replace(".", "")
+
+    return __RE_CAMEL_TO_SNAKE__.sub(r"_\1", s).lower()
+
+
+def _snake_to_camel(s):
+    """
+    Converts snake_case_string to camelCaseString
+    :param str s: string to be converted
+    :return: (str) camelCase version of s
+    """
+    return __RE_SNAKE_TO_CAMEL__.sub(lambda m: m.group(1) + m.group(2).upper(), s, 0)

@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.audits - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -163,6 +163,9 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html">Quickstart guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -192,6 +195,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/dom_storage.html">DOMStorage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/emulation.html">Emulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/extensions.html">Extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fed_cm.html">FedCm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fetch.html">Fetch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/headless_experimental.html">HeadlessExperimental</a></li>
@@ -211,6 +215,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/performance_timeline.html">PerformanceTimeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/preload.html">Preload</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/profiler.html">Profiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/pwa.html">PWA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/runtime.html">Runtime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/schema.html">Schema</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/security.html">Security</a></li>
@@ -265,16 +270,15 @@
 <span class="c1"># CDP domain: Audits (experimental)</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
-
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">dom</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">network</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">page</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">runtime</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
 
 
 <div class="viewcode-block" id="AffectedCookie">
@@ -559,6 +563,7 @@
     <span class="n">FRAME</span> <span class="o">=</span> <span class="s2">&quot;Frame&quot;</span>
     <span class="n">IMAGE</span> <span class="o">=</span> <span class="s2">&quot;Image&quot;</span>
     <span class="n">IMPORT</span> <span class="o">=</span> <span class="s2">&quot;Import&quot;</span>
+    <span class="n">JSON</span> <span class="o">=</span> <span class="s2">&quot;JSON&quot;</span>
     <span class="n">MANIFEST</span> <span class="o">=</span> <span class="s2">&quot;Manifest&quot;</span>
     <span class="n">PING</span> <span class="o">=</span> <span class="s2">&quot;Ping&quot;</span>
     <span class="n">PLUGIN_DATA</span> <span class="o">=</span> <span class="s2">&quot;PluginData&quot;</span>
@@ -666,6 +671,12 @@
     <span class="n">CORP_NOT_SAME_ORIGIN</span> <span class="o">=</span> <span class="s2">&quot;CorpNotSameOrigin&quot;</span>
     <span class="n">CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_COEP</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;CorpNotSameOriginAfterDefaultedToSameOriginByCoep&quot;</span>
+    <span class="p">)</span>
+    <span class="n">CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_DIP</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;CorpNotSameOriginAfterDefaultedToSameOriginByDip&quot;</span>
+    <span class="p">)</span>
+    <span class="n">CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_COEP_AND_DIP</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;CorpNotSameOriginAfterDefaultedToSameOriginByCoepAndDip&quot;</span>
     <span class="p">)</span>
     <span class="n">CORP_NOT_SAME_SITE</span> <span class="o">=</span> <span class="s2">&quot;CorpNotSameSite&quot;</span>
 
@@ -1092,12 +1103,55 @@
     <span class="n">NAVIGATION_REGISTRATION_WITHOUT_TRANSIENT_USER_ACTIVATION</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;NavigationRegistrationWithoutTransientUserActivation&quot;</span>
     <span class="p">)</span>
+    <span class="n">INVALID_INFO_HEADER</span> <span class="o">=</span> <span class="s2">&quot;InvalidInfoHeader&quot;</span>
+    <span class="n">NO_REGISTER_SOURCE_HEADER</span> <span class="o">=</span> <span class="s2">&quot;NoRegisterSourceHeader&quot;</span>
+    <span class="n">NO_REGISTER_TRIGGER_HEADER</span> <span class="o">=</span> <span class="s2">&quot;NoRegisterTriggerHeader&quot;</span>
+    <span class="n">NO_REGISTER_OS_SOURCE_HEADER</span> <span class="o">=</span> <span class="s2">&quot;NoRegisterOsSourceHeader&quot;</span>
+    <span class="n">NO_REGISTER_OS_TRIGGER_HEADER</span> <span class="o">=</span> <span class="s2">&quot;NoRegisterOsTriggerHeader&quot;</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AttributionReportingIssueType</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SharedDictionaryError">
+<a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.SharedDictionaryError">[docs]</a>
+<span class="k">class</span> <span class="nc">SharedDictionaryError</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">USE_ERROR_CROSS_ORIGIN_NO_CORS_REQUEST</span> <span class="o">=</span> <span class="s2">&quot;UseErrorCrossOriginNoCorsRequest&quot;</span>
+    <span class="n">USE_ERROR_DICTIONARY_LOAD_FAILURE</span> <span class="o">=</span> <span class="s2">&quot;UseErrorDictionaryLoadFailure&quot;</span>
+    <span class="n">USE_ERROR_MATCHING_DICTIONARY_NOT_USED</span> <span class="o">=</span> <span class="s2">&quot;UseErrorMatchingDictionaryNotUsed&quot;</span>
+    <span class="n">USE_ERROR_UNEXPECTED_CONTENT_DICTIONARY_HEADER</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;UseErrorUnexpectedContentDictionaryHeader&quot;</span>
+    <span class="p">)</span>
+    <span class="n">WRITE_ERROR_COSS_ORIGIN_NO_CORS_REQUEST</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorCossOriginNoCorsRequest&quot;</span>
+    <span class="n">WRITE_ERROR_DISALLOWED_BY_SETTINGS</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorDisallowedBySettings&quot;</span>
+    <span class="n">WRITE_ERROR_EXPIRED_RESPONSE</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorExpiredResponse&quot;</span>
+    <span class="n">WRITE_ERROR_FEATURE_DISABLED</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorFeatureDisabled&quot;</span>
+    <span class="n">WRITE_ERROR_INSUFFICIENT_RESOURCES</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorInsufficientResources&quot;</span>
+    <span class="n">WRITE_ERROR_INVALID_MATCH_FIELD</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorInvalidMatchField&quot;</span>
+    <span class="n">WRITE_ERROR_INVALID_STRUCTURED_HEADER</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorInvalidStructuredHeader&quot;</span>
+    <span class="n">WRITE_ERROR_NAVIGATION_REQUEST</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorNavigationRequest&quot;</span>
+    <span class="n">WRITE_ERROR_NO_MATCH_FIELD</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorNoMatchField&quot;</span>
+    <span class="n">WRITE_ERROR_NON_LIST_MATCH_DEST_FIELD</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorNonListMatchDestField&quot;</span>
+    <span class="n">WRITE_ERROR_NON_SECURE_CONTEXT</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorNonSecureContext&quot;</span>
+    <span class="n">WRITE_ERROR_NON_STRING_ID_FIELD</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorNonStringIdField&quot;</span>
+    <span class="n">WRITE_ERROR_NON_STRING_IN_MATCH_DEST_LIST</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorNonStringInMatchDestList&quot;</span>
+    <span class="n">WRITE_ERROR_NON_STRING_MATCH_FIELD</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorNonStringMatchField&quot;</span>
+    <span class="n">WRITE_ERROR_NON_TOKEN_TYPE_FIELD</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorNonTokenTypeField&quot;</span>
+    <span class="n">WRITE_ERROR_REQUEST_ABORTED</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorRequestAborted&quot;</span>
+    <span class="n">WRITE_ERROR_SHUTTING_DOWN</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorShuttingDown&quot;</span>
+    <span class="n">WRITE_ERROR_TOO_LONG_ID_FIELD</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorTooLongIdField&quot;</span>
+    <span class="n">WRITE_ERROR_UNSUPPORTED_TYPE</span> <span class="o">=</span> <span class="s2">&quot;WriteErrorUnsupportedType&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SharedDictionaryError</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
 
 
@@ -1221,6 +1275,31 @@
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SharedDictionaryIssueDetails">
+<a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.SharedDictionaryIssueDetails">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SharedDictionaryIssueDetails</span><span class="p">:</span>
+    <span class="n">shared_dictionary_error</span><span class="p">:</span> <span class="n">SharedDictionaryError</span>
+
+    <span class="n">request</span><span class="p">:</span> <span class="n">AffectedRequest</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sharedDictionaryError&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shared_dictionary_error</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SharedDictionaryIssueDetails</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">shared_dictionary_error</span><span class="o">=</span><span class="n">SharedDictionaryError</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sharedDictionaryError&quot;</span><span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">AffectedRequest</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">]),</span>
         <span class="p">)</span></div>
 
 
@@ -1399,15 +1478,27 @@
 
     <span class="n">allowed_sites</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 
+    <span class="n">opt_out_percentage</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="n">is_opt_out_top_level</span><span class="p">:</span> <span class="nb">bool</span>
+
+    <span class="n">operation</span><span class="p">:</span> <span class="n">CookieOperation</span>
+
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">json</span><span class="p">[</span><span class="s2">&quot;allowedSites&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_sites</span><span class="p">]</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;optOutPercentage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt_out_percentage</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;isOptOutTopLevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_opt_out_top_level</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CookieDeprecationMetadataIssueDetails</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">allowed_sites</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;allowedSites&quot;</span><span class="p">]],</span>
+            <span class="n">opt_out_percentage</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;optOutPercentage&quot;</span><span class="p">]),</span>
+            <span class="n">is_opt_out_top_level</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;isOptOutTopLevel&quot;</span><span class="p">]),</span>
+            <span class="n">operation</span><span class="o">=</span><span class="n">CookieOperation</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">]),</span>
         <span class="p">)</span></div>
 
 
@@ -1477,7 +1568,9 @@
     <span class="n">CLIENT_METADATA_NO_RESPONSE</span> <span class="o">=</span> <span class="s2">&quot;ClientMetadataNoResponse&quot;</span>
     <span class="n">CLIENT_METADATA_INVALID_RESPONSE</span> <span class="o">=</span> <span class="s2">&quot;ClientMetadataInvalidResponse&quot;</span>
     <span class="n">CLIENT_METADATA_INVALID_CONTENT_TYPE</span> <span class="o">=</span> <span class="s2">&quot;ClientMetadataInvalidContentType&quot;</span>
+    <span class="n">IDP_NOT_POTENTIALLY_TRUSTWORTHY</span> <span class="o">=</span> <span class="s2">&quot;IdpNotPotentiallyTrustworthy&quot;</span>
     <span class="n">DISABLED_IN_SETTINGS</span> <span class="o">=</span> <span class="s2">&quot;DisabledInSettings&quot;</span>
+    <span class="n">DISABLED_IN_FLAGS</span> <span class="o">=</span> <span class="s2">&quot;DisabledInFlags&quot;</span>
     <span class="n">ERROR_FETCHING_SIGNIN</span> <span class="o">=</span> <span class="s2">&quot;ErrorFetchingSignin&quot;</span>
     <span class="n">INVALID_SIGNIN_RESPONSE</span> <span class="o">=</span> <span class="s2">&quot;InvalidSigninResponse&quot;</span>
     <span class="n">ACCOUNTS_HTTP_NOT_FOUND</span> <span class="o">=</span> <span class="s2">&quot;AccountsHttpNotFound&quot;</span>
@@ -1498,6 +1591,11 @@
     <span class="n">SILENT_MEDIATION_FAILURE</span> <span class="o">=</span> <span class="s2">&quot;SilentMediationFailure&quot;</span>
     <span class="n">THIRD_PARTY_COOKIES_BLOCKED</span> <span class="o">=</span> <span class="s2">&quot;ThirdPartyCookiesBlocked&quot;</span>
     <span class="n">NOT_SIGNED_IN_WITH_IDP</span> <span class="o">=</span> <span class="s2">&quot;NotSignedInWithIdp&quot;</span>
+    <span class="n">MISSING_TRANSIENT_USER_ACTIVATION</span> <span class="o">=</span> <span class="s2">&quot;MissingTransientUserActivation&quot;</span>
+    <span class="n">REPLACED_BY_BUTTON_MODE</span> <span class="o">=</span> <span class="s2">&quot;ReplacedByButtonMode&quot;</span>
+    <span class="n">INVALID_FIELDS_SPECIFIED</span> <span class="o">=</span> <span class="s2">&quot;InvalidFieldsSpecified&quot;</span>
+    <span class="n">RELYING_PARTY_ORIGIN_IS_OPAQUE</span> <span class="o">=</span> <span class="s2">&quot;RelyingPartyOriginIsOpaque&quot;</span>
+    <span class="n">TYPE_NOT_MATCHING</span> <span class="o">=</span> <span class="s2">&quot;TypeNotMatching&quot;</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
@@ -1777,6 +1875,7 @@
     <span class="n">STYLESHEET_LOADING_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;StylesheetLoadingIssue&quot;</span>
     <span class="n">FEDERATED_AUTH_USER_INFO_REQUEST_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;FederatedAuthUserInfoRequestIssue&quot;</span>
     <span class="n">PROPERTY_RULE_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;PropertyRuleIssue&quot;</span>
+    <span class="n">SHARED_DICTIONARY_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;SharedDictionaryIssue&quot;</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
@@ -1855,6 +1954,10 @@
         <span class="n">FederatedAuthUserInfoRequestIssueDetails</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="n">shared_dictionary_issue_details</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">SharedDictionaryIssueDetails</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="kc">None</span>
+    <span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cookie_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1922,6 +2025,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">federated_auth_user_info_request_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;federatedAuthUserInfoRequestIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">federated_auth_user_info_request_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shared_dictionary_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sharedDictionaryIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">shared_dictionary_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">json</span>
 
@@ -2047,6 +2154,13 @@
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;federatedAuthUserInfoRequestIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">shared_dictionary_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">SharedDictionaryIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sharedDictionaryIssueDetails&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sharedDictionaryIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
         <span class="p">)</span></div>

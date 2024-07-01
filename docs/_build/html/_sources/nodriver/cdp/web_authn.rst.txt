@@ -82,6 +82,8 @@ to. For more information, see
 
 .. autofunction:: set_automatic_presence_simulation
 
+.. autofunction:: set_credential_properties
+
 .. autofunction:: set_response_override_bits
 
 .. autofunction:: set_user_verified

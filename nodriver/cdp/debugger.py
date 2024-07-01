@@ -6,15 +6,13 @@
 # CDP domain: Debugger
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
-
-from deprecated.sphinx import deprecated  # type: ignore
+from .util import event_class, T_JSON_DICT
 
 from . import runtime
-from .util import event_class, T_JSON_DICT
+from deprecated.sphinx import deprecated  # type: ignore
 
 
 class BreakpointId(str):

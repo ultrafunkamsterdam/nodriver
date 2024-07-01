@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.css - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -163,6 +163,9 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html">Quickstart guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -192,6 +195,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/dom_storage.html">DOMStorage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/emulation.html">Emulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/extensions.html">Extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fed_cm.html">FedCm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fetch.html">Fetch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/headless_experimental.html">HeadlessExperimental</a></li>
@@ -211,6 +215,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/performance_timeline.html">PerformanceTimeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/preload.html">Preload</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/profiler.html">Profiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/pwa.html">PWA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/runtime.html">Runtime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/schema.html">Schema</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/security.html">Security</a></li>
@@ -265,14 +270,13 @@
 <span class="c1"># CDP domain: CSS (experimental)</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
-
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">dom</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">page</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
 
 
 <div class="viewcode-block" id="StyleSheetId">
@@ -565,7 +569,7 @@
     <span class="n">frame_id</span><span class="p">:</span> <span class="n">page</span><span class="o">.</span><span class="n">FrameId</span>
 
     <span class="c1">#: Stylesheet resource URL. Empty if this is a constructed stylesheet created using</span>
-    <span class="c1">#: new CSSStyleSheet() (but non-empty if this is a constructed sylesheet imported</span>
+    <span class="c1">#: new CSSStyleSheet() (but non-empty if this is a constructed stylesheet imported</span>
     <span class="c1">#: as a CSS module script).</span>
     <span class="n">source_url</span><span class="p">:</span> <span class="nb">str</span>
 
@@ -1760,6 +1764,51 @@
 
 
 
+<div class="viewcode-block" id="CSSPositionTryRule">
+<a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.CSSPositionTryRule">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CSSPositionTryRule</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CSS @position-try rule representation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: The prelude dashed-ident name</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Value</span>
+
+    <span class="c1">#: Parent stylesheet&#39;s origin.</span>
+    <span class="n">origin</span><span class="p">:</span> <span class="n">StyleSheetOrigin</span>
+
+    <span class="c1">#: Associated style declaration.</span>
+    <span class="n">style</span><span class="p">:</span> <span class="n">CSSStyle</span>
+
+    <span class="c1">#: The css style sheet identifier (absent for user agent stylesheet and user-specified</span>
+    <span class="c1">#: stylesheet rules) this rule came from.</span>
+    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">StyleSheetId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;origin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">style_sheet_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;styleSheetId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">style_sheet_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSSPositionTryRule</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">Value</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]),</span>
+            <span class="n">origin</span><span class="o">=</span><span class="n">StyleSheetOrigin</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;origin&quot;</span><span class="p">]),</span>
+            <span class="n">style</span><span class="o">=</span><span class="n">CSSStyle</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">]),</span>
+            <span class="n">style_sheet_id</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">StyleSheetId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;styleSheetId&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;styleSheetId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="CSSKeyframesRule">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.CSSKeyframesRule">[docs]</a>
 <span class="nd">@dataclass</span>
@@ -2252,6 +2301,7 @@
         <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">InheritedPseudoElementMatches</span><span class="p">]],</span>
         <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSKeyframesRule</span><span class="p">]],</span>
         <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSPositionFallbackRule</span><span class="p">]],</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSPositionTryRule</span><span class="p">]],</span>
         <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSPropertyRule</span><span class="p">]],</span>
         <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSPropertyRegistration</span><span class="p">]],</span>
         <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CSSFontPaletteValuesRule</span><span class="p">],</span>
@@ -2272,10 +2322,11 @@
 <span class="sd">        5. **inheritedPseudoElements** - *(Optional)* A chain of inherited pseudo element styles (from the immediate node parent up to the DOM tree root).</span>
 <span class="sd">        6. **cssKeyframesRules** - *(Optional)* A list of CSS keyframed animations matching this node.</span>
 <span class="sd">        7. **cssPositionFallbackRules** - *(Optional)* A list of CSS position fallbacks matching this node.</span>
-<span class="sd">        8. **cssPropertyRules** - *(Optional)* A list of CSS at-property rules matching this node.</span>
-<span class="sd">        9. **cssPropertyRegistrations** - *(Optional)* A list of CSS property registrations matching this node.</span>
-<span class="sd">        10. **cssFontPaletteValuesRule** - *(Optional)* A font-palette-values rule matching this node.</span>
-<span class="sd">        11. **parentLayoutNodeId** - *(Optional)* Id of the first parent element that does not have display: contents.</span>
+<span class="sd">        8. **cssPositionTryRules** - *(Optional)* A list of CSS @position-try rules matching this node, based on the position-try-options property.</span>
+<span class="sd">        9. **cssPropertyRules** - *(Optional)* A list of CSS at-property rules matching this node.</span>
+<span class="sd">        10. **cssPropertyRegistrations** - *(Optional)* A list of CSS property registrations matching this node.</span>
+<span class="sd">        11. **cssFontPaletteValuesRule** - *(Optional)* A font-palette-values rule matching this node.</span>
+<span class="sd">        12. **parentLayoutNodeId** - *(Optional)* Id of the first parent element that does not have display: contents.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">params</span><span class="p">[</span><span class="s2">&quot;nodeId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
@@ -2329,6 +2380,11 @@
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;cssPositionFallbackRules&quot;</span><span class="p">]</span>
             <span class="p">]</span>
             <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cssPositionFallbackRules&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="p">[</span><span class="n">CSSPositionTryRule</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;cssPositionTryRules&quot;</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cssPositionTryRules&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="k">else</span> <span class="kc">None</span>
         <span class="p">),</span>
         <span class="p">(</span>
@@ -2445,6 +2501,33 @@
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span>
     <span class="k">return</span> <span class="n">CSSLayerData</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;rootLayer&quot;</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="get_location_for_selector">
+<a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.get_location_for_selector">[docs]</a>
+<span class="k">def</span> <span class="nf">get_location_for_selector</span><span class="p">(</span>
+    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">selector_text</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">SourceRange</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a CSS selector text and a style sheet ID, getLocationForSelector</span>
+<span class="sd">    returns an array of locations of the CSS selector in the style sheet.</span>
+
+<span class="sd">    **EXPERIMENTAL**</span>
+
+<span class="sd">    :param style_sheet_id:</span>
+<span class="sd">    :param selector_text:</span>
+<span class="sd">    :returns:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;styleSheetId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">style_sheet_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;selectorText&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">selector_text</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;CSS.getLocationForSelector&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">SourceRange</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;ranges&quot;</span><span class="p">]]</span></div>
 
 
 

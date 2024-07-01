@@ -6,12 +6,10 @@
 # CDP domain: Memory (experimental)
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
-
-from .util import T_JSON_DICT
+from .util import event_class, T_JSON_DICT
 
 
 class PressureLevel(enum.Enum):
@@ -142,6 +140,7 @@ def get_dom_counters() -> (
 
 
 def prepare_for_leak_detection() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
+
     cmd_dict: T_JSON_DICT = {
         "method": "Memory.prepareForLeakDetection",
     }

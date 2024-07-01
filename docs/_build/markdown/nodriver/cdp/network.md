@@ -167,86 +167,94 @@ This is a temporary ability and it will be removed in the future.
 
 #### SECURE *= 'Secure'*
 
-### *class* ResourceTiming(request_time, proxy_start, proxy_end, dns_start, dns_end, connect_start, connect_end, ssl_start, ssl_end, worker_start, worker_ready, worker_fetch_start, worker_respond_with_settled, send_start, send_end, push_start, push_end, receive_headers_start, receive_headers_end)
+### *class* ResourceTiming(request_time, proxy_start, proxy_end, dns_start, dns_end, connect_start, connect_end, ssl_start, ssl_end, worker_start, worker_ready, worker_fetch_start, worker_respond_with_settled, send_start, send_end, push_start, push_end, receive_headers_start, receive_headers_end, worker_router_evaluation_start=None, worker_cache_lookup_start=None)
 
 Timing information for the request.
 
-#### request_time *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### request_time*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Timing’s requestTime is a baseline in seconds, while the other numbers are ticks in
 milliseconds relatively to this requestTime.
 
-#### proxy_start *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### proxy_start*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Started resolving proxy.
 
-#### proxy_end *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### proxy_end*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Finished resolving proxy.
 
-#### dns_start *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### dns_start*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Started DNS address resolve.
 
-#### dns_end *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### dns_end*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Finished DNS address resolve.
 
-#### connect_start *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### connect_start*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Started connecting to the remote host.
 
-#### connect_end *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### connect_end*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Connected to the remote host.
 
-#### ssl_start *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### ssl_start*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Started SSL handshake.
 
-#### ssl_end *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### ssl_end*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Finished SSL handshake.
 
-#### worker_start *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### worker_start*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Started running ServiceWorker.
 
-#### worker_ready *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### worker_ready*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Finished Starting ServiceWorker.
 
-#### worker_fetch_start *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### worker_fetch_start*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Started fetch event.
 
-#### worker_respond_with_settled *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### worker_respond_with_settled*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Settled fetch event respondWith promise.
 
-#### send_start *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### send_start*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Started sending request.
 
-#### send_end *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### send_end*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Finished sending request.
 
-#### push_start *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### push_start*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Time the server started pushing request.
 
-#### push_end *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### push_end*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Time the server finished pushing request.
 
-#### receive_headers_start *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### receive_headers_start*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Started receiving response headers.
 
-#### receive_headers_end *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### receive_headers_end*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Finished receiving response headers.
+
+#### worker_router_evaluation_start*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+
+Started ServiceWorker static routing source evaluation.
+
+#### worker_cache_lookup_start*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+
+Started cache lookup when the source was evaluated to `cache`.
 
 ### *class* ResourcePriority(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -266,103 +274,104 @@ Loading priority of a resource request.
 
 Post data entry for HTTP request
 
-#### bytes_ *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### bytes_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 ### *class* Request(url, method, headers, initial_priority, referrer_policy, url_fragment=None, post_data=None, has_post_data=None, post_data_entries=None, mixed_content_type=None, is_link_preload=None, trust_token_params=None, is_same_site=None)
 
 HTTP request data.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Request URL (without fragment).
 
-#### method *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### method*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 HTTP request method.
 
-#### headers *: [`Headers`](#nodriver.cdp.network.Headers)*
+#### headers*: [`Headers`](#nodriver.cdp.network.Headers)*
 
 HTTP request headers.
 
-#### initial_priority *: [`ResourcePriority`](#nodriver.cdp.network.ResourcePriority)*
+#### initial_priority*: [`ResourcePriority`](#nodriver.cdp.network.ResourcePriority)*
 
 Priority of the resource request at the time request is sent.
 
-#### referrer_policy *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### referrer_policy*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 //www.w3.org/TR/referrer-policy/
 
 * **Type:**
   The referrer policy of the request, as defined in https
 
-#### url_fragment *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### url_fragment*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Fragment of the requested URL starting with hash, if present.
 
-#### post_data *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### post_data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 HTTP POST request data.
+Use postDataEntries instead.
 
-#### has_post_data *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### has_post_data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 True when the request has POST data. Note that postData might still be omitted when this flag is true when the data is too long.
 
-#### post_data_entries *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PostDataEntry`](#nodriver.cdp.network.PostDataEntry)]]* *= None*
+#### post_data_entries*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PostDataEntry`](#nodriver.cdp.network.PostDataEntry)]]* *= None*
 
-Request body elements. This will be converted from base64 to binary
+Request body elements (post data broken into individual entries).
 
-#### mixed_content_type *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`MixedContentType`](security.md#nodriver.cdp.security.MixedContentType)]* *= None*
+#### mixed_content_type*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`MixedContentType`](security.md#nodriver.cdp.security.MixedContentType)]* *= None*
 
 The mixed content type of the request.
 
-#### is_link_preload *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### is_link_preload*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 Whether is loaded via link preload.
 
-#### trust_token_params *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TrustTokenParams`](#nodriver.cdp.network.TrustTokenParams)]* *= None*
+#### trust_token_params*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TrustTokenParams`](#nodriver.cdp.network.TrustTokenParams)]* *= None*
 
 Set for requests when the TrustToken API is used. Contains the parameters
 passed by the developer (e.g. via “fetch”) as understood by the backend.
 
-#### is_same_site *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### is_same_site*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 True if this resource request is considered to be the ‘same site’ as the
-request correspondinfg to the main frame.
+request corresponding to the main frame.
 
 ### *class* SignedCertificateTimestamp(status, origin, log_description, log_id, timestamp, hash_algorithm, signature_algorithm, signature_data)
 
 Details of a signed certificate timestamp (SCT).
 
-#### status *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### status*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Validation status.
 
-#### origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Origin.
 
-#### log_description *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### log_description*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Log name / description.
 
-#### log_id *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### log_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Log ID.
 
-#### timestamp *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### timestamp*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Issuance date. Unlike TimeSinceEpoch, this contains the number of
 milliseconds since January 1, 1970, UTC, not the number of seconds.
 
-#### hash_algorithm *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### hash_algorithm*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Hash algorithm.
 
-#### signature_algorithm *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### signature_algorithm*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Signature algorithm.
 
-#### signature_data *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### signature_data*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Signature data.
 
@@ -370,63 +379,63 @@ Signature data.
 
 Security details about a request.
 
-#### protocol *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### protocol*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Protocol name (e.g. “TLS 1.2” or “QUIC”).
 
-#### key_exchange *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### key_exchange*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Key Exchange used by the connection, or the empty string if not applicable.
 
-#### cipher *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### cipher*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Cipher name.
 
-#### certificate_id *: [`CertificateId`](security.md#nodriver.cdp.security.CertificateId)*
+#### certificate_id*: [`CertificateId`](security.md#nodriver.cdp.security.CertificateId)*
 
 Certificate ID value.
 
-#### subject_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### subject_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Certificate subject name.
 
-#### san_list *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### san_list*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 Subject Alternative Name (SAN) DNS names and IP addresses.
 
-#### issuer *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### issuer*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Name of the issuing CA.
 
-#### valid_from *: [`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)*
+#### valid_from*: [`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)*
 
 Certificate valid from date.
 
-#### valid_to *: [`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)*
+#### valid_to*: [`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)*
 
 Certificate valid to (expiration) date
 
-#### signed_certificate_timestamp_list *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SignedCertificateTimestamp`](#nodriver.cdp.network.SignedCertificateTimestamp)]*
+#### signed_certificate_timestamp_list*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SignedCertificateTimestamp`](#nodriver.cdp.network.SignedCertificateTimestamp)]*
 
 List of signed certificate timestamps (SCTs).
 
-#### certificate_transparency_compliance *: [`CertificateTransparencyCompliance`](#nodriver.cdp.network.CertificateTransparencyCompliance)*
+#### certificate_transparency_compliance*: [`CertificateTransparencyCompliance`](#nodriver.cdp.network.CertificateTransparencyCompliance)*
 
 Whether the request complied with Certificate Transparency policy
 
-#### encrypted_client_hello *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### encrypted_client_hello*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Whether the connection used Encrypted ClientHello
 
-#### key_exchange_group *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### key_exchange_group*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 (EC)DH group used by the connection, if applicable.
 
-#### mac *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### mac*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 TLS MAC. Note that AEAD ciphers do not have separate MACs.
 
-#### server_signature_algorithm *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### server_signature_algorithm*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 The signature algorithm used by the server in the TLS server signature,
 represented as a TLS SignatureScheme code point. Omitted if not
@@ -467,6 +476,10 @@ The reason why request was blocked.
 #### CORP_NOT_SAME_ORIGIN *= 'corp-not-same-origin'*
 
 #### CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_COEP *= 'corp-not-same-origin-after-defaulted-to-same-origin-by-coep'*
+
+#### CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_DIP *= 'corp-not-same-origin-after-defaulted-to-same-origin-by-dip'*
+
+#### CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_COEP_AND_DIP *= 'corp-not-same-origin-after-defaulted-to-same-origin-by-coep-and-dip'*
 
 #### CORP_NOT_SAME_SITE *= 'corp-not-same-site'*
 
@@ -544,9 +557,9 @@ The reason why request was blocked.
 
 ### *class* CorsErrorStatus(cors_error, failed_parameter)
 
-#### cors_error *: [`CorsError`](#nodriver.cdp.network.CorsError)*
+#### cors_error*: [`CorsError`](#nodriver.cdp.network.CorsError)*
 
-#### failed_parameter *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### failed_parameter*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ### *class* ServiceWorkerResponseSource(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -566,14 +579,14 @@ Determines what type of Trust Token operation is executed and
 depending on the type, some additional parameters. The values
 are specified in third_party/blink/renderer/core/fetch/trust_token.idl.
 
-#### operation *: [`TrustTokenOperationType`](#nodriver.cdp.network.TrustTokenOperationType)*
+#### operation*: [`TrustTokenOperationType`](#nodriver.cdp.network.TrustTokenOperationType)*
 
-#### refresh_policy *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### refresh_policy*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Only set for “token-redemption” operation and determine whether
 to request a fresh SRR or use a still valid cached SRR.
 
-#### issuers *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
+#### issuers*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
 
 Origins of issuers from whom to request tokens or redemption
 records.
@@ -606,115 +619,146 @@ The reason why Chrome uses a specific transport protocol for HTTP semantics.
 
 #### UNSPECIFIED_REASON *= 'unspecifiedReason'*
 
-### *class* ServiceWorkerRouterInfo(rule_id_matched)
+### *class* ServiceWorkerRouterSource(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
-#### rule_id_matched *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+Source of service worker router.
 
-### *class* Response(url, status, status_text, headers, mime_type, charset, connection_reused, connection_id, encoded_data_length, security_state, headers_text=None, request_headers=None, request_headers_text=None, remote_ip_address=None, remote_port=None, from_disk_cache=None, from_service_worker=None, from_prefetch_cache=None, service_worker_router_info=None, timing=None, service_worker_response_source=None, response_time=None, cache_storage_cache_name=None, protocol=None, alternate_protocol_usage=None, security_details=None)
+#### NETWORK *= 'network'*
+
+#### CACHE *= 'cache'*
+
+#### FETCH_EVENT *= 'fetch-event'*
+
+#### RACE_NETWORK_AND_FETCH_HANDLER *= 'race-network-and-fetch-handler'*
+
+### *class* ServiceWorkerRouterInfo(rule_id_matched=None, matched_source_type=None, actual_source_type=None)
+
+#### rule_id_matched*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+
+ID of the rule matched. If there is a matched rule, this field will
+be set, otherwiser no value will be set.
+
+#### matched_source_type*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ServiceWorkerRouterSource`](#nodriver.cdp.network.ServiceWorkerRouterSource)]* *= None*
+
+The router source of the matched rule. If there is a matched rule, this
+field will be set, otherwise no value will be set.
+
+#### actual_source_type*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ServiceWorkerRouterSource`](#nodriver.cdp.network.ServiceWorkerRouterSource)]* *= None*
+
+The actual router source used.
+
+### *class* Response(url, status, status_text, headers, mime_type, charset, connection_reused, connection_id, encoded_data_length, security_state, headers_text=None, request_headers=None, request_headers_text=None, remote_ip_address=None, remote_port=None, from_disk_cache=None, from_service_worker=None, from_prefetch_cache=None, from_early_hints=None, service_worker_router_info=None, timing=None, service_worker_response_source=None, response_time=None, cache_storage_cache_name=None, protocol=None, alternate_protocol_usage=None, security_details=None)
 
 HTTP response data.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Response URL. This URL can be different from CachedResource.url in case of redirect.
 
-#### status *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### status*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 HTTP response status code.
 
-#### status_text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### status_text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 HTTP response status text.
 
-#### headers *: [`Headers`](#nodriver.cdp.network.Headers)*
+#### headers*: [`Headers`](#nodriver.cdp.network.Headers)*
 
 HTTP response headers.
 
-#### mime_type *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### mime_type*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Resource mimeType as determined by the browser.
 
-#### charset *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### charset*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Resource charset as determined by the browser (if applicable).
 
-#### connection_reused *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### connection_reused*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Specifies whether physical connection was actually reused for this request.
 
-#### connection_id *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### connection_id*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Physical connection id that was actually used for this request.
 
-#### encoded_data_length *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### encoded_data_length*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Total number of bytes received for this request so far.
 
-#### security_state *: [`SecurityState`](security.md#nodriver.cdp.security.SecurityState)*
+#### security_state*: [`SecurityState`](security.md#nodriver.cdp.security.SecurityState)*
 
 Security state of the request resource.
 
-#### headers_text *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### headers_text*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 HTTP response headers text. This has been replaced by the headers in Network.responseReceivedExtraInfo.
 
-#### request_headers *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Headers`](#nodriver.cdp.network.Headers)]* *= None*
+#### request_headers*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Headers`](#nodriver.cdp.network.Headers)]* *= None*
 
 Refined HTTP request headers that were actually transmitted over the network.
 
-#### request_headers_text *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### request_headers_text*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 HTTP request headers text. This has been replaced by the headers in Network.requestWillBeSentExtraInfo.
 
-#### remote_ip_address *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### remote_ip_address*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Remote IP address.
 
-#### remote_port *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### remote_port*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 Remote port.
 
-#### from_disk_cache *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### from_disk_cache*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 Specifies that the request was served from the disk cache.
 
-#### from_service_worker *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### from_service_worker*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 Specifies that the request was served from the ServiceWorker.
 
-#### from_prefetch_cache *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### from_prefetch_cache*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 Specifies that the request was served from the prefetch cache.
 
-#### service_worker_router_info *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ServiceWorkerRouterInfo`](#nodriver.cdp.network.ServiceWorkerRouterInfo)]* *= None*
+#### from_early_hints*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
-Infomation about how Service Worker Static Router was used.
+Specifies that the request was served from the prefetch cache.
 
-#### timing *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ResourceTiming`](#nodriver.cdp.network.ResourceTiming)]* *= None*
+#### service_worker_router_info*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ServiceWorkerRouterInfo`](#nodriver.cdp.network.ServiceWorkerRouterInfo)]* *= None*
+
+Information about how ServiceWorker Static Router API was used. If this
+field is set with `matchedSourceType` field, a matching rule is found.
+If this field is set without `matchedSource`, no matching rule is found.
+Otherwise, the API is not used.
+
+#### timing*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ResourceTiming`](#nodriver.cdp.network.ResourceTiming)]* *= None*
 
 Timing information for the given request.
 
-#### service_worker_response_source *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ServiceWorkerResponseSource`](#nodriver.cdp.network.ServiceWorkerResponseSource)]* *= None*
+#### service_worker_response_source*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ServiceWorkerResponseSource`](#nodriver.cdp.network.ServiceWorkerResponseSource)]* *= None*
 
 Response source of response from ServiceWorker.
 
-#### response_time *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)]* *= None*
+#### response_time*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)]* *= None*
 
 The time at which the returned response was generated.
 
-#### cache_storage_cache_name *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### cache_storage_cache_name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Cache Storage Cache Name.
 
-#### protocol *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### protocol*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Protocol used to fetch this request.
 
-#### alternate_protocol_usage *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AlternateProtocolUsage`](#nodriver.cdp.network.AlternateProtocolUsage)]* *= None*
+#### alternate_protocol_usage*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AlternateProtocolUsage`](#nodriver.cdp.network.AlternateProtocolUsage)]* *= None*
 
 The reason why Chrome uses a specific transport protocol for HTTP semantics.
 
-#### security_details *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SecurityDetails`](#nodriver.cdp.network.SecurityDetails)]* *= None*
+#### security_details*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SecurityDetails`](#nodriver.cdp.network.SecurityDetails)]* *= None*
 
 Security details for the request.
 
@@ -722,7 +766,7 @@ Security details for the request.
 
 WebSocket request data.
 
-#### headers *: [`Headers`](#nodriver.cdp.network.Headers)*
+#### headers*: [`Headers`](#nodriver.cdp.network.Headers)*
 
 HTTP request headers.
 
@@ -730,27 +774,27 @@ HTTP request headers.
 
 WebSocket response data.
 
-#### status *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### status*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 HTTP response status code.
 
-#### status_text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### status_text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 HTTP response status text.
 
-#### headers *: [`Headers`](#nodriver.cdp.network.Headers)*
+#### headers*: [`Headers`](#nodriver.cdp.network.Headers)*
 
 HTTP response headers.
 
-#### headers_text *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### headers_text*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 HTTP response headers text.
 
-#### request_headers *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Headers`](#nodriver.cdp.network.Headers)]* *= None*
+#### request_headers*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Headers`](#nodriver.cdp.network.Headers)]* *= None*
 
 HTTP request headers.
 
-#### request_headers_text *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### request_headers_text*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 HTTP request headers text.
 
@@ -758,15 +802,15 @@ HTTP request headers text.
 
 WebSocket message data. This represents an entire WebSocket message, not just a fragmented frame as the name suggests.
 
-#### opcode *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### opcode*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 WebSocket message opcode.
 
-#### mask *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### mask*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 WebSocket message mask.
 
-#### payload_data *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### payload_data*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 WebSocket message payload data.
 If the opcode is 1, this is a text message and payloadData is a UTF-8 string.
@@ -776,19 +820,19 @@ If the opcode isn’t 1, then payloadData is a base64 encoded string representin
 
 Information about the cached resource.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Resource URL. This is the url of the original network request.
 
-#### type_ *: [`ResourceType`](#nodriver.cdp.network.ResourceType)*
+#### type_*: [`ResourceType`](#nodriver.cdp.network.ResourceType)*
 
 Type of this resource.
 
-#### body_size *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### body_size*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Cached response body size.
 
-#### response *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Response`](#nodriver.cdp.network.Response)]* *= None*
+#### response*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Response`](#nodriver.cdp.network.Response)]* *= None*
 
 Cached response data.
 
@@ -796,100 +840,113 @@ Cached response data.
 
 Information about the request initiator.
 
-#### type_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Type of this initiator.
 
-#### stack *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)]* *= None*
+#### stack*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)]* *= None*
 
 Initiator JavaScript stack trace, set for Script only.
 
-#### url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Initiator URL, set for Parser type or for Script type (when script is importing module) or for SignedExchange type.
 
-#### line_number *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### line_number*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Initiator line number, set for Parser type or for Script type (when script is importing
 module) (0-based).
 
-#### column_number *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### column_number*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Initiator column number, set for Parser type or for Script type (when script is importing
 module) (0-based).
 
-#### request_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RequestId`](#nodriver.cdp.network.RequestId)]* *= None*
+#### request_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RequestId`](#nodriver.cdp.network.RequestId)]* *= None*
 
 Set if another request triggered this request (e.g. preflight).
+
+### *class* CookiePartitionKey(top_level_site, has_cross_site_ancestor)
+
+cookiePartitionKey object
+The representation of the components of the key that are created by the cookiePartitionKey class contained in net/cookies/cookie_partition_key.h.
+
+#### top_level_site*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+The site of the top-level URL the browser was visiting at the start
+of the request to the endpoint that set the cookie.
+
+#### has_cross_site_ancestor*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+
+Indicates if the cookie has any ancestors that are cross-site to the topLevelSite.
 
 ### *class* Cookie(name, value, domain, path, size, http_only, secure, session, priority, same_party, source_scheme, source_port, expires=None, same_site=None, partition_key=None, partition_key_opaque=None)
 
 Cookie object
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Cookie name.
 
-#### value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Cookie value.
 
-#### domain *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### domain*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Cookie domain.
 
-#### path *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### path*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Cookie path.
 
-#### size *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### size*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Cookie size.
 
-#### http_only *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### http_only*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 True if cookie is http-only.
 
-#### secure *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### secure*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 True if cookie is secure.
 
-#### session *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### session*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 True in case of session cookie.
 
-#### priority *: [`CookiePriority`](#nodriver.cdp.network.CookiePriority)*
+#### priority*: [`CookiePriority`](#nodriver.cdp.network.CookiePriority)*
 
 Cookie Priority
 
-#### same_party *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### same_party*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 True if cookie is SameParty.
 
-#### source_scheme *: [`CookieSourceScheme`](#nodriver.cdp.network.CookieSourceScheme)*
+#### source_scheme*: [`CookieSourceScheme`](#nodriver.cdp.network.CookieSourceScheme)*
 
 Cookie source scheme type.
 
-#### source_port *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### source_port*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port.
 An unspecified port value allows protocol clients to emulate legacy cookie scope for the port.
 This is a temporary ability and it will be removed in the future.
 
-#### expires *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### expires*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Cookie expiration date as the number of seconds since the UNIX epoch.
 
-#### same_site *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookieSameSite`](#nodriver.cdp.network.CookieSameSite)]* *= None*
+#### same_site*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookieSameSite`](#nodriver.cdp.network.CookieSameSite)]* *= None*
 
 Cookie SameSite type.
 
-#### partition_key *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### partition_key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookiePartitionKey`](#nodriver.cdp.network.CookiePartitionKey)]* *= None*
 
-Cookie partition key. The site of the top-level URL the browser was visiting at the start
-of the request to the endpoint that set the cookie.
+Cookie partition key.
 
-#### partition_key_opaque *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### partition_key_opaque*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 True if cookie partition key is opaque.
 
@@ -977,119 +1034,164 @@ Types of reasons why a cookie may not be sent with a request.
 
 #### NAME_VALUE_PAIR_EXCEEDS_MAX_SIZE *= 'NameValuePairExceedsMaxSize'*
 
+### *class* CookieExemptionReason(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
+
+Types of reasons why a cookie should have been blocked by 3PCD but is exempted for the request.
+
+#### NONE *= 'None'*
+
+#### USER_SETTING *= 'UserSetting'*
+
+#### TPCD_METADATA *= 'TPCDMetadata'*
+
+#### TPCD_DEPRECATION_TRIAL *= 'TPCDDeprecationTrial'*
+
+#### TPCD_HEURISTICS *= 'TPCDHeuristics'*
+
+#### ENTERPRISE_POLICY *= 'EnterprisePolicy'*
+
+#### STORAGE_ACCESS *= 'StorageAccess'*
+
+#### TOP_LEVEL_STORAGE_ACCESS *= 'TopLevelStorageAccess'*
+
+#### CORS_OPT_IN *= 'CorsOptIn'*
+
+#### SCHEME *= 'Scheme'*
+
 ### *class* BlockedSetCookieWithReason(blocked_reasons, cookie_line, cookie=None)
 
 A cookie which was not stored from a response with the corresponding reason.
 
-#### blocked_reasons *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SetCookieBlockedReason`](#nodriver.cdp.network.SetCookieBlockedReason)]*
+#### blocked_reasons*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SetCookieBlockedReason`](#nodriver.cdp.network.SetCookieBlockedReason)]*
 
 The reason(s) this cookie was blocked.
 
-#### cookie_line *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### cookie_line*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The string representing this individual cookie as it would appear in the header.
 This is not the entire “cookie” or “set-cookie” header which could have multiple cookies.
 
-#### cookie *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Cookie`](#nodriver.cdp.network.Cookie)]* *= None*
+#### cookie*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Cookie`](#nodriver.cdp.network.Cookie)]* *= None*
 
 The cookie object which represents the cookie which was not stored. It is optional because
 sometimes complete cookie information is not available, such as in the case of parsing
 errors.
 
-### *class* BlockedCookieWithReason(blocked_reasons, cookie)
+### *class* ExemptedSetCookieWithReason(exemption_reason, cookie_line, cookie)
 
-A cookie with was not sent with a request with the corresponding reason.
+A cookie should have been blocked by 3PCD but is exempted and stored from a response with the
+corresponding reason. A cookie could only have at most one exemption reason.
 
-#### blocked_reasons *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CookieBlockedReason`](#nodriver.cdp.network.CookieBlockedReason)]*
+#### exemption_reason*: [`CookieExemptionReason`](#nodriver.cdp.network.CookieExemptionReason)*
 
-The reason(s) the cookie was blocked.
+The reason the cookie was exempted.
 
-#### cookie *: [`Cookie`](#nodriver.cdp.network.Cookie)*
+#### cookie_line*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+The string representing this individual cookie as it would appear in the header.
+
+#### cookie*: [`Cookie`](#nodriver.cdp.network.Cookie)*
+
+The cookie object representing the cookie.
+
+### *class* AssociatedCookie(cookie, blocked_reasons, exemption_reason=None)
+
+A cookie associated with the request which may or may not be sent with it.
+Includes the cookies itself and reasons for blocking or exemption.
+
+#### cookie*: [`Cookie`](#nodriver.cdp.network.Cookie)*
 
 The cookie object representing the cookie which was not sent.
+
+#### blocked_reasons*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CookieBlockedReason`](#nodriver.cdp.network.CookieBlockedReason)]*
+
+The reason(s) the cookie was blocked. If empty means the cookie is included.
+
+#### exemption_reason*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookieExemptionReason`](#nodriver.cdp.network.CookieExemptionReason)]* *= None*
+
+The reason the cookie should have been blocked by 3PCD but is exempted. A cookie could
+only have at most one exemption reason.
 
 ### *class* CookieParam(name, value, url=None, domain=None, path=None, secure=None, http_only=None, same_site=None, expires=None, priority=None, same_party=None, source_scheme=None, source_port=None, partition_key=None)
 
 Cookie parameter object
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Cookie name.
 
-#### value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Cookie value.
 
-#### url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The request-URI to associate with the setting of the cookie. This value can affect the
 default domain, path, source port, and source scheme values of the created cookie.
 
-#### domain *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### domain*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Cookie domain.
 
-#### path *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### path*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Cookie path.
 
-#### secure *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### secure*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 True if cookie is secure.
 
-#### http_only *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### http_only*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 True if cookie is http-only.
 
-#### same_site *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookieSameSite`](#nodriver.cdp.network.CookieSameSite)]* *= None*
+#### same_site*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookieSameSite`](#nodriver.cdp.network.CookieSameSite)]* *= None*
 
 Cookie SameSite type.
 
-#### expires *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)]* *= None*
+#### expires*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)]* *= None*
 
 Cookie expiration date, session cookie if not set
 
-#### priority *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookiePriority`](#nodriver.cdp.network.CookiePriority)]* *= None*
+#### priority*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookiePriority`](#nodriver.cdp.network.CookiePriority)]* *= None*
 
 Cookie Priority.
 
-#### same_party *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### same_party*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 True if cookie is SameParty.
 
-#### source_scheme *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookieSourceScheme`](#nodriver.cdp.network.CookieSourceScheme)]* *= None*
+#### source_scheme*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookieSourceScheme`](#nodriver.cdp.network.CookieSourceScheme)]* *= None*
 
 Cookie source scheme type.
 
-#### source_port *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### source_port*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port.
 An unspecified port value allows protocol clients to emulate legacy cookie scope for the port.
 This is a temporary ability and it will be removed in the future.
 
-#### partition_key *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### partition_key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookiePartitionKey`](#nodriver.cdp.network.CookiePartitionKey)]* *= None*
 
-Cookie partition key. The site of the top-level URL the browser was visiting at the start
-of the request to the endpoint that set the cookie.
-If not set, the cookie will be set as not partitioned.
+Cookie partition key. If not set, the cookie will be set as not partitioned.
 
 ### *class* AuthChallenge(origin, scheme, realm, source=None)
 
 Authorization challenge for HTTP status code 401 or 407.
 
-#### origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Origin of the challenger.
 
-#### scheme *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### scheme*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The authentication scheme used, such as basic or digest
 
-#### realm *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### realm*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The realm of the challenge. May be empty.
 
-#### source *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### source*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Source of the authentication challenge.
 
@@ -1097,18 +1199,18 @@ Source of the authentication challenge.
 
 Response to an AuthChallenge.
 
-#### response *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### response*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The decision on what to do in response to the authorization challenge.  Default means
 deferring to the default behavior of the net stack, which will likely either the Cancel
 authentication or display a popup dialog box.
 
-#### username *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### username*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The username to provide, possibly empty. Should only be set if response is
 ProvideCredentials.
 
-#### password *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### password*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The password to provide, possibly empty. Should only be set if response is
 ProvideCredentials.
@@ -1126,16 +1228,16 @@ sent. Response will intercept after the response is received.
 
 Request pattern for interception.
 
-#### url_pattern *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### url_pattern*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Wildcards (`'*'` -> zero or more, `'?'` -> exactly one) are allowed. Escape character is
 backslash. Omitting is equivalent to `"*"`.
 
-#### resource_type *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ResourceType`](#nodriver.cdp.network.ResourceType)]* *= None*
+#### resource_type*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ResourceType`](#nodriver.cdp.network.ResourceType)]* *= None*
 
 If set, only requests for matching resource types will be intercepted.
 
-#### interception_stage *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`InterceptionStage`](#nodriver.cdp.network.InterceptionStage)]* *= None*
+#### interception_stage*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`InterceptionStage`](#nodriver.cdp.network.InterceptionStage)]* *= None*
 
 Stage at which to begin intercepting requests. Default is Request.
 
@@ -1144,39 +1246,39 @@ Stage at which to begin intercepting requests. Default is Request.
 Information about a signed exchange signature.
 [https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#rfc.section.3.1](https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#rfc.section.3.1)
 
-#### label *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### label*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Signed exchange signature label.
 
-#### signature *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### signature*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The hex string of signed exchange signature.
 
-#### integrity *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### integrity*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Signed exchange signature integrity.
 
-#### validity_url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### validity_url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Signed exchange signature validity Url.
 
-#### date *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### date*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Signed exchange signature date.
 
-#### expires *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### expires*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Signed exchange signature expires.
 
-#### cert_url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### cert_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Signed exchange signature cert Url.
 
-#### cert_sha256 *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### cert_sha256*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The hex string of signed exchange signature cert sha256.
 
-#### certificates *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
+#### certificates*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
 
 The encoded certificates.
 
@@ -1185,23 +1287,23 @@ The encoded certificates.
 Information about a signed exchange header.
 [https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#cbor-representation](https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#cbor-representation)
 
-#### request_url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### request_url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Signed exchange request URL.
 
-#### response_code *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### response_code*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Signed exchange response code.
 
-#### response_headers *: [`Headers`](#nodriver.cdp.network.Headers)*
+#### response_headers*: [`Headers`](#nodriver.cdp.network.Headers)*
 
 Signed exchange response headers.
 
-#### signatures *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SignedExchangeSignature`](#nodriver.cdp.network.SignedExchangeSignature)]*
+#### signatures*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SignedExchangeSignature`](#nodriver.cdp.network.SignedExchangeSignature)]*
 
 Signed exchange response signature.
 
-#### header_integrity *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### header_integrity*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Signed exchange header integrity hash in the form of `sha256-<base64-hash-value>`.
 
@@ -1225,15 +1327,15 @@ Field type for a signed exchange related error.
 
 Information about a signed exchange response.
 
-#### message *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### message*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Error message.
 
-#### signature_index *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### signature_index*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 The index of the signature which caused the error.
 
-#### error_field *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SignedExchangeErrorField`](#nodriver.cdp.network.SignedExchangeErrorField)]* *= None*
+#### error_field*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SignedExchangeErrorField`](#nodriver.cdp.network.SignedExchangeErrorField)]* *= None*
 
 The field which caused the error.
 
@@ -1241,21 +1343,21 @@ The field which caused the error.
 
 Information about a signed exchange response.
 
-#### outer_response *: [`Response`](#nodriver.cdp.network.Response)*
+#### outer_response*: [`Response`](#nodriver.cdp.network.Response)*
 
 The outer response of signed HTTP exchange which was received from network.
 
-#### header *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SignedExchangeHeader`](#nodriver.cdp.network.SignedExchangeHeader)]* *= None*
+#### header*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SignedExchangeHeader`](#nodriver.cdp.network.SignedExchangeHeader)]* *= None*
 
 Information about the signed exchange header.
 
-#### security_details *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SecurityDetails`](#nodriver.cdp.network.SecurityDetails)]* *= None*
+#### security_details*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SecurityDetails`](#nodriver.cdp.network.SecurityDetails)]* *= None*
 
 Security details for the signed exchange header.
 
-#### errors *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SignedExchangeError`](#nodriver.cdp.network.SignedExchangeError)]]* *= None*
+#### errors*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SignedExchangeError`](#nodriver.cdp.network.SignedExchangeError)]]* *= None*
 
-Errors occurred while handling the signed exchagne.
+Errors occurred while handling the signed exchange.
 
 ### *class* ContentEncoding(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -1293,7 +1395,7 @@ List of content encodings supported by the backend.
 
 ### *class* ConnectTiming(request_time)
 
-#### request_time *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### request_time*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Timing’s requestTime is a baseline in seconds, while the other numbers are ticks in
 milliseconds relatively to this requestTime. Matches ResourceTiming’s requestTime for
@@ -1301,11 +1403,11 @@ the same request (but not for redirected requests).
 
 ### *class* ClientSecurityState(initiator_is_secure_context, initiator_ip_address_space, private_network_request_policy)
 
-#### initiator_is_secure_context *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### initiator_is_secure_context*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### initiator_ip_address_space *: [`IPAddressSpace`](#nodriver.cdp.network.IPAddressSpace)*
+#### initiator_ip_address_space*: [`IPAddressSpace`](#nodriver.cdp.network.IPAddressSpace)*
 
-#### private_network_request_policy *: [`PrivateNetworkRequestPolicy`](#nodriver.cdp.network.PrivateNetworkRequestPolicy)*
+#### private_network_request_policy*: [`PrivateNetworkRequestPolicy`](#nodriver.cdp.network.PrivateNetworkRequestPolicy)*
 
 ### *class* CrossOriginOpenerPolicyValue(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -1323,13 +1425,13 @@ the same request (but not for redirected requests).
 
 ### *class* CrossOriginOpenerPolicyStatus(value, report_only_value, reporting_endpoint=None, report_only_reporting_endpoint=None)
 
-#### value *: [`CrossOriginOpenerPolicyValue`](#nodriver.cdp.network.CrossOriginOpenerPolicyValue)*
+#### value*: [`CrossOriginOpenerPolicyValue`](#nodriver.cdp.network.CrossOriginOpenerPolicyValue)*
 
-#### report_only_value *: [`CrossOriginOpenerPolicyValue`](#nodriver.cdp.network.CrossOriginOpenerPolicyValue)*
+#### report_only_value*: [`CrossOriginOpenerPolicyValue`](#nodriver.cdp.network.CrossOriginOpenerPolicyValue)*
 
-#### reporting_endpoint *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### reporting_endpoint*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
-#### report_only_reporting_endpoint *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### report_only_reporting_endpoint*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 ### *class* CrossOriginEmbedderPolicyValue(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -1341,13 +1443,13 @@ the same request (but not for redirected requests).
 
 ### *class* CrossOriginEmbedderPolicyStatus(value, report_only_value, reporting_endpoint=None, report_only_reporting_endpoint=None)
 
-#### value *: [`CrossOriginEmbedderPolicyValue`](#nodriver.cdp.network.CrossOriginEmbedderPolicyValue)*
+#### value*: [`CrossOriginEmbedderPolicyValue`](#nodriver.cdp.network.CrossOriginEmbedderPolicyValue)*
 
-#### report_only_value *: [`CrossOriginEmbedderPolicyValue`](#nodriver.cdp.network.CrossOriginEmbedderPolicyValue)*
+#### report_only_value*: [`CrossOriginEmbedderPolicyValue`](#nodriver.cdp.network.CrossOriginEmbedderPolicyValue)*
 
-#### reporting_endpoint *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### reporting_endpoint*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
-#### report_only_reporting_endpoint *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### report_only_reporting_endpoint*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 ### *class* ContentSecurityPolicySource(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -1357,19 +1459,19 @@ the same request (but not for redirected requests).
 
 ### *class* ContentSecurityPolicyStatus(effective_directives, is_enforced, source)
 
-#### effective_directives *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### effective_directives*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### is_enforced *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### is_enforced*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### source *: [`ContentSecurityPolicySource`](#nodriver.cdp.network.ContentSecurityPolicySource)*
+#### source*: [`ContentSecurityPolicySource`](#nodriver.cdp.network.ContentSecurityPolicySource)*
 
 ### *class* SecurityIsolationStatus(coop=None, coep=None, csp=None)
 
-#### coop *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CrossOriginOpenerPolicyStatus`](#nodriver.cdp.network.CrossOriginOpenerPolicyStatus)]* *= None*
+#### coop*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CrossOriginOpenerPolicyStatus`](#nodriver.cdp.network.CrossOriginOpenerPolicyStatus)]* *= None*
 
-#### coep *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CrossOriginEmbedderPolicyStatus`](#nodriver.cdp.network.CrossOriginEmbedderPolicyStatus)]* *= None*
+#### coep*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CrossOriginEmbedderPolicyStatus`](#nodriver.cdp.network.CrossOriginEmbedderPolicyStatus)]* *= None*
 
-#### csp *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ContentSecurityPolicyStatus`](#nodriver.cdp.network.ContentSecurityPolicyStatus)]]* *= None*
+#### csp*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ContentSecurityPolicyStatus`](#nodriver.cdp.network.ContentSecurityPolicyStatus)]]* *= None*
 
 ### *class* ReportStatus(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -1389,43 +1491,43 @@ The status of a Reporting API report.
 
 An object representing a report generated by the Reporting API.
 
-#### id_ *: [`ReportId`](#nodriver.cdp.network.ReportId)*
+#### id_*: [`ReportId`](#nodriver.cdp.network.ReportId)*
 
-#### initiator_url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### initiator_url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The URL of the document that triggered the report.
 
-#### destination *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### destination*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The name of the endpoint group that should be used to deliver the report.
 
-#### type_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The type of the report (specifies the set of data that is contained in the report body).
 
-#### timestamp *: [`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)*
+#### timestamp*: [`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)*
 
 When the report was generated.
 
-#### depth *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### depth*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 How many uploads deep the related request was.
 
-#### completed_attempts *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### completed_attempts*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 The number of delivery attempts made so far, not including an active attempt.
 
-#### body *: [`dict`](https://docs.python.org/3/library/stdtypes.html#dict)*
+#### body*: [`dict`](https://docs.python.org/3/library/stdtypes.html#dict)*
 
-#### status *: [`ReportStatus`](#nodriver.cdp.network.ReportStatus)*
+#### status*: [`ReportStatus`](#nodriver.cdp.network.ReportStatus)*
 
 ### *class* ReportingApiEndpoint(url, group_name)
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The URL of the endpoint to which reports may be delivered.
 
-#### group_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### group_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Name of the endpoint group.
 
@@ -1433,21 +1535,21 @@ Name of the endpoint group.
 
 An object providing the result of a network resource load.
 
-#### success *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### success*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### net_error *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### net_error*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Optional values used for error reporting.
 
-#### net_error_name *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### net_error_name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
-#### http_status_code *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### http_status_code*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
-#### stream *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StreamHandle`](io.md#nodriver.cdp.io.StreamHandle)]* *= None*
+#### stream*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StreamHandle`](io.md#nodriver.cdp.io.StreamHandle)]* *= None*
 
 If successful, one of the following two fields holds the result.
 
-#### headers *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Headers`](#nodriver.cdp.network.Headers)]* *= None*
+#### headers*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Headers`](#nodriver.cdp.network.Headers)]* *= None*
 
 Response headers.
 
@@ -1456,9 +1558,9 @@ Response headers.
 An options object that may be extended later to better support CORS,
 CORB and streaming.
 
-#### disable_cache *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### disable_cache*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### include_credentials *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### include_credentials*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 ## Commands
 
@@ -1554,28 +1656,29 @@ Deprecated since version 1.3.
 
 * **Parameters:**
   * **interception_id** ([`InterceptionId`](#nodriver.cdp.network.InterceptionId)) – 
-  * **error_reason** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ErrorReason`](#nodriver.cdp.network.ErrorReason)]) –  *(Optional)* If set this causes the request to fail with the given reason. Passing ``Aborted``` for requests marked with ```isNavigationRequest`` also cancels the navigation. Must not be set in response to an authChallenge.
-  * **raw_response** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* If set the requests completes using with the provided base64 encoded raw response, including HTTP status line and headers etc… Must not be set in response to an authChallenge. (Encoded as a base64 string when passed over JSON)
-  * **url** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* If set the request url will be modified in a way that’s not observable by page. Must not be set in response to an authChallenge.
-  * **method** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* If set this allows the request method to be overridden. Must not be set in response to an authChallenge.
-  * **post_data** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* If set this allows postData to be set. Must not be set in response to an authChallenge.
-  * **headers** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Headers`](#nodriver.cdp.network.Headers)]) –  *(Optional)* If set this allows the request headers to be changed. Must not be set in response to an authChallenge.
-  * **auth_challenge_response** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AuthChallengeResponse`](#nodriver.cdp.network.AuthChallengeResponse)]) –  *(Optional)* Response to a requestIntercepted with an authChallenge. Must not be set otherwise.
+  * **error_reason** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ErrorReason`](#nodriver.cdp.network.ErrorReason)]) – *(Optional)* If set this causes the request to fail with the given reason. Passing ``Aborted``` for requests marked with ```isNavigationRequest`` also cancels the navigation. Must not be set in response to an authChallenge.
+  * **raw_response** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* If set the requests completes using with the provided base64 encoded raw response, including HTTP status line and headers etc… Must not be set in response to an authChallenge. (Encoded as a base64 string when passed over JSON)
+  * **url** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* If set the request url will be modified in a way that’s not observable by page. Must not be set in response to an authChallenge.
+  * **method** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* If set this allows the request method to be overridden. Must not be set in response to an authChallenge.
+  * **post_data** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* If set this allows postData to be set. Must not be set in response to an authChallenge.
+  * **headers** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Headers`](#nodriver.cdp.network.Headers)]) – *(Optional)* If set this allows the request headers to be changed. Must not be set in response to an authChallenge.
+  * **auth_challenge_response** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AuthChallengeResponse`](#nodriver.cdp.network.AuthChallengeResponse)]) – *(Optional)* Response to a requestIntercepted with an authChallenge. Must not be set otherwise.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
 #### Deprecated
 Deprecated since version 1.3.
 
-### delete_cookies(name, url=None, domain=None, path=None)
+### delete_cookies(name, url=None, domain=None, path=None, partition_key=None)
 
-Deletes browser cookies with matching name and url or domain/path pair.
+Deletes browser cookies with matching name and url or domain/path/partitionKey pair.
 
 * **Parameters:**
   * **name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Name of the cookies to remove.
-  * **url** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* If specified, deletes all the cookies with the given name where domain and path match provided URL.
-  * **domain** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* If specified, deletes only cookies with the exact domain.
-  * **path** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* If specified, deletes only cookies with the exact path.
+  * **url** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* If specified, deletes all the cookies with the given name where domain and path match provided URL.
+  * **domain** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* If specified, deletes only cookies with the exact domain.
+  * **path** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* If specified, deletes only cookies with the exact path.
+  * **partition_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookiePartitionKey`](#nodriver.cdp.network.CookiePartitionKey)]) – **(EXPERIMENTAL)** *(Optional)* If specified, deletes only cookies with the the given name and partitionKey where all partition key attributes match the cookie partition key attribute.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1586,7 +1689,7 @@ Disables network tracking, prevents network events from being sent to the client
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
-### emulate_network_conditions(offline, latency, download_throughput, upload_throughput, connection_type=None)
+### emulate_network_conditions(offline, latency, download_throughput, upload_throughput, connection_type=None, packet_loss=None, packet_queue_length=None, packet_reordering=None)
 
 Activates emulation of network conditions.
 
@@ -1595,7 +1698,10 @@ Activates emulation of network conditions.
   * **latency** ([`float`](https://docs.python.org/3/library/functions.html#float)) – Minimum latency from request sent to response headers received (ms).
   * **download_throughput** ([`float`](https://docs.python.org/3/library/functions.html#float)) – Maximal aggregated download throughput (bytes/sec). -1 disables download throttling.
   * **upload_throughput** ([`float`](https://docs.python.org/3/library/functions.html#float)) – Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling.
-  * **connection_type** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ConnectionType`](#nodriver.cdp.network.ConnectionType)]) –  *(Optional)* Connection type if known.
+  * **connection_type** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ConnectionType`](#nodriver.cdp.network.ConnectionType)]) – *(Optional)* Connection type if known.
+  * **packet_loss** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – **(EXPERIMENTAL)** *(Optional)* WebRTC packet loss (percent, 0-100). 0 disables packet loss emulation, 100 drops all the packets.
+  * **packet_queue_length** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – **(EXPERIMENTAL)** *(Optional)* WebRTC packet queue length (packet). 0 removes any queue length limitations.
+  * **packet_reordering** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* WebRTC packetReordering feature.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1604,9 +1710,9 @@ Activates emulation of network conditions.
 Enables network tracking, network events will now be delivered to the client.
 
 * **Parameters:**
-  * **max_total_buffer_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – **(EXPERIMENTAL)**  *(Optional)* Buffer size in bytes to use when preserving network payloads (XHRs, etc).
-  * **max_resource_buffer_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – **(EXPERIMENTAL)**  *(Optional)* Per-resource buffer size in bytes to use when preserving network payloads (XHRs, etc).
-  * **max_post_data_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Longest post body size (in bytes) that would be included in requestWillBeSent notification
+  * **max_total_buffer_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – **(EXPERIMENTAL)** *(Optional)* Buffer size in bytes to use when preserving network payloads (XHRs, etc).
+  * **max_resource_buffer_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – **(EXPERIMENTAL)** *(Optional)* Per-resource buffer size in bytes to use when preserving network payloads (XHRs, etc).
+  * **max_post_data_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Longest post body size (in bytes) that would be included in requestWillBeSent notification
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1657,7 +1763,7 @@ Returns all browser cookies for the current URL. Depending on the backend suppor
 detailed cookie information in the `cookies` field.
 
 * **Parameters:**
-  **urls** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]) –  *(Optional)* The list of URLs for which applicable cookies will be fetched. If not specified, it’s assumed to be set to the list containing the URLs of the page and all of its subframes.
+  **urls** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]) – *(Optional)* The list of URLs for which applicable cookies will be fetched. If not specified, it’s assumed to be set to the list containing the URLs of the page and all of its subframes.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Cookie`](#nodriver.cdp.network.Cookie)]]
 * **Returns:**
@@ -1709,7 +1815,7 @@ Returns information about the COEP/COOP isolation status.
 **EXPERIMENTAL**
 
 * **Parameters:**
-  **frame_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]) –  *(Optional)* If no frameId is provided, the status of the target is provided.
+  **frame_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]) – *(Optional)* If no frameId is provided, the status of the target is provided.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`SecurityIsolationStatus`](#nodriver.cdp.network.SecurityIsolationStatus)]
 * **Returns:**
@@ -1721,7 +1827,7 @@ Fetches the resource and returns the content.
 **EXPERIMENTAL**
 
 * **Parameters:**
-  * **frame_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]) –  *(Optional)* Frame id to get the resource for. Mandatory for frame targets, and should be omitted for worker targets.
+  * **frame_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]) – *(Optional)* Frame id to get the resource for. Mandatory for frame targets, and should be omitted for worker targets.
   * **url** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – URL of the resource to get content for.
   * **options** ([`LoadNetworkResourceOptions`](#nodriver.cdp.network.LoadNetworkResourceOptions)) – Options for the request.
 * **Return type:**
@@ -1750,8 +1856,8 @@ Searches for given string in response content.
 * **Parameters:**
   * **request_id** ([`RequestId`](#nodriver.cdp.network.RequestId)) – Identifier of the network response to search.
   * **query** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – String to search for.
-  * **case_sensitive** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* If true, search is case sensitive.
-  * **is_regex** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* If true, treats string parameter as regex.
+  * **case_sensitive** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If true, search is case sensitive.
+  * **is_regex** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If true, treats string parameter as regex.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SearchMatch`](debugger.md#nodriver.cdp.debugger.SearchMatch)]]
 * **Returns:**
@@ -1815,18 +1921,18 @@ Sets a cookie with the given cookie data; may overwrite equivalent cookies if th
 * **Parameters:**
   * **name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Cookie name.
   * **value** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Cookie value.
-  * **url** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* The request-URI to associate with the setting of the cookie. This value can affect the default domain, path, source port, and source scheme values of the created cookie.
-  * **domain** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Cookie domain.
-  * **path** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Cookie path.
-  * **secure** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* True if cookie is secure.
-  * **http_only** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* True if cookie is http-only.
-  * **same_site** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookieSameSite`](#nodriver.cdp.network.CookieSameSite)]) –  *(Optional)* Cookie SameSite type.
-  * **expires** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)]) –  *(Optional)* Cookie expiration date, session cookie if not set
-  * **priority** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookiePriority`](#nodriver.cdp.network.CookiePriority)]) – **(EXPERIMENTAL)**  *(Optional)* Cookie Priority type.
-  * **same_party** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* True if cookie is SameParty.
-  * **source_scheme** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookieSourceScheme`](#nodriver.cdp.network.CookieSourceScheme)]) – **(EXPERIMENTAL)**  *(Optional)* Cookie source scheme type.
-  * **source_port** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – **(EXPERIMENTAL)**  *(Optional)* Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port. An unspecified port value allows protocol clients to emulate legacy cookie scope for the port. This is a temporary ability and it will be removed in the future.
-  * **partition_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)**  *(Optional)* Cookie partition key. The site of the top-level URL the browser was visiting at the start of the request to the endpoint that set the cookie. If not set, the cookie will be set as not partitioned.
+  * **url** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* The request-URI to associate with the setting of the cookie. This value can affect the default domain, path, source port, and source scheme values of the created cookie.
+  * **domain** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Cookie domain.
+  * **path** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Cookie path.
+  * **secure** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* True if cookie is secure.
+  * **http_only** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* True if cookie is http-only.
+  * **same_site** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookieSameSite`](#nodriver.cdp.network.CookieSameSite)]) – *(Optional)* Cookie SameSite type.
+  * **expires** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)]) – *(Optional)* Cookie expiration date, session cookie if not set
+  * **priority** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookiePriority`](#nodriver.cdp.network.CookiePriority)]) – **(EXPERIMENTAL)** *(Optional)* Cookie Priority type.
+  * **same_party** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* True if cookie is SameParty.
+  * **source_scheme** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookieSourceScheme`](#nodriver.cdp.network.CookieSourceScheme)]) – **(EXPERIMENTAL)** *(Optional)* Cookie source scheme type.
+  * **source_port** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – **(EXPERIMENTAL)** *(Optional)* Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port. An unspecified port value allows protocol clients to emulate legacy cookie scope for the port. This is a temporary ability and it will be removed in the future.
+  * **partition_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookiePartitionKey`](#nodriver.cdp.network.CookiePartitionKey)]) – **(EXPERIMENTAL)** *(Optional)* Cookie partition key. If not set, the cookie will be set as not partitioned.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`bool`](https://docs.python.org/3/library/functions.html#bool)]
 * **Returns:**
@@ -1874,9 +1980,9 @@ Allows overriding user agent with the given string.
 
 * **Parameters:**
   * **user_agent** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – User agent to use.
-  * **accept_language** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Browser language to emulate.
-  * **platform** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* The platform navigator.platform should return.
-  * **user_agent_metadata** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UserAgentMetadata`](emulation.md#nodriver.cdp.emulation.UserAgentMetadata)]) – **(EXPERIMENTAL)**  *(Optional)* To be sent in Sec-CH-UA-\* headers and returned in navigator.userAgentData
+  * **accept_language** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Browser language to emulate.
+  * **platform** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* The platform navigator.platform should return.
+  * **user_agent_metadata** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UserAgentMetadata`](emulation.md#nodriver.cdp.emulation.UserAgentMetadata)]) – **(EXPERIMENTAL)** *(Optional)* To be sent in Sec-CH-UA-\* headers and returned in navigator.userAgentData
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1919,23 +2025,23 @@ you use the event’s attributes.
 
 Fired when data chunk was received over the network.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
-#### data_length *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### data_length*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Data chunk length.
 
-#### encoded_data_length *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### encoded_data_length*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Actual bytes received (might be less than dataLength for compressed encodings).
 
-#### data *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 Data that was received. (Encoded as a base64 string when passed over JSON)
 
@@ -1943,23 +2049,23 @@ Data that was received. (Encoded as a base64 string when passed over JSON)
 
 Fired when EventSource message is received.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
-#### event_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### event_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Message type.
 
-#### event_id *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### event_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Message identifier.
 
-#### data *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### data*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Message content.
 
@@ -1967,31 +2073,36 @@ Message content.
 
 Fired when HTTP request has failed to load.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
-#### type_ *: [`ResourceType`](#nodriver.cdp.network.ResourceType)*
+#### type_*: [`ResourceType`](#nodriver.cdp.network.ResourceType)*
 
 Resource type.
 
-#### error_text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### error_text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-User friendly error message.
+//cs.chromium.org/chromium/src/net/base/net_error_list.h
 
-#### canceled *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
+* **Type:**
+  Error message. List of network errors
+* **Type:**
+  https
+
+#### canceled*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
 
 True if loading was canceled.
 
-#### blocked_reason *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BlockedReason`](#nodriver.cdp.network.BlockedReason)]*
+#### blocked_reason*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BlockedReason`](#nodriver.cdp.network.BlockedReason)]*
 
 The reason why loading was blocked, if any.
 
-#### cors_error_status *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CorsErrorStatus`](#nodriver.cdp.network.CorsErrorStatus)]*
+#### cors_error_status*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CorsErrorStatus`](#nodriver.cdp.network.CorsErrorStatus)]*
 
 The reason why loading was blocked by CORS, if any.
 
@@ -1999,15 +2110,15 @@ The reason why loading was blocked by CORS, if any.
 
 Fired when HTTP request has finished loading.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
-#### encoded_data_length *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### encoded_data_length*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Total number of bytes received for this request.
 
@@ -2022,56 +2133,56 @@ Deprecated, use Fetch.requestPaused instead.
 #### Deprecated
 Deprecated since version 1.3.
 
-#### interception_id *: [`InterceptionId`](#nodriver.cdp.network.InterceptionId)*
+#### interception_id*: [`InterceptionId`](#nodriver.cdp.network.InterceptionId)*
 
 Each request the page makes will have a unique id, however if any redirects are encountered
 while processing that fetch, they will be reported with the same id as the original fetch.
 Likewise if HTTP authentication is needed then the same fetch id will be used.
 
-#### request *: [`Request`](#nodriver.cdp.network.Request)*
+#### request*: [`Request`](#nodriver.cdp.network.Request)*
 
-#### frame_id *: [`FrameId`](page.md#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](page.md#nodriver.cdp.page.FrameId)*
 
 The id of the frame that initiated the request.
 
-#### resource_type *: [`ResourceType`](#nodriver.cdp.network.ResourceType)*
+#### resource_type*: [`ResourceType`](#nodriver.cdp.network.ResourceType)*
 
 How the requested resource will be used.
 
-#### is_navigation_request *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### is_navigation_request*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Whether this is a navigation request, which can abort the navigation completely.
 
-#### is_download *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
+#### is_download*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
 
 Set if the request is a navigation that will result in a download.
 Only present after response is received from the server (i.e. HeadersReceived stage).
 
-#### redirect_url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### redirect_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 Redirect location, only sent if a redirect was intercepted.
 
-#### auth_challenge *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AuthChallenge`](#nodriver.cdp.network.AuthChallenge)]*
+#### auth_challenge*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AuthChallenge`](#nodriver.cdp.network.AuthChallenge)]*
 
 Details of the Authorization Challenge encountered. If this is set then
 continueInterceptedRequest must contain an authChallengeResponse.
 
-#### response_error_reason *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ErrorReason`](#nodriver.cdp.network.ErrorReason)]*
+#### response_error_reason*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ErrorReason`](#nodriver.cdp.network.ErrorReason)]*
 
 Response error if intercepted at response stage or if redirect occurred while intercepting
 request.
 
-#### response_status_code *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
+#### response_status_code*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
 
 Response code if intercepted at response stage or if redirect occurred while intercepting
 request or auth retry occurred.
 
-#### response_headers *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Headers`](#nodriver.cdp.network.Headers)]*
+#### response_headers*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Headers`](#nodriver.cdp.network.Headers)]*
 
 Response headers if intercepted at the response stage or if redirect occurred while
 intercepting request or auth retry occurred.
 
-#### request_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RequestId`](#nodriver.cdp.network.RequestId)]*
+#### request_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RequestId`](#nodriver.cdp.network.RequestId)]*
 
 If the intercepted request had a corresponding requestWillBeSent event fired for it, then
 this requestId will be the same as the requestId present in the requestWillBeSent event.
@@ -2080,7 +2191,7 @@ this requestId will be the same as the requestId present in the requestWillBeSen
 
 Fired if request ended up loading from cache.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
@@ -2088,53 +2199,53 @@ Request identifier.
 
 Fired when page is about to send HTTP request.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### loader_id *: [`LoaderId`](#nodriver.cdp.network.LoaderId)*
+#### loader_id*: [`LoaderId`](#nodriver.cdp.network.LoaderId)*
 
 Loader identifier. Empty string if the request is fetched from worker.
 
-#### document_url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### document_url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 URL of the document this request is loaded for.
 
-#### request *: [`Request`](#nodriver.cdp.network.Request)*
+#### request*: [`Request`](#nodriver.cdp.network.Request)*
 
 Request data.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
-#### wall_time *: [`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)*
+#### wall_time*: [`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)*
 
 Timestamp.
 
-#### initiator *: [`Initiator`](#nodriver.cdp.network.Initiator)*
+#### initiator*: [`Initiator`](#nodriver.cdp.network.Initiator)*
 
 Request initiator.
 
-#### redirect_has_extra_info *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### redirect_has_extra_info*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 In the case that redirectResponse is populated, this flag indicates whether
 requestWillBeSentExtraInfo and responseReceivedExtraInfo events will be or were emitted
 for the request which was just redirected.
 
-#### redirect_response *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Response`](#nodriver.cdp.network.Response)]*
+#### redirect_response*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Response`](#nodriver.cdp.network.Response)]*
 
 Redirect response data.
 
-#### type_ *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ResourceType`](#nodriver.cdp.network.ResourceType)]*
+#### type_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ResourceType`](#nodriver.cdp.network.ResourceType)]*
 
 Type of this resource.
 
-#### frame_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]*
+#### frame_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]*
 
 Frame identifier.
 
-#### has_user_gesture *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
+#### has_user_gesture*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
 
 Whether the request is initiated by a user gesture. Defaults to false.
 
@@ -2144,15 +2255,15 @@ Whether the request is initiated by a user gesture. Defaults to false.
 
 Fired when resource loading priority is changed
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### new_priority *: [`ResourcePriority`](#nodriver.cdp.network.ResourcePriority)*
+#### new_priority*: [`ResourcePriority`](#nodriver.cdp.network.ResourcePriority)*
 
 New priority
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
@@ -2162,11 +2273,11 @@ Timestamp.
 
 Fired when a signed exchange was received over the network
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### info *: [`SignedExchangeInfo`](#nodriver.cdp.network.SignedExchangeInfo)*
+#### info*: [`SignedExchangeInfo`](#nodriver.cdp.network.SignedExchangeInfo)*
 
 Information about the signed exchange response.
 
@@ -2174,32 +2285,32 @@ Information about the signed exchange response.
 
 Fired when HTTP response is available.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### loader_id *: [`LoaderId`](#nodriver.cdp.network.LoaderId)*
+#### loader_id*: [`LoaderId`](#nodriver.cdp.network.LoaderId)*
 
 Loader identifier. Empty string if the request is fetched from worker.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
-#### type_ *: [`ResourceType`](#nodriver.cdp.network.ResourceType)*
+#### type_*: [`ResourceType`](#nodriver.cdp.network.ResourceType)*
 
 Resource type.
 
-#### response *: [`Response`](#nodriver.cdp.network.Response)*
+#### response*: [`Response`](#nodriver.cdp.network.Response)*
 
 Response data.
 
-#### has_extra_info *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### has_extra_info*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Indicates whether requestWillBeSentExtraInfo and responseReceivedExtraInfo events will be
 or were emitted for this request.
 
-#### frame_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]*
+#### frame_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]*
 
 Frame identifier.
 
@@ -2207,11 +2318,11 @@ Frame identifier.
 
 Fired when WebSocket is closed.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
@@ -2219,15 +2330,15 @@ Timestamp.
 
 Fired upon WebSocket creation.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 WebSocket request URL.
 
-#### initiator *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Initiator`](#nodriver.cdp.network.Initiator)]*
+#### initiator*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Initiator`](#nodriver.cdp.network.Initiator)]*
 
 Request initiator.
 
@@ -2235,15 +2346,15 @@ Request initiator.
 
 Fired when WebSocket message error occurs.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
-#### error_message *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### error_message*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 WebSocket error message.
 
@@ -2251,15 +2362,15 @@ WebSocket error message.
 
 Fired when WebSocket message is received.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
-#### response *: [`WebSocketFrame`](#nodriver.cdp.network.WebSocketFrame)*
+#### response*: [`WebSocketFrame`](#nodriver.cdp.network.WebSocketFrame)*
 
 WebSocket response data.
 
@@ -2267,15 +2378,15 @@ WebSocket response data.
 
 Fired when WebSocket message is sent.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
-#### response *: [`WebSocketFrame`](#nodriver.cdp.network.WebSocketFrame)*
+#### response*: [`WebSocketFrame`](#nodriver.cdp.network.WebSocketFrame)*
 
 WebSocket response data.
 
@@ -2283,15 +2394,15 @@ WebSocket response data.
 
 Fired when WebSocket handshake response becomes available.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
-#### response *: [`WebSocketResponse`](#nodriver.cdp.network.WebSocketResponse)*
+#### response*: [`WebSocketResponse`](#nodriver.cdp.network.WebSocketResponse)*
 
 WebSocket response data.
 
@@ -2299,19 +2410,19 @@ WebSocket response data.
 
 Fired when WebSocket is about to initiate handshake.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
-#### wall_time *: [`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)*
+#### wall_time*: [`TimeSinceEpoch`](#nodriver.cdp.network.TimeSinceEpoch)*
 
 UTC Timestamp.
 
-#### request *: [`WebSocketRequest`](#nodriver.cdp.network.WebSocketRequest)*
+#### request*: [`WebSocketRequest`](#nodriver.cdp.network.WebSocketRequest)*
 
 WebSocket request data.
 
@@ -2319,19 +2430,19 @@ WebSocket request data.
 
 Fired upon WebTransport creation.
 
-#### transport_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### transport_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 WebTransport identifier.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 WebTransport request URL.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
-#### initiator *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Initiator`](#nodriver.cdp.network.Initiator)]*
+#### initiator*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Initiator`](#nodriver.cdp.network.Initiator)]*
 
 Request initiator.
 
@@ -2339,11 +2450,11 @@ Request initiator.
 
 Fired when WebTransport handshake is finished.
 
-#### transport_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### transport_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 WebTransport identifier.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
@@ -2351,11 +2462,11 @@ Timestamp.
 
 Fired when WebTransport is disposed.
 
-#### transport_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### transport_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 WebTransport identifier.
 
-#### timestamp *: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 
 Timestamp.
 
@@ -2368,32 +2479,32 @@ network stack. Not every requestWillBeSent event will have an additional
 requestWillBeSentExtraInfo fired for it, and there is no guarantee whether requestWillBeSent
 or requestWillBeSentExtraInfo will be fired first for the same request.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier. Used to match this information to an existing requestWillBeSent event.
 
-#### associated_cookies *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BlockedCookieWithReason`](#nodriver.cdp.network.BlockedCookieWithReason)]*
+#### associated_cookies*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AssociatedCookie`](#nodriver.cdp.network.AssociatedCookie)]*
 
 A list of cookies potentially associated to the requested URL. This includes both cookies sent with
-the request and the ones not sent; the latter are distinguished by having blockedReason field set.
+the request and the ones not sent; the latter are distinguished by having blockedReasons field set.
 
-#### headers *: [`Headers`](#nodriver.cdp.network.Headers)*
+#### headers*: [`Headers`](#nodriver.cdp.network.Headers)*
 
 Raw request headers as they will be sent over the wire.
 
-#### connect_timing *: [`ConnectTiming`](#nodriver.cdp.network.ConnectTiming)*
+#### connect_timing*: [`ConnectTiming`](#nodriver.cdp.network.ConnectTiming)*
 
 Connection timing information for the request.
 
-#### client_security_state *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ClientSecurityState`](#nodriver.cdp.network.ClientSecurityState)]*
+#### client_security_state*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ClientSecurityState`](#nodriver.cdp.network.ClientSecurityState)]*
 
 The client security state set for the request.
 
-#### site_has_cookie_in_other_partition *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
+#### site_has_cookie_in_other_partition*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
 
 Whether the site has partitioned cookies stored in a partition different than the current one.
 
-### *class* ResponseReceivedExtraInfo(request_id, blocked_cookies, headers, resource_ip_address_space, status_code, headers_text, cookie_partition_key, cookie_partition_key_opaque)
+### *class* ResponseReceivedExtraInfo(request_id, blocked_cookies, headers, resource_ip_address_space, status_code, headers_text, cookie_partition_key, cookie_partition_key_opaque, exempted_cookies)
 
 **EXPERIMENTAL**
 
@@ -2401,44 +2512,65 @@ Fired when additional information about a responseReceived event is available fr
 stack. Not every responseReceived event will have an additional responseReceivedExtraInfo for
 it, and responseReceivedExtraInfo may be fired before or after responseReceived.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier. Used to match this information to another responseReceived event.
 
-#### blocked_cookies *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BlockedSetCookieWithReason`](#nodriver.cdp.network.BlockedSetCookieWithReason)]*
+#### blocked_cookies*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BlockedSetCookieWithReason`](#nodriver.cdp.network.BlockedSetCookieWithReason)]*
 
 A list of cookies which were not stored from the response along with the corresponding
 reasons for blocking. The cookies here may not be valid due to syntax errors, which
 are represented by the invalid cookie line string instead of a proper cookie.
 
-#### headers *: [`Headers`](#nodriver.cdp.network.Headers)*
+#### headers*: [`Headers`](#nodriver.cdp.network.Headers)*
 
 Raw response headers as they were received over the wire.
 
-#### resource_ip_address_space *: [`IPAddressSpace`](#nodriver.cdp.network.IPAddressSpace)*
+#### resource_ip_address_space*: [`IPAddressSpace`](#nodriver.cdp.network.IPAddressSpace)*
 
 The IP address space of the resource. The address space can only be determined once the transport
 established the connection, so we can’t send it in `requestWillBeSentExtraInfo`.
 
-#### status_code *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### status_code*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 The status code of the response. This is useful in cases the request failed and no responseReceived
 event is triggered, which is the case for, e.g., CORS errors. This is also the correct status code
 for cached requests, where the status in responseReceived is a 200 and this will be 304.
 
-#### headers_text *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### headers_text*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 Raw response header text as it was received over the wire. The raw text may not always be
 available, such as in the case of HTTP/2 or QUIC.
 
-#### cookie_partition_key *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### cookie_partition_key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CookiePartitionKey`](#nodriver.cdp.network.CookiePartitionKey)]*
 
 The cookie partition key that will be used to store partitioned cookies set in this response.
 Only sent when partitioned cookies are enabled.
 
-#### cookie_partition_key_opaque *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
+#### cookie_partition_key_opaque*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
 
-True if partitioned cookies are enabled, but the partition key is not serializeable to string.
+True if partitioned cookies are enabled, but the partition key is not serializable to string.
+
+#### exempted_cookies*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ExemptedSetCookieWithReason`](#nodriver.cdp.network.ExemptedSetCookieWithReason)]]*
+
+A list of cookies which should have been blocked by 3PCD but are exempted and stored from
+the response with the corresponding reason.
+
+### *class* ResponseReceivedEarlyHints(request_id, headers)
+
+**EXPERIMENTAL**
+
+Fired when 103 Early Hints headers is received in addition to the common response.
+Not every responseReceived event will have an responseReceivedEarlyHints fired.
+Only one responseReceivedEarlyHints may be fired for eached responseReceived event.
+
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
+
+Request identifier. Used to match this information to another responseReceived event.
+
+#### headers*: [`Headers`](#nodriver.cdp.network.Headers)*
+
+Raw response headers as they were received over the wire.
 
 ### *class* TrustTokenOperationDone(status, type_, request_id, top_level_origin, issuer_origin, issued_token_count)
 
@@ -2449,28 +2581,34 @@ the type of the operation and whether the operation succeeded or
 failed, the event is fired before the corresponding request was sent
 or after the response was received.
 
-#### status *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### status*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Detailed success or error status of the operation.
 ‘AlreadyExists’ also signifies a successful operation, as the result
 of the operation already exists und thus, the operation was abort
 preemptively (e.g. a cache hit).
 
-#### type_ *: [`TrustTokenOperationType`](#nodriver.cdp.network.TrustTokenOperationType)*
+#### type_*: [`TrustTokenOperationType`](#nodriver.cdp.network.TrustTokenOperationType)*
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
-#### top_level_origin *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### top_level_origin*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 Top level origin. The context in which the operation was attempted.
 
-#### issuer_origin *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### issuer_origin*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 Origin of the issuer in case of a “Issuance” or “Redemption” operation.
 
-#### issued_token_count *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
+#### issued_token_count*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
 
 The number of obtained Trust Tokens on a successful “Issuance” operation.
+
+### *class* PolicyUpdated
+
+**EXPERIMENTAL**
+
+Fired once security policy has been updated.
 
 ### *class* SubresourceWebBundleMetadataReceived(request_id, urls)
 
@@ -2479,11 +2617,11 @@ The number of obtained Trust Tokens on a successful “Issuance” operation.
 Fired once when parsing the .wbn file has succeeded.
 The event contains the information about the web bundle contents.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier. Used to match this information to another event.
 
-#### urls *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### urls*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 A list of URLs of resources in the subresource Web Bundle.
 
@@ -2493,11 +2631,11 @@ A list of URLs of resources in the subresource Web Bundle.
 
 Fired once when parsing the .wbn file has failed.
 
-#### request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier. Used to match this information to another event.
 
-#### error_message *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### error_message*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Error message
 
@@ -2508,15 +2646,15 @@ Error message
 Fired when handling requests for resources within a .wbn file.
 Note: this will only be fired for resources that are requested by the webpage.
 
-#### inner_request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### inner_request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier of the subresource request
 
-#### inner_request_url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### inner_request_url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 URL of the subresource resource.
 
-#### bundle_request_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RequestId`](#nodriver.cdp.network.RequestId)]*
+#### bundle_request_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RequestId`](#nodriver.cdp.network.RequestId)]*
 
 Bundle request identifier. Used to match this information to another event.
 This made be absent in case when the instrumentation was enabled only
@@ -2528,19 +2666,19 @@ after webbundle was parsed.
 
 Fired when request for resources within a .wbn file failed.
 
-#### inner_request_id *: [`RequestId`](#nodriver.cdp.network.RequestId)*
+#### inner_request_id*: [`RequestId`](#nodriver.cdp.network.RequestId)*
 
 Request identifier of the subresource request
 
-#### inner_request_url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### inner_request_url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 URL of the subresource resource.
 
-#### error_message *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### error_message*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Error message
 
-#### bundle_request_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RequestId`](#nodriver.cdp.network.RequestId)]*
+#### bundle_request_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RequestId`](#nodriver.cdp.network.RequestId)]*
 
 Bundle request identifier. Used to match this information to another event.
 This made be absent in case when the instrumentation was enabled only
@@ -2553,20 +2691,20 @@ after webbundle was parsed.
 Is sent whenever a new report is added.
 And after ‘enableReportingApi’ for all existing reports.
 
-#### report *: [`ReportingApiReport`](#nodriver.cdp.network.ReportingApiReport)*
+#### report*: [`ReportingApiReport`](#nodriver.cdp.network.ReportingApiReport)*
 
 ### *class* ReportingApiReportUpdated(report)
 
 **EXPERIMENTAL**
 
-#### report *: [`ReportingApiReport`](#nodriver.cdp.network.ReportingApiReport)*
+#### report*: [`ReportingApiReport`](#nodriver.cdp.network.ReportingApiReport)*
 
 ### *class* ReportingApiEndpointsChangedForOrigin(origin, endpoints)
 
 **EXPERIMENTAL**
 
-#### origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Origin of the document(s) which configured the endpoints.
 
-#### endpoints *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ReportingApiEndpoint`](#nodriver.cdp.network.ReportingApiEndpoint)]*
+#### endpoints*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ReportingApiEndpoint`](#nodriver.cdp.network.ReportingApiEndpoint)]*

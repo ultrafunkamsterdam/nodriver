@@ -26,15 +26,15 @@ Memory pressure level.
 
 Heap profile sample.
 
-#### size *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### size*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Size of the sampled allocation.
 
-#### total *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### total*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Total bytes attributed to this sample.
 
-#### stack *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### stack*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 Execution stack at the point of allocation.
 
@@ -42,28 +42,28 @@ Execution stack at the point of allocation.
 
 Array of heap profile samples.
 
-#### samples *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SamplingProfileNode`](#nodriver.cdp.memory.SamplingProfileNode)]*
+#### samples*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SamplingProfileNode`](#nodriver.cdp.memory.SamplingProfileNode)]*
 
-#### modules *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Module`](#nodriver.cdp.memory.Module)]*
+#### modules*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Module`](#nodriver.cdp.memory.Module)]*
 
 ### *class* Module(name, uuid, base_address, size)
 
 Executable module information
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Name of the module.
 
-#### uuid *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### uuid*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 UUID of the module.
 
-#### base_address *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### base_address*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Base address where the module is loaded into memory. Encoded as a decimal
 or hexadecimal (0x prefixed) string.
 
-#### size *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### size*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Size of the module in bytes.
 
@@ -150,8 +150,8 @@ Simulate a memory pressure notification in all processes.
 Start collecting native memory profile.
 
 * **Parameters:**
-  * **sampling_interval** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Average number of bytes between samples.
-  * **suppress_randomness** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Do not randomize intervals between samples.
+  * **sampling_interval** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Average number of bytes between samples.
+  * **suppress_randomness** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Do not randomize intervals between samples.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 

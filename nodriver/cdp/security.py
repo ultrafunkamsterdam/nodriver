@@ -6,15 +6,13 @@
 # CDP domain: Security
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
-
-from deprecated.sphinx import deprecated  # type: ignore
+from .util import event_class, T_JSON_DICT
 
 from . import network
-from .util import event_class, T_JSON_DICT
+from deprecated.sphinx import deprecated  # type: ignore
 
 
 class CertificateId(int):
@@ -101,7 +99,7 @@ class CertificateSecurityState:
     #: Certificate valid to (expiration) date
     valid_to: network.TimeSinceEpoch
 
-    #: True if the certificate uses a weak signature aglorithm.
+    #: True if the certificate uses a weak signature algorithm.
     certificate_has_weak_signature: bool
 
     #: True if the certificate has a SHA1 signature in the chain.

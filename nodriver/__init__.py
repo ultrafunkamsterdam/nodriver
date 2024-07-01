@@ -1,24 +1,14 @@
-from . import cdp
-from .core import config
-from .core.config import Config
-
-from .core import connection
-from .core.connection import Connection
-
-from .core import tab
-from .core.tab import Tab
-
-from .core import element
-from .core.element import Element
-
-from .core import browser
-from .core.browser import Browser
-
-from .core import util
-from .core.util import start
-
-from .core._contradict import ContraDict  # noqa
-from .core.util import loop
+from nodriver import cdp
+from nodriver.core.config import Config
+from nodriver.core.connection import Connection
+from nodriver.core.tab import Tab
+from nodriver.core.element import Element
+from nodriver.core.browser import Browser
+from nodriver.core import util
+from nodriver.core.util import start
+from nodriver.core._contradict import ContraDict  # noqa
+from nodriver.core._contradict import cdict
+from nodriver.core.util import loop
 
 __all__ = [
     "loop",

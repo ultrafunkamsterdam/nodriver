@@ -40,21 +40,21 @@ Indicates whether a frame has been identified as an ad.
 
 Indicates whether a frame has been identified as an ad and why.
 
-#### ad_frame_type *: [`AdFrameType`](#nodriver.cdp.page.AdFrameType)*
+#### ad_frame_type*: [`AdFrameType`](#nodriver.cdp.page.AdFrameType)*
 
-#### explanations *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AdFrameExplanation`](#nodriver.cdp.page.AdFrameExplanation)]]* *= None*
+#### explanations*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AdFrameExplanation`](#nodriver.cdp.page.AdFrameExplanation)]]* *= None*
 
 ### *class* AdScriptId(script_id, debugger_id)
 
 Identifies the bottom-most script which caused the frame to be labelled
 as an ad.
 
-#### script_id *: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
+#### script_id*: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
 
 Script Id of the bottom-most script which caused the frame to be labelled
 as an ad.
 
-#### debugger_id *: [`UniqueDebuggerId`](runtime.md#nodriver.cdp.runtime.UniqueDebuggerId)*
+#### debugger_id*: [`UniqueDebuggerId`](runtime.md#nodriver.cdp.runtime.UniqueDebuggerId)*
 
 Id of adScriptId’s debugger.
 
@@ -141,7 +141,7 @@ in third_party/blink/renderer/core/permissions_policy/permissions_policy_feature
 
 #### CH_UA_MOBILE *= 'ch-ua-mobile'*
 
-#### CH_UA_FORM_FACTOR *= 'ch-ua-form-factor'*
+#### CH_UA_FORM_FACTORS *= 'ch-ua-form-factors'*
 
 #### CH_UA_FULL_VERSION *= 'ch-ua-full-version'*
 
@@ -164,6 +164,8 @@ in third_party/blink/renderer/core/permissions_policy/permissions_policy_feature
 #### COMPUTE_PRESSURE *= 'compute-pressure'*
 
 #### CROSS_ORIGIN_ISOLATED *= 'cross-origin-isolated'*
+
+#### DEFERRED_FETCH *= 'deferred-fetch'*
 
 #### DIRECT_SOCKETS *= 'direct-sockets'*
 
@@ -239,6 +241,8 @@ in third_party/blink/renderer/core/permissions_policy/permissions_policy_feature
 
 #### SMART_CARD *= 'smart-card'*
 
+#### SPEAKER_SELECTION *= 'speaker-selection'*
+
 #### STORAGE_ACCESS *= 'storage-access'*
 
 #### SUB_APPS *= 'sub-apps'*
@@ -259,8 +263,6 @@ in third_party/blink/renderer/core/permissions_policy/permissions_policy_feature
 
 #### WINDOW_MANAGEMENT *= 'window-management'*
 
-#### WINDOW_PLACEMENT *= 'window-placement'*
-
 #### XR_SPATIAL_TRACKING *= 'xr-spatial-tracking'*
 
 ### *class* PermissionsPolicyBlockReason(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
@@ -277,17 +279,17 @@ Reason for a permissions policy feature to be disabled.
 
 ### *class* PermissionsPolicyBlockLocator(frame_id, block_reason)
 
-#### frame_id *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
-#### block_reason *: [`PermissionsPolicyBlockReason`](#nodriver.cdp.page.PermissionsPolicyBlockReason)*
+#### block_reason*: [`PermissionsPolicyBlockReason`](#nodriver.cdp.page.PermissionsPolicyBlockReason)*
 
 ### *class* PermissionsPolicyFeatureState(feature, allowed, locator=None)
 
-#### feature *: [`PermissionsPolicyFeature`](#nodriver.cdp.page.PermissionsPolicyFeature)*
+#### feature*: [`PermissionsPolicyFeature`](#nodriver.cdp.page.PermissionsPolicyFeature)*
 
-#### allowed *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### allowed*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### locator *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PermissionsPolicyBlockLocator`](#nodriver.cdp.page.PermissionsPolicyBlockLocator)]* *= None*
+#### locator*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PermissionsPolicyBlockLocator`](#nodriver.cdp.page.PermissionsPolicyBlockLocator)]* *= None*
 
 ### *class* OriginTrialTokenStatus(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -338,54 +340,54 @@ Status for an Origin Trial.
 
 ### *class* OriginTrialToken(origin, match_sub_domains, trial_name, expiry_time, is_third_party, usage_restriction)
 
-#### origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### match_sub_domains *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### match_sub_domains*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### trial_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### trial_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### expiry_time *: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
+#### expiry_time*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
-#### is_third_party *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### is_third_party*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### usage_restriction *: [`OriginTrialUsageRestriction`](#nodriver.cdp.page.OriginTrialUsageRestriction)*
+#### usage_restriction*: [`OriginTrialUsageRestriction`](#nodriver.cdp.page.OriginTrialUsageRestriction)*
 
 ### *class* OriginTrialTokenWithStatus(raw_token_text, status, parsed_token=None)
 
-#### raw_token_text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### raw_token_text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### status *: [`OriginTrialTokenStatus`](#nodriver.cdp.page.OriginTrialTokenStatus)*
+#### status*: [`OriginTrialTokenStatus`](#nodriver.cdp.page.OriginTrialTokenStatus)*
 
-#### parsed_token *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`OriginTrialToken`](#nodriver.cdp.page.OriginTrialToken)]* *= None*
+#### parsed_token*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`OriginTrialToken`](#nodriver.cdp.page.OriginTrialToken)]* *= None*
 
 `parsedToken` is present only when the token is extractable and
 parsable.
 
 ### *class* OriginTrial(trial_name, status, tokens_with_status)
 
-#### trial_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### trial_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### status *: [`OriginTrialStatus`](#nodriver.cdp.page.OriginTrialStatus)*
+#### status*: [`OriginTrialStatus`](#nodriver.cdp.page.OriginTrialStatus)*
 
-#### tokens_with_status *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`OriginTrialTokenWithStatus`](#nodriver.cdp.page.OriginTrialTokenWithStatus)]*
+#### tokens_with_status*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`OriginTrialTokenWithStatus`](#nodriver.cdp.page.OriginTrialTokenWithStatus)]*
 
 ### *class* Frame(id_, loader_id, url, domain_and_registry, security_origin, mime_type, secure_context_type, cross_origin_isolated_context_type, gated_api_features, parent_id=None, name=None, url_fragment=None, unreachable_url=None, ad_frame_status=None)
 
 Information about the Frame on the page.
 
-#### id_ *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### id_*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
 Frame unique identifier.
 
-#### loader_id *: [`LoaderId`](network.md#nodriver.cdp.network.LoaderId)*
+#### loader_id*: [`LoaderId`](network.md#nodriver.cdp.network.LoaderId)*
 
 Identifier of the loader associated with this frame.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Frame document’s URL without fragment.
 
-#### domain_and_registry *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### domain_and_registry*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Frame document’s registered domain, taking the public suffixes list into account.
 Extracted from the Frame’s url.
@@ -393,43 +395,43 @@ Example URLs: [http://www.google.com/file.html](http://www.google.com/file.html)
 
 > [http://a.b.co.uk/file.html](http://a.b.co.uk/file.html)      -> “b.co.uk”
 
-#### security_origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### security_origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Frame document’s security origin.
 
-#### mime_type *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### mime_type*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Frame document’s mimeType as determined by the browser.
 
-#### secure_context_type *: [`SecureContextType`](#nodriver.cdp.page.SecureContextType)*
+#### secure_context_type*: [`SecureContextType`](#nodriver.cdp.page.SecureContextType)*
 
 Indicates whether the main document is a secure context and explains why that is the case.
 
-#### cross_origin_isolated_context_type *: [`CrossOriginIsolatedContextType`](#nodriver.cdp.page.CrossOriginIsolatedContextType)*
+#### cross_origin_isolated_context_type*: [`CrossOriginIsolatedContextType`](#nodriver.cdp.page.CrossOriginIsolatedContextType)*
 
 Indicates whether this is a cross origin isolated context.
 
-#### gated_api_features *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`GatedAPIFeatures`](#nodriver.cdp.page.GatedAPIFeatures)]*
+#### gated_api_features*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`GatedAPIFeatures`](#nodriver.cdp.page.GatedAPIFeatures)]*
 
 Indicated which gated APIs / features are available.
 
-#### parent_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](#nodriver.cdp.page.FrameId)]* *= None*
+#### parent_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](#nodriver.cdp.page.FrameId)]* *= None*
 
 Parent frame identifier.
 
-#### name *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Frame’s name as specified in the tag.
 
-#### url_fragment *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### url_fragment*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Frame document’s URL fragment including the ‘#’.
 
-#### unreachable_url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### unreachable_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 If the frame failed to load, this contains the URL that could not be loaded. Note that unlike url above, this URL may contain a fragment.
 
-#### ad_frame_status *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AdFrameStatus`](#nodriver.cdp.page.AdFrameStatus)]* *= None*
+#### ad_frame_status*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AdFrameStatus`](#nodriver.cdp.page.AdFrameStatus)]* *= None*
 
 Indicates whether this frame was tagged as an ad and why.
 
@@ -437,31 +439,31 @@ Indicates whether this frame was tagged as an ad and why.
 
 Information about the Resource on the page.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Resource URL.
 
-#### type_ *: [`ResourceType`](network.md#nodriver.cdp.network.ResourceType)*
+#### type_*: [`ResourceType`](network.md#nodriver.cdp.network.ResourceType)*
 
 Type of this resource.
 
-#### mime_type *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### mime_type*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Resource mimeType as determined by the browser.
 
-#### last_modified *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)]* *= None*
+#### last_modified*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)]* *= None*
 
 last-modified timestamp as reported by server.
 
-#### content_size *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### content_size*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Resource content size.
 
-#### failed *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### failed*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 True if the resource failed to load.
 
-#### canceled *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### canceled*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 True if the resource was canceled during loading.
 
@@ -469,15 +471,15 @@ True if the resource was canceled during loading.
 
 Information about the Frame hierarchy along with their cached resources.
 
-#### frame *: [`Frame`](#nodriver.cdp.page.Frame)*
+#### frame*: [`Frame`](#nodriver.cdp.page.Frame)*
 
 Frame information for this tree item.
 
-#### resources *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FrameResource`](#nodriver.cdp.page.FrameResource)]*
+#### resources*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FrameResource`](#nodriver.cdp.page.FrameResource)]*
 
 Information about frame resources.
 
-#### child_frames *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FrameResourceTree`](#nodriver.cdp.page.FrameResourceTree)]]* *= None*
+#### child_frames*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FrameResourceTree`](#nodriver.cdp.page.FrameResourceTree)]]* *= None*
 
 Child frames.
 
@@ -485,11 +487,11 @@ Child frames.
 
 Information about the Frame hierarchy.
 
-#### frame *: [`Frame`](#nodriver.cdp.page.Frame)*
+#### frame*: [`Frame`](#nodriver.cdp.page.Frame)*
 
 Frame information for this tree item.
 
-#### child_frames *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FrameTree`](#nodriver.cdp.page.FrameTree)]]* *= None*
+#### child_frames*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FrameTree`](#nodriver.cdp.page.FrameTree)]]* *= None*
 
 Child frames.
 
@@ -531,23 +533,23 @@ Transition type.
 
 Navigation history entry.
 
-#### id_ *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### id_*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Unique id of the navigation history entry.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 URL of the navigation history entry.
 
-#### user_typed_url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### user_typed_url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 URL that the user typed in the url bar.
 
-#### title *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### title*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Title of the navigation history entry.
 
-#### transition_type *: [`TransitionType`](#nodriver.cdp.page.TransitionType)*
+#### transition_type*: [`TransitionType`](#nodriver.cdp.page.TransitionType)*
 
 Transition type.
 
@@ -555,31 +557,31 @@ Transition type.
 
 Screencast frame metadata.
 
-#### offset_top *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### offset_top*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Top offset in DIP.
 
-#### page_scale_factor *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### page_scale_factor*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Page scale factor.
 
-#### device_width *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### device_width*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Device screen width in DIP.
 
-#### device_height *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### device_height*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Device screen height in DIP.
 
-#### scroll_offset_x *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### scroll_offset_x*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Position of horizontal scroll in CSS pixels.
 
-#### scroll_offset_y *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### scroll_offset_y*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Position of vertical scroll in CSS pixels.
 
-#### timestamp *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)]* *= None*
+#### timestamp*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)]* *= None*
 
 Frame swap timestamp.
 
@@ -599,19 +601,19 @@ Javascript dialog type.
 
 Error while paring app manifest.
 
-#### message *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### message*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Error message.
 
-#### critical *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### critical*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
-If criticial, this is a non-recoverable parse error.
+If critical, this is a non-recoverable parse error.
 
-#### line *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### line*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Error line.
 
-#### column *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### column*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Error column.
 
@@ -619,7 +621,7 @@ Error column.
 
 Parsed app manifest properties.
 
-#### scope *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### scope*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Computed scope value
 
@@ -627,19 +629,19 @@ Computed scope value
 
 Layout viewport position and dimensions.
 
-#### page_x *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### page_x*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Horizontal offset relative to the document (CSS pixels).
 
-#### page_y *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### page_y*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Vertical offset relative to the document (CSS pixels).
 
-#### client_width *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### client_width*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Width (CSS pixels), excludes scrollbar if present.
 
-#### client_height *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### client_height*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Height (CSS pixels), excludes scrollbar if present.
 
@@ -647,35 +649,35 @@ Height (CSS pixels), excludes scrollbar if present.
 
 Visual viewport position, dimensions, and scale.
 
-#### offset_x *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### offset_x*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Horizontal offset relative to the layout viewport (CSS pixels).
 
-#### offset_y *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### offset_y*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Vertical offset relative to the layout viewport (CSS pixels).
 
-#### page_x *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### page_x*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Horizontal offset relative to the document (CSS pixels).
 
-#### page_y *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### page_y*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Vertical offset relative to the document (CSS pixels).
 
-#### client_width *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### client_width*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Width (CSS pixels), excludes scrollbar if present.
 
-#### client_height *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### client_height*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Height (CSS pixels), excludes scrollbar if present.
 
-#### scale *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### scale*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Scale relative to the ideal viewport (size at width=device-width).
 
-#### zoom *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### zoom*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Page zoom factor (CSS to device independent pixels ratio).
 
@@ -683,23 +685,23 @@ Page zoom factor (CSS to device independent pixels ratio).
 
 Viewport for capturing screenshot.
 
-#### x *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### x*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 X offset in device independent pixels (dip).
 
-#### y *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### y*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Y offset in device independent pixels (dip).
 
-#### width *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### width*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Rectangle width in device independent pixels (dip).
 
-#### height *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### height*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Rectangle height in device independent pixels (dip).
 
-#### scale *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### scale*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Page scale factor.
 
@@ -707,31 +709,31 @@ Page scale factor.
 
 Generic font families collection.
 
-#### standard *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### standard*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The standard font-family.
 
-#### fixed *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### fixed*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The fixed font-family.
 
-#### serif *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### serif*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The serif font-family.
 
-#### sans_serif *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### sans_serif*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The sansSerif font-family.
 
-#### cursive *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### cursive*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The cursive font-family.
 
-#### fantasy *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### fantasy*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The fantasy font-family.
 
-#### math *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### math*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The math font-family.
 
@@ -739,11 +741,11 @@ The math font-family.
 
 Font families collection for a script.
 
-#### script *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### script*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Name of the script which these font families are defined for.
 
-#### font_families *: [`FontFamilies`](#nodriver.cdp.page.FontFamilies)*
+#### font_families*: [`FontFamilies`](#nodriver.cdp.page.FontFamilies)*
 
 Generic font families collection for the script.
 
@@ -751,11 +753,11 @@ Generic font families collection for the script.
 
 Default font sizes.
 
-#### standard *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### standard*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 Default standard font size.
 
-#### fixed *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### fixed*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 Default fixed font size.
 
@@ -789,14 +791,14 @@ Default fixed font size.
 
 ### *class* InstallabilityErrorArgument(name, value)
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ‘minimum-icon-size-in-pixels’).
 
 * **Type:**
   Argument name (e.g. name
 
-#### value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ‘64’).
 
@@ -807,11 +809,11 @@ Default fixed font size.
 
 The installability error
 
-#### error_id *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### error_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The error id (e.g. ‘manifest-missing-suitable-icon’).
 
-#### error_arguments *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`InstallabilityErrorArgument`](#nodriver.cdp.page.InstallabilityErrorArgument)]*
+#### error_arguments*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`InstallabilityErrorArgument`](#nodriver.cdp.page.InstallabilityErrorArgument)]*
 
 ‘64’}).
 
@@ -844,18 +846,179 @@ The referring-policy used for the navigation.
 
 Per-script compilation cache parameters for `Page.produceCompilationCache`
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The URL of the script to produce a compilation cache entry for.
 
-#### eager *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### eager*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 A hint to the backend whether eager compilation is recommended.
 (the actual compilation mode used is upon backend discretion).
 
+### *class* FileFilter(name=None, accepts=None)
+
+#### name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### accepts*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
+
+### *class* FileHandler(action, name, launch_type, icons=None, accepts=None)
+
+#### action*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### launch_type*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+Won’t repeat the enums, using string for easy comparison. Same as the
+other enums below.
+
+#### icons*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ImageResource`](#nodriver.cdp.page.ImageResource)]]* *= None*
+
+#### accepts*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FileFilter`](#nodriver.cdp.page.FileFilter)]]* *= None*
+
+Mimic a map, name is the key, accepts is the value.
+
+### *class* ImageResource(url, sizes=None, type_=None)
+
+The image definition used in both icon and screenshot.
+
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+The src field in the definition, but changing to url in favor of
+consistency.
+
+#### sizes*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### type_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+### *class* LaunchHandler(client_mode)
+
+#### client_mode*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+### *class* ProtocolHandler(protocol, url)
+
+#### protocol*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+### *class* RelatedApplication(url, id_=None)
+
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### id_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+### *class* ScopeExtension(origin, has_origin_wildcard)
+
+#### origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+Instead of using tuple, this field always returns the serialized string
+for easy understanding and comparison.
+
+#### has_origin_wildcard*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+
+### *class* Screenshot(image, form_factor, label=None)
+
+#### image*: [`ImageResource`](#nodriver.cdp.page.ImageResource)*
+
+#### form_factor*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### label*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+### *class* ShareTarget(action, method, enctype, title=None, text=None, url=None, files=None)
+
+#### action*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### method*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### enctype*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### title*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+Embed the ShareTargetParams
+
+#### text*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### files*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FileFilter`](#nodriver.cdp.page.FileFilter)]]* *= None*
+
+### *class* Shortcut(name, url)
+
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+### *class* WebAppManifest(background_color=None, description=None, dir_=None, display=None, display_overrides=None, file_handlers=None, icons=None, id_=None, lang=None, launch_handler=None, name=None, orientation=None, prefer_related_applications=None, protocol_handlers=None, related_applications=None, scope=None, scope_extensions=None, screenshots=None, share_target=None, short_name=None, shortcuts=None, start_url=None, theme_color=None)
+
+#### background_color*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### description*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+The extra description provided by the manifest.
+
+#### dir_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### display*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### display_overrides*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
+
+The overrided display mode controlled by the user.
+
+#### file_handlers*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FileHandler`](#nodriver.cdp.page.FileHandler)]]* *= None*
+
+The handlers to open files.
+
+#### icons*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ImageResource`](#nodriver.cdp.page.ImageResource)]]* *= None*
+
+#### id_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### lang*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### launch_handler*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LaunchHandler`](#nodriver.cdp.page.LaunchHandler)]* *= None*
+
+This field is non-standard and part of a Chrome
+experiment. See:
+[https://github.com/WICG/web-app-launch/blob/main/launch_handler.md](https://github.com/WICG/web-app-launch/blob/main/launch_handler.md)
+
+* **Type:**
+  TODO(crbug.com/1231886)
+
+#### name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### orientation*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### prefer_related_applications*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+#### protocol_handlers*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ProtocolHandler`](#nodriver.cdp.page.ProtocolHandler)]]* *= None*
+
+The handlers to open protocols.
+
+#### related_applications*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`RelatedApplication`](#nodriver.cdp.page.RelatedApplication)]]* *= None*
+
+#### scope*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### scope_extensions*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ScopeExtension`](#nodriver.cdp.page.ScopeExtension)]]* *= None*
+
+Non-standard, see
+[https://github.com/WICG/manifest-incubations/blob/gh-pages/scope_extensions-explainer.md](https://github.com/WICG/manifest-incubations/blob/gh-pages/scope_extensions-explainer.md)
+
+#### screenshots*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Screenshot`](#nodriver.cdp.page.Screenshot)]]* *= None*
+
+The screenshots used by chromium.
+
+#### share_target*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ShareTarget`](#nodriver.cdp.page.ShareTarget)]* *= None*
+
+#### short_name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### shortcuts*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Shortcut`](#nodriver.cdp.page.Shortcut)]]* *= None*
+
+#### start_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### theme_color*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
 ### *class* AutoResponseMode(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
-Enum of possible auto-reponse for permisison / prompt dialogs.
+Enum of possible auto-response for permission / prompt dialogs.
 
 #### NONE *= 'none'*
 
@@ -989,6 +1152,18 @@ List of not restored reasons for back-forward cache.
 
 #### COOKIE_FLUSHED *= 'CookieFlushed'*
 
+#### BROADCAST_CHANNEL_ON_MESSAGE *= 'BroadcastChannelOnMessage'*
+
+#### WEB_VIEW_SETTINGS_CHANGED *= 'WebViewSettingsChanged'*
+
+#### WEB_VIEW_JAVA_SCRIPT_OBJECT_CHANGED *= 'WebViewJavaScriptObjectChanged'*
+
+#### WEB_VIEW_MESSAGE_LISTENER_INJECTED *= 'WebViewMessageListenerInjected'*
+
+#### WEB_VIEW_SAFE_BROWSING_ALLOWLIST_CHANGED *= 'WebViewSafeBrowsingAllowlistChanged'*
+
+#### WEB_VIEW_DOCUMENT_START_JAVASCRIPT_CHANGED *= 'WebViewDocumentStartJavascriptChanged'*
+
 #### WEB_SOCKET *= 'WebSocket'*
 
 #### WEB_TRANSPORT *= 'WebTransport'*
@@ -1006,8 +1181,6 @@ List of not restored reasons for back-forward cache.
 #### CONTAINS_PLUGINS *= 'ContainsPlugins'*
 
 #### DOCUMENT_LOADED *= 'DocumentLoaded'*
-
-#### DEDICATED_WORKER_OR_WORKLET *= 'DedicatedWorkerOrWorklet'*
 
 #### OUTSTANDING_NETWORK_REQUEST_OTHERS *= 'OutstandingNetworkRequestOthers'*
 
@@ -1089,6 +1262,8 @@ List of not restored reasons for back-forward cache.
 
 #### UNLOAD_HANDLER *= 'UnloadHandler'*
 
+#### PARSER_ABORTED *= 'ParserAborted'*
+
 #### CONTENT_SECURITY_HANDLER *= 'ContentSecurityHandler'*
 
 #### CONTENT_WEB_AUTHENTICATION_API *= 'ContentWebAuthenticationAPI'*
@@ -1139,6 +1314,8 @@ List of not restored reasons for back-forward cache.
 
 #### EMBEDDER_EXTENSION_SENT_MESSAGE_TO_CACHED_FRAME *= 'EmbedderExtensionSentMessageToCachedFrame'*
 
+#### REQUESTED_BY_WEB_VIEW_CLIENT *= 'RequestedByWebViewClient'*
+
 ### *class* BackForwardCacheNotRestoredReasonType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 Types of not restored reasons for back-forward cache.
@@ -1151,51 +1328,51 @@ Types of not restored reasons for back-forward cache.
 
 ### *class* BackForwardCacheBlockingDetails(line_number, column_number, url=None, function=None)
 
-#### line_number *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### line_number*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Line number in the script (0-based).
 
-#### column_number *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### column_number*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Column number in the script (0-based).
 
-#### url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Url of the file where blockage happened. Optional because of tests.
 
-#### function *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### function*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Function name where blockage happened. Optional because of anonymous functions and tests.
 
 ### *class* BackForwardCacheNotRestoredExplanation(type_, reason, context=None, details=None)
 
-#### type_ *: [`BackForwardCacheNotRestoredReasonType`](#nodriver.cdp.page.BackForwardCacheNotRestoredReasonType)*
+#### type_*: [`BackForwardCacheNotRestoredReasonType`](#nodriver.cdp.page.BackForwardCacheNotRestoredReasonType)*
 
 Type of the reason
 
-#### reason *: [`BackForwardCacheNotRestoredReason`](#nodriver.cdp.page.BackForwardCacheNotRestoredReason)*
+#### reason*: [`BackForwardCacheNotRestoredReason`](#nodriver.cdp.page.BackForwardCacheNotRestoredReason)*
 
 Not restored reason
 
-#### context *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### context*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Context associated with the reason. The meaning of this context is
 dependent on the reason:
 - EmbedderExtensionSentMessageToCachedFrame: the extension ID.
 
-#### details *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BackForwardCacheBlockingDetails`](#nodriver.cdp.page.BackForwardCacheBlockingDetails)]]* *= None*
+#### details*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BackForwardCacheBlockingDetails`](#nodriver.cdp.page.BackForwardCacheBlockingDetails)]]* *= None*
 
 ### *class* BackForwardCacheNotRestoredExplanationTree(url, explanations, children)
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 URL of each frame
 
-#### explanations *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BackForwardCacheNotRestoredExplanation`](#nodriver.cdp.page.BackForwardCacheNotRestoredExplanation)]*
+#### explanations*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BackForwardCacheNotRestoredExplanation`](#nodriver.cdp.page.BackForwardCacheNotRestoredExplanation)]*
 
 Not restored reasons of each frame
 
-#### children *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BackForwardCacheNotRestoredExplanationTree`](#nodriver.cdp.page.BackForwardCacheNotRestoredExplanationTree)]*
+#### children*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BackForwardCacheNotRestoredExplanationTree`](#nodriver.cdp.page.BackForwardCacheNotRestoredExplanationTree)]*
 
 Array of children frame
 
@@ -1248,9 +1425,9 @@ Evaluates given script in every frame upon creation (before loading frame’s sc
 
 * **Parameters:**
   * **source** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **world_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)**  *(Optional)* If specified, creates an isolated world with the given name and evaluates given script in it. This world name will be used as the ExecutionContextDescription::name when the corresponding event is emitted.
-  * **include_command_line_api** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* Specifies whether command line API should be available to the script, defaults to false.
-  * **run_immediately** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* If true, runs the script immediately on existing execution contexts or worlds. Default: false.
+  * **world_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)** *(Optional)* If specified, creates an isolated world with the given name and evaluates given script in it. This world name will be used as the ExecutionContextDescription::name when the corresponding event is emitted.
+  * **include_command_line_api** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Specifies whether command line API should be available to the script, defaults to false.
+  * **run_immediately** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* If true, runs the script immediately on existing execution contexts or worlds. Default: false.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`ScriptIdentifier`](#nodriver.cdp.page.ScriptIdentifier)]
 * **Returns:**
@@ -1268,12 +1445,12 @@ Brings page to front (activates tab).
 Capture page screenshot.
 
 * **Parameters:**
-  * **format** –  *(Optional)* Image compression format (defaults to png).
-  * **quality** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Compression quality from range [0..100] (jpeg only).
-  * **clip** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Viewport`](#nodriver.cdp.page.Viewport)]) –  *(Optional)* Capture the screenshot of a given region only.
-  * **from_surface** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* Capture the screenshot from the surface, rather than the view. Defaults to true.
-  * **capture_beyond_viewport** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* Capture the screenshot beyond the viewport. Defaults to false.
-  * **optimize_for_speed** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* Optimize image encoding for speed, not for resulting size (defaults to false)
+  * **format** – *(Optional)* Image compression format (defaults to png).
+  * **quality** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Compression quality from range [0..100] (jpeg only).
+  * **clip** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Viewport`](#nodriver.cdp.page.Viewport)]) – *(Optional)* Capture the screenshot of a given region only.
+  * **from_surface** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Capture the screenshot from the surface, rather than the view. Defaults to true.
+  * **capture_beyond_viewport** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Capture the screenshot beyond the viewport. Defaults to false.
+  * **optimize_for_speed** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Optimize image encoding for speed, not for resulting size (defaults to false)
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`str`](https://docs.python.org/3/library/stdtypes.html#str)]
 * **Returns:**
@@ -1287,7 +1464,7 @@ iframes, shadow DOM, external resources, and element-inline styles.
 **EXPERIMENTAL**
 
 * **Parameters:**
-  **format** –  *(Optional)* Format (defaults to mhtml).
+  **format** – *(Optional)* Format (defaults to mhtml).
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`str`](https://docs.python.org/3/library/stdtypes.html#str)]
 * **Returns:**
@@ -1361,8 +1538,8 @@ Creates an isolated world for the given frame.
 
 * **Parameters:**
   * **frame_id** ([`FrameId`](#nodriver.cdp.page.FrameId)) – Id of the frame in which the isolated world should be created.
-  * **world_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* An optional name which is reported in the Execution Context.
-  * **grant_univeral_access** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Whether or not universal access should be granted to the isolated world. This is a powerful option, use with caution.
+  * **world_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* An optional name which is reported in the Execution Context.
+  * **grant_univeral_access** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether or not universal access should be granted to the isolated world. This is a powerful option, use with caution.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`ExecutionContextId`](runtime.md#nodriver.cdp.runtime.ExecutionContextId)]
 * **Returns:**
@@ -1408,7 +1585,7 @@ Generates a report for testing.
 
 * **Parameters:**
   * **message** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Message to be displayed in the report.
-  * **group** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Specifies the endpoint group to deliver the report to.
+  * **group** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Specifies the endpoint group to deliver the report to.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1421,7 +1598,7 @@ Generates a report for testing.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AdScriptId`](#nodriver.cdp.page.AdScriptId)]]
 * **Returns:**
-   *(Optional)* Identifies the bottom-most script which caused the frame to be labelled as an ad. Only sent if frame is labelled as an ad and id is available.
+  *(Optional)* Identifies the bottom-most script which caused the frame to be labelled as an ad. Only sent if frame is labelled as an ad and id is available.
 
 ### get_app_id()
 
@@ -1434,19 +1611,30 @@ Only returns values if the feature flag ‘WebAppEnableManifestId’ is enabled
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]]
 * **Returns:**
   A tuple with the following items:
-  1. **appId** -  *(Optional)* App id, either from manifest’s id attribute or computed from start_url
-  2. **recommendedId** -  *(Optional)* Recommendation for manifest’s id attribute to match current id computed from start_url
+  1. **appId** - *(Optional)* App id, either from manifest’s id attribute or computed from start_url
+  2. **recommendedId** - *(Optional)* Recommendation for manifest’s id attribute to match current id computed from start_url
 
-### get_app_manifest()
+### get_app_manifest(manifest_id=None)
 
+Gets the processed manifest for this current document.
+: This API always waits for the manifest to be loaded.
+  If manifestId is provided, and it does not match the manifest of the
+  <br/>
+  > current document, this API errors out.
+  <br/>
+  If there is not a loaded page, this API errors out immediately.
+
+* **Parameters:**
+  **manifest_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)*
 * **Return type:**
-  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AppManifestError`](#nodriver.cdp.page.AppManifestError)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AppManifestParsedProperties`](#nodriver.cdp.page.AppManifestParsedProperties)]]]
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AppManifestError`](#nodriver.cdp.page.AppManifestError)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AppManifestParsedProperties`](#nodriver.cdp.page.AppManifestParsedProperties)], [`WebAppManifest`](#nodriver.cdp.page.WebAppManifest)]]
 * **Returns:**
   A tuple with the following items:
   1. **url** - Manifest location.
   2. **errors** -
-  3. **data** -  *(Optional)* Manifest content.
-  4. **parsed** -  *(Optional)* Parsed manifest properties
+  3. **data** - *(Optional)* Manifest content.
+  4. **parsed** - *(Optional)* Parsed manifest properties. Deprecated, use manifest instead.
+  5. **manifest** -
 
 ### get_frame_tree()
 
@@ -1564,7 +1752,7 @@ Accepts or dismisses a JavaScript initiated dialog (alert, confirm, prompt, or o
 
 * **Parameters:**
   * **accept** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – Whether to accept or dismiss the dialog.
-  * **prompt_text** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* The text to enter into the dialog prompt before accepting. Used only if this is a prompt dialog.
+  * **prompt_text** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* The text to enter into the dialog prompt before accepting. Used only if this is a prompt dialog.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1574,17 +1762,17 @@ Navigates current page to the given URL.
 
 * **Parameters:**
   * **url** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – URL to navigate the page to.
-  * **referrer** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Referrer URL.
-  * **transition_type** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TransitionType`](#nodriver.cdp.page.TransitionType)]) –  *(Optional)* Intended transition type.
-  * **frame_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](#nodriver.cdp.page.FrameId)]) –  *(Optional)* Frame id to navigate, if not specified navigates the top frame.
-  * **referrer_policy** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ReferrerPolicy`](#nodriver.cdp.page.ReferrerPolicy)]) – **(EXPERIMENTAL)**  *(Optional)* Referrer-policy used for the navigation.
+  * **referrer** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Referrer URL.
+  * **transition_type** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TransitionType`](#nodriver.cdp.page.TransitionType)]) – *(Optional)* Intended transition type.
+  * **frame_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](#nodriver.cdp.page.FrameId)]) – *(Optional)* Frame id to navigate, if not specified navigates the top frame.
+  * **referrer_policy** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ReferrerPolicy`](#nodriver.cdp.page.ReferrerPolicy)]) – **(EXPERIMENTAL)** *(Optional)* Referrer-policy used for the navigation.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`FrameId`](#nodriver.cdp.page.FrameId), [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LoaderId`](network.md#nodriver.cdp.network.LoaderId)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]]
 * **Returns:**
   A tuple with the following items:
   1. **frameId** - Frame id that has navigated (or failed to navigate)
-  2. **loaderId** -  *(Optional)* Loader identifier. This is omitted in case of same-document navigation, as the previously committed loaderId would not change.
-  3. **errorText** -  *(Optional)* User friendly error message, present if and only if navigation has failed.
+  2. **loaderId** - *(Optional)* Loader identifier. This is omitted in case of same-document navigation, as the previously committed loaderId would not change.
+  3. **errorText** - *(Optional)* User friendly error message, present if and only if navigation has failed.
 
 ### navigate_to_history_entry(entry_id)
 
@@ -1600,34 +1788,34 @@ Navigates current page to the given history entry.
 Print page as PDF.
 
 * **Parameters:**
-  * **landscape** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Paper orientation. Defaults to false.
-  * **display_header_footer** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Display header and footer. Defaults to false.
-  * **print_background** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Print background graphics. Defaults to false.
-  * **scale** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* Scale of the webpage rendering. Defaults to 1.
-  * **paper_width** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* Paper width in inches. Defaults to 8.5 inches.
-  * **paper_height** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* Paper height in inches. Defaults to 11 inches.
-  * **margin_top** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* Top margin in inches. Defaults to 1cm (~0.4 inches).
-  * **margin_bottom** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* Bottom margin in inches. Defaults to 1cm (~0.4 inches).
-  * **margin_left** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* Left margin in inches. Defaults to 1cm (~0.4 inches).
-  * **margin_right** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* Right margin in inches. Defaults to 1cm (~0.4 inches).
-  * **page_ranges** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Paper ranges to print, one based, e.g., ‘1-5, 8, 11-13’. Pages are printed in the document order, not in the order specified, and no more than once. Defaults to empty string, which implies the entire document is printed. The page numbers are quietly capped to actual page count of the document, and ranges beyond the end of the document are ignored. If this results in no pages to print, an error is reported. It is an error to specify a range with start greater than end.
-  * **header_template** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* HTML template for the print header. Should be valid HTML markup with following classes used to inject printing values into them: - ``date```: formatted print date - ```title```: document title - ```url```: document location - ```pageNumber```: current page number - ```totalPages```: total pages in the document  For example, ```<span class=title></span>``` would generate span containing the title.
-  * **footer_template** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* HTML template for the print footer. Should use the same format as the ```headerTemplate```.
-  * **prefer_css_page_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Whether or not to prefer page size as defined by css. Defaults to false, in which case the content will be scaled to fit the paper size.
-  * **transfer_mode** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)**  *(Optional)* return as stream
-  * **generate_tagged_pdf** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* Whether or not to generate tagged (accessible) PDF. Defaults to embedder choice.
-  * **generate_document_outline** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* Whether or not to embed the document outline into the PDF.
+  * **landscape** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Paper orientation. Defaults to false.
+  * **display_header_footer** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Display header and footer. Defaults to false.
+  * **print_background** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Print background graphics. Defaults to false.
+  * **scale** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Scale of the webpage rendering. Defaults to 1.
+  * **paper_width** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Paper width in inches. Defaults to 8.5 inches.
+  * **paper_height** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Paper height in inches. Defaults to 11 inches.
+  * **margin_top** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Top margin in inches. Defaults to 1cm (~0.4 inches).
+  * **margin_bottom** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Bottom margin in inches. Defaults to 1cm (~0.4 inches).
+  * **margin_left** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Left margin in inches. Defaults to 1cm (~0.4 inches).
+  * **margin_right** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Right margin in inches. Defaults to 1cm (~0.4 inches).
+  * **page_ranges** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Paper ranges to print, one based, e.g., ‘1-5, 8, 11-13’. Pages are printed in the document order, not in the order specified, and no more than once. Defaults to empty string, which implies the entire document is printed. The page numbers are quietly capped to actual page count of the document, and ranges beyond the end of the document are ignored. If this results in no pages to print, an error is reported. It is an error to specify a range with start greater than end.
+  * **header_template** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* HTML template for the print header. Should be valid HTML markup with following classes used to inject printing values into them: - ``date```: formatted print date - ```title```: document title - ```url```: document location - ```pageNumber```: current page number - ```totalPages```: total pages in the document  For example, ```<span class=title></span>``` would generate span containing the title.
+  * **footer_template** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* HTML template for the print footer. Should use the same format as the ```headerTemplate```.
+  * **prefer_css_page_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether or not to prefer page size as defined by css. Defaults to false, in which case the content will be scaled to fit the paper size.
+  * **transfer_mode** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)** *(Optional)* return as stream
+  * **generate_tagged_pdf** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Whether or not to generate tagged (accessible) PDF. Defaults to embedder choice.
+  * **generate_document_outline** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Whether or not to embed the document outline into the PDF.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StreamHandle`](io.md#nodriver.cdp.io.StreamHandle)]]]
 * **Returns:**
   A tuple with the following items:
   1. **data** - Base64-encoded pdf data. Empty if \`\` returnAsStream\` is specified. (Encoded as a base64 string when passed over JSON)
-  2. **stream** -  *(Optional)* A handle of the stream that holds resulting PDF data.
+  2. **stream** - *(Optional)* A handle of the stream that holds resulting PDF data.
 
 ### produce_compilation_cache(scripts)
 
 Requests backend to produce compilation cache for the specified scripts.
-`scripts` are appeneded to the list of scripts for which the cache
+`scripts` are appended to the list of scripts for which the cache
 would be produced. The list may be reset during page navigation.
 When script with a matching URL is encountered, the cache is optionally
 produced upon backend discretion, based on internal heuristics.
@@ -1640,13 +1828,14 @@ See also: `Page.compilationCacheProduced`.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
-### reload(ignore_cache=None, script_to_evaluate_on_load=None)
+### reload(ignore_cache=None, script_to_evaluate_on_load=None, loader_id=None)
 
 Reloads given page optionally ignoring the cache.
 
 * **Parameters:**
-  * **ignore_cache** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* If true, browser cache is ignored (as if the user pressed Shift+refresh).
-  * **script_to_evaluate_on_load** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* If set, the script will be injected into all frames of the inspected page after reload. Argument will be ignored if reloading dataURL origin.
+  * **ignore_cache** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If true, browser cache is ignored (as if the user pressed Shift+refresh).
+  * **script_to_evaluate_on_load** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* If set, the script will be injected into all frames of the inspected page after reload. Argument will be ignored if reloading dataURL origin.
+  * **loader_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LoaderId`](network.md#nodriver.cdp.network.LoaderId)]) – **(EXPERIMENTAL)** *(Optional)* If set, an error will be thrown if the target page’s main frame’s loader id does not match the provided id. This prevents accidentally reloading an unintended target in case there’s a racing navigation.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1704,8 +1893,8 @@ Searches for given string in resource content.
   * **frame_id** ([`FrameId`](#nodriver.cdp.page.FrameId)) – Frame id for resource to search in.
   * **url** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – URL of the resource to search in.
   * **query** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – String to search for.
-  * **case_sensitive** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* If true, search is case sensitive.
-  * **is_regex** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* If true, treats string parameter as regex.
+  * **case_sensitive** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If true, search is case sensitive.
+  * **is_regex** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If true, treats string parameter as regex.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SearchMatch`](debugger.md#nodriver.cdp.debugger.SearchMatch)]]
 * **Returns:**
@@ -1747,14 +1936,14 @@ Deprecated since version 1.3.
   * **height** ([`int`](https://docs.python.org/3/library/functions.html#int)) – Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override.
   * **device_scale_factor** ([`float`](https://docs.python.org/3/library/functions.html#float)) – Overriding device scale factor value. 0 disables the override.
   * **mobile** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more.
-  * **scale** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* Scale to apply to resulting view image.
-  * **screen_width** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Overriding screen width value in pixels (minimum 0, maximum 10000000).
-  * **screen_height** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Overriding screen height value in pixels (minimum 0, maximum 10000000).
-  * **position_x** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Overriding view X position on screen in pixels (minimum 0, maximum 10000000).
-  * **position_y** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Overriding view Y position on screen in pixels (minimum 0, maximum 10000000).
-  * **dont_set_visible_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Do not set visible view size, rely upon explicit setVisibleSize call.
-  * **screen_orientation** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ScreenOrientation`](emulation.md#nodriver.cdp.emulation.ScreenOrientation)]) –  *(Optional)* Screen orientation override.
-  * **viewport** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Viewport`](#nodriver.cdp.page.Viewport)]) –  *(Optional)* The viewport dimensions and scale. If not set, the override is cleared.
+  * **scale** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Scale to apply to resulting view image.
+  * **screen_width** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Overriding screen width value in pixels (minimum 0, maximum 10000000).
+  * **screen_height** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Overriding screen height value in pixels (minimum 0, maximum 10000000).
+  * **position_x** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Overriding view X position on screen in pixels (minimum 0, maximum 10000000).
+  * **position_y** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Overriding view Y position on screen in pixels (minimum 0, maximum 10000000).
+  * **dont_set_visible_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Do not set visible view size, rely upon explicit setVisibleSize call.
+  * **screen_orientation** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ScreenOrientation`](emulation.md#nodriver.cdp.emulation.ScreenOrientation)]) – *(Optional)* Screen orientation override.
+  * **viewport** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Viewport`](#nodriver.cdp.page.Viewport)]) – *(Optional)* The viewport dimensions and scale. If not set, the override is cleared.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1801,7 +1990,7 @@ Deprecated since version 1.3.
 
 * **Parameters:**
   * **behavior** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Whether to allow all or deny all download requests, or use default Chrome behavior if available (otherwise deny).
-  * **download_path** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* The default path to save downloaded files to. This is required if behavior is set to ‘allow’
+  * **download_path** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* The default path to save downloaded files to. This is required if behavior is set to ‘allow’
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1816,7 +2005,7 @@ Set generic font families.
 
 * **Parameters:**
   * **font_families** ([`FontFamilies`](#nodriver.cdp.page.FontFamilies)) – Specifies font families to set. If a font family is not specified, it won’t be changed.
-  * **for_scripts** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ScriptFontFamilies`](#nodriver.cdp.page.ScriptFontFamilies)]]) –  *(Optional)* Specifies font families to set for individual scripts.
+  * **for_scripts** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ScriptFontFamilies`](#nodriver.cdp.page.ScriptFontFamilies)]]) – *(Optional)* Specifies font families to set for individual scripts.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1840,9 +2029,9 @@ unavailable.
 Deprecated since version 1.3.
 
 * **Parameters:**
-  * **latitude** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* Mock latitude
-  * **longitude** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* Mock longitude
-  * **accuracy** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* Mock accuracy
+  * **latitude** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Mock latitude
+  * **longitude** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Mock longitude
+  * **accuracy** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Mock accuracy
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1921,7 +2110,7 @@ Deprecated since version 1.3.
 
 * **Parameters:**
   * **enabled** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – Whether the touch event emulation should be enabled.
-  * **configuration** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Touch/gesture events configuration. Default: current platform.
+  * **configuration** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Touch/gesture events configuration. Default: current platform.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1948,11 +2137,11 @@ Starts sending each frame using the `screencastFrame` event.
 **EXPERIMENTAL**
 
 * **Parameters:**
-  * **format** –  *(Optional)* Image compression format.
-  * **quality** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Compression quality from range [0..100].
-  * **max_width** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Maximum screenshot width.
-  * **max_height** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Maximum screenshot height.
-  * **every_nth_frame** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Send every n-th frame.
+  * **format** – *(Optional)* Image compression format.
+  * **quality** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Compression quality from range [0..100].
+  * **max_width** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Maximum screenshot width.
+  * **max_height** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Maximum screenshot height.
+  * **every_nth_frame** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Send every n-th frame.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1989,21 +2178,21 @@ you use the event’s attributes.
 
 ### *class* DomContentEventFired(timestamp)
 
-#### timestamp *: [`MonotonicTime`](network.md#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](network.md#nodriver.cdp.network.MonotonicTime)*
 
 ### *class* FileChooserOpened(frame_id, mode, backend_node_id)
 
 Emitted only when `page.interceptFileChooser` is enabled.
 
-#### frame_id *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
 Id of the frame containing input node.
 
-#### mode *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### mode*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Input mode.
 
-#### backend_node_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]*
+#### backend_node_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]*
 
 Input node id. Only present for file choosers opened via an `<input type="file">` element.
 
@@ -2011,15 +2200,15 @@ Input node id. Only present for file choosers opened via an `<input type="file">
 
 Fired when frame has been attached to its parent.
 
-#### frame_id *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
 Id of the frame that has been attached.
 
-#### parent_frame_id *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### parent_frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
 Parent frame identifier.
 
-#### stack *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)]*
+#### stack*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)]*
 
 JavaScript stack trace of when frame was attached, only set if frame initiated from script.
 
@@ -2030,7 +2219,7 @@ Fired when frame no longer has a scheduled navigation.
 #### Deprecated
 Deprecated since version 1.3.
 
-#### frame_id *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
 Id of the frame that has cleared its scheduled navigation.
 
@@ -2038,21 +2227,21 @@ Id of the frame that has cleared its scheduled navigation.
 
 Fired when frame has been detached from its parent.
 
-#### frame_id *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
 Id of the frame that has been detached.
 
-#### reason *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### reason*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ### *class* FrameNavigated(frame, type_)
 
 Fired once navigation of the frame has completed. Frame is now associated with the new loader.
 
-#### frame *: [`Frame`](#nodriver.cdp.page.Frame)*
+#### frame*: [`Frame`](#nodriver.cdp.page.Frame)*
 
 Frame object.
 
-#### type_ *: [`NavigationType`](#nodriver.cdp.page.NavigationType)*
+#### type_*: [`NavigationType`](#nodriver.cdp.page.NavigationType)*
 
 ### *class* DocumentOpened(frame)
 
@@ -2060,7 +2249,7 @@ Frame object.
 
 Fired when opening document to write to.
 
-#### frame *: [`Frame`](#nodriver.cdp.page.Frame)*
+#### frame*: [`Frame`](#nodriver.cdp.page.Frame)*
 
 Frame object.
 
@@ -2075,19 +2264,19 @@ Frame object.
 Fired when a renderer-initiated navigation is requested.
 Navigation may still be cancelled after the event is issued.
 
-#### frame_id *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
 Id of the frame that is being navigated.
 
-#### reason *: [`ClientNavigationReason`](#nodriver.cdp.page.ClientNavigationReason)*
+#### reason*: [`ClientNavigationReason`](#nodriver.cdp.page.ClientNavigationReason)*
 
 The reason for the navigation.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The destination URL for the requested navigation.
 
-#### disposition *: [`ClientNavigationDisposition`](#nodriver.cdp.page.ClientNavigationDisposition)*
+#### disposition*: [`ClientNavigationDisposition`](#nodriver.cdp.page.ClientNavigationDisposition)*
 
 The disposition for the navigation.
 
@@ -2098,20 +2287,20 @@ Fired when frame schedules a potential navigation.
 #### Deprecated
 Deprecated since version 1.3.
 
-#### frame_id *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
 Id of the frame that has scheduled a navigation.
 
-#### delay *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### delay*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Delay (in seconds) until the navigation is scheduled to begin. The navigation is not
 guaranteed to start.
 
-#### reason *: [`ClientNavigationReason`](#nodriver.cdp.page.ClientNavigationReason)*
+#### reason*: [`ClientNavigationReason`](#nodriver.cdp.page.ClientNavigationReason)*
 
 The reason for the navigation.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The destination URL for the scheduled navigation.
 
@@ -2121,7 +2310,7 @@ The destination URL for the scheduled navigation.
 
 Fired when frame has started loading.
 
-#### frame_id *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
 Id of the frame that has started loading.
 
@@ -2131,7 +2320,7 @@ Id of the frame that has started loading.
 
 Fired when frame has stopped loading.
 
-#### frame_id *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
 Id of the frame that has stopped loading.
 
@@ -2145,19 +2334,19 @@ Deprecated. Use Browser.downloadWillBegin instead.
 #### Deprecated
 Deprecated since version 1.3.
 
-#### frame_id *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
 Id of the frame that caused download to begin.
 
-#### guid *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### guid*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Global unique identifier of the download.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 URL of the resource being downloaded.
 
-#### suggested_filename *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### suggested_filename*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Suggested file name of the resource (the actual name of the file saved on disk may differ).
 
@@ -2171,19 +2360,19 @@ Deprecated. Use Browser.downloadProgress instead.
 #### Deprecated
 Deprecated since version 1.3.
 
-#### guid *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### guid*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Global unique identifier of the download.
 
-#### total_bytes *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### total_bytes*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Total expected bytes to download.
 
-#### received_bytes *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### received_bytes*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Total bytes received.
 
-#### state *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### state*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Download status.
 
@@ -2200,11 +2389,11 @@ Fired when interstitial page was shown
 Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been
 closed.
 
-#### result *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### result*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Whether dialog was confirmed.
 
-#### user_input *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### user_input*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 User input in case of prompt.
 
@@ -2213,25 +2402,25 @@ User input in case of prompt.
 Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to
 open.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Frame url.
 
-#### message *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### message*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Message that will be displayed by the dialog.
 
-#### type_ *: [`DialogType`](#nodriver.cdp.page.DialogType)*
+#### type_*: [`DialogType`](#nodriver.cdp.page.DialogType)*
 
 Dialog type.
 
-#### has_browser_handler *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### has_browser_handler*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 True iff browser is capable showing or acting on the given dialog. When browser has no
 dialog handler for given target, calling alert while Page domain is engaged will stall
 the page execution. Execution can be resumed via calling Page.handleJavaScriptDialog.
 
-#### default_prompt *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### default_prompt*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 Default dialog prompt.
 
@@ -2239,17 +2428,17 @@ Default dialog prompt.
 
 Fired for top level page lifecycle events such as navigation, load, paint, etc.
 
-#### frame_id *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
 Id of the frame.
 
-#### loader_id *: [`LoaderId`](network.md#nodriver.cdp.network.LoaderId)*
+#### loader_id*: [`LoaderId`](network.md#nodriver.cdp.network.LoaderId)*
 
 Loader identifier. Empty string if the request is fetched from worker.
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### timestamp *: [`MonotonicTime`](network.md#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](network.md#nodriver.cdp.network.MonotonicTime)*
 
 ### *class* BackForwardCacheNotUsed(loader_id, frame_id, not_restored_explanations, not_restored_explanations_tree)
 
@@ -2260,25 +2449,25 @@ not assume any ordering with the Page.frameNavigated event. This event is fired 
 main-frame history navigation where the document changes (non-same-document navigations),
 when bfcache navigation fails.
 
-#### loader_id *: [`LoaderId`](network.md#nodriver.cdp.network.LoaderId)*
+#### loader_id*: [`LoaderId`](network.md#nodriver.cdp.network.LoaderId)*
 
-The loader id for the associated navgation.
+The loader id for the associated navigation.
 
-#### frame_id *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
 The frame id of the associated frame.
 
-#### not_restored_explanations *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BackForwardCacheNotRestoredExplanation`](#nodriver.cdp.page.BackForwardCacheNotRestoredExplanation)]*
+#### not_restored_explanations*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BackForwardCacheNotRestoredExplanation`](#nodriver.cdp.page.BackForwardCacheNotRestoredExplanation)]*
 
 Array of reasons why the page could not be cached. This must not be empty.
 
-#### not_restored_explanations_tree *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackForwardCacheNotRestoredExplanationTree`](#nodriver.cdp.page.BackForwardCacheNotRestoredExplanationTree)]*
+#### not_restored_explanations_tree*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackForwardCacheNotRestoredExplanationTree`](#nodriver.cdp.page.BackForwardCacheNotRestoredExplanationTree)]*
 
 Tree structure of reasons why the page could not be cached for each frame.
 
 ### *class* LoadEventFired(timestamp)
 
-#### timestamp *: [`MonotonicTime`](network.md#nodriver.cdp.network.MonotonicTime)*
+#### timestamp*: [`MonotonicTime`](network.md#nodriver.cdp.network.MonotonicTime)*
 
 ### *class* NavigatedWithinDocument(frame_id, url)
 
@@ -2286,11 +2475,11 @@ Tree structure of reasons why the page could not be cached for each frame.
 
 Fired when same-document navigation happens, e.g. due to history API usage or anchor navigation.
 
-#### frame_id *: [`FrameId`](#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
 Id of the frame.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Frame’s new url.
 
@@ -2300,15 +2489,15 @@ Frame’s new url.
 
 Compressed image data requested by the `startScreencast`.
 
-#### data *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### data*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Base64-encoded compressed image. (Encoded as a base64 string when passed over JSON)
 
-#### metadata *: [`ScreencastFrameMetadata`](#nodriver.cdp.page.ScreencastFrameMetadata)*
+#### metadata*: [`ScreencastFrameMetadata`](#nodriver.cdp.page.ScreencastFrameMetadata)*
 
 Screencast frame metadata.
 
-#### session_id *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### session_id*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Frame number.
 
@@ -2318,7 +2507,7 @@ Frame number.
 
 Fired when the page with currently enabled screencast was shown or hidden .
 
-#### visible *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### visible*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 True if the page is visible.
 
@@ -2327,19 +2516,19 @@ True if the page is visible.
 Fired when a new window is going to be opened, via window.open(), link click, form submission,
 etc.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The URL for the new window.
 
-#### window_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### window_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Window name.
 
-#### window_features *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### window_features*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 An array of enabled window features.
 
-#### user_gesture *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### user_gesture*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Whether or not it was triggered by user gesture.
 
@@ -2350,8 +2539,8 @@ Whether or not it was triggered by user gesture.
 Issued for every compilation cache generated. Is only available
 if Page.setGenerateCompilationCache is enabled.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### data *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### data*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Base64-encoded data (Encoded as a base64 string when passed over JSON)

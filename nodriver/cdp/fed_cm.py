@@ -6,11 +6,9 @@
 # CDP domain: FedCm (experimental)
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
-
 from .util import event_class, T_JSON_DICT
 
 
@@ -63,6 +61,22 @@ class DialogButton(enum.Enum):
 
     @classmethod
     def from_json(cls, json: str) -> DialogButton:
+        return cls(json)
+
+
+class AccountUrlType(enum.Enum):
+    """
+    The URLs that each account has
+    """
+
+    TERMS_OF_SERVICE = "TermsOfService"
+    PRIVACY_POLICY = "PrivacyPolicy"
+
+    def to_json(self) -> str:
+        return self.value
+
+    @classmethod
+    def from_json(cls, json: str) -> AccountUrlType:
         return cls(json)
 
 
@@ -150,6 +164,7 @@ def enable(
 
 
 def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
+
     cmd_dict: T_JSON_DICT = {
         "method": "FedCm.disable",
     }
@@ -185,6 +200,25 @@ def click_dialog_button(
     params["dialogButton"] = dialog_button.to_json()
     cmd_dict: T_JSON_DICT = {
         "method": "FedCm.clickDialogButton",
+        "params": params,
+    }
+    json = yield cmd_dict
+
+
+def open_url(
+    dialog_id: str, account_index: int, account_url_type: AccountUrlType
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
+    """
+    :param dialog_id:
+    :param account_index:
+    :param account_url_type:
+    """
+    params: T_JSON_DICT = dict()
+    params["dialogId"] = dialog_id
+    params["accountIndex"] = account_index
+    params["accountUrlType"] = account_url_type.to_json()
+    cmd_dict: T_JSON_DICT = {
+        "method": "FedCm.openUrl",
         "params": params,
     }
     json = yield cmd_dict

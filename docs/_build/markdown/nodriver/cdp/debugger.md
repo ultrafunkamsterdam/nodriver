@@ -27,15 +27,15 @@ Call frame identifier.
 
 Location in the source code.
 
-#### script_id *: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
+#### script_id*: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
 
 Script identifier as reported in the `Debugger.scriptParsed`.
 
-#### line_number *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### line_number*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Line number in the script (0-based).
 
-#### column_number *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### column_number*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 Column number in the script (0-based).
 
@@ -43,59 +43,59 @@ Column number in the script (0-based).
 
 Location in the source code.
 
-#### line_number *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### line_number*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
-#### column_number *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### column_number*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 ### *class* LocationRange(script_id, start, end)
 
 Location range within one script.
 
-#### script_id *: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
+#### script_id*: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
 
-#### start *: [`ScriptPosition`](#nodriver.cdp.debugger.ScriptPosition)*
+#### start*: [`ScriptPosition`](#nodriver.cdp.debugger.ScriptPosition)*
 
-#### end *: [`ScriptPosition`](#nodriver.cdp.debugger.ScriptPosition)*
+#### end*: [`ScriptPosition`](#nodriver.cdp.debugger.ScriptPosition)*
 
 ### *class* CallFrame(call_frame_id, function_name, location, url, scope_chain, this, function_location=None, return_value=None, can_be_restarted=None)
 
 JavaScript call frame. Array of call frames form the call stack.
 
-#### call_frame_id *: [`CallFrameId`](#nodriver.cdp.debugger.CallFrameId)*
+#### call_frame_id*: [`CallFrameId`](#nodriver.cdp.debugger.CallFrameId)*
 
 Call frame identifier. This identifier is only valid while the virtual machine is paused.
 
-#### function_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### function_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Name of the JavaScript function called on this call frame.
 
-#### location *: [`Location`](#nodriver.cdp.debugger.Location)*
+#### location*: [`Location`](#nodriver.cdp.debugger.Location)*
 
 Location in the source code.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 JavaScript script name or url.
 Deprecated in favor of using the `location.scriptId` to resolve the URL via a previously
 sent `Debugger.scriptParsed` event.
 
-#### scope_chain *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Scope`](#nodriver.cdp.debugger.Scope)]*
+#### scope_chain*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Scope`](#nodriver.cdp.debugger.Scope)]*
 
 Scope chain for this call frame.
 
-#### this *: [`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)*
+#### this*: [`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)*
 
 `this` object for this call frame.
 
-#### function_location *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Location`](#nodriver.cdp.debugger.Location)]* *= None*
+#### function_location*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Location`](#nodriver.cdp.debugger.Location)]* *= None*
 
 Location in the source code.
 
-#### return_value *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)]* *= None*
+#### return_value*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)]* *= None*
 
 The value being returned, if the function is at return point.
 
-#### can_be_restarted *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### can_be_restarted*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 Valid only while the VM is paused and indicates whether this frame
 can be restarted or not. Note that a `true` value here does not
@@ -106,23 +106,23 @@ successful, but it is very likely.
 
 Scope description.
 
-#### type_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Scope type.
 
-#### object_ *: [`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)*
+#### object_*: [`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)*
 
 Object representing the scope. For `global` and `with` scopes it represents the actual
 object; for the rest of the scopes, it is artificial transient object enumerating scope
 variables as its properties.
 
-#### name *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
-#### start_location *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Location`](#nodriver.cdp.debugger.Location)]* *= None*
+#### start_location*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Location`](#nodriver.cdp.debugger.Location)]* *= None*
 
 Location in the source code where scope starts
 
-#### end_location *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Location`](#nodriver.cdp.debugger.Location)]* *= None*
+#### end_location*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Location`](#nodriver.cdp.debugger.Location)]* *= None*
 
 Location in the source code where scope ends
 
@@ -130,37 +130,37 @@ Location in the source code where scope ends
 
 Search match for resource.
 
-#### line_number *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### line_number*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Line number in resource content.
 
-#### line_content *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### line_content*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Line with match content.
 
 ### *class* BreakLocation(script_id, line_number, column_number=None, type_=None)
 
-#### script_id *: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
+#### script_id*: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
 
 Script identifier as reported in the `Debugger.scriptParsed`.
 
-#### line_number *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### line_number*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Line number in the script (0-based).
 
-#### column_number *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### column_number*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 Column number in the script (0-based).
 
-#### type_ *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### type_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 ### *class* WasmDisassemblyChunk(lines, bytecode_offsets)
 
-#### lines *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### lines*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 The next chunk of disassembled lines.
 
-#### bytecode_offsets *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
+#### bytecode_offsets*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
 
 The bytecode offsets describing the start of each line.
 
@@ -176,11 +176,11 @@ Enum of possible script languages.
 
 Debug symbols available for a wasm script.
 
-#### type_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Type of the debug symbols.
 
-#### external_url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### external_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 URL of the external symbol source.
 
@@ -201,7 +201,7 @@ Continues execution until specific location is reached.
 
 * **Parameters:**
   * **location** ([`Location`](#nodriver.cdp.debugger.Location)) – Location to continue to.
-  * **target_call_frames** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)*
+  * **target_call_frames** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)*
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -222,7 +222,7 @@ Disables debugger for given page.
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)], [`int`](https://docs.python.org/3/library/functions.html#int), [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`int`](https://docs.python.org/3/library/functions.html#int)], [`WasmDisassemblyChunk`](#nodriver.cdp.debugger.WasmDisassemblyChunk)]]
 * **Returns:**
   A tuple with the following items:
-  1. **streamId** -  *(Optional)* For large modules, return a stream from which additional chunks of disassembly can be read successively.
+  1. **streamId** - *(Optional)* For large modules, return a stream from which additional chunks of disassembly can be read successively.
   2. **totalNumberOfLines** - The total number of lines in the disassembly text.
   3. **functionBodyOffsets** - The offsets of all function bodies, in the format [start1, end1, start2, end2, …] where all ends are exclusive.
   4. **chunk** - The first chunk of disassembly.
@@ -233,7 +233,7 @@ Enables debugger for the given page. Clients should not assume that the debuggin
 enabled until the result for this command is received.
 
 * **Parameters:**
-  **max_scripts_cache_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – **(EXPERIMENTAL)**  *(Optional)* The maximum size in bytes of collected scripts (not referenced by other heap objects) the debugger can hold. Puts no limit if parameter is omitted.
+  **max_scripts_cache_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – **(EXPERIMENTAL)** *(Optional)* The maximum size in bytes of collected scripts (not referenced by other heap objects) the debugger can hold. Puts no limit if parameter is omitted.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`UniqueDebuggerId`](runtime.md#nodriver.cdp.runtime.UniqueDebuggerId)]
 * **Returns:**
@@ -246,19 +246,19 @@ Evaluates expression on a given call frame.
 * **Parameters:**
   * **call_frame_id** ([`CallFrameId`](#nodriver.cdp.debugger.CallFrameId)) – Call frame identifier to evaluate on.
   * **expression** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Expression to evaluate.
-  * **object_group** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* String object group name to put result into (allows rapid releasing resulting object handles using ``releaseObjectGroup```).
-  * **include_command_line_api** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Specifies whether command line API should be available to the evaluated expression, defaults to false.
-  * **silent** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* In silent mode exceptions thrown during evaluation are not reported and do not pause execution. Overrides ```setPauseOnException`` state.
-  * **return_by_value** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Whether the result is expected to be a JSON object that should be sent by value.
-  * **generate_preview** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* Whether preview should be generated for the result.
-  * **throw_on_side_effect** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Whether to throw an exception if side effect cannot be ruled out during evaluation.
-  * **timeout** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TimeDelta`](runtime.md#nodriver.cdp.runtime.TimeDelta)]) – **(EXPERIMENTAL)**  *(Optional)* Terminate execution after timing out (number of milliseconds).
+  * **object_group** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* String object group name to put result into (allows rapid releasing resulting object handles using ``releaseObjectGroup```).
+  * **include_command_line_api** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Specifies whether command line API should be available to the evaluated expression, defaults to false.
+  * **silent** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* In silent mode exceptions thrown during evaluation are not reported and do not pause execution. Overrides ```setPauseOnException`` state.
+  * **return_by_value** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether the result is expected to be a JSON object that should be sent by value.
+  * **generate_preview** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Whether preview should be generated for the result.
+  * **throw_on_side_effect** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether to throw an exception if side effect cannot be ruled out during evaluation.
+  * **timeout** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TimeDelta`](runtime.md#nodriver.cdp.runtime.TimeDelta)]) – **(EXPERIMENTAL)** *(Optional)* Terminate execution after timing out (number of milliseconds).
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject), [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ExceptionDetails`](runtime.md#nodriver.cdp.runtime.ExceptionDetails)]]]
 * **Returns:**
   A tuple with the following items:
   1. **result** - Object wrapper for the evaluation result.
-  2. **exceptionDetails** -  *(Optional)* Exception details.
+  2. **exceptionDetails** - *(Optional)* Exception details.
 
 ### get_possible_breakpoints(start, end=None, restrict_to_function=None)
 
@@ -267,8 +267,8 @@ the same.
 
 * **Parameters:**
   * **start** ([`Location`](#nodriver.cdp.debugger.Location)) – Start of range to search possible breakpoint locations in.
-  * **end** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Location`](#nodriver.cdp.debugger.Location)]) –  *(Optional)* End of range to search possible breakpoint locations in (excluding). When not specified, end of scripts is used as end of range.
-  * **restrict_to_function** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Only consider locations which are in the same (non-nested) function as start.
+  * **end** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Location`](#nodriver.cdp.debugger.Location)]) – *(Optional)* End of range to search possible breakpoint locations in (excluding). When not specified, end of scripts is used as end of range.
+  * **restrict_to_function** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Only consider locations which are in the same (non-nested) function as start.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`BreakLocation`](#nodriver.cdp.debugger.BreakLocation)]]
 * **Returns:**
@@ -285,7 +285,7 @@ Returns source for the script with given id.
 * **Returns:**
   A tuple with the following items:
   1. **scriptSource** - Script source (empty in case of Wasm bytecode).
-  2. **bytecode** -  *(Optional)* Wasm bytecode. (Encoded as a base64 string when passed over JSON)
+  2. **bytecode** - *(Optional)* Wasm bytecode. (Encoded as a base64 string when passed over JSON)
 
 ### get_stack_trace(stack_trace_id)
 
@@ -381,21 +381,21 @@ once V8 pauses at the beginning of the restarted function.
 
 * **Parameters:**
   * **call_frame_id** ([`CallFrameId`](#nodriver.cdp.debugger.CallFrameId)) – Call frame identifier to evaluate on.
-  * **mode** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)**  *(Optional)* The ``mode``` parameter must be present and set to ‘StepInto’, otherwise ```restartFrame`` will error out.
+  * **mode** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)** *(Optional)* The ``mode``` parameter must be present and set to ‘StepInto’, otherwise ```restartFrame`` will error out.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CallFrame`](#nodriver.cdp.debugger.CallFrame)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTraceId`](runtime.md#nodriver.cdp.runtime.StackTraceId)]]]
 * **Returns:**
   A tuple with the following items:
   1. **callFrames** - New stack trace.
-  2. **asyncStackTrace** -  *(Optional)* Async stack trace, if any.
-  3. **asyncStackTraceId** -  *(Optional)* Async stack trace, if any.
+  2. **asyncStackTrace** - *(Optional)* Async stack trace, if any.
+  3. **asyncStackTraceId** - *(Optional)* Async stack trace, if any.
 
 ### resume(terminate_on_resume=None)
 
 Resumes JavaScript execution.
 
 * **Parameters:**
-  **terminate_on_resume** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Set to true to terminate execution upon resuming execution. In contrast to Runtime.terminateExecution, this will allows to execute further JavaScript (i.e. via evaluation) until execution of the paused code is actually resumed, at which point termination is triggered. If execution is currently not paused, this parameter has no effect.
+  **terminate_on_resume** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Set to true to terminate execution upon resuming execution. In contrast to Runtime.terminateExecution, this will allows to execute further JavaScript (i.e. via evaluation) until execution of the paused code is actually resumed, at which point termination is triggered. If execution is currently not paused, this parameter has no effect.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -406,8 +406,8 @@ Searches for given string in script content.
 * **Parameters:**
   * **script_id** ([`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)) – Id of the script to search in.
   * **query** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – String to search for.
-  * **case_sensitive** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* If true, search is case sensitive.
-  * **is_regex** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* If true, treats string parameter as regex.
+  * **case_sensitive** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If true, search is case sensitive.
+  * **is_regex** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If true, treats string parameter as regex.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SearchMatch`](#nodriver.cdp.debugger.SearchMatch)]]
 * **Returns:**
@@ -456,7 +456,7 @@ Sets JavaScript breakpoint at a given location.
 
 * **Parameters:**
   * **location** ([`Location`](#nodriver.cdp.debugger.Location)) – Location to set breakpoint in.
-  * **condition** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Expression to use as a breakpoint condition. When specified, debugger will only stop on the breakpoint if this expression evaluates to true.
+  * **condition** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Expression to use as a breakpoint condition. When specified, debugger will only stop on the breakpoint if this expression evaluates to true.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`BreakpointId`](#nodriver.cdp.debugger.BreakpointId), [`Location`](#nodriver.cdp.debugger.Location)]]
 * **Returns:**
@@ -473,11 +473,11 @@ command is issued, all existing parsed scripts will have breakpoints resolved an
 
 * **Parameters:**
   * **line_number** ([`int`](https://docs.python.org/3/library/functions.html#int)) – Line number to set breakpoint at.
-  * **url** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* URL of the resources to set breakpoint on.
-  * **url_regex** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Regex pattern for the URLs of the resources to set breakpoints on. Either ``url``` or ```urlRegex`` must be specified.
-  * **script_hash** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Script hash of the resources to set breakpoint on.
-  * **column_number** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Offset in the line to set breakpoint at.
-  * **condition** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Expression to use as a breakpoint condition. When specified, debugger will only stop on the breakpoint if this expression evaluates to true.
+  * **url** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* URL of the resources to set breakpoint on.
+  * **url_regex** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Regex pattern for the URLs of the resources to set breakpoints on. Either ``url``` or ```urlRegex`` must be specified.
+  * **script_hash** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Script hash of the resources to set breakpoint on.
+  * **column_number** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Offset in the line to set breakpoint at.
+  * **condition** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Expression to use as a breakpoint condition. When specified, debugger will only stop on the breakpoint if this expression evaluates to true.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`BreakpointId`](#nodriver.cdp.debugger.BreakpointId), [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Location`](#nodriver.cdp.debugger.Location)]]]
 * **Returns:**
@@ -495,7 +495,7 @@ calling it will also trigger the breakpoint.
 
 * **Parameters:**
   * **object_id** ([`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)) – Function object id.
-  * **condition** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Expression to use as a breakpoint condition. When specified, debugger will stop on the breakpoint if this expression evaluates to true.
+  * **condition** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Expression to use as a breakpoint condition. When specified, debugger will stop on the breakpoint if this expression evaluates to true.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`BreakpointId`](#nodriver.cdp.debugger.BreakpointId)]
 * **Returns:**
@@ -555,18 +555,18 @@ top-most function is automatically triggered.
 * **Parameters:**
   * **script_id** ([`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)) – Id of the script to edit.
   * **script_source** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – New content of the script.
-  * **dry_run** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* If true the change will not actually be applied. Dry run may be used to get result description without actually modifying the code.
-  * **allow_top_frame_editing** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* If true, then ``scriptSource``` is allowed to change the function on top of the stack as long as the top-most stack frame is the only activation of that function.
+  * **dry_run** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If true the change will not actually be applied. Dry run may be used to get result description without actually modifying the code.
+  * **allow_top_frame_editing** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* If true, then ``scriptSource``` is allowed to change the function on top of the stack as long as the top-most stack frame is the only activation of that function.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CallFrame`](#nodriver.cdp.debugger.CallFrame)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTraceId`](runtime.md#nodriver.cdp.runtime.StackTraceId)], [`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ExceptionDetails`](runtime.md#nodriver.cdp.runtime.ExceptionDetails)]]]
 * **Returns:**
   A tuple with the following items:
-  1. **callFrames** -  *(Optional)* New stack trace in case editing has happened while VM was stopped.
-  2. **stackChanged** -  *(Optional)* Whether current call stack  was modified after applying the changes.
-  3. **asyncStackTrace** -  *(Optional)* Async stack trace, if any.
-  4. **asyncStackTraceId** -  *(Optional)* Async stack trace, if any.
+  1. **callFrames** - *(Optional)* New stack trace in case editing has happened while VM was stopped.
+  2. **stackChanged** - *(Optional)* Whether current call stack  was modified after applying the changes.
+  3. **asyncStackTrace** - *(Optional)* Async stack trace, if any.
+  4. **asyncStackTraceId** - *(Optional)* Async stack trace, if any.
   5. **status** - Whether the operation was successful or not. Only \`\` Ok\`\` denotes a successful live edit while the other enum variants denote why the live edit failed.
-  6. **exceptionDetails** -  *(Optional)* Exception details if any. Only present when \`\` status\`\` is \`\` CompileError\`.
+  6. **exceptionDetails** - *(Optional)* Exception details if any. Only present when \`\` status\`\` is \`\` CompileError\`.
 
 ### set_skip_all_pauses(skip)
 
@@ -595,8 +595,8 @@ mutated manually.
 Steps into the function call.
 
 * **Parameters:**
-  * **break_on_async_call** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* Debugger will pause on the execution of the first async task which was scheduled before next pause.
-  * **skip_list** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`LocationRange`](#nodriver.cdp.debugger.LocationRange)]]) – **(EXPERIMENTAL)**  *(Optional)* The skipList specifies location ranges that should be skipped on step into.
+  * **break_on_async_call** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Debugger will pause on the execution of the first async task which was scheduled before next pause.
+  * **skip_list** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`LocationRange`](#nodriver.cdp.debugger.LocationRange)]]) – **(EXPERIMENTAL)** *(Optional)* The skipList specifies location ranges that should be skipped on step into.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -612,7 +612,7 @@ Steps out of the function call.
 Steps over the statement.
 
 * **Parameters:**
-  **skip_list** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`LocationRange`](#nodriver.cdp.debugger.LocationRange)]]) – **(EXPERIMENTAL)**  *(Optional)* The skipList specifies location ranges that should be skipped on step over.
+  **skip_list** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`LocationRange`](#nodriver.cdp.debugger.LocationRange)]]) – **(EXPERIMENTAL)** *(Optional)* The skipList specifies location ranges that should be skipped on step over.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -626,11 +626,11 @@ you use the event’s attributes.
 
 Fired when breakpoint is resolved to an actual script and location.
 
-#### breakpoint_id *: [`BreakpointId`](#nodriver.cdp.debugger.BreakpointId)*
+#### breakpoint_id*: [`BreakpointId`](#nodriver.cdp.debugger.BreakpointId)*
 
 Breakpoint unique identifier.
 
-#### location *: [`Location`](#nodriver.cdp.debugger.Location)*
+#### location*: [`Location`](#nodriver.cdp.debugger.Location)*
 
 Actual breakpoint location.
 
@@ -638,31 +638,31 @@ Actual breakpoint location.
 
 Fired when the virtual machine stopped on breakpoint or exception or any other stop criteria.
 
-#### call_frames *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CallFrame`](#nodriver.cdp.debugger.CallFrame)]*
+#### call_frames*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CallFrame`](#nodriver.cdp.debugger.CallFrame)]*
 
 Call stack the virtual machine stopped on.
 
-#### reason *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### reason*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Pause reason.
 
-#### data *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]*
+#### data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]*
 
 Object containing break-specific auxiliary properties.
 
-#### hit_breakpoints *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]*
+#### hit_breakpoints*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]*
 
 Hit breakpoints IDs
 
-#### async_stack_trace *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)]*
+#### async_stack_trace*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)]*
 
 Async stack trace, if any.
 
-#### async_stack_trace_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTraceId`](runtime.md#nodriver.cdp.runtime.StackTraceId)]*
+#### async_stack_trace_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTraceId`](runtime.md#nodriver.cdp.runtime.StackTraceId)]*
 
 Async stack trace, if any.
 
-#### async_call_stack_trace_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTraceId`](runtime.md#nodriver.cdp.runtime.StackTraceId)]*
+#### async_call_stack_trace_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTraceId`](runtime.md#nodriver.cdp.runtime.StackTraceId)]*
 
 Never present, will be removed.
 
@@ -674,39 +674,39 @@ Fired when the virtual machine resumed execution.
 
 Fired when virtual machine fails to parse the script.
 
-#### script_id *: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
+#### script_id*: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
 
 Identifier of the script parsed.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 URL or name of the script parsed (if any).
 
-#### start_line *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### start_line*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Line offset of the script within the resource with given URL (for script tags).
 
-#### start_column *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### start_column*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Column offset of the script within the resource with given URL.
 
-#### end_line *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### end_line*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Last line of the script.
 
-#### end_column *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### end_column*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Length of the last line of the script.
 
-#### execution_context_id *: [`ExecutionContextId`](runtime.md#nodriver.cdp.runtime.ExecutionContextId)*
+#### execution_context_id*: [`ExecutionContextId`](runtime.md#nodriver.cdp.runtime.ExecutionContextId)*
 
 Specifies script creation context.
 
-#### hash_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### hash_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Content hash of the script, SHA-256.
 
-#### execution_context_aux_data *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]*
+#### execution_context_aux_data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]*
 
 ‘default’\`\`’isolated’\`\`’worker’, frameId: string}
 
@@ -715,35 +715,35 @@ Content hash of the script, SHA-256.
 * **Type:**
   boolean, [type](https://docs.python.org/3/library/functions.html#type)
 
-#### source_map_url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### source_map_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 URL of source map associated with script (if any).
 
-#### has_source_url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
+#### has_source_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
 
 True, if this script has sourceURL.
 
-#### is_module *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
+#### is_module*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
 
 True, if this script is ES6 module.
 
-#### length *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
+#### length*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
 
 This script length.
 
-#### stack_trace *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)]*
+#### stack_trace*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)]*
 
 JavaScript top stack frame of where the script parsed event was triggered if available.
 
-#### code_offset *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
+#### code_offset*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
 
 If the scriptLanguage is WebAssembly, the code section offset in the module.
 
-#### script_language *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ScriptLanguage`](#nodriver.cdp.debugger.ScriptLanguage)]*
+#### script_language*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ScriptLanguage`](#nodriver.cdp.debugger.ScriptLanguage)]*
 
 The language of the script.
 
-#### embedder_name *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### embedder_name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 The name the embedder supplied for this script.
 
@@ -752,39 +752,39 @@ The name the embedder supplied for this script.
 Fired when virtual machine parses script. This event is also fired for all known and uncollected
 scripts upon enabling debugger.
 
-#### script_id *: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
+#### script_id*: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
 
 Identifier of the script parsed.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 URL or name of the script parsed (if any).
 
-#### start_line *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### start_line*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Line offset of the script within the resource with given URL (for script tags).
 
-#### start_column *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### start_column*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Column offset of the script within the resource with given URL.
 
-#### end_line *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### end_line*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Last line of the script.
 
-#### end_column *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### end_column*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Length of the last line of the script.
 
-#### execution_context_id *: [`ExecutionContextId`](runtime.md#nodriver.cdp.runtime.ExecutionContextId)*
+#### execution_context_id*: [`ExecutionContextId`](runtime.md#nodriver.cdp.runtime.ExecutionContextId)*
 
 Specifies script creation context.
 
-#### hash_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### hash_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Content hash of the script, SHA-256.
 
-#### execution_context_aux_data *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]*
+#### execution_context_aux_data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]*
 
 ‘default’\`\`’isolated’\`\`’worker’, frameId: string}
 
@@ -793,42 +793,42 @@ Content hash of the script, SHA-256.
 * **Type:**
   boolean, [type](https://docs.python.org/3/library/functions.html#type)
 
-#### is_live_edit *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
+#### is_live_edit*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
 
 True, if this script is generated as a result of the live edit operation.
 
-#### source_map_url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### source_map_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 URL of source map associated with script (if any).
 
-#### has_source_url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
+#### has_source_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
 
 True, if this script has sourceURL.
 
-#### is_module *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
+#### is_module*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]*
 
 True, if this script is ES6 module.
 
-#### length *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
+#### length*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
 
 This script length.
 
-#### stack_trace *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)]*
+#### stack_trace*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)]*
 
 JavaScript top stack frame of where the script parsed event was triggered if available.
 
-#### code_offset *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
+#### code_offset*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
 
 If the scriptLanguage is WebAssembly, the code section offset in the module.
 
-#### script_language *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ScriptLanguage`](#nodriver.cdp.debugger.ScriptLanguage)]*
+#### script_language*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ScriptLanguage`](#nodriver.cdp.debugger.ScriptLanguage)]*
 
 The language of the script.
 
-#### debug_symbols *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`DebugSymbols`](#nodriver.cdp.debugger.DebugSymbols)]*
+#### debug_symbols*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`DebugSymbols`](#nodriver.cdp.debugger.DebugSymbols)]*
 
 If the scriptLanguage is WebASsembly, the source of debug symbols for the module.
 
-#### embedder_name *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### embedder_name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 The name the embedder supplied for this script.

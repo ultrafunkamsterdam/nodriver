@@ -6,14 +6,13 @@
 # CDP domain: BackgroundService (experimental)
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
+from .util import event_class, T_JSON_DICT
 
 from . import network
 from . import service_worker
-from .util import event_class, T_JSON_DICT
 
 
 class ServiceName(enum.Enum):

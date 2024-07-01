@@ -37,17 +37,22 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: InterestGroupAuctionId
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: InterestGroupAccessType
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: InterestGroupAd
+.. autoclass:: InterestGroupAuctionEventType
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: InterestGroupDetails
+.. autoclass:: InterestGroupAuctionFetchType
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -167,6 +172,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: AttributionReportingAggregatableValueDictEntry
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: AttributionReportingAggregatableValueEntry
       :members:
       :undoc-members:
@@ -202,6 +212,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: RelatedWebsiteSet
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 Commands
 --------
 
@@ -232,6 +247,8 @@ to. For more information, see
 
 .. autofunction:: get_interest_group_details
 
+.. autofunction:: get_related_website_sets
+
 .. autofunction:: get_shared_storage_entries
 
 .. autofunction:: get_shared_storage_metadata
@@ -248,11 +265,15 @@ to. For more information, see
 
 .. autofunction:: run_bounce_tracking_mitigations
 
+.. autofunction:: send_pending_attribution_reports
+
 .. autofunction:: set_attribution_reporting_local_testing_mode
 
 .. autofunction:: set_attribution_reporting_tracking
 
 .. autofunction:: set_cookies
+
+.. autofunction:: set_interest_group_auction_tracking
 
 .. autofunction:: set_interest_group_tracking
 
@@ -306,6 +327,16 @@ you use the event's attributes.
       :exclude-members: from_json, to_json
 
 .. autoclass:: InterestGroupAccessed
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: InterestGroupAuctionEventOccurred
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: InterestGroupAuctionNetworkRequestCreated
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

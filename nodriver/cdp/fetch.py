@@ -6,15 +6,14 @@
 # CDP domain: Fetch
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
+from .util import event_class, T_JSON_DICT
 
 from . import io
 from . import network
 from . import page
-from .util import event_class, T_JSON_DICT
 
 
 class RequestId(str):

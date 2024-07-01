@@ -559,25 +559,32 @@
 <div class="viewcode-block" id="Tab.select_all">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.select_all">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">select_all</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">selector</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">timeout</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">selector</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">include_frames</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">nodriver</span><span class="o">.</span><span class="n">Element</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        find multiple elements by css selector.</span>
 <span class="sd">        can also be used to wait for such element to appear.</span>
 
+
 <span class="sd">        :param selector: css selector, eg a[href], button[class*=close], a &gt; img[src]</span>
 <span class="sd">        :type selector: str</span>
 <span class="sd">        :param timeout: raise timeout exception when after this many seconds nothing is found.</span>
 <span class="sd">        :type timeout: float,int</span>
+<span class="sd">        :param include_frames: whether to include results in iframes.</span>
+<span class="sd">        :type include_frames: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
         <span class="n">now</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="n">selector</span> <span class="o">=</span> <span class="n">selector</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">include_frames</span><span class="p">:</span>
+            <span class="n">frames</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="s2">&quot;iframe&quot;</span><span class="p">)</span>
+            <span class="c1"># unfortunately, asyncio.gather here is not an option</span>
+            <span class="k">for</span> <span class="n">fr</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">:</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="k">await</span> <span class="n">fr</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">))</span>
 
-        <span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">))</span>
         <span class="k">while</span> <span class="ow">not</span> <span class="n">items</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span>
             <span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector_all</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
@@ -976,7 +983,7 @@
                 <span class="n">user_gesture</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">await_promise</span><span class="o">=</span><span class="n">await_promise</span><span class="p">,</span>
                 <span class="n">return_by_value</span><span class="o">=</span><span class="n">return_by_value</span><span class="p">,</span>
-                <span class="n">allow_unsafe_eval_blocked_by_csp</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">allow_unsafe_eval_blocked_by_csp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
@@ -989,7 +996,6 @@
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">remote_object</span><span class="p">,</span> <span class="n">errors</span></div>
-
 
 
 <div class="viewcode-block" id="Tab.js_dumps">
@@ -1569,7 +1575,9 @@
             <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
-            <span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">capture_screenshot</span><span class="p">(</span><span class="n">format_</span><span class="o">=</span><span class="nb">format</span><span class="p">,</span> <span class="n">capture_beyond_viewport</span><span class="o">=</span><span class="n">full_page</span><span class="p">)</span>
+            <span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">capture_screenshot</span><span class="p">(</span>
+                <span class="n">format_</span><span class="o">=</span><span class="nb">format</span><span class="p">,</span> <span class="n">capture_beyond_viewport</span><span class="o">=</span><span class="n">full_page</span>
+            <span class="p">)</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ProtocolException</span><span class="p">(</span>

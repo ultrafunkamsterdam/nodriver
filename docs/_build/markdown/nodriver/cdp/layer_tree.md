@@ -26,11 +26,11 @@ Unique snapshot identifier.
 
 Rectangle where scrolling happens on the main thread.
 
-#### rect *: [`Rect`](dom.md#nodriver.cdp.dom.Rect)*
+#### rect*: [`Rect`](dom.md#nodriver.cdp.dom.Rect)*
 
 Rectangle itself.
 
-#### type_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Reason for rectangle to force scrolling on the main thread
 
@@ -38,19 +38,19 @@ Reason for rectangle to force scrolling on the main thread
 
 Sticky position constraints.
 
-#### sticky_box_rect *: [`Rect`](dom.md#nodriver.cdp.dom.Rect)*
+#### sticky_box_rect*: [`Rect`](dom.md#nodriver.cdp.dom.Rect)*
 
 Layout rectangle of the sticky element before being shifted
 
-#### containing_block_rect *: [`Rect`](dom.md#nodriver.cdp.dom.Rect)*
+#### containing_block_rect*: [`Rect`](dom.md#nodriver.cdp.dom.Rect)*
 
 Layout rectangle of the containing block of the sticky element
 
-#### nearest_layer_shifting_sticky_box *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LayerId`](#nodriver.cdp.layer_tree.LayerId)]* *= None*
+#### nearest_layer_shifting_sticky_box*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LayerId`](#nodriver.cdp.layer_tree.LayerId)]* *= None*
 
 The nearest sticky layer that shifts the sticky box
 
-#### nearest_layer_shifting_containing_block *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LayerId`](#nodriver.cdp.layer_tree.LayerId)]* *= None*
+#### nearest_layer_shifting_containing_block*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LayerId`](#nodriver.cdp.layer_tree.LayerId)]* *= None*
 
 The nearest sticky layer that shifts the containing block
 
@@ -58,15 +58,15 @@ The nearest sticky layer that shifts the containing block
 
 Serialized fragment of layer picture along with its offset within the layer.
 
-#### x *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### x*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Offset from owning layer left boundary
 
-#### y *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### y*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Offset from owning layer top boundary
 
-#### picture *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### picture*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Base64-encoded snapshot data. (Encoded as a base64 string when passed over JSON)
 
@@ -74,68 +74,68 @@ Base64-encoded snapshot data. (Encoded as a base64 string when passed over JSON)
 
 Information about a compositing layer.
 
-#### layer_id *: [`LayerId`](#nodriver.cdp.layer_tree.LayerId)*
+#### layer_id*: [`LayerId`](#nodriver.cdp.layer_tree.LayerId)*
 
 The unique id for this layer.
 
-#### offset_x *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### offset_x*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Offset from parent layer, X coordinate.
 
-#### offset_y *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### offset_y*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Offset from parent layer, Y coordinate.
 
-#### width *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### width*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Layer width.
 
-#### height *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### height*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Layer height.
 
-#### paint_count *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### paint_count*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Indicates how many time this layer has painted.
 
-#### draws_content *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### draws_content*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Indicates whether this layer hosts any content, rather than being used for
 transform/scrolling purposes only.
 
-#### parent_layer_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LayerId`](#nodriver.cdp.layer_tree.LayerId)]* *= None*
+#### parent_layer_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LayerId`](#nodriver.cdp.layer_tree.LayerId)]* *= None*
 
 The id of parent (not present for root).
 
-#### backend_node_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
+#### backend_node_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
 
 The backend id for the node associated with this layer.
 
-#### transform *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`float`](https://docs.python.org/3/library/functions.html#float)]]* *= None*
+#### transform*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`float`](https://docs.python.org/3/library/functions.html#float)]]* *= None*
 
 Transformation matrix for layer, default is identity matrix
 
-#### anchor_x *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### anchor_x*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Transform anchor point X, absent if no transform specified
 
-#### anchor_y *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### anchor_y*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Transform anchor point Y, absent if no transform specified
 
-#### anchor_z *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### anchor_z*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Transform anchor point Z, absent if no transform specified
 
-#### invisible *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### invisible*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 Set if layer is not visible.
 
-#### scroll_rects *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ScrollRect`](#nodriver.cdp.layer_tree.ScrollRect)]]* *= None*
+#### scroll_rects*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ScrollRect`](#nodriver.cdp.layer_tree.ScrollRect)]]* *= None*
 
 Rectangles scrolling on main thread only.
 
-#### sticky_position_constraint *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StickyPositionConstraint`](#nodriver.cdp.layer_tree.StickyPositionConstraint)]* *= None*
+#### sticky_position_constraint*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StickyPositionConstraint`](#nodriver.cdp.layer_tree.StickyPositionConstraint)]* *= None*
 
 Sticky position constraint information
 
@@ -207,9 +207,9 @@ Returns the layer snapshot identifier.
 
 * **Parameters:**
   * **snapshot_id** ([`SnapshotId`](#nodriver.cdp.layer_tree.SnapshotId)) – The id of the layer snapshot.
-  * **min_repeat_count** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* The maximum number of times to replay the snapshot (1, if not specified).
-  * **min_duration** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* The minimum duration (in seconds) to replay the snapshot.
-  * **clip_rect** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Rect`](dom.md#nodriver.cdp.dom.Rect)]) –  *(Optional)* The clip rectangle to apply when replaying the snapshot.
+  * **min_repeat_count** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* The maximum number of times to replay the snapshot (1, if not specified).
+  * **min_duration** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* The minimum duration (in seconds) to replay the snapshot.
+  * **clip_rect** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Rect`](dom.md#nodriver.cdp.dom.Rect)]) – *(Optional)* The clip rectangle to apply when replaying the snapshot.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PaintProfile`](#nodriver.cdp.layer_tree.PaintProfile)]]
 * **Returns:**
@@ -230,9 +230,9 @@ Replays the layer snapshot and returns the resulting bitmap.
 
 * **Parameters:**
   * **snapshot_id** ([`SnapshotId`](#nodriver.cdp.layer_tree.SnapshotId)) – The id of the layer snapshot.
-  * **from_step** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* The first step to replay from (replay from the very start if not specified).
-  * **to_step** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* The last step to replay to (replay till the end if not specified).
-  * **scale** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* The scale to apply while replaying (defaults to 1).
+  * **from_step** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* The first step to replay from (replay from the very start if not specified).
+  * **to_step** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* The last step to replay to (replay till the end if not specified).
+  * **scale** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* The scale to apply while replaying (defaults to 1).
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`str`](https://docs.python.org/3/library/stdtypes.html#str)]
 * **Returns:**
@@ -257,16 +257,16 @@ you use the event’s attributes.
 
 ### *class* LayerPainted(layer_id, clip)
 
-#### layer_id *: [`LayerId`](#nodriver.cdp.layer_tree.LayerId)*
+#### layer_id*: [`LayerId`](#nodriver.cdp.layer_tree.LayerId)*
 
 The id of the painted layer.
 
-#### clip *: [`Rect`](dom.md#nodriver.cdp.dom.Rect)*
+#### clip*: [`Rect`](dom.md#nodriver.cdp.dom.Rect)*
 
 Clip rectangle.
 
 ### *class* LayerTreeDidChange(layers)
 
-#### layers *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Layer`](#nodriver.cdp.layer_tree.Layer)]]*
+#### layers*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Layer`](#nodriver.cdp.layer_tree.Layer)]]*
 
-Layer tree, absent if not in the comspositing mode.
+Layer tree, absent if not in the compositing mode.

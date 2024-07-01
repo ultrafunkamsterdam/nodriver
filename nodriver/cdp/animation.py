@@ -6,13 +6,13 @@
 # CDP domain: Animation (experimental)
 
 from __future__ import annotations
-
+import enum
 import typing
 from dataclasses import dataclass
+from .util import event_class, T_JSON_DICT
 
 from . import dom
 from . import runtime
-from .util import event_class, T_JSON_DICT
 
 
 @dataclass
@@ -37,6 +37,9 @@ class Animation:
     playback_rate: float
 
     #: ``Animation``'s start time.
+    #: Milliseconds for time based animations and
+    #: percentage [0 - 100] for scroll driven animations
+    #: (i.e. when viewOrScrollTimeline exists).
     start_time: float
 
     #: ``Animation``'s current time.
@@ -52,6 +55,9 @@ class Animation:
     #: animation/transition.
     css_id: typing.Optional[str] = None
 
+    #: View or scroll timeline
+    view_or_scroll_timeline: typing.Optional[ViewOrScrollTimeline] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json["id"] = self.id_
@@ -66,6 +72,8 @@ class Animation:
             json["source"] = self.source.to_json()
         if self.css_id is not None:
             json["cssId"] = self.css_id
+        if self.view_or_scroll_timeline is not None:
+            json["viewOrScrollTimeline"] = self.view_or_scroll_timeline.to_json()
         return json
 
     @classmethod
@@ -85,6 +93,76 @@ class Animation:
                 else None
             ),
             css_id=str(json["cssId"]) if json.get("cssId", None) is not None else None,
+            view_or_scroll_timeline=(
+                ViewOrScrollTimeline.from_json(json["viewOrScrollTimeline"])
+                if json.get("viewOrScrollTimeline", None) is not None
+                else None
+            ),
+        )
+
+
+@dataclass
+class ViewOrScrollTimeline:
+    """
+    Timeline instance
+    """
+
+    #: Orientation of the scroll
+    axis: dom.ScrollOrientation
+
+    #: Scroll container node
+    source_node_id: typing.Optional[dom.BackendNodeId] = None
+
+    #: Represents the starting scroll position of the timeline
+    #: as a length offset in pixels from scroll origin.
+    start_offset: typing.Optional[float] = None
+
+    #: Represents the ending scroll position of the timeline
+    #: as a length offset in pixels from scroll origin.
+    end_offset: typing.Optional[float] = None
+
+    #: The element whose principal box's visibility in the
+    #: scrollport defined the progress of the timeline.
+    #: Does not exist for animations with ScrollTimeline
+    subject_node_id: typing.Optional[dom.BackendNodeId] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json["axis"] = self.axis.to_json()
+        if self.source_node_id is not None:
+            json["sourceNodeId"] = self.source_node_id.to_json()
+        if self.start_offset is not None:
+            json["startOffset"] = self.start_offset
+        if self.end_offset is not None:
+            json["endOffset"] = self.end_offset
+        if self.subject_node_id is not None:
+            json["subjectNodeId"] = self.subject_node_id.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> ViewOrScrollTimeline:
+        return cls(
+            axis=dom.ScrollOrientation.from_json(json["axis"]),
+            source_node_id=(
+                dom.BackendNodeId.from_json(json["sourceNodeId"])
+                if json.get("sourceNodeId", None) is not None
+                else None
+            ),
+            start_offset=(
+                float(json["startOffset"])
+                if json.get("startOffset", None) is not None
+                else None
+            ),
+            end_offset=(
+                float(json["endOffset"])
+                if json.get("endOffset", None) is not None
+                else None
+            ),
+            subject_node_id=(
+                dom.BackendNodeId.from_json(json["subjectNodeId"])
+                if json.get("subjectNodeId", None) is not None
+                else None
+            ),
         )
 
 
@@ -107,6 +185,9 @@ class AnimationEffect:
     iterations: float
 
     #: ``AnimationEffect``'s iteration duration.
+    #: Milliseconds for time based animations and
+    #: percentage [0 - 100] for scroll driven animations
+    #: (i.e. when viewOrScrollTimeline exists).
     duration: float
 
     #: ``AnimationEffect``'s playback direction.
@@ -421,4 +502,19 @@ class AnimationStarted:
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> AnimationStarted:
+        return cls(animation=Animation.from_json(json["animation"]))
+
+
+@event_class("Animation.animationUpdated")
+@dataclass
+class AnimationUpdated:
+    """
+    Event for animation that has been updated.
+    """
+
+    #: Animation that was updated.
+    animation: Animation
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> AnimationUpdated:
         return cls(animation=Animation.from_json(json["animation"]))

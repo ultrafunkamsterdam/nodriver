@@ -21,75 +21,75 @@ arguments to other commands.
 
 See [https://github.com/WICG/LargestContentfulPaint](https://github.com/WICG/LargestContentfulPaint) and largest_contentful_paint.idl
 
-#### render_time *: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
+#### render_time*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
-#### load_time *: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
+#### load_time*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
-#### size *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### size*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 The number of pixels being painted.
 
-#### element_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### element_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The id attribute of the element, if available.
 
-#### url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The URL of the image (may be trimmed).
 
-#### node_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
+#### node_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
 
 ### *class* LayoutShiftAttribution(previous_rect, current_rect, node_id=None)
 
-#### previous_rect *: [`Rect`](dom.md#nodriver.cdp.dom.Rect)*
+#### previous_rect*: [`Rect`](dom.md#nodriver.cdp.dom.Rect)*
 
-#### current_rect *: [`Rect`](dom.md#nodriver.cdp.dom.Rect)*
+#### current_rect*: [`Rect`](dom.md#nodriver.cdp.dom.Rect)*
 
-#### node_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
+#### node_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
 
 ### *class* LayoutShift(value, had_recent_input, last_input_time, sources)
 
 See [https://wicg.github.io/layout-instability/#sec-layout-shift](https://wicg.github.io/layout-instability/#sec-layout-shift) and layout_shift.idl
 
-#### value *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### value*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Score increment produced by this event.
 
-#### had_recent_input *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### had_recent_input*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### last_input_time *: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
+#### last_input_time*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
-#### sources *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`LayoutShiftAttribution`](#nodriver.cdp.performance_timeline.LayoutShiftAttribution)]*
+#### sources*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`LayoutShiftAttribution`](#nodriver.cdp.performance_timeline.LayoutShiftAttribution)]*
 
 ### *class* TimelineEvent(frame_id, type_, name, time, duration=None, lcp_details=None, layout_shift_details=None)
 
-#### frame_id *: [`FrameId`](page.md#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](page.md#nodriver.cdp.page.FrameId)*
 
 Identifies the frame that this event is related to. Empty for non-frame targets.
 
-#### type_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 //w3c.github.io/performance-timeline/#dom-performanceentry-entrytype
-This determines which of the optional “details” fiedls is present.
+This determines which of the optional “details” fields is present.
 
 * **Type:**
   The event type, as specified in https
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Name may be empty depending on the type.
 
-#### time *: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
+#### time*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
 Time in seconds since Epoch, monotonically increasing within document lifetime.
 
-#### duration *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### duration*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Event duration, if applicable.
 
-#### lcp_details *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LargestContentfulPaint`](#nodriver.cdp.performance_timeline.LargestContentfulPaint)]* *= None*
+#### lcp_details*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LargestContentfulPaint`](#nodriver.cdp.performance_timeline.LargestContentfulPaint)]* *= None*
 
-#### layout_shift_details *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LayoutShift`](#nodriver.cdp.performance_timeline.LayoutShift)]* *= None*
+#### layout_shift_details*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LayoutShift`](#nodriver.cdp.performance_timeline.LayoutShift)]* *= None*
 
 ## Commands
 
@@ -122,4 +122,4 @@ you use the event’s attributes.
 
 Sent when a performance timeline event is added. See reportPerformanceTimeline method.
 
-#### event *: [`TimelineEvent`](#nodriver.cdp.performance_timeline.TimelineEvent)*
+#### event*: [`TimelineEvent`](#nodriver.cdp.performance_timeline.TimelineEvent)*

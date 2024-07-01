@@ -14,92 +14,130 @@ yourself. Instead, the API creates objects for you as return
 values from commands, and then you can use those objects as
 arguments to other commands.
 
-### *class* Animation(id_, name, paused_state, play_state, playback_rate, start_time, current_time, type_, source=None, css_id=None)
+### *class* Animation(id_, name, paused_state, play_state, playback_rate, start_time, current_time, type_, source=None, css_id=None, view_or_scroll_timeline=None)
 
 Animation instance.
 
-#### id_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### id_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 `Animation`’s id.
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 `Animation`’s name.
 
-#### paused_state *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### paused_state*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 `Animation`’s internal paused state.
 
-#### play_state *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### play_state*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 `Animation`’s play state.
 
-#### playback_rate *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### playback_rate*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 `Animation`’s playback rate.
 
-#### start_time *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### start_time*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 `Animation`’s start time.
+Milliseconds for time based animations and
+percentage [0 - 100] for scroll driven animations
+(i.e. when viewOrScrollTimeline exists).
 
-#### current_time *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### current_time*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 `Animation`’s current time.
 
-#### type_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Animation type of `Animation`.
 
-#### source *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AnimationEffect`](#nodriver.cdp.animation.AnimationEffect)]* *= None*
+#### source*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AnimationEffect`](#nodriver.cdp.animation.AnimationEffect)]* *= None*
 
 `Animation`’s source animation node.
 
-#### css_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### css_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 A unique ID for `Animation` representing the sources that triggered this CSS
 animation/transition.
+
+#### view_or_scroll_timeline*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ViewOrScrollTimeline`](#nodriver.cdp.animation.ViewOrScrollTimeline)]* *= None*
+
+View or scroll timeline
+
+### *class* ViewOrScrollTimeline(axis, source_node_id=None, start_offset=None, end_offset=None, subject_node_id=None)
+
+Timeline instance
+
+#### axis*: [`ScrollOrientation`](dom.md#nodriver.cdp.dom.ScrollOrientation)*
+
+Orientation of the scroll
+
+#### source_node_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
+
+Scroll container node
+
+#### start_offset*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+
+Represents the starting scroll position of the timeline
+as a length offset in pixels from scroll origin.
+
+#### end_offset*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+
+Represents the ending scroll position of the timeline
+as a length offset in pixels from scroll origin.
+
+#### subject_node_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
+
+The element whose principal box’s visibility in the
+scrollport defined the progress of the timeline.
+Does not exist for animations with ScrollTimeline
 
 ### *class* AnimationEffect(delay, end_delay, iteration_start, iterations, duration, direction, fill, easing, backend_node_id=None, keyframes_rule=None)
 
 AnimationEffect instance
 
-#### delay *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### delay*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 `AnimationEffect`’s delay.
 
-#### end_delay *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### end_delay*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 `AnimationEffect`’s end delay.
 
-#### iteration_start *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### iteration_start*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 `AnimationEffect`’s iteration start.
 
-#### iterations *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### iterations*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 `AnimationEffect`’s iterations.
 
-#### duration *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### duration*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 `AnimationEffect`’s iteration duration.
+Milliseconds for time based animations and
+percentage [0 - 100] for scroll driven animations
+(i.e. when viewOrScrollTimeline exists).
 
-#### direction *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### direction*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 `AnimationEffect`’s playback direction.
 
-#### fill *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### fill*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 `AnimationEffect`’s fill mode.
 
-#### easing *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### easing*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 `AnimationEffect`’s timing function.
 
-#### backend_node_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
+#### backend_node_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
 
 `AnimationEffect`’s target node.
 
-#### keyframes_rule *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`KeyframesRule`](#nodriver.cdp.animation.KeyframesRule)]* *= None*
+#### keyframes_rule*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`KeyframesRule`](#nodriver.cdp.animation.KeyframesRule)]* *= None*
 
 `AnimationEffect`’s keyframes.
 
@@ -107,11 +145,11 @@ AnimationEffect instance
 
 Keyframes Rule
 
-#### keyframes *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`KeyframeStyle`](#nodriver.cdp.animation.KeyframeStyle)]*
+#### keyframes*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`KeyframeStyle`](#nodriver.cdp.animation.KeyframeStyle)]*
 
 List of animation keyframes.
 
-#### name *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 CSS keyframed animation’s name.
 
@@ -119,11 +157,11 @@ CSS keyframed animation’s name.
 
 Keyframe Style
 
-#### offset *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### offset*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Keyframe’s time offset.
 
-#### easing *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### easing*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 `AnimationEffect`’s timing function.
 
@@ -242,7 +280,7 @@ you use the event’s attributes.
 
 Event for when an animation has been cancelled.
 
-#### id_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### id_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Id of the animation that was cancelled.
 
@@ -250,7 +288,7 @@ Id of the animation that was cancelled.
 
 Event for each animation that has been created.
 
-#### id_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### id_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Id of the animation that was created.
 
@@ -258,6 +296,14 @@ Id of the animation that was created.
 
 Event for animation that has been started.
 
-#### animation *: [`Animation`](#nodriver.cdp.animation.Animation)*
+#### animation*: [`Animation`](#nodriver.cdp.animation.Animation)*
 
 Animation that was started.
+
+### *class* AnimationUpdated(animation)
+
+Event for animation that has been updated.
+
+#### animation*: [`Animation`](#nodriver.cdp.animation.Animation)*
+
+Animation that was updated.

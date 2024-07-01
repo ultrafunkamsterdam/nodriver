@@ -103,6 +103,8 @@ to. For more information, see
 
 .. autofunction:: clear_device_metrics_override
 
+.. autofunction:: clear_device_posture_override
+
 .. autofunction:: clear_geolocation_override
 
 .. autofunction:: clear_idle_override
@@ -120,6 +122,8 @@ to. For more information, see
 .. autofunction:: set_default_background_color_override
 
 .. autofunction:: set_device_metrics_override
+
+.. autofunction:: set_device_posture_override
 
 .. autofunction:: set_disabled_image_types
 

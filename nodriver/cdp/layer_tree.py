@@ -6,12 +6,12 @@
 # CDP domain: LayerTree (experimental)
 
 from __future__ import annotations
-
+import enum
 import typing
 from dataclasses import dataclass
+from .util import event_class, T_JSON_DICT
 
 from . import dom
-from .util import event_class, T_JSON_DICT
 
 
 class LayerId(str):
@@ -511,7 +511,7 @@ class LayerPainted:
 @event_class("LayerTree.layerTreeDidChange")
 @dataclass
 class LayerTreeDidChange:
-    #: Layer tree, absent if not in the comspositing mode.
+    #: Layer tree, absent if not in the compositing mode.
     layers: typing.Optional[typing.List[Layer]]
 
     @classmethod

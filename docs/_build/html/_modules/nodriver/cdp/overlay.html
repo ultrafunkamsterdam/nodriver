@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.overlay - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -163,6 +163,9 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html">Quickstart guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -192,6 +195,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/dom_storage.html">DOMStorage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/emulation.html">Emulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/extensions.html">Extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fed_cm.html">FedCm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fetch.html">Fetch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/headless_experimental.html">HeadlessExperimental</a></li>
@@ -211,6 +215,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/performance_timeline.html">PerformanceTimeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/preload.html">Preload</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/profiler.html">Profiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/pwa.html">PWA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/runtime.html">Runtime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/schema.html">Schema</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/security.html">Security</a></li>
@@ -265,17 +270,15 @@
 <span class="c1"># CDP domain: Overlay (experimental)</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
-
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-
-<span class="kn">from</span> <span class="nn">deprecated.sphinx</span> <span class="kn">import</span> <span class="n">deprecated</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">dom</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">page</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">runtime</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
+<span class="kn">from</span> <span class="nn">deprecated.sphinx</span> <span class="kn">import</span> <span class="n">deprecated</span>  <span class="c1"># type: ignore</span>
 
 
 <div class="viewcode-block" id="SourceOrderConfig">
@@ -286,7 +289,7 @@
 <span class="sd">    Configuration data for drawing the source order of an elements children.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1">#: the color to outline the givent element in.</span>
+    <span class="c1">#: the color to outline the given element in.</span>
     <span class="n">parent_outline_color</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span>
 
     <span class="c1">#: the color to outline the child elements in.</span>
@@ -1203,7 +1206,7 @@
     <span class="c1">#: Whether the title bar CSS should be shown when emulating the Window Controls Overlay.</span>
     <span class="n">show_css</span><span class="p">:</span> <span class="nb">bool</span>
 
-    <span class="c1">#: Seleted platforms to show the overlay.</span>
+    <span class="c1">#: Selected platforms to show the overlay.</span>
     <span class="n">selected_platform</span><span class="p">:</span> <span class="nb">str</span>
 
     <span class="c1">#: The theme color defined in app manifest.</span>
@@ -1513,8 +1516,8 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Highlights owner element of the frame with given id.</span>
-<span class="sd">    Deprecated: Doesn&#39;t work reliablity and cannot be fixed due to process</span>
-<span class="sd">    separatation (the owner node might be in a different process). Determine</span>
+<span class="sd">    Deprecated: Doesn&#39;t work reliably and cannot be fixed due to process</span>
+<span class="sd">    separation (the owner node might be in a different process). Determine</span>
 <span class="sd">    the owner node in the client and use highlightNode.</span>
 
 <span class="sd">    .. deprecated:: 1.3</span>

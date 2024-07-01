@@ -6,11 +6,9 @@
 # CDP domain: Input
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
-
 from .util import event_class, T_JSON_DICT
 
 
@@ -356,7 +354,7 @@ def ime_set_composition(
     replacement_end: typing.Optional[int] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
-    This method sets the current candidate text for ime.
+    This method sets the current candidate text for IME.
     Use imeCommitComposition to commit the final text.
     Use imeSetComposition with empty string as text to cancel composition.
 

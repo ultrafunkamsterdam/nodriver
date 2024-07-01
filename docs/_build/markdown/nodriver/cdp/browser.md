@@ -34,23 +34,23 @@ The state of the browser window.
 
 Browser window bounds information
 
-#### left *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### left*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 The offset from the left edge of the screen to the window in pixels.
 
-#### top *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### top*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 The offset from the top edge of the screen to the window in pixels.
 
-#### width *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### width*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 The window width in pixels.
 
-#### height *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### height*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 The window height in pixels.
 
-#### window_state *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`WindowState`](#nodriver.cdp.browser.WindowState)]* *= None*
+#### window_state*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`WindowState`](#nodriver.cdp.browser.WindowState)]* *= None*
 
 The window state. Default to normal.
 
@@ -100,6 +100,8 @@ The window state. Default to normal.
 
 #### STORAGE_ACCESS *= 'storageAccess'*
 
+#### SPEAKER_SELECTION *= 'speakerSelection'*
+
 #### TOP_LEVEL_STORAGE_ACCESS *= 'topLevelStorageAccess'*
 
 #### VIDEO_CAPTURE *= 'videoCapture'*
@@ -120,30 +122,37 @@ The window state. Default to normal.
 
 #### PROMPT *= 'prompt'*
 
-### *class* PermissionDescriptor(name, sysex=None, user_visible_only=None, allow_without_sanitization=None, pan_tilt_zoom=None)
+### *class* PermissionDescriptor(name, sysex=None, user_visible_only=None, allow_without_sanitization=None, allow_without_gesture=None, pan_tilt_zoom=None)
 
 Definition of PermissionDescriptor defined in the Permissions API:
 [https://w3c.github.io/permissions/#dom-permissiondescriptor](https://w3c.github.io/permissions/#dom-permissiondescriptor).
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Name of permission.
 See [https://cs.chromium.org/chromium/src/third_party/blink/renderer/modules/permissions/permission_descriptor.idl](https://cs.chromium.org/chromium/src/third_party/blink/renderer/modules/permissions/permission_descriptor.idl) for valid permission names.
 
-#### sysex *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### sysex*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 For “midi” permission, may also specify sysex control.
 
-#### user_visible_only *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### user_visible_only*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 For “push” permission, may specify userVisibleOnly.
 Note that userVisibleOnly = true is the only currently supported type.
 
-#### allow_without_sanitization *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### allow_without_sanitization*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 For “clipboard” permission, may specify allowWithoutSanitization.
 
-#### pan_tilt_zoom *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### allow_without_gesture*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+true.
+
+* **Type:**
+  For “fullscreen” permission, must specify allowWithoutGesture
+
+#### pan_tilt_zoom*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 For “camera” permission, may specify panTiltZoom.
 
@@ -159,15 +168,15 @@ Browser command ids used by executeBrowserCommand.
 
 Chrome histogram bucket.
 
-#### low *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### low*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Minimum value (inclusive).
 
-#### high *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### high*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Maximum value (exclusive).
 
-#### count *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### count*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Number of samples.
 
@@ -175,19 +184,19 @@ Number of samples.
 
 Chrome histogram.
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Name.
 
-#### sum_ *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### sum_*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Sum of sample values.
 
-#### count *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### count*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Total number of samples.
 
-#### buckets *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Bucket`](#nodriver.cdp.browser.Bucket)]*
+#### buckets*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Bucket`](#nodriver.cdp.browser.Bucket)]*
 
 Buckets.
 
@@ -220,7 +229,7 @@ Cancel a download if in progress
 
 * **Parameters:**
   * **guid** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Global unique identifier of the download.
-  * **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](#nodriver.cdp.browser.BrowserContextID)]) –  *(Optional)* BrowserContext to perform the action in. When omitted, default browser context is used.
+  * **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](#nodriver.cdp.browser.BrowserContextID)]) – *(Optional)* BrowserContext to perform the action in. When omitted, default browser context is used.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -280,7 +289,7 @@ Get a Chrome histogram by name.
 
 * **Parameters:**
   * **name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Requested histogram name.
-  * **delta** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* If true, retrieve delta since last delta call.
+  * **delta** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If true, retrieve delta since last delta call.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Histogram`](#nodriver.cdp.browser.Histogram)]
 * **Returns:**
@@ -293,8 +302,8 @@ Get Chrome histograms.
 **EXPERIMENTAL**
 
 * **Parameters:**
-  * **query** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Requested substring in name. Only histograms which have query as a substring in their name are extracted. An empty or absent query returns all histograms.
-  * **delta** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* If true, retrieve delta since last delta call.
+  * **query** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Requested substring in name. Only histograms which have query as a substring in their name are extracted. An empty or absent query returns all histograms.
+  * **delta** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If true, retrieve delta since last delta call.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Histogram`](#nodriver.cdp.browser.Histogram)]]
 * **Returns:**
@@ -334,7 +343,7 @@ Get the browser window that contains the devtools target.
 **EXPERIMENTAL**
 
 * **Parameters:**
-  **target_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](target.md#nodriver.cdp.target.TargetID)]) –  *(Optional)* Devtools agent host id. If called as a part of the session, associated targetId is used.
+  **target_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](target.md#nodriver.cdp.target.TargetID)]) – *(Optional)* Devtools agent host id. If called as a part of the session, associated targetId is used.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`WindowID`](#nodriver.cdp.browser.WindowID), [`Bounds`](#nodriver.cdp.browser.Bounds)]]
 * **Returns:**
@@ -350,8 +359,8 @@ Grant specific permissions to the given origin and reject all others.
 
 * **Parameters:**
   * **permissions** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PermissionType`](#nodriver.cdp.browser.PermissionType)]) – 
-  * **origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Origin the permission applies to, all origins if not specified.
-  * **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](#nodriver.cdp.browser.BrowserContextID)]) –  *(Optional)* BrowserContext to override permissions. When omitted, default browser context is used.
+  * **origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Origin the permission applies to, all origins if not specified.
+  * **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](#nodriver.cdp.browser.BrowserContextID)]) – *(Optional)* BrowserContext to override permissions. When omitted, default browser context is used.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -360,7 +369,7 @@ Grant specific permissions to the given origin and reject all others.
 Reset all permission management for all origins.
 
 * **Parameters:**
-  **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](#nodriver.cdp.browser.BrowserContextID)]) –  *(Optional)* BrowserContext to reset permissions. When omitted, default browser context is used.
+  **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](#nodriver.cdp.browser.BrowserContextID)]) – *(Optional)* BrowserContext to reset permissions. When omitted, default browser context is used.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -371,8 +380,8 @@ Set dock tile details, platform-specific.
 **EXPERIMENTAL**
 
 * **Parameters:**
-  * **badge_label** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)*
-  * **image** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Png encoded image. (Encoded as a base64 string when passed over JSON)
+  * **badge_label** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)*
+  * **image** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Png encoded image. (Encoded as a base64 string when passed over JSON)
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -383,10 +392,10 @@ Set the behavior when downloading a file.
 **EXPERIMENTAL**
 
 * **Parameters:**
-  * **behavior** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Whether to allow all or deny all download requests, or use default Chrome behavior if available (otherwise deny). `allowAndName` allows download and names files according to their dowmload guids.
-  * **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](#nodriver.cdp.browser.BrowserContextID)]) –  *(Optional)* BrowserContext to set download behavior. When omitted, default browser context is used.
-  * **download_path** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* The default path to save downloaded files to. This is required if behavior is set to ‘allow’ or ‘allowAndName’.
-  * **events_enabled** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Whether to emit download events (defaults to false).
+  * **behavior** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Whether to allow all or deny all download requests, or use default Chrome behavior if available (otherwise deny). `allowAndName` allows download and names files according to their download guids.
+  * **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](#nodriver.cdp.browser.BrowserContextID)]) – *(Optional)* BrowserContext to set download behavior. When omitted, default browser context is used.
+  * **download_path** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* The default path to save downloaded files to. This is required if behavior is set to ‘allow’ or ‘allowAndName’.
+  * **events_enabled** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether to emit download events (defaults to false).
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -399,8 +408,8 @@ Set permission settings for given origin.
 * **Parameters:**
   * **permission** ([`PermissionDescriptor`](#nodriver.cdp.browser.PermissionDescriptor)) – Descriptor of permission to override.
   * **setting** ([`PermissionSetting`](#nodriver.cdp.browser.PermissionSetting)) – Setting of the permission.
-  * **origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Origin the permission applies to, all origins if not specified.
-  * **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](#nodriver.cdp.browser.BrowserContextID)]) –  *(Optional)* Context to override. When omitted, default browser context is used.
+  * **origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Origin the permission applies to, all origins if not specified.
+  * **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](#nodriver.cdp.browser.BrowserContextID)]) – *(Optional)* Context to override. When omitted, default browser context is used.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -428,19 +437,19 @@ you use the event’s attributes.
 
 Fired when page is about to start a download.
 
-#### frame_id *: [`FrameId`](page.md#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](page.md#nodriver.cdp.page.FrameId)*
 
 Id of the frame that caused the download to begin.
 
-#### guid *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### guid*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Global unique identifier of the download.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 URL of the resource being downloaded.
 
-#### suggested_filename *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### suggested_filename*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Suggested file name of the resource (the actual name of the file saved on disk may differ).
 
@@ -450,18 +459,18 @@ Suggested file name of the resource (the actual name of the file saved on disk m
 
 Fired when download makes progress. Last call has `done` == true.
 
-#### guid *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### guid*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Global unique identifier of the download.
 
-#### total_bytes *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### total_bytes*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Total expected bytes to download.
 
-#### received_bytes *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### received_bytes*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Total bytes received.
 
-#### state *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### state*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Download status.

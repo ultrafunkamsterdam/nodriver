@@ -63,6 +63,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: ScrollOrientation
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: Node
       :members:
       :undoc-members:
@@ -124,6 +129,8 @@ to. For more information, see
 
 .. autofunction:: focus
 
+.. autofunction:: get_anchor_element
+
 .. autofunction:: get_attributes
 
 .. autofunction:: get_box_model
@@ -133,6 +140,8 @@ to. For more information, see
 .. autofunction:: get_content_quads
 
 .. autofunction:: get_document
+
+.. autofunction:: get_element_by_relation
 
 .. autofunction:: get_file_info
 

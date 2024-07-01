@@ -6,16 +6,15 @@
 # CDP domain: Audits (experimental)
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
+from .util import event_class, T_JSON_DICT
 
 from . import dom
 from . import network
 from . import page
 from . import runtime
-from .util import event_class, T_JSON_DICT
 
 
 @dataclass
@@ -274,6 +273,7 @@ class MixedContentResourceType(enum.Enum):
     FRAME = "Frame"
     IMAGE = "Image"
     IMPORT = "Import"
+    JSON = "JSON"
     MANIFEST = "Manifest"
     PING = "Ping"
     PLUGIN_DATA = "PluginData"
@@ -375,6 +375,12 @@ class BlockedByResponseReason(enum.Enum):
     CORP_NOT_SAME_ORIGIN = "CorpNotSameOrigin"
     CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_COEP = (
         "CorpNotSameOriginAfterDefaultedToSameOriginByCoep"
+    )
+    CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_DIP = (
+        "CorpNotSameOriginAfterDefaultedToSameOriginByDip"
+    )
+    CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_COEP_AND_DIP = (
+        "CorpNotSameOriginAfterDefaultedToSameOriginByCoepAndDip"
     )
     CORP_NOT_SAME_SITE = "CorpNotSameSite"
 
@@ -765,12 +771,52 @@ class AttributionReportingIssueType(enum.Enum):
     NAVIGATION_REGISTRATION_WITHOUT_TRANSIENT_USER_ACTIVATION = (
         "NavigationRegistrationWithoutTransientUserActivation"
     )
+    INVALID_INFO_HEADER = "InvalidInfoHeader"
+    NO_REGISTER_SOURCE_HEADER = "NoRegisterSourceHeader"
+    NO_REGISTER_TRIGGER_HEADER = "NoRegisterTriggerHeader"
+    NO_REGISTER_OS_SOURCE_HEADER = "NoRegisterOsSourceHeader"
+    NO_REGISTER_OS_TRIGGER_HEADER = "NoRegisterOsTriggerHeader"
 
     def to_json(self) -> str:
         return self.value
 
     @classmethod
     def from_json(cls, json: str) -> AttributionReportingIssueType:
+        return cls(json)
+
+
+class SharedDictionaryError(enum.Enum):
+    USE_ERROR_CROSS_ORIGIN_NO_CORS_REQUEST = "UseErrorCrossOriginNoCorsRequest"
+    USE_ERROR_DICTIONARY_LOAD_FAILURE = "UseErrorDictionaryLoadFailure"
+    USE_ERROR_MATCHING_DICTIONARY_NOT_USED = "UseErrorMatchingDictionaryNotUsed"
+    USE_ERROR_UNEXPECTED_CONTENT_DICTIONARY_HEADER = (
+        "UseErrorUnexpectedContentDictionaryHeader"
+    )
+    WRITE_ERROR_COSS_ORIGIN_NO_CORS_REQUEST = "WriteErrorCossOriginNoCorsRequest"
+    WRITE_ERROR_DISALLOWED_BY_SETTINGS = "WriteErrorDisallowedBySettings"
+    WRITE_ERROR_EXPIRED_RESPONSE = "WriteErrorExpiredResponse"
+    WRITE_ERROR_FEATURE_DISABLED = "WriteErrorFeatureDisabled"
+    WRITE_ERROR_INSUFFICIENT_RESOURCES = "WriteErrorInsufficientResources"
+    WRITE_ERROR_INVALID_MATCH_FIELD = "WriteErrorInvalidMatchField"
+    WRITE_ERROR_INVALID_STRUCTURED_HEADER = "WriteErrorInvalidStructuredHeader"
+    WRITE_ERROR_NAVIGATION_REQUEST = "WriteErrorNavigationRequest"
+    WRITE_ERROR_NO_MATCH_FIELD = "WriteErrorNoMatchField"
+    WRITE_ERROR_NON_LIST_MATCH_DEST_FIELD = "WriteErrorNonListMatchDestField"
+    WRITE_ERROR_NON_SECURE_CONTEXT = "WriteErrorNonSecureContext"
+    WRITE_ERROR_NON_STRING_ID_FIELD = "WriteErrorNonStringIdField"
+    WRITE_ERROR_NON_STRING_IN_MATCH_DEST_LIST = "WriteErrorNonStringInMatchDestList"
+    WRITE_ERROR_NON_STRING_MATCH_FIELD = "WriteErrorNonStringMatchField"
+    WRITE_ERROR_NON_TOKEN_TYPE_FIELD = "WriteErrorNonTokenTypeField"
+    WRITE_ERROR_REQUEST_ABORTED = "WriteErrorRequestAborted"
+    WRITE_ERROR_SHUTTING_DOWN = "WriteErrorShuttingDown"
+    WRITE_ERROR_TOO_LONG_ID_FIELD = "WriteErrorTooLongIdField"
+    WRITE_ERROR_UNSUPPORTED_TYPE = "WriteErrorUnsupportedType"
+
+    def to_json(self) -> str:
+        return self.value
+
+    @classmethod
+    def from_json(cls, json: str) -> SharedDictionaryError:
         return cls(json)
 
 
@@ -885,6 +931,28 @@ class NavigatorUserAgentIssueDetails:
                 if json.get("location", None) is not None
                 else None
             ),
+        )
+
+
+@dataclass
+class SharedDictionaryIssueDetails:
+    shared_dictionary_error: SharedDictionaryError
+
+    request: AffectedRequest
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json["sharedDictionaryError"] = self.shared_dictionary_error.to_json()
+        json["request"] = self.request.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> SharedDictionaryIssueDetails:
+        return cls(
+            shared_dictionary_error=SharedDictionaryError.from_json(
+                json["sharedDictionaryError"]
+            ),
+            request=AffectedRequest.from_json(json["request"]),
         )
 
 
@@ -1048,15 +1116,27 @@ class CookieDeprecationMetadataIssueDetails:
 
     allowed_sites: typing.List[str]
 
+    opt_out_percentage: float
+
+    is_opt_out_top_level: bool
+
+    operation: CookieOperation
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json["allowedSites"] = [i for i in self.allowed_sites]
+        json["optOutPercentage"] = self.opt_out_percentage
+        json["isOptOutTopLevel"] = self.is_opt_out_top_level
+        json["operation"] = self.operation.to_json()
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> CookieDeprecationMetadataIssueDetails:
         return cls(
             allowed_sites=[str(i) for i in json["allowedSites"]],
+            opt_out_percentage=float(json["optOutPercentage"]),
+            is_opt_out_top_level=bool(json["isOptOutTopLevel"]),
+            operation=CookieOperation.from_json(json["operation"]),
         )
 
 
@@ -1117,7 +1197,9 @@ class FederatedAuthRequestIssueReason(enum.Enum):
     CLIENT_METADATA_NO_RESPONSE = "ClientMetadataNoResponse"
     CLIENT_METADATA_INVALID_RESPONSE = "ClientMetadataInvalidResponse"
     CLIENT_METADATA_INVALID_CONTENT_TYPE = "ClientMetadataInvalidContentType"
+    IDP_NOT_POTENTIALLY_TRUSTWORTHY = "IdpNotPotentiallyTrustworthy"
     DISABLED_IN_SETTINGS = "DisabledInSettings"
+    DISABLED_IN_FLAGS = "DisabledInFlags"
     ERROR_FETCHING_SIGNIN = "ErrorFetchingSignin"
     INVALID_SIGNIN_RESPONSE = "InvalidSigninResponse"
     ACCOUNTS_HTTP_NOT_FOUND = "AccountsHttpNotFound"
@@ -1138,6 +1220,11 @@ class FederatedAuthRequestIssueReason(enum.Enum):
     SILENT_MEDIATION_FAILURE = "SilentMediationFailure"
     THIRD_PARTY_COOKIES_BLOCKED = "ThirdPartyCookiesBlocked"
     NOT_SIGNED_IN_WITH_IDP = "NotSignedInWithIdp"
+    MISSING_TRANSIENT_USER_ACTIVATION = "MissingTransientUserActivation"
+    REPLACED_BY_BUTTON_MODE = "ReplacedByButtonMode"
+    INVALID_FIELDS_SPECIFIED = "InvalidFieldsSpecified"
+    RELYING_PARTY_ORIGIN_IS_OPAQUE = "RelyingPartyOriginIsOpaque"
+    TYPE_NOT_MATCHING = "TypeNotMatching"
 
     def to_json(self) -> str:
         return self.value
@@ -1390,6 +1477,7 @@ class InspectorIssueCode(enum.Enum):
     STYLESHEET_LOADING_ISSUE = "StylesheetLoadingIssue"
     FEDERATED_AUTH_USER_INFO_REQUEST_ISSUE = "FederatedAuthUserInfoRequestIssue"
     PROPERTY_RULE_ISSUE = "PropertyRuleIssue"
+    SHARED_DICTIONARY_ISSUE = "SharedDictionaryIssue"
 
     def to_json(self) -> str:
         return self.value
@@ -1465,6 +1553,10 @@ class InspectorIssueDetails:
         FederatedAuthUserInfoRequestIssueDetails
     ] = None
 
+    shared_dictionary_issue_details: typing.Optional[SharedDictionaryIssueDetails] = (
+        None
+    )
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         if self.cookie_issue_details is not None:
@@ -1532,6 +1624,10 @@ class InspectorIssueDetails:
         if self.federated_auth_user_info_request_issue_details is not None:
             json["federatedAuthUserInfoRequestIssueDetails"] = (
                 self.federated_auth_user_info_request_issue_details.to_json()
+            )
+        if self.shared_dictionary_issue_details is not None:
+            json["sharedDictionaryIssueDetails"] = (
+                self.shared_dictionary_issue_details.to_json()
             )
         return json
 
@@ -1657,6 +1753,13 @@ class InspectorIssueDetails:
                 )
                 if json.get("federatedAuthUserInfoRequestIssueDetails", None)
                 is not None
+                else None
+            ),
+            shared_dictionary_issue_details=(
+                SharedDictionaryIssueDetails.from_json(
+                    json["sharedDictionaryIssueDetails"]
+                )
+                if json.get("sharedDictionaryIssueDetails", None) is not None
                 else None
             ),
         )

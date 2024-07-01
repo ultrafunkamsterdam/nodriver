@@ -6,15 +6,14 @@
 # CDP domain: Preload (experimental)
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
+from .util import event_class, T_JSON_DICT
 
 from . import dom
 from . import network
 from . import page
-from .util import event_class, T_JSON_DICT
 
 
 class RuleSetId(str):
@@ -219,7 +218,7 @@ class PreloadingAttemptSource:
     that had a speculation rule that triggered the attempt, and the
     BackendNodeIds of <a href> or <area href> elements that triggered the
     attempt (in the case of attempts triggered by a document rule). It is
-    possible for mulitple rule sets and links to trigger a single attempt.
+    possible for multiple rule sets and links to trigger a single attempt.
     """
 
     key: PreloadingAttemptKey
@@ -342,6 +341,9 @@ class PrerenderFinalStatus(enum.Enum):
         "RedirectedPrerenderingUrlHasEffectiveUrl"
     )
     ACTIVATION_URL_HAS_EFFECTIVE_URL = "ActivationUrlHasEffectiveUrl"
+    JAVA_SCRIPT_INTERFACE_ADDED = "JavaScriptInterfaceAdded"
+    JAVA_SCRIPT_INTERFACE_REMOVED = "JavaScriptInterfaceRemoved"
+    ALL_PRERENDERING_CANCELED = "AllPrerenderingCanceled"
 
     def to_json(self) -> str:
         return self.value
@@ -467,6 +469,7 @@ class PrerenderMismatchedHeaders:
 
 
 def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
+
     cmd_dict: T_JSON_DICT = {
         "method": "Preload.enable",
     }
@@ -474,6 +477,7 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
+
     cmd_dict: T_JSON_DICT = {
         "method": "Preload.disable",
     }

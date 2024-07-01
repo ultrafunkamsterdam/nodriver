@@ -6,17 +6,15 @@
 # CDP domain: Emulation
 
 from __future__ import annotations
-
 import enum
 import typing
 from dataclasses import dataclass
-
-from deprecated.sphinx import deprecated  # type: ignore
+from .util import event_class, T_JSON_DICT
 
 from . import dom
 from . import network
 from . import page
-from .util import event_class, T_JSON_DICT
+from deprecated.sphinx import deprecated  # type: ignore
 
 
 @dataclass
@@ -135,7 +133,7 @@ class VirtualTimePolicy(enum.Enum):
 @dataclass
 class UserAgentBrandVersion:
     """
-    Used to specify User Agent Cient Hints to emulate. See https://wicg.github.io/ua-client-hints
+    Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints
     """
 
     brand: str
@@ -159,7 +157,7 @@ class UserAgentBrandVersion:
 @dataclass
 class UserAgentMetadata:
     """
-    Used to specify User Agent Cient Hints to emulate. See https://wicg.github.io/ua-client-hints
+    Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints
     Missing optional values will be filled in by the target with what it would normally use.
     """
 
@@ -420,9 +418,12 @@ class DisabledImageType(enum.Enum):
         return cls(json)
 
 
+@deprecated(version="1.3")
 def can_emulate() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, bool]:
     """
     Tells whether emulation is supported.
+
+    .. deprecated:: 1.3
 
     :returns: True if emulation is supported.
     """
@@ -574,7 +575,7 @@ def set_device_metrics_override(
     :param screen_orientation: *(Optional)* Screen orientation override.
     :param viewport: **(EXPERIMENTAL)** *(Optional)* If set, the visible area of the page will be overridden to this viewport. This viewport change is not observed by the page, e.g. viewport-relative elements do not change positions.
     :param display_feature: **(EXPERIMENTAL)** *(Optional)* If set, the display feature of a multi-segment screen. If not set, multi-segment support is turned-off.
-    :param device_posture: **(EXPERIMENTAL)** *(Optional)* If set, the posture of a foldable device. If not set the posture is set to continuous.
+    :param device_posture: **(DEPRECATED)** **(EXPERIMENTAL)** *(Optional)* If set, the posture of a foldable device. If not set the posture is set to continuous. Deprecated, use Emulation.setDevicePostureOverride.
     """
     params: T_JSON_DICT = dict()
     params["width"] = width
@@ -604,6 +605,41 @@ def set_device_metrics_override(
     cmd_dict: T_JSON_DICT = {
         "method": "Emulation.setDeviceMetricsOverride",
         "params": params,
+    }
+    json = yield cmd_dict
+
+
+def set_device_posture_override(
+    posture: DevicePosture,
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
+    """
+    Start reporting the given posture value to the Device Posture API.
+    This override can also be set in setDeviceMetricsOverride().
+
+    **EXPERIMENTAL**
+
+    :param posture:
+    """
+    params: T_JSON_DICT = dict()
+    params["posture"] = posture.to_json()
+    cmd_dict: T_JSON_DICT = {
+        "method": "Emulation.setDevicePostureOverride",
+        "params": params,
+    }
+    json = yield cmd_dict
+
+
+def clear_device_posture_override() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
+    """
+    Clears a device posture override set with either setDeviceMetricsOverride()
+    or setDevicePostureOverride() and starts using posture information from the
+    platform again.
+    Does nothing if no override is set.
+
+    **EXPERIMENTAL**
+    """
+    cmd_dict: T_JSON_DICT = {
+        "method": "Emulation.clearDevicePostureOverride",
     }
     json = yield cmd_dict
 
@@ -787,7 +823,7 @@ def set_sensor_override_readings(
     type_: SensorType, reading: SensorReading
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
-    Updates the sensor readings reported by a sensor type previously overriden
+    Updates the sensor readings reported by a sensor type previously overridden
     by setSensorOverrideEnabled.
 
     **EXPERIMENTAL**
@@ -974,7 +1010,7 @@ def set_timezone_override(
     """
     Overrides default host system timezone with the specified one.
 
-    :param timezone_id: The timezone identifier. If empty, disables the override and restores default host system timezone.
+    :param timezone_id: The timezone identifier. List of supported timezones: https://source.chromium.org/chromium/chromium/deps/icu.git/+/faee8bc70570192d82d2978a71e2a615788597d1:source/data/misc/metaZones.txt If empty, disables the override and restores default host system timezone.
     """
     params: T_JSON_DICT = dict()
     params["timezoneId"] = timezone_id
@@ -1057,6 +1093,7 @@ def set_user_agent_override(
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Allows overriding user agent with the given string.
+    ``userAgentMetadata`` must be set for Client Hint headers to be sent.
 
     :param user_agent: User agent to use.
     :param accept_language: *(Optional)* Browser language to emulate.

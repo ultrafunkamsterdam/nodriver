@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.emulation - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -163,6 +163,9 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html">Quickstart guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -192,6 +195,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/dom_storage.html">DOMStorage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/emulation.html">Emulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/extensions.html">Extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fed_cm.html">FedCm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fetch.html">Fetch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/headless_experimental.html">HeadlessExperimental</a></li>
@@ -211,6 +215,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/performance_timeline.html">PerformanceTimeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/preload.html">Preload</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/profiler.html">Profiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/pwa.html">PWA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/runtime.html">Runtime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/schema.html">Schema</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/security.html">Security</a></li>
@@ -265,17 +270,15 @@
 <span class="c1"># CDP domain: Emulation</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
-
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-
-<span class="kn">from</span> <span class="nn">deprecated.sphinx</span> <span class="kn">import</span> <span class="n">deprecated</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">dom</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">network</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">page</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
+<span class="kn">from</span> <span class="nn">deprecated.sphinx</span> <span class="kn">import</span> <span class="n">deprecated</span>  <span class="c1"># type: ignore</span>
 
 
 <div class="viewcode-block" id="ScreenOrientation">
@@ -411,7 +414,7 @@
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">UserAgentBrandVersion</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Used to specify User Agent Cient Hints to emulate. See https://wicg.github.io/ua-client-hints</span>
+<span class="sd">    Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">brand</span><span class="p">:</span> <span class="nb">str</span>
@@ -438,7 +441,7 @@
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">UserAgentMetadata</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Used to specify User Agent Cient Hints to emulate. See https://wicg.github.io/ua-client-hints</span>
+<span class="sd">    Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints</span>
 <span class="sd">    Missing optional values will be filled in by the target with what it would normally use.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -723,9 +726,12 @@
 
 <div class="viewcode-block" id="can_emulate">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.can_emulate">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.3&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">can_emulate</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Tells whether emulation is supported.</span>
+
+<span class="sd">    .. deprecated:: 1.3</span>
 
 <span class="sd">    :returns: True if emulation is supported.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -901,7 +907,7 @@
 <span class="sd">    :param screen_orientation: *(Optional)* Screen orientation override.</span>
 <span class="sd">    :param viewport: **(EXPERIMENTAL)** *(Optional)* If set, the visible area of the page will be overridden to this viewport. This viewport change is not observed by the page, e.g. viewport-relative elements do not change positions.</span>
 <span class="sd">    :param display_feature: **(EXPERIMENTAL)** *(Optional)* If set, the display feature of a multi-segment screen. If not set, multi-segment support is turned-off.</span>
-<span class="sd">    :param device_posture: **(EXPERIMENTAL)** *(Optional)* If set, the posture of a foldable device. If not set the posture is set to continuous.</span>
+<span class="sd">    :param device_posture: **(DEPRECATED)** **(EXPERIMENTAL)** *(Optional)* If set, the posture of a foldable device. If not set the posture is set to continuous. Deprecated, use Emulation.setDevicePostureOverride.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">params</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">width</span>
@@ -931,6 +937,47 @@
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Emulation.setDeviceMetricsOverride&quot;</span><span class="p">,</span>
         <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="set_device_posture_override">
+<a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_device_posture_override">[docs]</a>
+<span class="k">def</span> <span class="nf">set_device_posture_override</span><span class="p">(</span>
+    <span class="n">posture</span><span class="p">:</span> <span class="n">DevicePosture</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Start reporting the given posture value to the Device Posture API.</span>
+<span class="sd">    This override can also be set in setDeviceMetricsOverride().</span>
+
+<span class="sd">    **EXPERIMENTAL**</span>
+
+<span class="sd">    :param posture:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;posture&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">posture</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Emulation.setDevicePostureOverride&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="clear_device_posture_override">
+<a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.clear_device_posture_override">[docs]</a>
+<span class="k">def</span> <span class="nf">clear_device_posture_override</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Clears a device posture override set with either setDeviceMetricsOverride()</span>
+<span class="sd">    or setDevicePostureOverride() and starts using posture information from the</span>
+<span class="sd">    platform again.</span>
+<span class="sd">    Does nothing if no override is set.</span>
+
+<span class="sd">    **EXPERIMENTAL**</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Emulation.clearDevicePostureOverride&quot;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -1141,7 +1188,7 @@
     <span class="n">type_</span><span class="p">:</span> <span class="n">SensorType</span><span class="p">,</span> <span class="n">reading</span><span class="p">:</span> <span class="n">SensorReading</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Updates the sensor readings reported by a sensor type previously overriden</span>
+<span class="sd">    Updates the sensor readings reported by a sensor type previously overridden</span>
 <span class="sd">    by setSensorOverrideEnabled.</span>
 
 <span class="sd">    **EXPERIMENTAL**</span>
@@ -1355,7 +1402,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overrides default host system timezone with the specified one.</span>
 
-<span class="sd">    :param timezone_id: The timezone identifier. If empty, disables the override and restores default host system timezone.</span>
+<span class="sd">    :param timezone_id: The timezone identifier. List of supported timezones: https://source.chromium.org/chromium/chromium/deps/icu.git/+/faee8bc70570192d82d2978a71e2a615788597d1:source/data/misc/metaZones.txt If empty, disables the override and restores default host system timezone.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">params</span><span class="p">[</span><span class="s2">&quot;timezoneId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">timezone_id</span>
@@ -1450,6 +1497,7 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Allows overriding user agent with the given string.</span>
+<span class="sd">    ``userAgentMetadata`` must be set for Client Hint headers to be sent.</span>
 
 <span class="sd">    :param user_agent: User agent to use.</span>
 <span class="sd">    :param accept_language: *(Optional)* Browser language to emulate.</span>

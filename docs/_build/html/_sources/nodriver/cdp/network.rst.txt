@@ -148,6 +148,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: ServiceWorkerRouterSource
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: ServiceWorkerRouterInfo
       :members:
       :undoc-members:
@@ -183,6 +188,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: CookiePartitionKey
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: Cookie
       :members:
       :undoc-members:
@@ -198,12 +208,22 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: CookieExemptionReason
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: BlockedSetCookieWithReason
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: BlockedCookieWithReason
+.. autoclass:: ExemptedSetCookieWithReason
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: AssociatedCookie
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -545,7 +565,17 @@ you use the event's attributes.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: ResponseReceivedEarlyHints
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: TrustTokenOperationDone
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: PolicyUpdated
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

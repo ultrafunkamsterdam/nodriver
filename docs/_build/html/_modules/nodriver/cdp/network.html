@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.network - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -163,6 +163,9 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html">Quickstart guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#usage-example">usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -192,6 +195,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/dom_storage.html">DOMStorage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/emulation.html">Emulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/event_breakpoints.html">EventBreakpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/extensions.html">Extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fed_cm.html">FedCm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fetch.html">Fetch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/headless_experimental.html">HeadlessExperimental</a></li>
@@ -211,6 +215,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/performance_timeline.html">PerformanceTimeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/preload.html">Preload</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/profiler.html">Profiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/pwa.html">PWA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/runtime.html">Runtime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/schema.html">Schema</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/security.html">Security</a></li>
@@ -265,12 +270,10 @@
 <span class="c1"># CDP domain: Network</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
-
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-
-<span class="kn">from</span> <span class="nn">deprecated.sphinx</span> <span class="kn">import</span> <span class="n">deprecated</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">debugger</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">emulation</span>
@@ -278,7 +281,7 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">page</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">runtime</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">security</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
+<span class="kn">from</span> <span class="nn">deprecated.sphinx</span> <span class="kn">import</span> <span class="n">deprecated</span>  <span class="c1"># type: ignore</span>
 
 
 <div class="viewcode-block" id="ResourceType">
@@ -617,6 +620,12 @@
     <span class="c1">#: Finished receiving response headers.</span>
     <span class="n">receive_headers_end</span><span class="p">:</span> <span class="nb">float</span>
 
+    <span class="c1">#: Started ServiceWorker static routing source evaluation.</span>
+    <span class="n">worker_router_evaluation_start</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Started cache lookup when the source was evaluated to ``cache``.</span>
+    <span class="n">worker_cache_lookup_start</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestTime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_time</span>
@@ -638,6 +647,10 @@
         <span class="n">json</span><span class="p">[</span><span class="s2">&quot;pushEnd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">push_end</span>
         <span class="n">json</span><span class="p">[</span><span class="s2">&quot;receiveHeadersStart&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">receive_headers_start</span>
         <span class="n">json</span><span class="p">[</span><span class="s2">&quot;receiveHeadersEnd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">receive_headers_end</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_router_evaluation_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;workerRouterEvaluationStart&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_router_evaluation_start</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_cache_lookup_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;workerCacheLookupStart&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_cache_lookup_start</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
@@ -662,6 +675,16 @@
             <span class="n">push_end</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;pushEnd&quot;</span><span class="p">]),</span>
             <span class="n">receive_headers_start</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;receiveHeadersStart&quot;</span><span class="p">]),</span>
             <span class="n">receive_headers_end</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;receiveHeadersEnd&quot;</span><span class="p">]),</span>
+            <span class="n">worker_router_evaluation_start</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;workerRouterEvaluationStart&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;workerRouterEvaluationStart&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">worker_cache_lookup_start</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;workerCacheLookupStart&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;workerCacheLookupStart&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -739,12 +762,13 @@
     <span class="n">url_fragment</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1">#: HTTP POST request data.</span>
+    <span class="c1">#: Use postDataEntries instead.</span>
     <span class="n">post_data</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1">#: True when the request has POST data. Note that postData might still be omitted when this flag is true when the data is too long.</span>
     <span class="n">has_post_data</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="c1">#: Request body elements. This will be converted from base64 to binary</span>
+    <span class="c1">#: Request body elements (post data broken into individual entries).</span>
     <span class="n">post_data_entries</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">PostDataEntry</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1">#: The mixed content type of the request.</span>
@@ -758,7 +782,7 @@
     <span class="n">trust_token_params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">TrustTokenParams</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1">#: True if this resource request is considered to be the &#39;same site&#39; as the</span>
-    <span class="c1">#: request correspondinfg to the main frame.</span>
+    <span class="c1">#: request corresponding to the main frame.</span>
     <span class="n">is_same_site</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
@@ -1056,6 +1080,12 @@
     <span class="n">CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_COEP</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;corp-not-same-origin-after-defaulted-to-same-origin-by-coep&quot;</span>
     <span class="p">)</span>
+    <span class="n">CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_DIP</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;corp-not-same-origin-after-defaulted-to-same-origin-by-dip&quot;</span>
+    <span class="p">)</span>
+    <span class="n">CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_COEP_AND_DIP</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;corp-not-same-origin-after-defaulted-to-same-origin-by-coep-and-dip&quot;</span>
+    <span class="p">)</span>
     <span class="n">CORP_NOT_SAME_SITE</span> <span class="o">=</span> <span class="s2">&quot;corp-not-same-site&quot;</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -1251,21 +1281,70 @@
 
 
 
+<div class="viewcode-block" id="ServiceWorkerRouterSource">
+<a class="viewcode-back" href="../../../nodriver/cdp/network.html#nodriver.cdp.network.ServiceWorkerRouterSource">[docs]</a>
+<span class="k">class</span> <span class="nc">ServiceWorkerRouterSource</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Source of service worker router.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">NETWORK</span> <span class="o">=</span> <span class="s2">&quot;network&quot;</span>
+    <span class="n">CACHE</span> <span class="o">=</span> <span class="s2">&quot;cache&quot;</span>
+    <span class="n">FETCH_EVENT</span> <span class="o">=</span> <span class="s2">&quot;fetch-event&quot;</span>
+    <span class="n">RACE_NETWORK_AND_FETCH_HANDLER</span> <span class="o">=</span> <span class="s2">&quot;race-network-and-fetch-handler&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ServiceWorkerRouterSource</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="ServiceWorkerRouterInfo">
 <a class="viewcode-back" href="../../../nodriver/cdp/network.html#nodriver.cdp.network.ServiceWorkerRouterInfo">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ServiceWorkerRouterInfo</span><span class="p">:</span>
-    <span class="n">rule_id_matched</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="c1">#: ID of the rule matched. If there is a matched rule, this field will</span>
+    <span class="c1">#: be set, otherwiser no value will be set.</span>
+    <span class="n">rule_id_matched</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: The router source of the matched rule. If there is a matched rule, this</span>
+    <span class="c1">#: field will be set, otherwise no value will be set.</span>
+    <span class="n">matched_source_type</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ServiceWorkerRouterSource</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: The actual router source used.</span>
+    <span class="n">actual_source_type</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ServiceWorkerRouterSource</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;ruleIdMatched&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule_id_matched</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule_id_matched</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;ruleIdMatched&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule_id_matched</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">matched_source_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;matchedSourceType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">matched_source_type</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">actual_source_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;actualSourceType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">actual_source_type</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ServiceWorkerRouterInfo</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">rule_id_matched</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;ruleIdMatched&quot;</span><span class="p">]),</span>
+            <span class="n">rule_id_matched</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;ruleIdMatched&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ruleIdMatched&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">matched_source_type</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">ServiceWorkerRouterSource</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;matchedSourceType&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;matchedSourceType&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">actual_source_type</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">ServiceWorkerRouterSource</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;actualSourceType&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;actualSourceType&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -1332,7 +1411,13 @@
     <span class="c1">#: Specifies that the request was served from the prefetch cache.</span>
     <span class="n">from_prefetch_cache</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="c1">#: Infomation about how Service Worker Static Router was used.</span>
+    <span class="c1">#: Specifies that the request was served from the prefetch cache.</span>
+    <span class="n">from_early_hints</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Information about how ServiceWorker Static Router API was used. If this</span>
+    <span class="c1">#: field is set with ``matchedSourceType`` field, a matching rule is found.</span>
+    <span class="c1">#: If this field is set without ``matchedSource``, no matching rule is found.</span>
+    <span class="c1">#: Otherwise, the API is not used.</span>
     <span class="n">service_worker_router_info</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ServiceWorkerRouterInfo</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1">#: Timing information for the given request.</span>
@@ -1384,6 +1469,8 @@
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;fromServiceWorker&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_service_worker</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_prefetch_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;fromPrefetchCache&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_prefetch_cache</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_early_hints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;fromEarlyHints&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_early_hints</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_worker_router_info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;serviceWorkerRouterInfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_worker_router_info</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1455,6 +1542,11 @@
             <span class="n">from_prefetch_cache</span><span class="o">=</span><span class="p">(</span>
                 <span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;fromPrefetchCache&quot;</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fromPrefetchCache&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">from_early_hints</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;fromEarlyHints&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fromEarlyHints&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
             <span class="n">service_worker_router_info</span><span class="o">=</span><span class="p">(</span>
@@ -1743,6 +1835,37 @@
 
 
 
+<div class="viewcode-block" id="CookiePartitionKey">
+<a class="viewcode-back" href="../../../nodriver/cdp/network.html#nodriver.cdp.network.CookiePartitionKey">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CookiePartitionKey</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    cookiePartitionKey object</span>
+<span class="sd">    The representation of the components of the key that are created by the cookiePartitionKey class contained in net/cookies/cookie_partition_key.h.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: The site of the top-level URL the browser was visiting at the start</span>
+    <span class="c1">#: of the request to the endpoint that set the cookie.</span>
+    <span class="n">top_level_site</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="c1">#: Indicates if the cookie has any ancestors that are cross-site to the topLevelSite.</span>
+    <span class="n">has_cross_site_ancestor</span><span class="p">:</span> <span class="nb">bool</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;topLevelSite&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_level_site</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;hasCrossSiteAncestor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_cross_site_ancestor</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CookiePartitionKey</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">top_level_site</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;topLevelSite&quot;</span><span class="p">]),</span>
+            <span class="n">has_cross_site_ancestor</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;hasCrossSiteAncestor&quot;</span><span class="p">]),</span>
+        <span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="Cookie">
 <a class="viewcode-back" href="../../../nodriver/cdp/network.html#nodriver.cdp.network.Cookie">[docs]</a>
 <span class="nd">@dataclass</span>
@@ -1795,9 +1918,8 @@
     <span class="c1">#: Cookie SameSite type.</span>
     <span class="n">same_site</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CookieSameSite</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="c1">#: Cookie partition key. The site of the top-level URL the browser was visiting at the start</span>
-    <span class="c1">#: of the request to the endpoint that set the cookie.</span>
-    <span class="n">partition_key</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: Cookie partition key.</span>
+    <span class="n">partition_key</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CookiePartitionKey</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1">#: True if cookie partition key is opaque.</span>
     <span class="n">partition_key_opaque</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1821,7 +1943,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">same_site</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sameSite&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">same_site</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;partitionKey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_key</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;partitionKey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_key</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_key_opaque</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;partitionKeyOpaque&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_key_opaque</span>
         <span class="k">return</span> <span class="n">json</span>
@@ -1852,7 +1974,7 @@
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
             <span class="n">partition_key</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;partitionKey&quot;</span><span class="p">])</span>
+                <span class="n">CookiePartitionKey</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;partitionKey&quot;</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;partitionKey&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
@@ -1941,6 +2063,33 @@
 
 
 
+<div class="viewcode-block" id="CookieExemptionReason">
+<a class="viewcode-back" href="../../../nodriver/cdp/network.html#nodriver.cdp.network.CookieExemptionReason">[docs]</a>
+<span class="k">class</span> <span class="nc">CookieExemptionReason</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Types of reasons why a cookie should have been blocked by 3PCD but is exempted for the request.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">NONE</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span>
+    <span class="n">USER_SETTING</span> <span class="o">=</span> <span class="s2">&quot;UserSetting&quot;</span>
+    <span class="n">TPCD_METADATA</span> <span class="o">=</span> <span class="s2">&quot;TPCDMetadata&quot;</span>
+    <span class="n">TPCD_DEPRECATION_TRIAL</span> <span class="o">=</span> <span class="s2">&quot;TPCDDeprecationTrial&quot;</span>
+    <span class="n">TPCD_HEURISTICS</span> <span class="o">=</span> <span class="s2">&quot;TPCDHeuristics&quot;</span>
+    <span class="n">ENTERPRISE_POLICY</span> <span class="o">=</span> <span class="s2">&quot;EnterprisePolicy&quot;</span>
+    <span class="n">STORAGE_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;StorageAccess&quot;</span>
+    <span class="n">TOP_LEVEL_STORAGE_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;TopLevelStorageAccess&quot;</span>
+    <span class="n">CORS_OPT_IN</span> <span class="o">=</span> <span class="s2">&quot;CorsOptIn&quot;</span>
+    <span class="n">SCHEME</span> <span class="o">=</span> <span class="s2">&quot;Scheme&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CookieExemptionReason</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="BlockedSetCookieWithReason">
 <a class="viewcode-back" href="../../../nodriver/cdp/network.html#nodriver.cdp.network.BlockedSetCookieWithReason">[docs]</a>
 <span class="nd">@dataclass</span>
@@ -1985,33 +2134,80 @@
 
 
 
-<div class="viewcode-block" id="BlockedCookieWithReason">
-<a class="viewcode-back" href="../../../nodriver/cdp/network.html#nodriver.cdp.network.BlockedCookieWithReason">[docs]</a>
+<div class="viewcode-block" id="ExemptedSetCookieWithReason">
+<a class="viewcode-back" href="../../../nodriver/cdp/network.html#nodriver.cdp.network.ExemptedSetCookieWithReason">[docs]</a>
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">BlockedCookieWithReason</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">ExemptedSetCookieWithReason</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A cookie with was not sent with a request with the corresponding reason.</span>
+<span class="sd">    A cookie should have been blocked by 3PCD but is exempted and stored from a response with the</span>
+<span class="sd">    corresponding reason. A cookie could only have at most one exemption reason.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1">#: The reason(s) the cookie was blocked.</span>
-    <span class="n">blocked_reasons</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CookieBlockedReason</span><span class="p">]</span>
+    <span class="c1">#: The reason the cookie was exempted.</span>
+    <span class="n">exemption_reason</span><span class="p">:</span> <span class="n">CookieExemptionReason</span>
 
-    <span class="c1">#: The cookie object representing the cookie which was not sent.</span>
+    <span class="c1">#: The string representing this individual cookie as it would appear in the header.</span>
+    <span class="n">cookie_line</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="c1">#: The cookie object representing the cookie.</span>
     <span class="n">cookie</span><span class="p">:</span> <span class="n">Cookie</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;blockedReasons&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocked_reasons</span><span class="p">]</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;exemptionReason&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exemption_reason</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookieLine&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cookie_line</span>
         <span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookie&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cookie</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BlockedCookieWithReason</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExemptedSetCookieWithReason</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">exemption_reason</span><span class="o">=</span><span class="n">CookieExemptionReason</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;exemptionReason&quot;</span><span class="p">]),</span>
+            <span class="n">cookie_line</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookieLine&quot;</span><span class="p">]),</span>
+            <span class="n">cookie</span><span class="o">=</span><span class="n">Cookie</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookie&quot;</span><span class="p">]),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="AssociatedCookie">
+<a class="viewcode-back" href="../../../nodriver/cdp/network.html#nodriver.cdp.network.AssociatedCookie">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">AssociatedCookie</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A cookie associated with the request which may or may not be sent with it.</span>
+<span class="sd">    Includes the cookies itself and reasons for blocking or exemption.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: The cookie object representing the cookie which was not sent.</span>
+    <span class="n">cookie</span><span class="p">:</span> <span class="n">Cookie</span>
+
+    <span class="c1">#: The reason(s) the cookie was blocked. If empty means the cookie is included.</span>
+    <span class="n">blocked_reasons</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CookieBlockedReason</span><span class="p">]</span>
+
+    <span class="c1">#: The reason the cookie should have been blocked by 3PCD but is exempted. A cookie could</span>
+    <span class="c1">#: only have at most one exemption reason.</span>
+    <span class="n">exemption_reason</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CookieExemptionReason</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookie&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cookie</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;blockedReasons&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocked_reasons</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exemption_reason</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;exemptionReason&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exemption_reason</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AssociatedCookie</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">cookie</span><span class="o">=</span><span class="n">Cookie</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookie&quot;</span><span class="p">]),</span>
             <span class="n">blocked_reasons</span><span class="o">=</span><span class="p">[</span>
                 <span class="n">CookieBlockedReason</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;blockedReasons&quot;</span><span class="p">]</span>
             <span class="p">],</span>
-            <span class="n">cookie</span><span class="o">=</span><span class="n">Cookie</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookie&quot;</span><span class="p">]),</span>
+            <span class="n">exemption_reason</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">CookieExemptionReason</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;exemptionReason&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;exemptionReason&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -2066,10 +2262,8 @@
     <span class="c1">#: This is a temporary ability and it will be removed in the future.</span>
     <span class="n">source_port</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="c1">#: Cookie partition key. The site of the top-level URL the browser was visiting at the start</span>
-    <span class="c1">#: of the request to the endpoint that set the cookie.</span>
-    <span class="c1">#: If not set, the cookie will be set as not partitioned.</span>
-    <span class="n">partition_key</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: Cookie partition key. If not set, the cookie will be set as not partitioned.</span>
+    <span class="n">partition_key</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CookiePartitionKey</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -2098,7 +2292,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_port</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sourcePort&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_port</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;partitionKey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_key</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;partitionKey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_key</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
@@ -2150,7 +2344,7 @@
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
             <span class="n">partition_key</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;partitionKey&quot;</span><span class="p">])</span>
+                <span class="n">CookiePartitionKey</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;partitionKey&quot;</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;partitionKey&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
@@ -2527,7 +2721,7 @@
     <span class="c1">#: Security details for the signed exchange header.</span>
     <span class="n">security_details</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">SecurityDetails</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="c1">#: Errors occurred while handling the signed exchagne.</span>
+    <span class="c1">#: Errors occurred while handling the signed exchange.</span>
     <span class="n">errors</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">SignedExchangeError</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
@@ -3289,14 +3483,16 @@
     <span class="n">url</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">domain</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">partition_key</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CookiePartitionKey</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Deletes browser cookies with matching name and url or domain/path pair.</span>
+<span class="sd">    Deletes browser cookies with matching name and url or domain/path/partitionKey pair.</span>
 
 <span class="sd">    :param name: Name of the cookies to remove.</span>
 <span class="sd">    :param url: *(Optional)* If specified, deletes all the cookies with the given name where domain and path match provided URL.</span>
 <span class="sd">    :param domain: *(Optional)* If specified, deletes only cookies with the exact domain.</span>
 <span class="sd">    :param path: *(Optional)* If specified, deletes only cookies with the exact path.</span>
+<span class="sd">    :param partition_key: **(EXPERIMENTAL)** *(Optional)* If specified, deletes only cookies with the the given name and partitionKey where all partition key attributes match the cookie partition key attribute.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">params</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
@@ -3306,6 +3502,8 @@
         <span class="n">params</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">domain</span>
     <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">params</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span>
+    <span class="k">if</span> <span class="n">partition_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;partitionKey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">partition_key</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Network.deleteCookies&quot;</span><span class="p">,</span>
         <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
@@ -3335,6 +3533,9 @@
     <span class="n">download_throughput</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">upload_throughput</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">connection_type</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ConnectionType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">packet_loss</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">packet_queue_length</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">packet_reordering</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Activates emulation of network conditions.</span>
@@ -3344,6 +3545,9 @@
 <span class="sd">    :param download_throughput: Maximal aggregated download throughput (bytes/sec). -1 disables download throttling.</span>
 <span class="sd">    :param upload_throughput: Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling.</span>
 <span class="sd">    :param connection_type: *(Optional)* Connection type if known.</span>
+<span class="sd">    :param packet_loss: **(EXPERIMENTAL)** *(Optional)* WebRTC packet loss (percent, 0-100). 0 disables packet loss emulation, 100 drops all the packets.</span>
+<span class="sd">    :param packet_queue_length: **(EXPERIMENTAL)** *(Optional)* WebRTC packet queue length (packet). 0 removes any queue length limitations.</span>
+<span class="sd">    :param packet_reordering: **(EXPERIMENTAL)** *(Optional)* WebRTC packetReordering feature.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">params</span><span class="p">[</span><span class="s2">&quot;offline&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">offline</span>
@@ -3352,6 +3556,12 @@
     <span class="n">params</span><span class="p">[</span><span class="s2">&quot;uploadThroughput&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">upload_throughput</span>
     <span class="k">if</span> <span class="n">connection_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">params</span><span class="p">[</span><span class="s2">&quot;connectionType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">connection_type</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">packet_loss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;packetLoss&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">packet_loss</span>
+    <span class="k">if</span> <span class="n">packet_queue_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;packetQueueLength&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">packet_queue_length</span>
+    <span class="k">if</span> <span class="n">packet_reordering</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;packetReordering&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">packet_reordering</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Network.emulateNetworkConditions&quot;</span><span class="p">,</span>
         <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
@@ -3698,7 +3908,7 @@
     <span class="n">same_party</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">source_scheme</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CookieSourceScheme</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">source_port</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">partition_key</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">partition_key</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CookiePartitionKey</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets a cookie with the given cookie data; may overwrite equivalent cookies if they exist.</span>
@@ -3716,7 +3926,7 @@
 <span class="sd">    :param same_party: **(EXPERIMENTAL)** *(Optional)* True if cookie is SameParty.</span>
 <span class="sd">    :param source_scheme: **(EXPERIMENTAL)** *(Optional)* Cookie source scheme type.</span>
 <span class="sd">    :param source_port: **(EXPERIMENTAL)** *(Optional)* Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port. An unspecified port value allows protocol clients to emulate legacy cookie scope for the port. This is a temporary ability and it will be removed in the future.</span>
-<span class="sd">    :param partition_key: **(EXPERIMENTAL)** *(Optional)* Cookie partition key. The site of the top-level URL the browser was visiting at the start of the request to the endpoint that set the cookie. If not set, the cookie will be set as not partitioned.</span>
+<span class="sd">    :param partition_key: **(EXPERIMENTAL)** *(Optional)* Cookie partition key. If not set, the cookie will be set as not partitioned.</span>
 <span class="sd">    :returns: Always set to true. If an error occurs, the response indicates protocol error.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -3745,7 +3955,7 @@
     <span class="k">if</span> <span class="n">source_port</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">params</span><span class="p">[</span><span class="s2">&quot;sourcePort&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_port</span>
     <span class="k">if</span> <span class="n">partition_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;partitionKey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">partition_key</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;partitionKey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">partition_key</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Network.setCookie&quot;</span><span class="p">,</span>
         <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
@@ -4058,7 +4268,7 @@
     <span class="n">timestamp</span><span class="p">:</span> <span class="n">MonotonicTime</span>
     <span class="c1">#: Resource type.</span>
     <span class="n">type_</span><span class="p">:</span> <span class="n">ResourceType</span>
-    <span class="c1">#: User friendly error message.</span>
+    <span class="c1">#: Error message. List of network errors: https://cs.chromium.org/chromium/src/net/base/net_error_list.h</span>
     <span class="n">error_text</span><span class="p">:</span> <span class="nb">str</span>
     <span class="c1">#: True if loading was canceled.</span>
     <span class="n">canceled</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
@@ -4679,8 +4889,8 @@
     <span class="c1">#: Request identifier. Used to match this information to an existing requestWillBeSent event.</span>
     <span class="n">request_id</span><span class="p">:</span> <span class="n">RequestId</span>
     <span class="c1">#: A list of cookies potentially associated to the requested URL. This includes both cookies sent with</span>
-    <span class="c1">#: the request and the ones not sent; the latter are distinguished by having blockedReason field set.</span>
-    <span class="n">associated_cookies</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">BlockedCookieWithReason</span><span class="p">]</span>
+    <span class="c1">#: the request and the ones not sent; the latter are distinguished by having blockedReasons field set.</span>
+    <span class="n">associated_cookies</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">AssociatedCookie</span><span class="p">]</span>
     <span class="c1">#: Raw request headers as they will be sent over the wire.</span>
     <span class="n">headers</span><span class="p">:</span> <span class="n">Headers</span>
     <span class="c1">#: Connection timing information for the request.</span>
@@ -4695,7 +4905,7 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">request_id</span><span class="o">=</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]),</span>
             <span class="n">associated_cookies</span><span class="o">=</span><span class="p">[</span>
-                <span class="n">BlockedCookieWithReason</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;associatedCookies&quot;</span><span class="p">]</span>
+                <span class="n">AssociatedCookie</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;associatedCookies&quot;</span><span class="p">]</span>
             <span class="p">],</span>
             <span class="n">headers</span><span class="o">=</span><span class="n">Headers</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;headers&quot;</span><span class="p">]),</span>
             <span class="n">connect_timing</span><span class="o">=</span><span class="n">ConnectTiming</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;connectTiming&quot;</span><span class="p">]),</span>
@@ -4746,9 +4956,12 @@
     <span class="n">headers_text</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="c1">#: The cookie partition key that will be used to store partitioned cookies set in this response.</span>
     <span class="c1">#: Only sent when partitioned cookies are enabled.</span>
-    <span class="n">cookie_partition_key</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="c1">#: True if partitioned cookies are enabled, but the partition key is not serializeable to string.</span>
+    <span class="n">cookie_partition_key</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CookiePartitionKey</span><span class="p">]</span>
+    <span class="c1">#: True if partitioned cookies are enabled, but the partition key is not serializable to string.</span>
     <span class="n">cookie_partition_key_opaque</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+    <span class="c1">#: A list of cookies which should have been blocked by 3PCD but are exempted and stored from</span>
+    <span class="c1">#: the response with the corresponding reason.</span>
+    <span class="n">exempted_cookies</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">ExemptedSetCookieWithReason</span><span class="p">]]</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResponseReceivedExtraInfo</span><span class="p">:</span>
@@ -4768,7 +4981,7 @@
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
             <span class="n">cookie_partition_key</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookiePartitionKey&quot;</span><span class="p">])</span>
+                <span class="n">CookiePartitionKey</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookiePartitionKey&quot;</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cookiePartitionKey&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
@@ -4777,6 +4990,41 @@
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cookiePartitionKeyOpaque&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
+            <span class="n">exempted_cookies</span><span class="o">=</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">ExemptedSetCookieWithReason</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;exemptedCookies&quot;</span><span class="p">]</span>
+                <span class="p">]</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;exemptedCookies&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ResponseReceivedEarlyHints">
+<a class="viewcode-back" href="../../../nodriver/cdp/network.html#nodriver.cdp.network.ResponseReceivedEarlyHints">[docs]</a>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s2">&quot;Network.responseReceivedEarlyHints&quot;</span><span class="p">)</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ResponseReceivedEarlyHints</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    **EXPERIMENTAL**</span>
+
+<span class="sd">    Fired when 103 Early Hints headers is received in addition to the common response.</span>
+<span class="sd">    Not every responseReceived event will have an responseReceivedEarlyHints fired.</span>
+<span class="sd">    Only one responseReceivedEarlyHints may be fired for eached responseReceived event.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: Request identifier. Used to match this information to another responseReceived event.</span>
+    <span class="n">request_id</span><span class="p">:</span> <span class="n">RequestId</span>
+    <span class="c1">#: Raw response headers as they were received over the wire.</span>
+    <span class="n">headers</span><span class="p">:</span> <span class="n">Headers</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResponseReceivedEarlyHints</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">request_id</span><span class="o">=</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]),</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">Headers</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;headers&quot;</span><span class="p">]),</span>
         <span class="p">)</span></div>
 
 
@@ -4831,6 +5079,23 @@
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
         <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="PolicyUpdated">
+<a class="viewcode-back" href="../../../nodriver/cdp/network.html#nodriver.cdp.network.PolicyUpdated">[docs]</a>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s2">&quot;Network.policyUpdated&quot;</span><span class="p">)</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">PolicyUpdated</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    **EXPERIMENTAL**</span>
+
+<span class="sd">    Fired once security policy has been updated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolicyUpdated</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">()</span></div>
 
 
 

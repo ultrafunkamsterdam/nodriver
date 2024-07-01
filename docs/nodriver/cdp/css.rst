@@ -179,6 +179,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: CSSPositionTryRule
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: CSSKeyframesRule
       :members:
       :undoc-members:
@@ -240,6 +245,8 @@ to. For more information, see
 .. autofunction:: get_inline_styles_for_node
 
 .. autofunction:: get_layers_for_node
+
+.. autofunction:: get_location_for_selector
 
 .. autofunction:: get_matched_styles_for_node
 

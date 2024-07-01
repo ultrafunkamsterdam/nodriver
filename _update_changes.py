@@ -79,7 +79,6 @@ subprocess.run("make.bat markdown", shell=True, cwd="./docs")
 subprocess.run("copy docs\\_build\\markdown\\README.md .", shell=True)
 change_version()
 subprocess.run("black nodriver/core *.py")
-subprocess.run("git add docs nodriver pyproject.toml example README.md")
 subprocess.run("git status")
 commit = input("commit?:")
 if commit:

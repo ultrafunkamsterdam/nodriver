@@ -18,16 +18,16 @@ arguments to other commands.
 
 Database with an array of object stores.
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Database name.
 
-#### version *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### version*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Database version (type is not ‘integer’, as the standard
 requires the version number to be ‘unsigned long long’)
 
-#### object_stores *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ObjectStore`](#nodriver.cdp.indexed_db.ObjectStore)]*
+#### object_stores*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ObjectStore`](#nodriver.cdp.indexed_db.ObjectStore)]*
 
 Object stores in this database.
 
@@ -35,19 +35,19 @@ Object stores in this database.
 
 Object store.
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Object store name.
 
-#### key_path *: [`KeyPath`](#nodriver.cdp.indexed_db.KeyPath)*
+#### key_path*: [`KeyPath`](#nodriver.cdp.indexed_db.KeyPath)*
 
 Object store key path.
 
-#### auto_increment *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### auto_increment*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 If true, object store has auto increment flag set.
 
-#### indexes *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ObjectStoreIndex`](#nodriver.cdp.indexed_db.ObjectStoreIndex)]*
+#### indexes*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ObjectStoreIndex`](#nodriver.cdp.indexed_db.ObjectStoreIndex)]*
 
 Indexes in this object store.
 
@@ -55,19 +55,19 @@ Indexes in this object store.
 
 Object store index.
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Index name.
 
-#### key_path *: [`KeyPath`](#nodriver.cdp.indexed_db.KeyPath)*
+#### key_path*: [`KeyPath`](#nodriver.cdp.indexed_db.KeyPath)*
 
 Index key path.
 
-#### unique *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### unique*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 If true, index is unique.
 
-#### multi_entry *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### multi_entry*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 If true, index allows multiple entries for a key.
 
@@ -75,23 +75,23 @@ If true, index allows multiple entries for a key.
 
 Key.
 
-#### type_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Key type.
 
-#### number *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### number*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Number value.
 
-#### string *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### string*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 String value.
 
-#### date *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### date*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Date value.
 
-#### array *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Key`](#nodriver.cdp.indexed_db.Key)]]* *= None*
+#### array*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Key`](#nodriver.cdp.indexed_db.Key)]]* *= None*
 
 Array value.
 
@@ -99,19 +99,19 @@ Array value.
 
 Key range.
 
-#### lower_open *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### lower_open*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 If true lower bound is open.
 
-#### upper_open *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### upper_open*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 If true upper bound is open.
 
-#### lower *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Key`](#nodriver.cdp.indexed_db.Key)]* *= None*
+#### lower*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Key`](#nodriver.cdp.indexed_db.Key)]* *= None*
 
 Lower bound.
 
-#### upper *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Key`](#nodriver.cdp.indexed_db.Key)]* *= None*
+#### upper*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Key`](#nodriver.cdp.indexed_db.Key)]* *= None*
 
 Upper bound.
 
@@ -119,15 +119,15 @@ Upper bound.
 
 Data entry.
 
-#### key *: [`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)*
+#### key*: [`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)*
 
 Key object.
 
-#### primary_key *: [`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)*
+#### primary_key*: [`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)*
 
 Primary key object.
 
-#### value *: [`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)*
+#### value*: [`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)*
 
 Value object.
 
@@ -135,15 +135,15 @@ Value object.
 
 Key path.
 
-#### type_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Key path type.
 
-#### string *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### string*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 String value.
 
-#### array *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
+#### array*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
 
 Array value.
 
@@ -163,9 +163,9 @@ to. For more information, see
 Clears all entries from an object store.
 
 * **Parameters:**
-  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* At least and at most one of securityOrigin, storageKey, or storageBucket must be specified. Security origin.
-  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Storage key.
-  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) –  *(Optional)* Storage bucket. If not specified, it uses the default bucket.
+  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* At least and at most one of securityOrigin, storageKey, or storageBucket must be specified. Security origin.
+  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Storage key.
+  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) – *(Optional)* Storage bucket. If not specified, it uses the default bucket.
   * **database_name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Database name.
   * **object_store_name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Object store name.
 * **Return type:**
@@ -176,9 +176,9 @@ Clears all entries from an object store.
 Deletes a database.
 
 * **Parameters:**
-  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* At least and at most one of securityOrigin, storageKey, or storageBucket must be specified. Security origin.
-  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Storage key.
-  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) –  *(Optional)* Storage bucket. If not specified, it uses the default bucket.
+  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* At least and at most one of securityOrigin, storageKey, or storageBucket must be specified. Security origin.
+  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Storage key.
+  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) – *(Optional)* Storage bucket. If not specified, it uses the default bucket.
   * **database_name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Database name.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
@@ -188,9 +188,9 @@ Deletes a database.
 Delete a range of entries from an object store
 
 * **Parameters:**
-  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* At least and at most one of securityOrigin, storageKey, or storageBucket must be specified. Security origin.
-  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Storage key.
-  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) –  *(Optional)* Storage bucket. If not specified, it uses the default bucket.
+  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* At least and at most one of securityOrigin, storageKey, or storageBucket must be specified. Security origin.
+  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Storage key.
+  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) – *(Optional)* Storage bucket. If not specified, it uses the default bucket.
   * **database_name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
   * **object_store_name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
   * **key_range** ([`KeyRange`](#nodriver.cdp.indexed_db.KeyRange)) – Range of entry keys to delete
@@ -216,9 +216,9 @@ Enables events from backend.
 Gets metadata of an object store.
 
 * **Parameters:**
-  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* At least and at most one of securityOrigin, storageKey, or storageBucket must be specified. Security origin.
-  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Storage key.
-  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) –  *(Optional)* Storage bucket. If not specified, it uses the default bucket.
+  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* At least and at most one of securityOrigin, storageKey, or storageBucket must be specified. Security origin.
+  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Storage key.
+  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) – *(Optional)* Storage bucket. If not specified, it uses the default bucket.
   * **database_name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Database name.
   * **object_store_name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Object store name.
 * **Return type:**
@@ -233,15 +233,15 @@ Gets metadata of an object store.
 Requests data from object store or index.
 
 * **Parameters:**
-  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* At least and at most one of securityOrigin, storageKey, or storageBucket must be specified. Security origin.
-  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Storage key.
-  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) –  *(Optional)* Storage bucket. If not specified, it uses the default bucket.
+  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* At least and at most one of securityOrigin, storageKey, or storageBucket must be specified. Security origin.
+  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Storage key.
+  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) – *(Optional)* Storage bucket. If not specified, it uses the default bucket.
   * **database_name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Database name.
   * **object_store_name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Object store name.
   * **index_name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Index name, empty string for object store data requests.
   * **skip_count** ([`int`](https://docs.python.org/3/library/functions.html#int)) – Number of records to skip.
   * **page_size** ([`int`](https://docs.python.org/3/library/functions.html#int)) – Number of records to fetch.
-  * **key_range** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`KeyRange`](#nodriver.cdp.indexed_db.KeyRange)]) –  *(Optional)* Key range.
+  * **key_range** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`KeyRange`](#nodriver.cdp.indexed_db.KeyRange)]) – *(Optional)* Key range.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`DataEntry`](#nodriver.cdp.indexed_db.DataEntry)], [`bool`](https://docs.python.org/3/library/functions.html#bool)]]
 * **Returns:**
@@ -254,9 +254,9 @@ Requests data from object store or index.
 Requests database with given name in given frame.
 
 * **Parameters:**
-  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* At least and at most one of securityOrigin, storageKey, or storageBucket must be specified. Security origin.
-  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Storage key.
-  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) –  *(Optional)* Storage bucket. If not specified, it uses the default bucket.
+  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* At least and at most one of securityOrigin, storageKey, or storageBucket must be specified. Security origin.
+  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Storage key.
+  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) – *(Optional)* Storage bucket. If not specified, it uses the default bucket.
   * **database_name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Database name.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`DatabaseWithObjectStores`](#nodriver.cdp.indexed_db.DatabaseWithObjectStores)]
@@ -268,9 +268,9 @@ Requests database with given name in given frame.
 Requests database names for given security origin.
 
 * **Parameters:**
-  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* At least and at most one of securityOrigin, storageKey, or storageBucket must be specified. Security origin.
-  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Storage key.
-  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) –  *(Optional)* Storage bucket. If not specified, it uses the default bucket.
+  * **security_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* At least and at most one of securityOrigin, storageKey, or storageBucket must be specified. Security origin.
+  * **storage_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Storage key.
+  * **storage_bucket** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StorageBucket`](storage.md#nodriver.cdp.storage.StorageBucket)]) – *(Optional)* Storage bucket. If not specified, it uses the default bucket.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]
 * **Returns:**
