@@ -139,7 +139,7 @@ def _camel_to_snake(s):
     :param str s: string to be converted
     :return: (str) snake_case version of s
     """
-    s = s.replace("-", "").replace(".", "")
+    s = s.replace("-", "").replace(".", "").replace(" ", "_")
 
     return __RE_CAMEL_TO_SNAKE__.sub(r"_\1", s).lower()
 

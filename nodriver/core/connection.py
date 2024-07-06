@@ -551,8 +551,12 @@ class Listener:
                 # response to our command
                 if message["id"] in self.connection.mapper:
                     # get the corresponding Transaction
-                    tx = self.connection.mapper[message["id"]]
+
+                    # pop to prevent memory leaks
+                    # thanks to zxsleebu
+                    tx = self.connection.mapper.pop(message["id"])
                     logger.debug("got answer for %s", tx)
+
                     # complete the transaction, which is a Future object
                     # and thus will return to anyone awaiting it.
                     tx(**message)
