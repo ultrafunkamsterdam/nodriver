@@ -80,7 +80,7 @@ subprocess.run("copy docs\\_build\\markdown\\README.md .", shell=True)
 change_version()
 subprocess.run("black nodriver/core *.py")
 subprocess.run("git status")
-commit = input("commit?:")
+commit = input("commit message (use no quotes) :")
 if commit:
     subprocess.run(f'git commit -m "{commit}"')
 

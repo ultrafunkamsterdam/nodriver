@@ -18,7 +18,6 @@ except (ModuleNotFoundError, ImportError):
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
     import nodriver as uc
 
-
 months = [
     "january",
     "february",

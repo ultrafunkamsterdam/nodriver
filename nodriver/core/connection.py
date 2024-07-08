@@ -552,8 +552,9 @@ class Listener:
                 if message["id"] in self.connection.mapper:
                     # get the corresponding Transaction
 
+                    # thanks to zxsleebu for discovering the memory leak
                     # pop to prevent memory leaks
-                    # thanks to zxsleebu
+
                     tx = self.connection.mapper.pop(message["id"])
                     logger.debug("got answer for %s", tx)
 
