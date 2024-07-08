@@ -81,7 +81,7 @@ change_version()
 subprocess.run("black nodriver/core *.py")
 subprocess.run("git add docs nodriver pyproject.toml example README.md")
 subprocess.run("git status")
-commit = input("commit?:")
+commit = input("commit message (use no quotes) :")
 if commit:
     subprocess.run(f'git commit -m "{commit}"')
 

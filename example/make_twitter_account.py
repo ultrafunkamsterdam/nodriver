@@ -10,7 +10,15 @@ import logging
 
 logging.basicConfig(level=30)
 
-import nodriver as uc
+try:
+    import nodriver as uc
+except (ModuleNotFoundError, ImportError):
+    import sys, os
+
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+    import nodriver as uc
+
+
 
 months = [
     "january",

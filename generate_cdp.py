@@ -1016,7 +1016,7 @@ def generate_docs(docs_path, domains):
     # Generate document for each domain
     for domain in domains:
         doc = docs_path / f"{domain.module}.rst"
-        with doc.aopen("w") as f:
+        with doc.open("w") as f:
             f.write(domain.generate_sphinx())
 
 

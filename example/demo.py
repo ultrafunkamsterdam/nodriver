@@ -10,6 +10,7 @@ import mss
 logger = logging.getLogger("demo")
 logging.basicConfig(level=10)
 
+
 try:
     import nodriver as uc
 except (ModuleNotFoundError, ImportError):
@@ -17,6 +18,7 @@ except (ModuleNotFoundError, ImportError):
 
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
     import nodriver as uc
+
 
 import time
 
