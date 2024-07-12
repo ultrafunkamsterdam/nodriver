@@ -79,7 +79,13 @@ subprocess.run("make.bat markdown", shell=True, cwd="./docs")
 subprocess.run("copy docs\\_build\\markdown\\README.md .", shell=True)
 change_version()
 subprocess.run("black nodriver/core *.py")
+modified_files = list(
+    m[1] for m in re.finditer("modified:\s+(.+)", subprocess.getoutput("git status"))
+)
+subprocess.run("git add " + " ".join(modified_files), shell=True)
+
 subprocess.run("git status")
+
 commit = input("commit message (use no quotes) :")
 if commit:
     subprocess.run(f'git commit -m "{commit}"')

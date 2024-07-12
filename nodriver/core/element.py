@@ -1154,3 +1154,12 @@ class Position(cdp.dom.Quad):
 
     def __repr__(self):
         return f"<Position(x={self.left}, y={self.top}, width={self.width}, height={self.height})>"
+
+
+async def resolve_node(tab: Tab, node_id: cdp.dom.NodeId):
+    remote_obj: cdp.runtime.RemoteObject = await tab.send(
+        cdp.dom.resolve_node(node_id=node_id)
+    )
+    node_id: cdp.dom.NodeId = await tab.send(cdp.dom.request_node(remote_obj.object_id))
+    node: cdp.dom.Node = await tab.send(cdp.dom.describe_node(node_id))
+    return node
