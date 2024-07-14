@@ -556,7 +556,7 @@ class Listener:
                     # pop to prevent memory leaks
 
                     tx = self.connection.mapper.pop(message["id"])
-                    logger.debug("got answer for %s", tx)
+                    logger.debug("got answer for %s (message_id:%d)", tx, message["id"])
 
                     # complete the transaction, which is a Future object
                     # and thus will return to anyone awaiting it.

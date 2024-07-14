@@ -69,6 +69,8 @@ class Browser:
         browser_executable_path: PathLike = None,
         browser_args: List[str] = None,
         sandbox: bool = True,
+        host: str = None,
+        port: int = None,
         **kwargs,
     ) -> Browser:
         """
@@ -81,6 +83,8 @@ class Browser:
                 browser_executable_path=browser_executable_path,
                 browser_args=browser_args or [],
                 sandbox=sandbox,
+                host=host,
+                port=port,
                 **kwargs,
             )
         instance = cls(config)
@@ -272,28 +276,32 @@ class Browser:
 
         # self.config.update(kwargs)
         connect_existing = False
-        if self.config.host and self.config.port:
+        if self.config.host is not None and self.config.port is not None:
             connect_existing = True
-        self.config.host = self.config.host or "127.0.0.1"
-        self.config.port = self.config.port or util.free_port()
+        else:
+            self.config.host = "127.0.0.1"
+            self.config.port = util.free_port()
 
-        logger.debug("BROWSER EXECUTABLE PATH: %s", self.config.browser_executable_path)
-        if not pathlib.Path(self.config.browser_executable_path).exists():
-            raise FileNotFoundError(
-                (
-                    """
-                ---------------------
-                Could not determine browser executable.
-                ---------------------
-                Make sure your browser is installed in the default location (path).
-                If you are sure about the browser executable, you can specify it using
-                the `browser_executable_path='{}` parameter."""
-                ).format(
-                    "/path/to/browser/executable"
-                    if is_posix
-                    else "c:/path/to/your/browser.exe"
-                )
+        if not connect_existing:
+            logger.debug(
+                "BROWSER EXECUTABLE PATH: %s", self.config.browser_executable_path
             )
+            if not pathlib.Path(self.config.browser_executable_path).exists():
+                raise FileNotFoundError(
+                    (
+                        """
+                    ---------------------
+                    Could not determine browser executable.
+                    ---------------------
+                    Make sure your browser is installed in the default location (path).
+                    If you are sure about the browser executable, you can specify it using
+                    the `browser_executable_path='{}` parameter."""
+                    ).format(
+                        "/path/to/browser/executable"
+                        if is_posix
+                        else "c:/path/to/your/browser.exe"
+                    )
+                )
 
         if getattr(self.config, "_extensions", None):  # noqa
             self.config.add_argument(
@@ -810,7 +818,7 @@ class HTTPApi:
             request.data = json.dumps(data).encode("utf-8")
 
         response = await asyncio.get_running_loop().run_in_executor(
-            None, urllib.request.urlopen, request
+            None, lambda: urllib.request.urlopen(request, timeout=10)
         )
         return json.loads(response.read())
 

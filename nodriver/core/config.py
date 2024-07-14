@@ -39,6 +39,8 @@ class Config:
         browser_args: Optional[List[str]] = AUTO,
         sandbox: Optional[bool] = True,
         lang: Optional[str] = "en-US",
+        host: str = AUTO,
+        port: int = AUTO,
         **kwargs: dict,
     ):
         """
@@ -87,8 +89,8 @@ class Config:
         self.browser_executable_path = browser_executable_path
         self.headless = headless
         self.sandbox = sandbox
-        self.host = None
-        self.port = None
+        self.host = host
+        self.port = port
         self._extensions = []
         # when using posix-ish operating system and running as root
         # you must use no_sandbox = True, which in case is corrected here
@@ -164,15 +166,14 @@ class Config:
                 path = item.parent
             self._extensions.append(path)
 
-    def __getattr__(self, item):
-        if item not in self.__dict__:
-            return
+    # def __getattr__(self, item):
+    #     if item not in self.__dict__:
 
     def __call__(self):
         # the host and port will be added when starting
         # the browser, as by the time it starts, the port
         # is probably already taken
-        args = self._default_browser_args
+        args = self._default_browser_args.copy()
         args += ["--user-data-dir=%s" % self.user_data_dir]
         args += ["--disable-features=IsolateOrigins,site-per-process"]
         args += ["--disable-session-crashed-bubble"]
