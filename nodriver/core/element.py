@@ -735,14 +735,22 @@ class Element:
         return await self.apply("(element) => element.focus()")
 
     async def select_option(self):
-        """for form (select) fields. when you have queried the options you can call this method on the option object
+        """
+        for form (select) fields. when you have queried the options you can call this method on the option object.
+        02/08/2024: fixed the problem where events are not fired when programattically selecting an option.
 
         calling :func:`option.select_option()` will use that option as selected value.
         does not work in all cases.
 
         """
         if self.node_name == "OPTION":
-            return await self.apply("(o) => o.selected = true")
+            await self.apply(
+                """
+                (o) => {  
+                    o.selected = true ; 
+                    o.dispatchEvent(new Event('change', {view: window,bubbles: true}))
+                }
+                """)
 
     async def set_value(self, value):
         await self._tab.send(cdp.dom.set_node_value(node_id=self.node_id, value=value))
