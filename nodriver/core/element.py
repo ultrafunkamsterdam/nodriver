@@ -750,7 +750,8 @@ class Element:
                     o.selected = true ; 
                     o.dispatchEvent(new Event('change', {view: window,bubbles: true}))
                 }
-                """)
+                """
+            )
 
     async def set_value(self, value):
         await self._tab.send(cdp.dom.set_node_value(node_id=self.node_id, value=value))

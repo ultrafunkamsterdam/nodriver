@@ -328,14 +328,10 @@ class Browser:
                     close_fds=is_posix,
                 )
             )
-
             self._process_pid = self._process.pid
-            logger.info("created process with pid %d " % self._process_pid)
 
         self._http = HTTPApi((self.config.host, self.config.port))
-
         util.get_registered_instances().add(self)
-
         await asyncio.sleep(0.25)
         for _ in range(5):
             try:

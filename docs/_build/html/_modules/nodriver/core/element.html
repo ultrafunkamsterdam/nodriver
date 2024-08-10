@@ -1048,14 +1048,23 @@
 <div class="viewcode-block" id="Element.select_option">
 <a class="viewcode-back" href="../../../nodriver/classes/element.html#nodriver.Element.select_option">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">select_option</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;for form (select) fields. when you have queried the options you can call this method on the option object</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        for form (select) fields. when you have queried the options you can call this method on the option object.</span>
+<span class="sd">        02/08/2024: fixed the problem where events are not fired when programattically selecting an option.</span>
 
 <span class="sd">        calling :func:`option.select_option()` will use that option as selected value.</span>
 <span class="sd">        does not work in all cases.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_name</span> <span class="o">==</span> <span class="s2">&quot;OPTION&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="s2">&quot;(o) =&gt; o.selected = true&quot;</span><span class="p">)</span></div>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                (o) =&gt; {  </span>
+<span class="sd">                    o.selected = true ; </span>
+<span class="sd">                    o.dispatchEvent(new Event(&#39;change&#39;, {view: window,bubbles: true}))</span>
+<span class="sd">                }</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+            <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Element.set_value">
