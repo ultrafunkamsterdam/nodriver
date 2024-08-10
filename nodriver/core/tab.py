@@ -1302,6 +1302,59 @@ class Tab(Connection):
         await checkbox.mouse_move()
         await checkbox.mouse_click()
 
+    async def get_local_storage(self):
+        """
+        get local storage items as dict of strings (careful!, proper deserialization needs to be done if needed)
+
+        :return:
+        :rtype:
+        """
+        if not self.target.url:
+            await self
+
+        # there must be a better way...
+        origin = "/".join(self.url.split("/", 3)[:-1])
+
+        items = await self.send(
+            cdp.dom_storage.get_dom_storage_items(
+                cdp.dom_storage.StorageId(is_local_storage=True, security_origin=origin)
+            )
+        )
+        retval = {}
+        for item in items:
+            retval[item[0]] = item[1]
+        return retval
+
+    async def set_local_storage(self, items: dict):
+        """
+        set local storage.
+        dict items must be strings. simple types will be converted to strings automatically.
+
+        :param items: dict containing {key:str, value:str}
+        :type items: dict[str,str]
+        :return:
+        :rtype:
+        """
+        if not self.target.url:
+            await self
+        # there must be a better way...
+        origin = "/".join(self.url.split("/", 3)[:-1])
+
+        await asyncio.gather(
+            *[
+                self.send(
+                    cdp.dom_storage.set_dom_storage_item(
+                        storage_id=cdp.dom_storage.StorageId(
+                            is_local_storage=True, security_origin=origin
+                        ),
+                        key=str(key),
+                        value=str(val),
+                    )
+                )
+                for key, val in items.items()
+            ]
+        )
+
     def __call__(
         self,
         text: Optional[str] = "",

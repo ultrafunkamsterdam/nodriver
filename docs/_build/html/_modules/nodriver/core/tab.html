@@ -1676,6 +1676,62 @@
         <span class="k">await</span> <span class="n">checkbox</span><span class="o">.</span><span class="n">mouse_click</span><span class="p">()</span></div>
 
 
+<div class="viewcode-block" id="Tab.get_local_storage">
+<a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.get_local_storage">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_local_storage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get local storage items as dict of strings (careful!, proper deserialization needs to be done if needed)</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">url</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span>
+
+        <span class="c1"># there must be a better way...</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+            <span class="n">cdp</span><span class="o">.</span><span class="n">dom_storage</span><span class="o">.</span><span class="n">get_dom_storage_items</span><span class="p">(</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">dom_storage</span><span class="o">.</span><span class="n">StorageId</span><span class="p">(</span>
+                    <span class="n">is_local_storage</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">security_origin</span><span class="o">=</span><span class="n">origin</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="n">retval</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="n">retval</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">retval</span></div>
+
+
+<div class="viewcode-block" id="Tab.set_local_storage">
+<a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.set_local_storage">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_local_storage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        set local storage.</span>
+<span class="sd">        dict items must be strings. simple types will be converted to strings automatically.</span>
+
+<span class="sd">        :param items: dict containing {key:str, value:str}</span>
+<span class="sd">        :type items: dict[str,str]</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">url</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span>
+        <span class="c1"># there must be a better way...</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+            <span class="n">cdp</span><span class="o">.</span><span class="n">dom_storage</span><span class="o">.</span><span class="n">set_dom_storage_item</span><span class="p">(</span>
+                <span class="n">storage_id</span><span class="o">=</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom_storage</span><span class="o">.</span><span class="n">StorageId</span><span class="p">(</span>
+                    <span class="n">is_local_storage</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">security_origin</span><span class="o">=</span><span class="n">origin</span>
+                <span class="p">),</span>
+                <span class="n">key</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+                <span class="n">value</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">items</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span></div>
+
+
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
