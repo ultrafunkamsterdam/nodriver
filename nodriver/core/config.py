@@ -121,6 +121,7 @@ class Config:
             "--disable-dev-shm-usage",
             "--disable-features=IsolateOrigins,site-per-process",
             "--disable-session-crashed-bubble",
+            "--disable-search-engine-choice-screen",
         ]
 
     @property
