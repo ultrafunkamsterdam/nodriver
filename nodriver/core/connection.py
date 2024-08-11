@@ -255,6 +255,7 @@ class Connection(metaclass=CantTouchThis):
         :type event_type_or_domain:
         :param handler:
         :type handler:
+
         :return:
         :rtype:
         """
@@ -316,6 +317,22 @@ class Connection(metaclass=CantTouchThis):
     async def sleep(self, t: Union[int, float] = 0.25):
         await self.update_target()
         await asyncio.sleep(t)
+
+    def feed_cdp(self, cdp_obj):
+        """
+        used in specific cases, mostly during cdp.fetch.RequestPaused events,
+        in which the browser literally blocks. using feed_cdp you can issue
+        a response without a blocking "await".
+
+        note: this method won't cause a response.
+        note: this is not an async method, just a regular method!
+
+        :param cdp_obj:
+        :type cdp_obj:
+        :return:
+        :rtype:
+        """
+        asyncio.ensure_future(self.send(cdp_obj))
 
     async def wait(self, t: Union[int, float] = None):
         """
@@ -415,6 +432,7 @@ class Connection(metaclass=CantTouchThis):
         except Exception:
             await self.aclose()
 
+    #
     async def _register_handlers(self):
         """
         ensure that for current (event) handlers, the corresponding
@@ -554,7 +572,6 @@ class Listener:
 
                     # thanks to zxsleebu for discovering the memory leak
                     # pop to prevent memory leaks
-
                     tx = self.connection.mapper.pop(message["id"])
                     logger.debug("got answer for %s (message_id:%d)", tx, message["id"])
 
@@ -590,9 +607,15 @@ class Listener:
                     for callback in callbacks:
                         try:
                             if iscoroutinefunction(callback) or iscoroutine(callback):
-                                await callback(event)
+                                try:
+                                    await callback(event, self.connection)
+                                except TypeError:
+                                    await callback(event)
                             else:
-                                callback(event)
+                                try:
+                                    callback(event, self.connection)
+                                except TypeError:
+                                    callback(event)
                         except Exception as e:
                             logger.warning(
                                 "exception in callback %s for event %s => %s",

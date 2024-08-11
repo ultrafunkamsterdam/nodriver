@@ -526,6 +526,9 @@ class Browser:
         self._i = self.tabs.index(self.main_tab)
         return self
 
+    def __reversed__(self):
+        return reversed(list(self.tabs))
+
     def __next__(self):
         try:
             return self.tabs[self._i]

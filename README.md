@@ -1,5 +1,7 @@
 # NODRIVER
 
+## [CLICK HERE FOR DOCS](https://ultrafunkamsterdam.github.io/nodriver/)
+
 **This package provides next level webscraping and browser automation
 using a relatively simple interface.**
 
@@ -22,7 +24,7 @@ While usability and convenience is important. It’s also easy
 to fully customizable everything using the entire array of
 [CDP](https://chromedevtools.github.io/devtools-protocol/) domains, methods and events available.
 
-## Some features
+### Some features
 
 * A blazing fast undetected chrome (-ish) automation library
 * No chromedriver binary or Selenium dependency
@@ -59,7 +61,7 @@ to fully customizable everything using the entire array of
 * ```first_submit_button = await tab.select(selector='button[type=submit]')```
 * ```inputs_in_form = await tab.select_all('form input')``` -->
 
-### Installation
+#### Installation
 
 Since it’s a part of undetected-chromedriver, installation goes via
 
@@ -78,7 +80,7 @@ pip install nodriver
 
 <a id="getting-started-commands"></a>
 
-### usage example
+#### usage example
 
 The aim of this project (just like undetected-chromedriver, somewhere long ago)
 is to keep it short and simple, so you can quickly open an editor or interactive session,

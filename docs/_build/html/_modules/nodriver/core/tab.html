@@ -1689,13 +1689,12 @@
             <span class="k">await</span> <span class="bp">self</span>
 
         <span class="c1"># there must be a better way...</span>
-        <span class="n">origin</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
             <span class="n">cdp</span><span class="o">.</span><span class="n">dom_storage</span><span class="o">.</span><span class="n">get_dom_storage_items</span><span class="p">(</span>
-                <span class="n">cdp</span><span class="o">.</span><span class="n">dom_storage</span><span class="o">.</span><span class="n">StorageId</span><span class="p">(</span>
-                    <span class="n">is_local_storage</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                    <span class="n">security_origin</span><span class="o">=</span><span class="n">origin</span><span class="p">))</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">dom_storage</span><span class="o">.</span><span class="n">StorageId</span><span class="p">(</span><span class="n">is_local_storage</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">security_origin</span><span class="o">=</span><span class="n">origin</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="p">)</span>
         <span class="n">retval</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
@@ -1718,18 +1717,22 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">url</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span>
         <span class="c1"># there must be a better way...</span>
-        <span class="n">origin</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
-            <span class="n">cdp</span><span class="o">.</span><span class="n">dom_storage</span><span class="o">.</span><span class="n">set_dom_storage_item</span><span class="p">(</span>
-                <span class="n">storage_id</span><span class="o">=</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom_storage</span><span class="o">.</span><span class="n">StorageId</span><span class="p">(</span>
-                    <span class="n">is_local_storage</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                    <span class="n">security_origin</span><span class="o">=</span><span class="n">origin</span>
-                <span class="p">),</span>
-                <span class="n">key</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
-                <span class="n">value</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">),</span>
-            <span class="p">)</span>
-        <span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">items</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span></div>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
+            <span class="o">*</span><span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+                    <span class="n">cdp</span><span class="o">.</span><span class="n">dom_storage</span><span class="o">.</span><span class="n">set_dom_storage_item</span><span class="p">(</span>
+                        <span class="n">storage_id</span><span class="o">=</span><span class="n">cdp</span><span class="o">.</span><span class="n">dom_storage</span><span class="o">.</span><span class="n">StorageId</span><span class="p">(</span>
+                            <span class="n">is_local_storage</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">security_origin</span><span class="o">=</span><span class="n">origin</span>
+                        <span class="p">),</span>
+                        <span class="n">key</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+                        <span class="n">value</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">items</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">]</span>
+        <span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
