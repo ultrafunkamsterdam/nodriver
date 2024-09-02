@@ -490,8 +490,6 @@ class Element:
             quads = await self.tab.send(
                 cdp.dom.get_content_quads(object_id=self.remote_object.object_id)
             )
-            if not quads:
-                raise Exception("could not find position for %s " % self)
             pos = Position(quads[0])
             if abs:
                 scroll_y = (await self.tab.evaluate("window.scrollY")).value
@@ -904,10 +902,8 @@ class Element:
                 )
             except ProtocolException:
                 return
-        try:
-            pos = await self.get_position()
-
-        except (Exception,):
+        pos = await self.get_position()
+        if not pos:
             logger.debug("flash() : could not determine position")
             return
 
