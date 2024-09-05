@@ -877,7 +877,7 @@ class Element:
         :return:
         :rtype:
         """
-        return not await self.get_attribute("disabled")
+        return False if await self.get_attribute("disabled") else True
     
     async def is_selected(self):
         """
@@ -887,7 +887,7 @@ class Element:
         :return:
         :rtype:
         """
-        return await self.get_attribute("selected")
+        return True if await self.get_attribute("checked") else False
     
     async def is_clickable(self):
         """
