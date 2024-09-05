@@ -708,6 +708,18 @@ class Element:
             await self._tab.send(cdp.input_.dispatch_key_event("char", text=char))
             for char in list(text)
         ]
+    
+    async def write(self, text: str):
+        """
+        write text to an input field, or any other html element.
+
+        :param text: text to write
+        :return: None
+        """
+        await self.apply("(elem) => elem.focus()")
+        [
+            await self._tab.send(cdp.input_.insert_text(text=text))
+        ]
 
     async def send_file(self, *file_paths: PathLike):
         """
@@ -798,6 +810,95 @@ class Element:
         text_nodes = util.filter_recurse_all(self.node, lambda n: n.node_type == 3)
         return " ".join([n.node_value for n in text_nodes])
 
+    async def box_model(self) -> cdp.dom.BoxModel:
+        """The box model of the element."""
+        model_box = await self.tab.send(cdp.dom.get_box_model(backend_node_id=self.backend_node_id))        
+        return model_box
+
+
+    async def size(self) -> dict:
+        """The size of the element."""
+        box_model = await self.box_model()
+        return {"height": box_model.height, "width": box_model.width}
+    
+    async def location(self) -> dict:
+        """The location of the element in the renderable canvas."""
+        result = await self.box_model()
+        
+        # The box model is a list of 4 points, we need to find the top-left point
+        top_left_x = result.content[0]
+        top_left_y = result.content[1]
+        
+        # Return the result as a dictionary
+        return {"x": top_left_x, "y": top_left_y}
+    
+    async def rect(self) -> dict:
+        """A dictionary with the size and location of the element."""
+        result = await self.box_model()
+        
+        # The box model is a list of 4 points, we need to find the top-left and bottom-right points
+        top_left_x = result.content[0]
+        top_left_y = result.content[1]
+        bottom_right_x = result.content[4]
+        bottom_right_y = result.content[5]
+        
+        # Return the result as a dictionary
+        return {
+            "top_left": {"x": top_left_x, "y": top_left_y},
+            "bottom_right": {"x": bottom_right_x, "y": bottom_right_y},
+            "width": result.width,
+            "height": result.height
+        }
+
+    async def get_attribute(self, name: str) -> typing.Optional[str]:
+        """Gets the given attribute or property of the element.
+
+        :param name: The name of the attribute or property to retrieve.
+        :return: The value of the attribute or property.
+        """
+        return self.attrs.get(name)
+    
+    async def is_displayed(self):
+        """
+        checks if the element is displayed on the page
+        
+        checks if the width and height are > 0
+        :return:
+        :rtype:
+        """
+        size = await self.size()
+        return not (size["height"] == 0 or size["width"] == 0)
+    
+    async def is_enabled(self):
+        """
+        checks if the element is enabled
+        
+        checks if the element is not disabled
+        :return:
+        :rtype:
+        """
+        return not await self.get_attribute("disabled")
+    
+    async def is_selected(self):
+        """
+        checks if the element is selected
+        
+        checks if the element is selected
+        :return:
+        :rtype:
+        """
+        return await self.get_attribute("selected")
+    
+    async def is_clickable(self):
+        """
+        checks if the element is clickable
+        
+        checks if the element is displayed and enabled
+        :return:
+        :rtype:
+        """
+        return await self.is_displayed() and await self.is_enabled()
+    
     async def query_selector_all(self, selector: str):
         """
         like js querySelectorAll()
