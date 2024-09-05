@@ -867,7 +867,7 @@ class Element:
         :rtype:
         """
         size = await self.size()
-        return not (size["height"] == 0 or size["width"] == 0)
+        return (size["height"] > 0 and size["width"] > 0)
     
     async def is_enabled(self):
         """
@@ -877,7 +877,7 @@ class Element:
         :return:
         :rtype:
         """
-        return False if await self.get_attribute("disabled") else True
+        return not bool(await self.get_attribute("disabled"))
     
     async def is_selected(self):
         """
@@ -887,7 +887,8 @@ class Element:
         :return:
         :rtype:
         """
-        return True if await self.get_attribute("checked") else False
+        return bool(await self.get_attribute("checked"))  
+
     
     async def is_clickable(self):
         """
