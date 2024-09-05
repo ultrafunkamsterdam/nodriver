@@ -812,19 +812,35 @@ class Element:
 
     async def box_model(self) -> cdp.dom.BoxModel:
         """The box model of the element."""
-        model_box = await self.tab.send(cdp.dom.get_box_model(backend_node_id=self.backend_node_id))        
+        model_box = await self.tab.send(cdp.dom.get_box_model(backend_node_id=self.backend_node_id))
+        if not model_box:
+            raise RuntimeError("could not get box model for %s" % self)
         return model_box
-
 
     async def size(self) -> dict:
         """The size of the element."""
-        box_model = await self.box_model()
+        try:
+            box_model = await self.box_model()
+        except Exception as e:
+            if 'could not get box model' in str(e):
+                logger.debug("could not get size for %s: %s", self, e)
+                return {"height": 0, "width": 0}
+            else:
+                raise e
+
         return {"height": box_model.height, "width": box_model.width}
     
     async def location(self) -> dict:
         """The location of the element in the renderable canvas."""
-        result = await self.box_model()
-        
+        try:
+            result = await self.box_model()
+        except Exception as e:
+            if 'could not get box model' in str(e):
+                logger.debug("could not get size for %s: %s", self, e)
+                return {"x": 0, "y": 0}
+            else:
+                raise e
+
         # The box model is a list of 4 points, we need to find the top-left point
         top_left_x = result.content[0]
         top_left_y = result.content[1]
@@ -834,8 +850,15 @@ class Element:
     
     async def rect(self) -> dict:
         """A dictionary with the size and location of the element."""
-        result = await self.box_model()
-        
+        try:
+            result = await self.box_model()
+        except Exception as e:
+            if 'could not get box model' in str(e):
+                logger.debug("could not get size for %s: %s", self, e)
+                return {"top_left": {"x": 0, "y": 0}, "bottom_right": {"x": 0, "y": 0}, "width": 0, "height": 0}
+            else:
+                raise e
+
         # The box model is a list of 4 points, we need to find the top-left and bottom-right points
         top_left_x = result.content[0]
         top_left_y = result.content[1]
@@ -877,6 +900,7 @@ class Element:
         :return:
         :rtype:
         """
+        
         return not bool(await self.get_attribute("disabled"))
     
     async def is_selected(self):
@@ -887,8 +911,7 @@ class Element:
         :return:
         :rtype:
         """
-        return bool(await self.get_attribute("checked"))  
-
+        return bool(await self.get_attribute("checked"))
     
     async def is_clickable(self):
         """
