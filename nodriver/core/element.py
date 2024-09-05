@@ -811,35 +811,35 @@ class Element:
         return " ".join([n.node_value for n in text_nodes])
 
     async def box_model(self) -> cdp.dom.BoxModel:
-        """The box model of the element."""
+        """The box model of the element.
+        
+        :return: The box model of the element.
+        :rtype: cdp.dom.BoxModel, but can return None if the box model could not be retrieved.
+        """
+        
         model_box = await self.tab.send(cdp.dom.get_box_model(backend_node_id=self.backend_node_id))
-        if not model_box:
-            raise RuntimeError("could not get box model for %s" % self)
         return model_box
-
-    async def size(self) -> dict:
-        """The size of the element."""
-        try:
-            box_model = await self.box_model()
-        except Exception as e:
-            if 'could not get box model' in str(e):
-                logger.debug("could not get size for %s: %s", self, e)
-                return {"height": 0, "width": 0}
-            else:
-                raise e
-
-        return {"height": box_model.height, "width": box_model.width}
     
+    async def size(self) -> dict:
+        """The size of the element.
+        
+        :return: The size of the element.
+        :rtype: dict
+        """
+        box_model = await self.box_model()
+        return {"height": 0, "width": 0} if box_model is None else {"height": box_model.height, "width": box_model.width}
+
     async def location(self) -> dict:
-        """The location of the element in the renderable canvas."""
-        try:
-            result = await self.box_model()
-        except Exception as e:
-            if 'could not get box model' in str(e):
-                logger.debug("could not get size for %s: %s", self, e)
-                return {"x": 0, "y": 0}
-            else:
-                raise e
+        """The location of the element in the renderable canvas.
+        
+        :return: The location of the element in the renderable canvas.
+        :rtype: dict
+        """
+        result = await self.box_model()
+        
+        # Return 0, 0 if the result is None
+        if result is None:
+            return {"x": 0, "y": 0}
 
         # The box model is a list of 4 points, we need to find the top-left point
         top_left_x = result.content[0]
@@ -849,15 +849,16 @@ class Element:
         return {"x": top_left_x, "y": top_left_y}
     
     async def rect(self) -> dict:
-        """A dictionary with the size and location of the element."""
-        try:
-            result = await self.box_model()
-        except Exception as e:
-            if 'could not get box model' in str(e):
-                logger.debug("could not get size for %s: %s", self, e)
-                return {"top_left": {"x": 0, "y": 0}, "bottom_right": {"x": 0, "y": 0}, "width": 0, "height": 0}
-            else:
-                raise e
+        """A dictionary with the size and location of the element.
+        
+        :return: A dictionary with the size and location of the element.
+        :rtype: dict
+        """
+        result = await self.box_model()
+        
+        # Return 0, 0 if the result is None
+        if result is None:
+            return {"top_left": {"x": 0, "y": 0}, "bottom_right": {"x": 0, "y": 0}, "width": 0, "height": 0}
 
         # The box model is a list of 4 points, we need to find the top-left and bottom-right points
         top_left_x = result.content[0]
@@ -886,8 +887,8 @@ class Element:
         checks if the element is displayed on the page
         
         checks if the width and height are > 0
-        :return:
-        :rtype:
+        :return: True if the element is displayed, False otherwise.
+        :rtype: bool
         """
         size = await self.size()
         return (size["height"] > 0 and size["width"] > 0)
@@ -897,8 +898,9 @@ class Element:
         checks if the element is enabled
         
         checks if the element is not disabled
-        :return:
-        :rtype:
+        
+        :return: True if the element is enabled, False otherwise.
+        :rtype: bool
         """
         
         return not bool(await self.get_attribute("disabled"))
@@ -907,10 +909,12 @@ class Element:
         """
         checks if the element is selected
         
-        checks if the element is selected
-        :return:
-        :rtype:
+        checks if the element is checked
+        
+        :return: True if the element is selected, False otherwise.
+        :rtype: bool
         """
+        
         return bool(await self.get_attribute("checked"))
     
     async def is_clickable(self):
@@ -918,8 +922,8 @@ class Element:
         checks if the element is clickable
         
         checks if the element is displayed and enabled
-        :return:
-        :rtype:
+        :return: True if the element is clickable, False otherwise.
+        :rtype: bool
         """
         return await self.is_displayed() and await self.is_enabled()
     
