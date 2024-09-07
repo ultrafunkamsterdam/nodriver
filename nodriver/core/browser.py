@@ -393,6 +393,15 @@ class Browser:
             ]
             await self.connection.send(cdp.target.set_discover_targets(discover=True))
         await self
+
+        if self.config.headless:
+            user_agent = await self.main_tab.send(cdp.runtime.evaluate(
+                        expression="navigator.userAgent",
+                        return_by_value=True
+                    ))
+            user_agent = user_agent[0].value.replace('Headless','')
+            await self.main_tab.send(cdp.network.set_user_agent_override(user_agent))
+
         # self.connection.handlers[cdp.inspector.Detached] = [self.stop]
         # return self
 
