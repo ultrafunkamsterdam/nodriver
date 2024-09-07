@@ -126,7 +126,7 @@ class Tab(Connection):
         browser: Optional["nodriver.Browser"] = None,
         **kwargs,
     ):
-        super().__init__(websocket_url, target, **kwargs)
+        super().__init__(websocket_url, target, browser, **kwargs)
         self.browser = browser
         self._dom = None
         self._window_id = None

@@ -519,6 +519,7 @@
 <span class="sd">        :type event_type_or_domain:</span>
 <span class="sd">        :param handler:</span>
 <span class="sd">        :type handler:</span>
+
 <span class="sd">        :return:</span>
 <span class="sd">        :rtype:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -563,7 +564,6 @@
         <span class="c1"># when a websocket connection is closed (either by error or on purpose)</span>
         <span class="c1"># and reconnected, the registered event listeners (if any), should be</span>
         <span class="c1"># registered again, so the browser sends those events</span>
-
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_register_handlers</span><span class="p">()</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">aclose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -580,6 +580,22 @@
     <span class="k">async</span> <span class="k">def</span> <span class="nf">sleep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">):</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_target</span><span class="p">()</span>
         <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">feed_cdp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cdp_obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        used in specific cases, mostly during cdp.fetch.RequestPaused events,</span>
+<span class="sd">        in which the browser literally blocks. using feed_cdp you can issue</span>
+<span class="sd">        a response without a blocking &quot;await&quot;.</span>
+
+<span class="sd">        note: this method won&#39;t cause a response.</span>
+<span class="sd">        note: this is not an async method, just a regular method!</span>
+
+<span class="sd">        :param cdp_obj:</span>
+<span class="sd">        :type cdp_obj:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp_obj</span><span class="p">))</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -659,6 +675,13 @@
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">aopen</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
             <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">:</span>
+            <span class="n">browser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span>
+            <span class="k">if</span> <span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">expert</span><span class="p">:</span>
+                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_expert</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">headless</span><span class="p">:</span>
+                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_headless</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">listener</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">listener</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">listener</span> <span class="o">=</span> <span class="n">Listener</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
@@ -679,6 +702,7 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">aclose</span><span class="p">()</span>
 
+    <span class="c1">#</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_register_handlers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        ensure that for current (event) handlers, the corresponding</span>
@@ -731,6 +755,59 @@
             <span class="c1"># temp variable when we registered it or saw handlers for it.</span>
             <span class="c1"># items still present at this point are unused and need removal</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">enabled_domains</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ed</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_prepare_headless</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_prep_headless_done&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="n">response</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_oneshot</span><span class="p">(</span>
+            <span class="n">cdp</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+                <span class="n">expression</span><span class="o">=</span><span class="s2">&quot;navigator.userAgent&quot;</span><span class="p">,</span>
+                <span class="n">user_gesture</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">await_promise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">return_by_value</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">allow_unsafe_eval_blocked_by_csp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span> <span class="ow">and</span> <span class="n">response</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">ua</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_oneshot</span><span class="p">(</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">set_user_agent_override</span><span class="p">(</span>
+                    <span class="n">user_agent</span><span class="o">=</span><span class="n">ua</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;Headless&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_prep_headless_done&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_prepare_expert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_prep_expert_done&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_oneshot</span><span class="p">(</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">add_script_to_evaluate_on_new_document</span><span class="p">(</span>
+<span class="w">                    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                    Element.prototype._attachShadow = Element.prototype.attachShadow;</span>
+<span class="sd">                    Element.prototype.attachShadow = function () {</span>
+<span class="sd">                        return this._attachShadow( { mode: &quot;open&quot; } );</span>
+<span class="sd">                    };</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_oneshot</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">enable</span><span class="p">())</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_prep_expert_done&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_send_oneshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cdp_obj</span><span class="p">):</span>
+
+        <span class="n">tx</span> <span class="o">=</span> <span class="n">Transaction</span><span class="p">(</span><span class="n">cdp_obj</span><span class="p">)</span>
+        <span class="n">tx</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="n">tx</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">tx</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="n">tx</span><span class="p">})</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">tx</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># in try except since if browser connection sends this it reises an exception</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">tx</span>
+        <span class="k">except</span> <span class="n">ProtocolException</span><span class="p">:</span>
+            <span class="k">pass</span>
 
 
 <span class="k">class</span> <span class="nc">Listener</span><span class="p">:</span>
@@ -818,13 +895,18 @@
 
                     <span class="c1"># thanks to zxsleebu for discovering the memory leak</span>
                     <span class="c1"># pop to prevent memory leaks</span>
-
                     <span class="n">tx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;got answer for </span><span class="si">%s</span><span class="s2"> (message_id:</span><span class="si">%d</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">tx</span><span class="p">,</span> <span class="n">message</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
 
                     <span class="c1"># complete the transaction, which is a Future object</span>
                     <span class="c1"># and thus will return to anyone awaiting it.</span>
                     <span class="n">tx</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">message</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="n">tx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">tx</span><span class="p">:</span>
+                            <span class="n">tx</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">)</span>
+                        <span class="k">continue</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># probably an event</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -854,9 +936,15 @@
                     <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="n">callbacks</span><span class="p">:</span>
                         <span class="k">try</span><span class="p">:</span>
                             <span class="k">if</span> <span class="n">iscoroutinefunction</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span> <span class="ow">or</span> <span class="n">iscoroutine</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
-                                <span class="k">await</span> <span class="n">callback</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+                                <span class="k">try</span><span class="p">:</span>
+                                    <span class="k">await</span> <span class="n">callback</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
+                                <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                                    <span class="k">await</span> <span class="n">callback</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
-                                <span class="n">callback</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+                                <span class="k">try</span><span class="p">:</span>
+                                    <span class="n">callback</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
+                                <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                                    <span class="n">callback</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
                         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                                 <span class="s2">&quot;exception in callback </span><span class="si">%s</span><span class="s2"> for event </span><span class="si">%s</span><span class="s2"> =&gt; </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>

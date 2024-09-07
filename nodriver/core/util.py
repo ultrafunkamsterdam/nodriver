@@ -33,6 +33,7 @@ async def start(
     lang: Optional[str] = None,
     host: Optional[str] = None,
     port: Optional[int] = None,
+    expert: Optional[bool] = None,
     **kwargs: Optional[dict],
 ) -> Browser:
     """
@@ -68,6 +69,12 @@ async def start(
     :param host: if you connect to an existing debuggable session, you can specify the host here
                  if both host and port are provided, nodriver will not start a local chrome browser!
     :type host: str
+
+    :param expert:  when set to True, enabled "expert" mode.
+                    This conveys, the inclusion of parameters: --disable-web-security ----disable-site-isolation-trials,
+                    as well as some scripts and patching useful for debugging (for example, ensuring shadow-root is always in "open" mode)
+    :type expert: bool
+
     :return:
     """
     if not config:
@@ -81,6 +88,7 @@ async def start(
             lang,
             host=host,
             port=port,
+            expert=expert,
             **kwargs,
         )
     from .browser import Browser

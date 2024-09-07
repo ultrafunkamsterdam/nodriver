@@ -41,6 +41,7 @@ class Config:
         lang: Optional[str] = "en-US",
         host: str = AUTO,
         port: int = AUTO,
+        expert: bool = AUTO,
         **kwargs: dict,
     ):
         """
@@ -61,6 +62,10 @@ class Config:
         :param sandbox: disables sandbox
         :param autodiscover_targets: use autodiscovery of targets
         :param lang: language string to use other than the default "en-US,en;q=0.9"
+        :param expert: when set to True, enabled "expert" mode.
+               This conveys, the inclusion of parameters: --disable-web-security ----disable-site-isolation-trials,
+               as well as some scripts and patching useful for debugging (for example, ensuring shadow-root is always in "open" mode)
+
         :param kwargs:
 
         :type user_data_dir: PathLike
@@ -91,6 +96,7 @@ class Config:
         self.sandbox = sandbox
         self.host = host
         self.port = port
+        self.expert = expert
         self._extensions = []
         # when using posix-ish operating system and running as root
         # you must use no_sandbox = True, which in case is corrected here
@@ -175,10 +181,12 @@ class Config:
         # the browser, as by the time it starts, the port
         # is probably already taken
         args = self._default_browser_args.copy()
+
         args += ["--user-data-dir=%s" % self.user_data_dir]
         args += ["--disable-features=IsolateOrigins,site-per-process"]
         args += ["--disable-session-crashed-bubble"]
-
+        if self.expert:
+            args += ["--disable-web-security", "--disable-site-isolation-trials"]
         if self._browser_args:
             args.extend([arg for arg in self._browser_args if arg not in args])
         if self.headless:

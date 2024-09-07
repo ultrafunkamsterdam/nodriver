@@ -307,6 +307,7 @@
         <span class="n">lang</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;en-US&quot;</span><span class="p">,</span>
         <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
         <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
+        <span class="n">expert</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -327,6 +328,10 @@
 <span class="sd">        :param sandbox: disables sandbox</span>
 <span class="sd">        :param autodiscover_targets: use autodiscovery of targets</span>
 <span class="sd">        :param lang: language string to use other than the default &quot;en-US,en;q=0.9&quot;</span>
+<span class="sd">        :param expert: when set to True, enabled &quot;expert&quot; mode.</span>
+<span class="sd">               This conveys, the inclusion of parameters: --disable-web-security ----disable-site-isolation-trials,</span>
+<span class="sd">               as well as some scripts and patching useful for debugging (for example, ensuring shadow-root is always in &quot;open&quot; mode)</span>
+
 <span class="sd">        :param kwargs:</span>
 
 <span class="sd">        :type user_data_dir: PathLike</span>
@@ -357,6 +362,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sandbox</span> <span class="o">=</span> <span class="n">sandbox</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expert</span> <span class="o">=</span> <span class="n">expert</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_extensions</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1"># when using posix-ish operating system and running as root</span>
         <span class="c1"># you must use no_sandbox = True, which in case is corrected here</span>
@@ -444,10 +450,12 @@
         <span class="c1"># the browser, as by the time it starts, the port</span>
         <span class="c1"># is probably already taken</span>
         <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_browser_args</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--user-data-dir=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_data_dir</span><span class="p">]</span>
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-features=IsolateOrigins,site-per-process&quot;</span><span class="p">]</span>
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-session-crashed-bubble&quot;</span><span class="p">]</span>
-
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expert</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-web-security&quot;</span><span class="p">,</span> <span class="s2">&quot;--disable-site-isolation-trials&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser_args</span><span class="p">:</span>
             <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser_args</span> <span class="k">if</span> <span class="n">arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="p">])</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">headless</span><span class="p">:</span>

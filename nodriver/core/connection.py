@@ -300,7 +300,6 @@ class Connection(metaclass=CantTouchThis):
         # when a websocket connection is closed (either by error or on purpose)
         # and reconnected, the registered event listeners (if any), should be
         # registered again, so the browser sends those events
-
         await self._register_handlers()
 
     async def aclose(self):
@@ -412,6 +411,13 @@ class Connection(metaclass=CantTouchThis):
         await self.aopen()
         if not self.websocket or self.closed:
             return
+        if self._owner:
+            browser = self._owner
+            if browser.config:
+                if browser.config.expert:
+                    await self._prepare_expert()
+                if browser.config.headless:
+                    await self._prepare_headless()
         if not self.listener or not self.listener.running:
             self.listener = Listener(self)
         try:
@@ -485,6 +491,59 @@ class Connection(metaclass=CantTouchThis):
             # temp variable when we registered it or saw handlers for it.
             # items still present at this point are unused and need removal
             self.enabled_domains.remove(ed)
+
+    async def _prepare_headless(self):
+
+        if getattr(self, "_prep_headless_done", None):
+            return
+        response, error = await self._send_oneshot(
+            cdp.runtime.evaluate(
+                expression="navigator.userAgent",
+                user_gesture=True,
+                await_promise=True,
+                return_by_value=True,
+                allow_unsafe_eval_blocked_by_csp=True,
+            )
+        )
+        if response and response.value:
+            ua = response.value
+            await self._send_oneshot(
+                cdp.network.set_user_agent_override(
+                    user_agent=ua.replace("Headless", ""),
+                )
+            )
+        setattr(self, "_prep_headless_done", True)
+
+    async def _prepare_expert(self):
+        if getattr(self, "_prep_expert_done", None):
+            return
+        if self._owner:
+            await self._send_oneshot(
+                cdp.page.add_script_to_evaluate_on_new_document(
+                    """
+                    Element.prototype._attachShadow = Element.prototype.attachShadow;
+                    Element.prototype.attachShadow = function () {
+                        return this._attachShadow( { mode: "open" } );
+                    };
+                """
+                )
+            )
+
+            await self._send_oneshot(cdp.page.enable())
+        setattr(self, "_prep_expert_done", True)
+
+    async def _send_oneshot(self, cdp_obj):
+
+        tx = Transaction(cdp_obj)
+        tx.connection = self
+        tx.id = -2
+        self.mapper.update({tx.id: tx})
+        await self.websocket.send(tx.message)
+        try:
+            # in try except since if browser connection sends this it reises an exception
+            return await tx
+        except ProtocolException:
+            pass
 
 
 class Listener:
@@ -578,6 +637,12 @@ class Listener:
                     # complete the transaction, which is a Future object
                     # and thus will return to anyone awaiting it.
                     tx(**message)
+                else:
+                    if message["id"] == -2:
+                        tx = self.connection.mapper.get(-2)
+                        if tx:
+                            tx(**message)
+                        continue
             else:
                 # probably an event
                 try:
