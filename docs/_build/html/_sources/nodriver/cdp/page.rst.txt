@@ -476,6 +476,11 @@ you use the event's attributes.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: FrameSubtreeWillBeDetached
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: FrameNavigated
       :members:
       :undoc-members:

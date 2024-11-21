@@ -107,7 +107,7 @@ Credentials created by this authenticator will have the backup state
 (BS) flag set to this value. Defaults to false.
 [https://w3c.github.io/webauthn/#sctn-credential-backup](https://w3c.github.io/webauthn/#sctn-credential-backup)
 
-### *class* Credential(credential_id, is_resident_credential, private_key, sign_count, rp_id=None, user_handle=None, large_blob=None, backup_eligibility=None, backup_state=None)
+### *class* Credential(credential_id, is_resident_credential, private_key, sign_count, rp_id=None, user_handle=None, large_blob=None, backup_eligibility=None, backup_state=None, user_name=None, user_display_name=None)
 
 #### credential_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
@@ -149,6 +149,17 @@ defaultBackupEligibility value.
 Assertions returned by this credential will have the backup state (BS)
 flag set to this value. Defaults to the authenticator’s
 defaultBackupState value.
+
+#### user_name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+The credential’s user.name property. Equivalent to empty if not set.
+[https://w3c.github.io/webauthn/#dom-publickeycredentialentity-name](https://w3c.github.io/webauthn/#dom-publickeycredentialentity-name)
+
+#### user_display_name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+The credential’s user.displayName property. Equivalent to empty if
+not set.
+[https://w3c.github.io/webauthn/#dom-publickeycredentialuserentity-displayname](https://w3c.github.io/webauthn/#dom-publickeycredentialuserentity-displayname)
 
 ## Commands
 
@@ -304,6 +315,24 @@ you use the event’s attributes.
 ### *class* CredentialAdded(authenticator_id, credential)
 
 Triggered when a credential is added to an authenticator.
+
+#### authenticator_id*: [`AuthenticatorId`](#nodriver.cdp.web_authn.AuthenticatorId)*
+
+#### credential*: [`Credential`](#nodriver.cdp.web_authn.Credential)*
+
+### *class* CredentialDeleted(authenticator_id, credential_id)
+
+Triggered when a credential is deleted, e.g. through
+PublicKeyCredential.signalUnknownCredential().
+
+#### authenticator_id*: [`AuthenticatorId`](#nodriver.cdp.web_authn.AuthenticatorId)*
+
+#### credential_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+### *class* CredentialUpdated(authenticator_id, credential)
+
+Triggered when a credential is updated, e.g. through
+PublicKeyCredential.signalCurrentUserDetails().
 
 #### authenticator_id*: [`AuthenticatorId`](#nodriver.cdp.web_authn.AuthenticatorId)*
 

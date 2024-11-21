@@ -15,11 +15,10 @@ from . import runtime
 
 
 class StreamHandle(str):
-    """
+    '''
     This is either obtained from another method or specified as ``blob:<uuid>`` where
     ``<uuid>`` is an UUID of a Blob.
-    """
-
+    '''
     def to_json(self) -> str:
         return self
 
@@ -28,32 +27,32 @@ class StreamHandle(str):
         return cls(json)
 
     def __repr__(self):
-        return "StreamHandle({})".format(super().__repr__())
+        return 'StreamHandle({})'.format(super().__repr__())
 
 
-def close(handle: StreamHandle) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def close(
+        handle: StreamHandle
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Close the stream, discard any temporary backing storage.
 
     :param handle: Handle of the stream to close.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["handle"] = handle.to_json()
+    params['handle'] = handle.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "IO.close",
-        "params": params,
+        'method': 'IO.close',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def read(
-    handle: StreamHandle,
-    offset: typing.Optional[int] = None,
-    size: typing.Optional[int] = None,
-) -> typing.Generator[
-    T_JSON_DICT, T_JSON_DICT, typing.Tuple[typing.Optional[bool], str, bool]
-]:
-    """
+        handle: StreamHandle,
+        offset: typing.Optional[int] = None,
+        size: typing.Optional[int] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[typing.Optional[bool], str, bool]]:
+    '''
     Read a chunk of the stream
 
     :param handle: Handle of the stream to read.
@@ -64,43 +63,39 @@ def read(
         0. **base64Encoded** - *(Optional)* Set if the data is base64-encoded
         1. **data** - Data that were read.
         2. **eof** - Set if the end-of-file condition occurred while reading.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["handle"] = handle.to_json()
+    params['handle'] = handle.to_json()
     if offset is not None:
-        params["offset"] = offset
+        params['offset'] = offset
     if size is not None:
-        params["size"] = size
+        params['size'] = size
     cmd_dict: T_JSON_DICT = {
-        "method": "IO.read",
-        "params": params,
+        'method': 'IO.read',
+        'params': params,
     }
     json = yield cmd_dict
     return (
-        (
-            bool(json["base64Encoded"])
-            if json.get("base64Encoded", None) is not None
-            else None
-        ),
-        str(json["data"]),
-        bool(json["eof"]),
+        bool(json['base64Encoded']) if json.get('base64Encoded', None) is not None else None,
+        str(json['data']),
+        bool(json['eof'])
     )
 
 
 def resolve_blob(
-    object_id: runtime.RemoteObjectId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
-    """
+        object_id: runtime.RemoteObjectId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,str]:
+    '''
     Return UUID of Blob object specified by a remote object id.
 
     :param object_id: Object id of a Blob object wrapper.
     :returns: UUID of the specified Blob.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["objectId"] = object_id.to_json()
+    params['objectId'] = object_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "IO.resolveBlob",
-        "params": params,
+        'method': 'IO.resolveBlob',
+        'params': params,
     }
     json = yield cmd_dict
-    return str(json["uuid"])
+    return str(json['uuid'])

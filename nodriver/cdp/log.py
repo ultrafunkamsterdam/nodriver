@@ -17,10 +17,9 @@ from . import runtime
 
 @dataclass
 class LogEntry:
-    """
+    '''
     Log entry.
-    """
-
+    '''
     #: Log entry source.
     source: str
 
@@ -55,73 +54,48 @@ class LogEntry:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["source"] = self.source
-        json["level"] = self.level
-        json["text"] = self.text
-        json["timestamp"] = self.timestamp.to_json()
+        json['source'] = self.source
+        json['level'] = self.level
+        json['text'] = self.text
+        json['timestamp'] = self.timestamp.to_json()
         if self.category is not None:
-            json["category"] = self.category
+            json['category'] = self.category
         if self.url is not None:
-            json["url"] = self.url
+            json['url'] = self.url
         if self.line_number is not None:
-            json["lineNumber"] = self.line_number
+            json['lineNumber'] = self.line_number
         if self.stack_trace is not None:
-            json["stackTrace"] = self.stack_trace.to_json()
+            json['stackTrace'] = self.stack_trace.to_json()
         if self.network_request_id is not None:
-            json["networkRequestId"] = self.network_request_id.to_json()
+            json['networkRequestId'] = self.network_request_id.to_json()
         if self.worker_id is not None:
-            json["workerId"] = self.worker_id
+            json['workerId'] = self.worker_id
         if self.args is not None:
-            json["args"] = [i.to_json() for i in self.args]
+            json['args'] = [i.to_json() for i in self.args]
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> LogEntry:
         return cls(
-            source=str(json["source"]),
-            level=str(json["level"]),
-            text=str(json["text"]),
-            timestamp=runtime.Timestamp.from_json(json["timestamp"]),
-            category=(
-                str(json["category"])
-                if json.get("category", None) is not None
-                else None
-            ),
-            url=str(json["url"]) if json.get("url", None) is not None else None,
-            line_number=(
-                int(json["lineNumber"])
-                if json.get("lineNumber", None) is not None
-                else None
-            ),
-            stack_trace=(
-                runtime.StackTrace.from_json(json["stackTrace"])
-                if json.get("stackTrace", None) is not None
-                else None
-            ),
-            network_request_id=(
-                network.RequestId.from_json(json["networkRequestId"])
-                if json.get("networkRequestId", None) is not None
-                else None
-            ),
-            worker_id=(
-                str(json["workerId"])
-                if json.get("workerId", None) is not None
-                else None
-            ),
-            args=(
-                [runtime.RemoteObject.from_json(i) for i in json["args"]]
-                if json.get("args", None) is not None
-                else None
-            ),
+            source=str(json['source']),
+            level=str(json['level']),
+            text=str(json['text']),
+            timestamp=runtime.Timestamp.from_json(json['timestamp']),
+            category=str(json['category']) if json.get('category', None) is not None else None,
+            url=str(json['url']) if json.get('url', None) is not None else None,
+            line_number=int(json['lineNumber']) if json.get('lineNumber', None) is not None else None,
+            stack_trace=runtime.StackTrace.from_json(json['stackTrace']) if json.get('stackTrace', None) is not None else None,
+            network_request_id=network.RequestId.from_json(json['networkRequestId']) if json.get('networkRequestId', None) is not None else None,
+            worker_id=str(json['workerId']) if json.get('workerId', None) is not None else None,
+            args=[runtime.RemoteObject.from_json(i) for i in json['args']] if json.get('args', None) is not None else None,
         )
 
 
 @dataclass
 class ViolationSetting:
-    """
+    '''
     Violation configuration setting.
-    """
-
+    '''
     #: Violation type.
     name: str
 
@@ -130,86 +104,87 @@ class ViolationSetting:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["name"] = self.name
-        json["threshold"] = self.threshold
+        json['name'] = self.name
+        json['threshold'] = self.threshold
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ViolationSetting:
         return cls(
-            name=str(json["name"]),
-            threshold=float(json["threshold"]),
+            name=str(json['name']),
+            threshold=float(json['threshold']),
         )
 
 
-def clear() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def clear() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Clears the log.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "Log.clear",
+        'method': 'Log.clear',
     }
     json = yield cmd_dict
 
 
-def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def disable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Disables log domain, prevents further log entries from being reported to the client.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "Log.disable",
+        'method': 'Log.disable',
     }
     json = yield cmd_dict
 
 
-def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def enable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Enables log domain, sends the entries collected so far to the client by means of the
     ``entryAdded`` notification.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "Log.enable",
+        'method': 'Log.enable',
     }
     json = yield cmd_dict
 
 
 def start_violations_report(
-    config: typing.List[ViolationSetting],
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        config: typing.List[ViolationSetting]
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     start violation reporting.
 
     :param config: Configuration for violations.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["config"] = [i.to_json() for i in config]
+    params['config'] = [i.to_json() for i in config]
     cmd_dict: T_JSON_DICT = {
-        "method": "Log.startViolationsReport",
-        "params": params,
+        'method': 'Log.startViolationsReport',
+        'params': params,
     }
     json = yield cmd_dict
 
 
-def stop_violations_report() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def stop_violations_report() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Stop violation reporting.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "Log.stopViolationsReport",
+        'method': 'Log.stopViolationsReport',
     }
     json = yield cmd_dict
 
 
-@event_class("Log.entryAdded")
+@event_class('Log.entryAdded')
 @dataclass
 class EntryAdded:
-    """
+    '''
     Issued when new message was logged.
-    """
-
+    '''
     #: The entry.
     entry: LogEntry
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> EntryAdded:
-        return cls(entry=LogEntry.from_json(json["entry"]))
+        return cls(
+            entry=LogEntry.from_json(json['entry'])
+        )

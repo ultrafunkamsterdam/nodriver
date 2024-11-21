@@ -13,44 +13,44 @@ from .util import event_class, T_JSON_DICT
 
 
 def set_instrumentation_breakpoint(
-    event_name: str,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        event_name: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Sets breakpoint on particular native event.
 
     :param event_name: Instrumentation name to stop on.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["eventName"] = event_name
+    params['eventName'] = event_name
     cmd_dict: T_JSON_DICT = {
-        "method": "EventBreakpoints.setInstrumentationBreakpoint",
-        "params": params,
+        'method': 'EventBreakpoints.setInstrumentationBreakpoint',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def remove_instrumentation_breakpoint(
-    event_name: str,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        event_name: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Removes breakpoint on particular native event.
 
     :param event_name: Instrumentation name to stop on.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["eventName"] = event_name
+    params['eventName'] = event_name
     cmd_dict: T_JSON_DICT = {
-        "method": "EventBreakpoints.removeInstrumentationBreakpoint",
-        "params": params,
+        'method': 'EventBreakpoints.removeInstrumentationBreakpoint',
+        'params': params,
     }
     json = yield cmd_dict
 
 
-def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def disable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Removes all breakpoints
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "EventBreakpoints.disable",
+        'method': 'EventBreakpoints.disable',
     }
     json = yield cmd_dict

@@ -73,6 +73,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: DetachedElementInfo
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: RGBA
       :members:
       :undoc-members:
@@ -138,6 +143,8 @@ to. For more information, see
 .. autofunction:: get_container_for_node
 
 .. autofunction:: get_content_quads
+
+.. autofunction:: get_detached_dom_nodes
 
 .. autofunction:: get_document
 
@@ -275,6 +282,11 @@ you use the event's attributes.
       :exclude-members: from_json, to_json
 
 .. autoclass:: TopLayerElementsUpdated
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: ScrollableFlagUpdated
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

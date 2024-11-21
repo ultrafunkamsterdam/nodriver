@@ -12,60 +12,67 @@ from dataclasses import dataclass
 from .util import event_class, T_JSON_DICT
 
 
-def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def disable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Disables inspector domain notifications.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "Inspector.disable",
+        'method': 'Inspector.disable',
     }
     json = yield cmd_dict
 
 
-def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def enable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Enables inspector domain notifications.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "Inspector.enable",
+        'method': 'Inspector.enable',
     }
     json = yield cmd_dict
 
 
-@event_class("Inspector.detached")
+@event_class('Inspector.detached')
 @dataclass
 class Detached:
-    """
+    '''
     Fired when remote debugging connection is about to be terminated. Contains detach reason.
-    """
-
+    '''
     #: The reason why connection has been terminated.
     reason: str
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> Detached:
-        return cls(reason=str(json["reason"]))
+        return cls(
+            reason=str(json['reason'])
+        )
 
 
-@event_class("Inspector.targetCrashed")
+@event_class('Inspector.targetCrashed')
 @dataclass
 class TargetCrashed:
-    """
+    '''
     Fired when debugging target has crashed
-    """
+    '''
+
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> TargetCrashed:
-        return cls()
+        return cls(
+
+        )
 
 
-@event_class("Inspector.targetReloadedAfterCrash")
+@event_class('Inspector.targetReloadedAfterCrash')
 @dataclass
 class TargetReloadedAfterCrash:
-    """
+    '''
     Fired when debugging target has reloaded after crash
-    """
+    '''
+
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> TargetReloadedAfterCrash:
-        return cls()
+        return cls(
+
+        )

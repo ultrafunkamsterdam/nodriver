@@ -10,19 +10,12 @@ import logging
 import sys
 import types
 from asyncio import iscoroutine, iscoroutinefunction
-from typing import (
-    Generator,
-    Union,
-    Awaitable,
-    Callable,
-    Any,
-    TypeVar,
-)
+from typing import Any, Awaitable, Callable, Generator, TypeVar, Union
 
 import websockets
 
-from . import util
 from .. import cdp
+from . import util
 
 T = TypeVar("T")
 
@@ -521,8 +514,10 @@ class Connection(metaclass=CantTouchThis):
             await self._send_oneshot(
                 cdp.page.add_script_to_evaluate_on_new_document(
                     """
+                    console.log("hooking attachShadow");
                     Element.prototype._attachShadow = Element.prototype.attachShadow;
                     Element.prototype.attachShadow = function () {
+                        console.log('calling hooked attachShadow')
                         return this._attachShadow( { mode: "open" } );
                     };
                 """

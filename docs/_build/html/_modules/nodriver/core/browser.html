@@ -180,6 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/audits.html">Audits</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/autofill.html">Autofill</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/background_service.html">BackgroundService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/bluetooth_emulation.html">BluetoothEmulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/browser.html">Browser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cache_storage.html">CacheStorage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
@@ -198,6 +199,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/extensions.html">Extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fed_cm.html">FedCm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fetch.html">Fetch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/file_system.html">FileSystem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/headless_experimental.html">HeadlessExperimental</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/heap_profiler.html">HeapProfiler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/indexed_db.html">IndexedDB</a></li>
@@ -269,20 +271,19 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">import</span> <span class="nn">urllib.parse</span>
 <span class="kn">import</span> <span class="nn">urllib.request</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">cdp</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tab</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tab</span><span class="p">,</span> <span class="n">util</span>
 <span class="kn">from</span> <span class="nn">._contradict</span> <span class="kn">import</span> <span class="n">ContraDict</span>
-<span class="kn">from</span> <span class="nn">.config</span> <span class="kn">import</span> <span class="n">PathLike</span><span class="p">,</span> <span class="n">Config</span><span class="p">,</span> <span class="n">is_posix</span>
+<span class="kn">from</span> <span class="nn">.config</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">PathLike</span><span class="p">,</span> <span class="n">is_posix</span>
 <span class="kn">from</span> <span class="nn">.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -715,8 +716,9 @@
 <div class="viewcode-block" id="Browser.tile_windows">
 <a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.tile_windows">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">tile_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">windows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_columns</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">mss</span>
         <span class="kn">import</span> <span class="nn">math</span>
+
+        <span class="kn">import</span> <span class="nn">mss</span>
 
         <span class="n">m</span> <span class="o">=</span> <span class="n">mss</span><span class="o">.</span><span class="n">mss</span><span class="p">()</span>
         <span class="n">screen</span><span class="p">,</span> <span class="n">screen_width</span><span class="p">,</span> <span class="n">screen_height</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="kc">None</span><span class="p">,)</span>

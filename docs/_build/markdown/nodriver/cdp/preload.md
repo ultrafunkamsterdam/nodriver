@@ -265,6 +265,16 @@ List of FinalStatus reasons for Prerender2.
 
 #### ALL_PRERENDERING_CANCELED *= 'AllPrerenderingCanceled'*
 
+#### WINDOW_CLOSED *= 'WindowClosed'*
+
+#### SLOW_NETWORK *= 'SlowNetwork'*
+
+#### OTHER_PRERENDERED_PAGE_ACTIVATED *= 'OtherPrerenderedPageActivated'*
+
+#### V8_OPTIMIZER_DISABLED *= 'V8OptimizerDisabled'*
+
+#### PRERENDER_FAILED_DURING_PREFETCH *= 'PrerenderFailedDuringPrefetch'*
+
 ### *class* PreloadingStatus(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 Preloading status values, see also PreloadingTriggeringOutcome. This
@@ -298,8 +308,6 @@ filter out the ones that aren’t necessary to the developers.
 #### PREFETCH_FAILED_NET_ERROR *= 'PrefetchFailedNetError'*
 
 #### PREFETCH_FAILED_NON2_XX *= 'PrefetchFailedNon2XX'*
-
-#### PREFETCH_FAILED_PER_PAGE_LIMIT_EXCEEDED *= 'PrefetchFailedPerPageLimitExceeded'*
 
 #### PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED *= 'PrefetchEvictedAfterCandidateRemoved'*
 

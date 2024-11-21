@@ -12,15 +12,14 @@ from dataclasses import dataclass
 from .util import event_class, T_JSON_DICT
 
 
-from deprecated.sphinx import deprecated  # type: ignore
+from deprecated.sphinx import deprecated # type: ignore
 
 
 @dataclass
 class ScreenshotParams:
-    """
+    '''
     Encoding options for a screenshot.
-    """
-
+    '''
     #: Image compression format (defaults to png).
     format_: typing.Optional[str] = None
 
@@ -33,39 +32,29 @@ class ScreenshotParams:
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         if self.format_ is not None:
-            json["format"] = self.format_
+            json['format'] = self.format_
         if self.quality is not None:
-            json["quality"] = self.quality
+            json['quality'] = self.quality
         if self.optimize_for_speed is not None:
-            json["optimizeForSpeed"] = self.optimize_for_speed
+            json['optimizeForSpeed'] = self.optimize_for_speed
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ScreenshotParams:
         return cls(
-            format_=(
-                str(json["format"]) if json.get("format", None) is not None else None
-            ),
-            quality=(
-                int(json["quality"]) if json.get("quality", None) is not None else None
-            ),
-            optimize_for_speed=(
-                bool(json["optimizeForSpeed"])
-                if json.get("optimizeForSpeed", None) is not None
-                else None
-            ),
+            format_=str(json['format']) if json.get('format', None) is not None else None,
+            quality=int(json['quality']) if json.get('quality', None) is not None else None,
+            optimize_for_speed=bool(json['optimizeForSpeed']) if json.get('optimizeForSpeed', None) is not None else None,
         )
 
 
 def begin_frame(
-    frame_time_ticks: typing.Optional[float] = None,
-    interval: typing.Optional[float] = None,
-    no_display_updates: typing.Optional[bool] = None,
-    screenshot: typing.Optional[ScreenshotParams] = None,
-) -> typing.Generator[
-    T_JSON_DICT, T_JSON_DICT, typing.Tuple[bool, typing.Optional[str]]
-]:
-    """
+        frame_time_ticks: typing.Optional[float] = None,
+        interval: typing.Optional[float] = None,
+        no_display_updates: typing.Optional[bool] = None,
+        screenshot: typing.Optional[ScreenshotParams] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[bool, typing.Optional[str]]]:
+    '''
     Sends a BeginFrame to the target and returns when the frame was completed. Optionally captures a
     screenshot from the resulting frame. Requires that the target was created with enabled
     BeginFrameControl. Designed for use with --run-all-compositor-stages-before-draw, see also
@@ -79,52 +68,48 @@ def begin_frame(
 
         0. **hasDamage** - Whether the BeginFrame resulted in damage and, thus, a new frame was committed to the display. Reported for diagnostic uses, may be removed in the future.
         1. **screenshotData** - *(Optional)* Base64-encoded image data of the screenshot, if one was requested and successfully taken. (Encoded as a base64 string when passed over JSON)
-    """
+    '''
     params: T_JSON_DICT = dict()
     if frame_time_ticks is not None:
-        params["frameTimeTicks"] = frame_time_ticks
+        params['frameTimeTicks'] = frame_time_ticks
     if interval is not None:
-        params["interval"] = interval
+        params['interval'] = interval
     if no_display_updates is not None:
-        params["noDisplayUpdates"] = no_display_updates
+        params['noDisplayUpdates'] = no_display_updates
     if screenshot is not None:
-        params["screenshot"] = screenshot.to_json()
+        params['screenshot'] = screenshot.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "HeadlessExperimental.beginFrame",
-        "params": params,
+        'method': 'HeadlessExperimental.beginFrame',
+        'params': params,
     }
     json = yield cmd_dict
     return (
-        bool(json["hasDamage"]),
-        (
-            str(json["screenshotData"])
-            if json.get("screenshotData", None) is not None
-            else None
-        ),
+        bool(json['hasDamage']),
+        str(json['screenshotData']) if json.get('screenshotData', None) is not None else None
     )
 
 
 @deprecated(version="1.3")
-def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def disable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Disables headless events for the target.
 
     .. deprecated:: 1.3
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "HeadlessExperimental.disable",
+        'method': 'HeadlessExperimental.disable',
     }
     json = yield cmd_dict
 
 
 @deprecated(version="1.3")
-def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def enable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Enables headless events for the target.
 
     .. deprecated:: 1.3
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "HeadlessExperimental.enable",
+        'method': 'HeadlessExperimental.enable',
     }
     json = yield cmd_dict

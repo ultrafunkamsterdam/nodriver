@@ -1,18 +1,19 @@
 from __future__ import annotations
+
 import asyncio
 import json
 import logging
 import pathlib
 import typing
 import warnings
-from typing import List, Union, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 
 import nodriver.core.browser
-from . import element
-from . import util
+
+from .. import cdp
+from . import element, util
 from .config import PathLike
 from .connection import Connection, ProtocolException
-from .. import cdp
 
 logger = logging.getLogger(__name__)
 
@@ -120,11 +121,11 @@ class Tab(Connection):
     _download_behavior: List[str] = None
 
     def __init__(
-        self,
-        websocket_url: str,
-        target: cdp.target.TargetInfo,
-        browser: Optional["nodriver.Browser"] = None,
-        **kwargs,
+            self,
+            websocket_url: str,
+            target: cdp.target.TargetInfo,
+            browser: Optional["nodriver.Browser"] = None,
+            **kwargs,
     ):
         super().__init__(websocket_url, target, browser, **kwargs)
         self.browser = browser
@@ -156,11 +157,11 @@ class Tab(Connection):
         webbrowser.open(self.inspector_url)
 
     async def find(
-        self,
-        text: str,
-        best_match: bool = True,
-        return_enclosing_element=True,
-        timeout: Union[int, float] = 10,
+            self,
+            text: str,
+            best_match: bool = True,
+            return_enclosing_element=True,
+            timeout: Union[int, float] = 10,
     ):
         """
         find single element by text
@@ -215,9 +216,9 @@ class Tab(Connection):
         return item
 
     async def select(
-        self,
-        selector: str,
-        timeout: Union[int, float] = 10,
+            self,
+            selector: str,
+            timeout: Union[int, float] = 10,
     ) -> nodriver.Element:
         """
         find single element by css selector.
@@ -247,9 +248,9 @@ class Tab(Connection):
         return item
 
     async def find_all(
-        self,
-        text: str,
-        timeout: Union[int, float] = 10,
+            self,
+            text: str,
+            timeout: Union[int, float] = 10,
     ) -> List[nodriver.Element]:
         """
         find multiple elements by text
@@ -278,7 +279,7 @@ class Tab(Connection):
         return items
 
     async def select_all(
-        self, selector: str, timeout: Union[int, float] = 10, include_frames=False
+            self, selector: str, timeout: Union[int, float] = 10, include_frames=False
     ) -> List[nodriver.Element]:
         """
         find multiple elements by css selector.
@@ -315,7 +316,7 @@ class Tab(Connection):
         return items
 
     async def get(
-        self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
+            self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
     ):
         """top level get. utilizes the first tab to retrieve given url.
 
@@ -343,9 +344,9 @@ class Tab(Connection):
             return self
 
     async def query_selector_all(
-        self,
-        selector: str,
-        _node: Optional[Union[cdp.dom.Node, "element.Element"]] = None,
+            self,
+            selector: str,
+            _node: Optional[Union[cdp.dom.Node, "element.Element"]] = None,
     ):
         """
         equivalent of javascripts document.querySelectorAll.
@@ -406,9 +407,9 @@ class Tab(Connection):
         return items
 
     async def query_selector(
-        self,
-        selector: str,
-        _node: Optional[Union[cdp.dom.Node, element.Element]] = None,
+            self,
+            selector: str,
+            _node: Optional[Union[cdp.dom.Node, element.Element]] = None,
     ):
         """
         find single element based on css selector string
@@ -455,9 +456,9 @@ class Tab(Connection):
         return element.create(node, self, doc)
 
     async def find_elements_by_text(
-        self,
-        text: str,
-        tag_hint: Optional[str] = None,
+            self,
+            text: str,
+            tag_hint: Optional[str] = None,
     ) -> List[element.Element]:
         """
         returns element which match the given text.
@@ -526,7 +527,7 @@ class Tab(Connection):
                     iframe_text_nodes = util.filter_recurse_all(
                         iframe_elem,
                         lambda node: node.node_type == 3  # noqa
-                        and text.lower() in node.node_value.lower(),
+                                     and text.lower() in node.node_value.lower(),
                     )
                     if iframe_text_nodes:
                         iframe_text_elems = [
@@ -540,10 +541,10 @@ class Tab(Connection):
         return items or []
 
     async def find_element_by_text(
-        self,
-        text: str,
-        best_match: Optional[bool] = False,
-        return_enclosing_element: Optional[bool] = True,
+            self,
+            text: str,
+            best_match: Optional[bool] = False,
+            return_enclosing_element: Optional[bool] = True,
     ) -> Union[element.Element, None]:
         """
         finds and returns the first element containing <text>, or best match
@@ -606,7 +607,7 @@ class Tab(Connection):
                 iframe_text_nodes = util.filter_recurse_all(
                     iframe_elem,
                     lambda node: node.node_type == 3  # noqa
-                    and text.lower() in node.node_value.lower(),
+                                 and text.lower() in node.node_value.lower(),
                 )
                 if iframe_text_nodes:
                     iframe_text_elems = [
@@ -614,6 +615,7 @@ class Tab(Connection):
                         for text_node in iframe_text_nodes
                     ]
                     items.extend(text_node.parent for text_node in iframe_text_elems)
+
         try:
             if not items:
                 return
@@ -645,9 +647,9 @@ class Tab(Connection):
         await self.send(cdp.runtime.evaluate("window.history.forward()"))
 
     async def reload(
-        self,
-        ignore_cache: Optional[bool] = True,
-        script_to_evaluate_on_load: Optional[str] = None,
+            self,
+            ignore_cache: Optional[bool] = True,
+            script_to_evaluate_on_load: Optional[str] = None,
     ):
         """
         Reloads the page
@@ -667,7 +669,7 @@ class Tab(Connection):
         )
 
     async def evaluate(
-        self, expression: str, await_promise=False, return_by_value=True
+            self, expression: str, await_promise=False, return_by_value=True
     ):
         remote_object, errors = await self.send(
             cdp.runtime.evaluate(
@@ -690,7 +692,7 @@ class Tab(Connection):
                 return remote_object, errors
 
     async def js_dumps(
-        self, obj_name: str, return_by_value: Optional[bool] = True
+            self, obj_name: str, return_by_value: Optional[bool] = True
     ) -> typing.Union[
         typing.Dict,
         typing.Tuple[cdp.runtime.RemoteObject, cdp.runtime.ExceptionDetails],
@@ -732,109 +734,109 @@ class Tab(Connection):
             '
         """
         js_code_a = (
-            """
-                           function ___dump(obj, _d = 0) {
-                               let _typesA = ['object', 'function'];
-                               let _typesB = ['number', 'string', 'boolean'];
-                               if (_d == 2) {
-                                   console.log('maxdepth reached for ', obj);
-                                   return
-                               }
-                               let tmp = {}
-                               for (let k in obj) {
-                                   if (obj[k] == window) continue;
-                                   let v;
-                                   try {
-                                       if (obj[k] === null || obj[k] === undefined || obj[k] === NaN) {
-                                           console.log('obj[k] is null or undefined or Nan', k, '=>', obj[k])
-                                           tmp[k] = obj[k];
+                """
+                               function ___dump(obj, _d = 0) {
+                                   let _typesA = ['object', 'function'];
+                                   let _typesB = ['number', 'string', 'boolean'];
+                                   if (_d == 2) {
+                                       console.log('maxdepth reached for ', obj);
+                                       return
+                                   }
+                                   let tmp = {}
+                                   for (let k in obj) {
+                                       if (obj[k] == window) continue;
+                                       let v;
+                                       try {
+                                           if (obj[k] === null || obj[k] === undefined || obj[k] === NaN) {
+                                               console.log('obj[k] is null or undefined or Nan', k, '=>', obj[k])
+                                               tmp[k] = obj[k];
+                                               continue
+                                           }
+                                       } catch (e) {
+                                           tmp[k] = null;
                                            continue
                                        }
-                                   } catch (e) {
-                                       tmp[k] = null;
-                                       continue
-                                   }
-
-
-                                   if (_typesB.includes(typeof obj[k])) {
-                                       tmp[k] = obj[k]
-                                       continue
-                                   }
-
-                                   try {
-                                       if (typeof obj[k] === 'function') {
-                                           tmp[k] = obj[k].toString()
+    
+    
+                                       if (_typesB.includes(typeof obj[k])) {
+                                           tmp[k] = obj[k]
                                            continue
                                        }
-
-
-                                       if (typeof obj[k] === 'object') {
-                                           tmp[k] = ___dump(obj[k], _d + 1);
+    
+                                       try {
+                                           if (typeof obj[k] === 'function') {
+                                               tmp[k] = obj[k].toString()
+                                               continue
+                                           }
+    
+    
+                                           if (typeof obj[k] === 'object') {
+                                               tmp[k] = ___dump(obj[k], _d + 1);
+                                               continue
+                                           }
+    
+    
+                                       } catch (e) {}
+    
+                                       try {
+                                           tmp[k] = JSON.stringify(obj[k])
                                            continue
+                                       } catch (e) {
+    
                                        }
-
-
-                                   } catch (e) {}
-
-                                   try {
-                                       tmp[k] = JSON.stringify(obj[k])
-                                       continue
-                                   } catch (e) {
-
+                                       try {
+                                           tmp[k] = obj[k].toString();
+                                           continue
+                                       } catch (e) {}
                                    }
-                                   try {
-                                       tmp[k] = obj[k].toString();
-                                       continue
-                                   } catch (e) {}
+                                   return tmp
                                }
-                               return tmp
-                           }
-
-                           function ___dumpY(obj) {
-                               var objKeys = (obj) => {
-                                   var [target, result] = [obj, []];
-                                   while (target !== null) {
-                                       result = result.concat(Object.getOwnPropertyNames(target));
-                                       target = Object.getPrototypeOf(target);
+    
+                               function ___dumpY(obj) {
+                                   var objKeys = (obj) => {
+                                       var [target, result] = [obj, []];
+                                       while (target !== null) {
+                                           result = result.concat(Object.getOwnPropertyNames(target));
+                                           target = Object.getPrototypeOf(target);
+                                       }
+                                       return result;
                                    }
-                                   return result;
+                                   return Object.fromEntries(
+                                       objKeys(obj).map(_ => [_, ___dump(obj[_])]))
+    
                                }
-                               return Object.fromEntries(
-                                   objKeys(obj).map(_ => [_, ___dump(obj[_])]))
-
-                           }
-                           ___dumpY( %s )
-                   """
-            % obj_name
+                               ___dumpY( %s )
+                       """
+                % obj_name
         )
         js_code_b = (
-            """
-            ((obj, visited = new WeakSet()) => {
-                 if (visited.has(obj)) {
-                     return {}
-                 }
-                 visited.add(obj)
-                 var result = {}, _tmp;
-                 for (var i in obj) {
-                         try {
-                             if (i === 'enabledPlugin' || typeof obj[i] === 'function') {
-                                 continue;
-                             } else if (typeof obj[i] === 'object') {
-                                 _tmp = recurse(obj[i], visited);
-                                 if (Object.keys(_tmp).length) {
-                                     result[i] = _tmp;
-                                 }
-                             } else {
-                                 result[i] = obj[i];
-                             }
-                         } catch (error) {
-                             // console.error('Error:', error);
-                         }
+                """
+                ((obj, visited = new WeakSet()) => {
+                     if (visited.has(obj)) {
+                         return {}
                      }
-                return result;
-            })(%s)
-        """
-            % obj_name
+                     visited.add(obj)
+                     var result = {}, _tmp;
+                     for (var i in obj) {
+                             try {
+                                 if (i === 'enabledPlugin' || typeof obj[i] === 'function') {
+                                     continue;
+                                 } else if (typeof obj[i] === 'object') {
+                                     _tmp = recurse(obj[i], visited);
+                                     if (Object.keys(_tmp).length) {
+                                         result[i] = _tmp;
+                                     }
+                                 } else {
+                                     result[i] = obj[i];
+                                 }
+                             } catch (error) {
+                                 // console.error('Error:', error);
+                             }
+                         }
+                    return result;
+                })(%s)
+            """
+                % obj_name
         )
 
         # we're purposely not calling self.evaluate here to prevent infinite loop on certain expressions
@@ -848,7 +850,6 @@ class Tab(Connection):
             )
         )
         if exception_details:
-
             # try second variant
 
             remote_object, exception_details = await self.send(
@@ -950,7 +951,7 @@ class Tab(Connection):
         await self.activate()
 
     async def set_window_state(
-        self, left=0, top=0, width=1280, height=720, state="normal"
+            self, left=0, top=0, width=1280, height=720, state="normal"
     ):
         """
         sets the window size or state.
@@ -1064,10 +1065,10 @@ class Tab(Connection):
         )
 
     async def wait_for(
-        self,
-        selector: Optional[str] = "",
-        text: Optional[str] = "",
-        timeout: Optional[Union[int, float]] = 10,
+            self,
+            selector: Optional[str] = "",
+            text: Optional[str] = "",
+            timeout: Optional[Union[int, float]] = 10,
     ) -> element.Element:
         """
         variant on query_selector_all and find_elements_by_text
@@ -1171,10 +1172,10 @@ class Tab(Connection):
         )
 
     async def save_screenshot(
-        self,
-        filename: Optional[PathLike] = "auto",
-        format: Optional[str] = "jpeg",
-        full_page: Optional[bool] = False,
+            self,
+            filename: Optional[PathLike] = "auto",
+            format: Optional[str] = "jpeg",
+            full_page: Optional[bool] = False,
     ) -> str:
         """
         Saves a screenshot of the page.
@@ -1190,8 +1191,8 @@ class Tab(Connection):
         :rtype: str
         """
         # noqa
-        import urllib.parse
         import datetime
+        import urllib.parse
 
         await self.sleep()  # update the target's url
         path = None
@@ -1356,10 +1357,10 @@ class Tab(Connection):
         )
 
     def __call__(
-        self,
-        text: Optional[str] = "",
-        selector: Optional[str] = "",
-        timeout: Optional[Union[int, float]] = 10,
+            self,
+            text: Optional[str] = "",
+            selector: Optional[str] = "",
+            timeout: Optional[Union[int, float]] = 10,
     ):
         """
         alias to query_selector_all or find_elements_by_text, depending
@@ -1392,3 +1393,44 @@ class Tab(Connection):
             extra = f"[url: {self.target.url}]"
         s = f"<{type(self).__name__} [{self.target_id}] [{self.type_}] {extra}>"
         return s
+
+
+async def get_cf_label(tab: Tab):
+    """
+    ;temp1 = [...document.querySelectorAll('*')].filter( e => e.shadowRoot)?.[0].shadowRoot/.children[0].shadowRoot.children[0].contentDocument.children[0].children[1].shadowRoot.children[1].children[0].querySelector('label').click()
+    ;label = [...document.querySelectorAll('*')].filter( e => e.shadowRoot)?.[0].shadowRoot.children[0].contentDocument.children[0].children[1].shadowRoot.children[1].children[0].querySelector('label')
+    temp1.children[1].children[0].shadowRoot.children[0].contentDocument.children[0].children[1].shadowRoot.children[1].children[0].querySelector('label').click()
+    """
+    # candidates = [
+    #     f for f in
+    #     (await tab.find_all('iframe'))
+    #     if f.src and 'challenges' in f.src]
+    # candidate = candidates.pop()
+    # iframe = element.create(candidate.node, tab, candidate.node.content_document)
+    # shadows = util.filter_recurse_all(iframe.tree, lambda e: e.shadow_roots is not None)
+    # if shadows:
+    #     inner_shadows = [shadow.shadow_roots[0] for shadow in shadows]
+    #     elems = [
+    #         element.create(inner_shadow, tab) for inner_shadow in inner_shadows]
+    #     for elem in elems:
+    #         if elem.children[-1].children[-1].children[0].children[0].children[0].children[0]:
+    #             return elem
+    #     else:
+    #         return elems
+    return await tab.evaluate("""
+        [...document.querySelectorAll('*')].filter( e => e.shadowRoot)?.[0].shadowRoot.children[0].contentDocument.children[0].children[1].shadowRoot.children[1].children[0].querySelector('label')""", return_by_value=False)
+
+async def click_cf_label(tab: Tab):
+    obj, _ = await get_cf_label(tab)
+    if obj and obj.object_id:
+        arguments = [cdp.runtime.CallArgument(object_id=obj.object_id)]
+        return await tab.send(
+            cdp.runtime.call_function_on(
+                "(el) => el.click()",
+                object_id=obj.object_id,
+                arguments=arguments,
+                await_promise=True,
+                user_gesture=True,
+                return_by_value=True,
+            )
+        )

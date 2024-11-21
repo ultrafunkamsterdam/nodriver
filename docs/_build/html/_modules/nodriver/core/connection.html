@@ -180,6 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/audits.html">Audits</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/autofill.html">Autofill</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/background_service.html">BackgroundService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/bluetooth_emulation.html">BluetoothEmulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/browser.html">Browser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cache_storage.html">CacheStorage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
@@ -198,6 +199,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/extensions.html">Extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fed_cm.html">FedCm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/fetch.html">Fetch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/file_system.html">FileSystem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/headless_experimental.html">HeadlessExperimental</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/heap_profiler.html">HeapProfiler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/indexed_db.html">IndexedDB</a></li>
@@ -274,19 +276,12 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">types</span>
 <span class="kn">from</span> <span class="nn">asyncio</span> <span class="kn">import</span> <span class="n">iscoroutine</span><span class="p">,</span> <span class="n">iscoroutinefunction</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Generator</span><span class="p">,</span>
-    <span class="n">Union</span><span class="p">,</span>
-    <span class="n">Awaitable</span><span class="p">,</span>
-    <span class="n">Callable</span><span class="p">,</span>
-    <span class="n">Any</span><span class="p">,</span>
-    <span class="n">TypeVar</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Awaitable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">websockets</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">cdp</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
 
 <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
 
@@ -785,8 +780,10 @@
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_oneshot</span><span class="p">(</span>
                 <span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">add_script_to_evaluate_on_new_document</span><span class="p">(</span>
 <span class="w">                    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                    console.log(&quot;hooking attachShadow&quot;);</span>
 <span class="sd">                    Element.prototype._attachShadow = Element.prototype.attachShadow;</span>
 <span class="sd">                    Element.prototype.attachShadow = function () {</span>
+<span class="sd">                        console.log(&#39;calling hooked attachShadow&#39;)</span>
 <span class="sd">                        return this._attachShadow( { mode: &quot;open&quot; } );</span>
 <span class="sd">                    };</span>
 <span class="sd">                &quot;&quot;&quot;</span>

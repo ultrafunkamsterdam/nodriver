@@ -14,15 +14,14 @@ from .util import event_class, T_JSON_DICT
 from . import dom
 from . import dom_debugger
 from . import page
-from deprecated.sphinx import deprecated  # type: ignore
+from deprecated.sphinx import deprecated # type: ignore
 
 
 @dataclass
 class DOMNode:
-    """
+    '''
     A Node in the DOM tree.
-    """
-
+    '''
     #: ``Node``'s nodeType.
     node_type: int
 
@@ -114,198 +113,100 @@ class DOMNode:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["nodeType"] = self.node_type
-        json["nodeName"] = self.node_name
-        json["nodeValue"] = self.node_value
-        json["backendNodeId"] = self.backend_node_id.to_json()
+        json['nodeType'] = self.node_type
+        json['nodeName'] = self.node_name
+        json['nodeValue'] = self.node_value
+        json['backendNodeId'] = self.backend_node_id.to_json()
         if self.text_value is not None:
-            json["textValue"] = self.text_value
+            json['textValue'] = self.text_value
         if self.input_value is not None:
-            json["inputValue"] = self.input_value
+            json['inputValue'] = self.input_value
         if self.input_checked is not None:
-            json["inputChecked"] = self.input_checked
+            json['inputChecked'] = self.input_checked
         if self.option_selected is not None:
-            json["optionSelected"] = self.option_selected
+            json['optionSelected'] = self.option_selected
         if self.child_node_indexes is not None:
-            json["childNodeIndexes"] = [i for i in self.child_node_indexes]
+            json['childNodeIndexes'] = [i for i in self.child_node_indexes]
         if self.attributes is not None:
-            json["attributes"] = [i.to_json() for i in self.attributes]
+            json['attributes'] = [i.to_json() for i in self.attributes]
         if self.pseudo_element_indexes is not None:
-            json["pseudoElementIndexes"] = [i for i in self.pseudo_element_indexes]
+            json['pseudoElementIndexes'] = [i for i in self.pseudo_element_indexes]
         if self.layout_node_index is not None:
-            json["layoutNodeIndex"] = self.layout_node_index
+            json['layoutNodeIndex'] = self.layout_node_index
         if self.document_url is not None:
-            json["documentURL"] = self.document_url
+            json['documentURL'] = self.document_url
         if self.base_url is not None:
-            json["baseURL"] = self.base_url
+            json['baseURL'] = self.base_url
         if self.content_language is not None:
-            json["contentLanguage"] = self.content_language
+            json['contentLanguage'] = self.content_language
         if self.document_encoding is not None:
-            json["documentEncoding"] = self.document_encoding
+            json['documentEncoding'] = self.document_encoding
         if self.public_id is not None:
-            json["publicId"] = self.public_id
+            json['publicId'] = self.public_id
         if self.system_id is not None:
-            json["systemId"] = self.system_id
+            json['systemId'] = self.system_id
         if self.frame_id is not None:
-            json["frameId"] = self.frame_id.to_json()
+            json['frameId'] = self.frame_id.to_json()
         if self.content_document_index is not None:
-            json["contentDocumentIndex"] = self.content_document_index
+            json['contentDocumentIndex'] = self.content_document_index
         if self.pseudo_type is not None:
-            json["pseudoType"] = self.pseudo_type.to_json()
+            json['pseudoType'] = self.pseudo_type.to_json()
         if self.shadow_root_type is not None:
-            json["shadowRootType"] = self.shadow_root_type.to_json()
+            json['shadowRootType'] = self.shadow_root_type.to_json()
         if self.is_clickable is not None:
-            json["isClickable"] = self.is_clickable
+            json['isClickable'] = self.is_clickable
         if self.event_listeners is not None:
-            json["eventListeners"] = [i.to_json() for i in self.event_listeners]
+            json['eventListeners'] = [i.to_json() for i in self.event_listeners]
         if self.current_source_url is not None:
-            json["currentSourceURL"] = self.current_source_url
+            json['currentSourceURL'] = self.current_source_url
         if self.origin_url is not None:
-            json["originURL"] = self.origin_url
+            json['originURL'] = self.origin_url
         if self.scroll_offset_x is not None:
-            json["scrollOffsetX"] = self.scroll_offset_x
+            json['scrollOffsetX'] = self.scroll_offset_x
         if self.scroll_offset_y is not None:
-            json["scrollOffsetY"] = self.scroll_offset_y
+            json['scrollOffsetY'] = self.scroll_offset_y
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> DOMNode:
         return cls(
-            node_type=int(json["nodeType"]),
-            node_name=str(json["nodeName"]),
-            node_value=str(json["nodeValue"]),
-            backend_node_id=dom.BackendNodeId.from_json(json["backendNodeId"]),
-            text_value=(
-                str(json["textValue"])
-                if json.get("textValue", None) is not None
-                else None
-            ),
-            input_value=(
-                str(json["inputValue"])
-                if json.get("inputValue", None) is not None
-                else None
-            ),
-            input_checked=(
-                bool(json["inputChecked"])
-                if json.get("inputChecked", None) is not None
-                else None
-            ),
-            option_selected=(
-                bool(json["optionSelected"])
-                if json.get("optionSelected", None) is not None
-                else None
-            ),
-            child_node_indexes=(
-                [int(i) for i in json["childNodeIndexes"]]
-                if json.get("childNodeIndexes", None) is not None
-                else None
-            ),
-            attributes=(
-                [NameValue.from_json(i) for i in json["attributes"]]
-                if json.get("attributes", None) is not None
-                else None
-            ),
-            pseudo_element_indexes=(
-                [int(i) for i in json["pseudoElementIndexes"]]
-                if json.get("pseudoElementIndexes", None) is not None
-                else None
-            ),
-            layout_node_index=(
-                int(json["layoutNodeIndex"])
-                if json.get("layoutNodeIndex", None) is not None
-                else None
-            ),
-            document_url=(
-                str(json["documentURL"])
-                if json.get("documentURL", None) is not None
-                else None
-            ),
-            base_url=(
-                str(json["baseURL"]) if json.get("baseURL", None) is not None else None
-            ),
-            content_language=(
-                str(json["contentLanguage"])
-                if json.get("contentLanguage", None) is not None
-                else None
-            ),
-            document_encoding=(
-                str(json["documentEncoding"])
-                if json.get("documentEncoding", None) is not None
-                else None
-            ),
-            public_id=(
-                str(json["publicId"])
-                if json.get("publicId", None) is not None
-                else None
-            ),
-            system_id=(
-                str(json["systemId"])
-                if json.get("systemId", None) is not None
-                else None
-            ),
-            frame_id=(
-                page.FrameId.from_json(json["frameId"])
-                if json.get("frameId", None) is not None
-                else None
-            ),
-            content_document_index=(
-                int(json["contentDocumentIndex"])
-                if json.get("contentDocumentIndex", None) is not None
-                else None
-            ),
-            pseudo_type=(
-                dom.PseudoType.from_json(json["pseudoType"])
-                if json.get("pseudoType", None) is not None
-                else None
-            ),
-            shadow_root_type=(
-                dom.ShadowRootType.from_json(json["shadowRootType"])
-                if json.get("shadowRootType", None) is not None
-                else None
-            ),
-            is_clickable=(
-                bool(json["isClickable"])
-                if json.get("isClickable", None) is not None
-                else None
-            ),
-            event_listeners=(
-                [
-                    dom_debugger.EventListener.from_json(i)
-                    for i in json["eventListeners"]
-                ]
-                if json.get("eventListeners", None) is not None
-                else None
-            ),
-            current_source_url=(
-                str(json["currentSourceURL"])
-                if json.get("currentSourceURL", None) is not None
-                else None
-            ),
-            origin_url=(
-                str(json["originURL"])
-                if json.get("originURL", None) is not None
-                else None
-            ),
-            scroll_offset_x=(
-                float(json["scrollOffsetX"])
-                if json.get("scrollOffsetX", None) is not None
-                else None
-            ),
-            scroll_offset_y=(
-                float(json["scrollOffsetY"])
-                if json.get("scrollOffsetY", None) is not None
-                else None
-            ),
+            node_type=int(json['nodeType']),
+            node_name=str(json['nodeName']),
+            node_value=str(json['nodeValue']),
+            backend_node_id=dom.BackendNodeId.from_json(json['backendNodeId']),
+            text_value=str(json['textValue']) if json.get('textValue', None) is not None else None,
+            input_value=str(json['inputValue']) if json.get('inputValue', None) is not None else None,
+            input_checked=bool(json['inputChecked']) if json.get('inputChecked', None) is not None else None,
+            option_selected=bool(json['optionSelected']) if json.get('optionSelected', None) is not None else None,
+            child_node_indexes=[int(i) for i in json['childNodeIndexes']] if json.get('childNodeIndexes', None) is not None else None,
+            attributes=[NameValue.from_json(i) for i in json['attributes']] if json.get('attributes', None) is not None else None,
+            pseudo_element_indexes=[int(i) for i in json['pseudoElementIndexes']] if json.get('pseudoElementIndexes', None) is not None else None,
+            layout_node_index=int(json['layoutNodeIndex']) if json.get('layoutNodeIndex', None) is not None else None,
+            document_url=str(json['documentURL']) if json.get('documentURL', None) is not None else None,
+            base_url=str(json['baseURL']) if json.get('baseURL', None) is not None else None,
+            content_language=str(json['contentLanguage']) if json.get('contentLanguage', None) is not None else None,
+            document_encoding=str(json['documentEncoding']) if json.get('documentEncoding', None) is not None else None,
+            public_id=str(json['publicId']) if json.get('publicId', None) is not None else None,
+            system_id=str(json['systemId']) if json.get('systemId', None) is not None else None,
+            frame_id=page.FrameId.from_json(json['frameId']) if json.get('frameId', None) is not None else None,
+            content_document_index=int(json['contentDocumentIndex']) if json.get('contentDocumentIndex', None) is not None else None,
+            pseudo_type=dom.PseudoType.from_json(json['pseudoType']) if json.get('pseudoType', None) is not None else None,
+            shadow_root_type=dom.ShadowRootType.from_json(json['shadowRootType']) if json.get('shadowRootType', None) is not None else None,
+            is_clickable=bool(json['isClickable']) if json.get('isClickable', None) is not None else None,
+            event_listeners=[dom_debugger.EventListener.from_json(i) for i in json['eventListeners']] if json.get('eventListeners', None) is not None else None,
+            current_source_url=str(json['currentSourceURL']) if json.get('currentSourceURL', None) is not None else None,
+            origin_url=str(json['originURL']) if json.get('originURL', None) is not None else None,
+            scroll_offset_x=float(json['scrollOffsetX']) if json.get('scrollOffsetX', None) is not None else None,
+            scroll_offset_y=float(json['scrollOffsetY']) if json.get('scrollOffsetY', None) is not None else None,
         )
 
 
 @dataclass
 class InlineTextBox:
-    """
+    '''
     Details of post layout rendered text positions. The exact layout should not be regarded as
     stable and may change between versions.
-    """
-
+    '''
     #: The bounding box in document coordinates. Note that scroll offset of the document is ignored.
     bounding_box: dom.Rect
 
@@ -319,26 +220,25 @@ class InlineTextBox:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["boundingBox"] = self.bounding_box.to_json()
-        json["startCharacterIndex"] = self.start_character_index
-        json["numCharacters"] = self.num_characters
+        json['boundingBox'] = self.bounding_box.to_json()
+        json['startCharacterIndex'] = self.start_character_index
+        json['numCharacters'] = self.num_characters
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> InlineTextBox:
         return cls(
-            bounding_box=dom.Rect.from_json(json["boundingBox"]),
-            start_character_index=int(json["startCharacterIndex"]),
-            num_characters=int(json["numCharacters"]),
+            bounding_box=dom.Rect.from_json(json['boundingBox']),
+            start_character_index=int(json['startCharacterIndex']),
+            num_characters=int(json['numCharacters']),
         )
 
 
 @dataclass
 class LayoutTreeNode:
-    """
+    '''
     Details of an element in the DOM tree with a LayoutObject.
-    """
-
+    '''
     #: The index of the related DOM node in the ``domNodes`` array returned by ``getSnapshot``.
     dom_node_index: int
 
@@ -364,80 +264,58 @@ class LayoutTreeNode:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["domNodeIndex"] = self.dom_node_index
-        json["boundingBox"] = self.bounding_box.to_json()
+        json['domNodeIndex'] = self.dom_node_index
+        json['boundingBox'] = self.bounding_box.to_json()
         if self.layout_text is not None:
-            json["layoutText"] = self.layout_text
+            json['layoutText'] = self.layout_text
         if self.inline_text_nodes is not None:
-            json["inlineTextNodes"] = [i.to_json() for i in self.inline_text_nodes]
+            json['inlineTextNodes'] = [i.to_json() for i in self.inline_text_nodes]
         if self.style_index is not None:
-            json["styleIndex"] = self.style_index
+            json['styleIndex'] = self.style_index
         if self.paint_order is not None:
-            json["paintOrder"] = self.paint_order
+            json['paintOrder'] = self.paint_order
         if self.is_stacking_context is not None:
-            json["isStackingContext"] = self.is_stacking_context
+            json['isStackingContext'] = self.is_stacking_context
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> LayoutTreeNode:
         return cls(
-            dom_node_index=int(json["domNodeIndex"]),
-            bounding_box=dom.Rect.from_json(json["boundingBox"]),
-            layout_text=(
-                str(json["layoutText"])
-                if json.get("layoutText", None) is not None
-                else None
-            ),
-            inline_text_nodes=(
-                [InlineTextBox.from_json(i) for i in json["inlineTextNodes"]]
-                if json.get("inlineTextNodes", None) is not None
-                else None
-            ),
-            style_index=(
-                int(json["styleIndex"])
-                if json.get("styleIndex", None) is not None
-                else None
-            ),
-            paint_order=(
-                int(json["paintOrder"])
-                if json.get("paintOrder", None) is not None
-                else None
-            ),
-            is_stacking_context=(
-                bool(json["isStackingContext"])
-                if json.get("isStackingContext", None) is not None
-                else None
-            ),
+            dom_node_index=int(json['domNodeIndex']),
+            bounding_box=dom.Rect.from_json(json['boundingBox']),
+            layout_text=str(json['layoutText']) if json.get('layoutText', None) is not None else None,
+            inline_text_nodes=[InlineTextBox.from_json(i) for i in json['inlineTextNodes']] if json.get('inlineTextNodes', None) is not None else None,
+            style_index=int(json['styleIndex']) if json.get('styleIndex', None) is not None else None,
+            paint_order=int(json['paintOrder']) if json.get('paintOrder', None) is not None else None,
+            is_stacking_context=bool(json['isStackingContext']) if json.get('isStackingContext', None) is not None else None,
         )
 
 
 @dataclass
 class ComputedStyle:
-    """
+    '''
     A subset of the full ComputedStyle as defined by the request whitelist.
-    """
-
+    '''
     #: Name/value pairs of computed style properties.
     properties: typing.List[NameValue]
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["properties"] = [i.to_json() for i in self.properties]
+        json['properties'] = [i.to_json() for i in self.properties]
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ComputedStyle:
         return cls(
-            properties=[NameValue.from_json(i) for i in json["properties"]],
+            properties=[NameValue.from_json(i) for i in json['properties']],
         )
 
 
 @dataclass
 class NameValue:
-    """
+    '''
     A name/value pair.
-    """
-
+    '''
     #: Attribute/property name.
     name: str
 
@@ -446,23 +324,22 @@ class NameValue:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["name"] = self.name
-        json["value"] = self.value
+        json['name'] = self.name
+        json['value'] = self.value
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> NameValue:
         return cls(
-            name=str(json["name"]),
-            value=str(json["value"]),
+            name=str(json['name']),
+            value=str(json['value']),
         )
 
 
 class StringIndex(int):
-    """
+    '''
     Index of the string in the strings table.
-    """
-
+    '''
     def to_json(self) -> int:
         return self
 
@@ -471,14 +348,13 @@ class StringIndex(int):
         return cls(json)
 
     def __repr__(self):
-        return "StringIndex({})".format(super().__repr__())
+        return 'StringIndex({})'.format(super().__repr__())
 
 
 class ArrayOfStrings(list):
-    """
+    '''
     Index of the string in the strings table.
-    """
-
+    '''
     def to_json(self) -> typing.List[StringIndex]:
         return self
 
@@ -487,30 +363,29 @@ class ArrayOfStrings(list):
         return cls(json)
 
     def __repr__(self):
-        return "ArrayOfStrings({})".format(super().__repr__())
+        return 'ArrayOfStrings({})'.format(super().__repr__())
 
 
 @dataclass
 class RareStringData:
-    """
+    '''
     Data that is only present on rare nodes.
-    """
-
+    '''
     index: typing.List[int]
 
     value: typing.List[StringIndex]
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["index"] = [i for i in self.index]
-        json["value"] = [i.to_json() for i in self.value]
+        json['index'] = [i for i in self.index]
+        json['value'] = [i.to_json() for i in self.value]
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> RareStringData:
         return cls(
-            index=[int(i) for i in json["index"]],
-            value=[StringIndex.from_json(i) for i in json["value"]],
+            index=[int(i) for i in json['index']],
+            value=[StringIndex.from_json(i) for i in json['value']],
         )
 
 
@@ -520,13 +395,13 @@ class RareBooleanData:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["index"] = [i for i in self.index]
+        json['index'] = [i for i in self.index]
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> RareBooleanData:
         return cls(
-            index=[int(i) for i in json["index"]],
+            index=[int(i) for i in json['index']],
         )
 
 
@@ -538,15 +413,15 @@ class RareIntegerData:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["index"] = [i for i in self.index]
-        json["value"] = [i for i in self.value]
+        json['index'] = [i for i in self.index]
+        json['value'] = [i for i in self.value]
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> RareIntegerData:
         return cls(
-            index=[int(i) for i in json["index"]],
-            value=[int(i) for i in json["value"]],
+            index=[int(i) for i in json['index']],
+            value=[int(i) for i in json['value']],
         )
 
 
@@ -559,15 +434,14 @@ class Rectangle(list):
         return cls(json)
 
     def __repr__(self):
-        return "Rectangle({})".format(super().__repr__())
+        return 'Rectangle({})'.format(super().__repr__())
 
 
 @dataclass
 class DocumentSnapshot:
-    """
+    '''
     Document snapshot.
-    """
-
+    '''
     #: Document URL that ``Document`` or ``FrameOwner`` node points to.
     document_url: StringIndex
 
@@ -615,70 +489,53 @@ class DocumentSnapshot:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["documentURL"] = self.document_url.to_json()
-        json["title"] = self.title.to_json()
-        json["baseURL"] = self.base_url.to_json()
-        json["contentLanguage"] = self.content_language.to_json()
-        json["encodingName"] = self.encoding_name.to_json()
-        json["publicId"] = self.public_id.to_json()
-        json["systemId"] = self.system_id.to_json()
-        json["frameId"] = self.frame_id.to_json()
-        json["nodes"] = self.nodes.to_json()
-        json["layout"] = self.layout.to_json()
-        json["textBoxes"] = self.text_boxes.to_json()
+        json['documentURL'] = self.document_url.to_json()
+        json['title'] = self.title.to_json()
+        json['baseURL'] = self.base_url.to_json()
+        json['contentLanguage'] = self.content_language.to_json()
+        json['encodingName'] = self.encoding_name.to_json()
+        json['publicId'] = self.public_id.to_json()
+        json['systemId'] = self.system_id.to_json()
+        json['frameId'] = self.frame_id.to_json()
+        json['nodes'] = self.nodes.to_json()
+        json['layout'] = self.layout.to_json()
+        json['textBoxes'] = self.text_boxes.to_json()
         if self.scroll_offset_x is not None:
-            json["scrollOffsetX"] = self.scroll_offset_x
+            json['scrollOffsetX'] = self.scroll_offset_x
         if self.scroll_offset_y is not None:
-            json["scrollOffsetY"] = self.scroll_offset_y
+            json['scrollOffsetY'] = self.scroll_offset_y
         if self.content_width is not None:
-            json["contentWidth"] = self.content_width
+            json['contentWidth'] = self.content_width
         if self.content_height is not None:
-            json["contentHeight"] = self.content_height
+            json['contentHeight'] = self.content_height
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> DocumentSnapshot:
         return cls(
-            document_url=StringIndex.from_json(json["documentURL"]),
-            title=StringIndex.from_json(json["title"]),
-            base_url=StringIndex.from_json(json["baseURL"]),
-            content_language=StringIndex.from_json(json["contentLanguage"]),
-            encoding_name=StringIndex.from_json(json["encodingName"]),
-            public_id=StringIndex.from_json(json["publicId"]),
-            system_id=StringIndex.from_json(json["systemId"]),
-            frame_id=StringIndex.from_json(json["frameId"]),
-            nodes=NodeTreeSnapshot.from_json(json["nodes"]),
-            layout=LayoutTreeSnapshot.from_json(json["layout"]),
-            text_boxes=TextBoxSnapshot.from_json(json["textBoxes"]),
-            scroll_offset_x=(
-                float(json["scrollOffsetX"])
-                if json.get("scrollOffsetX", None) is not None
-                else None
-            ),
-            scroll_offset_y=(
-                float(json["scrollOffsetY"])
-                if json.get("scrollOffsetY", None) is not None
-                else None
-            ),
-            content_width=(
-                float(json["contentWidth"])
-                if json.get("contentWidth", None) is not None
-                else None
-            ),
-            content_height=(
-                float(json["contentHeight"])
-                if json.get("contentHeight", None) is not None
-                else None
-            ),
+            document_url=StringIndex.from_json(json['documentURL']),
+            title=StringIndex.from_json(json['title']),
+            base_url=StringIndex.from_json(json['baseURL']),
+            content_language=StringIndex.from_json(json['contentLanguage']),
+            encoding_name=StringIndex.from_json(json['encodingName']),
+            public_id=StringIndex.from_json(json['publicId']),
+            system_id=StringIndex.from_json(json['systemId']),
+            frame_id=StringIndex.from_json(json['frameId']),
+            nodes=NodeTreeSnapshot.from_json(json['nodes']),
+            layout=LayoutTreeSnapshot.from_json(json['layout']),
+            text_boxes=TextBoxSnapshot.from_json(json['textBoxes']),
+            scroll_offset_x=float(json['scrollOffsetX']) if json.get('scrollOffsetX', None) is not None else None,
+            scroll_offset_y=float(json['scrollOffsetY']) if json.get('scrollOffsetY', None) is not None else None,
+            content_width=float(json['contentWidth']) if json.get('contentWidth', None) is not None else None,
+            content_height=float(json['contentHeight']) if json.get('contentHeight', None) is not None else None,
         )
 
 
 @dataclass
 class NodeTreeSnapshot:
-    """
+    '''
     Table containing nodes.
-    """
-
+    '''
     #: Parent node index.
     parent_index: typing.Optional[typing.List[int]] = None
 
@@ -736,138 +593,69 @@ class NodeTreeSnapshot:
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         if self.parent_index is not None:
-            json["parentIndex"] = [i for i in self.parent_index]
+            json['parentIndex'] = [i for i in self.parent_index]
         if self.node_type is not None:
-            json["nodeType"] = [i for i in self.node_type]
+            json['nodeType'] = [i for i in self.node_type]
         if self.shadow_root_type is not None:
-            json["shadowRootType"] = self.shadow_root_type.to_json()
+            json['shadowRootType'] = self.shadow_root_type.to_json()
         if self.node_name is not None:
-            json["nodeName"] = [i.to_json() for i in self.node_name]
+            json['nodeName'] = [i.to_json() for i in self.node_name]
         if self.node_value is not None:
-            json["nodeValue"] = [i.to_json() for i in self.node_value]
+            json['nodeValue'] = [i.to_json() for i in self.node_value]
         if self.backend_node_id is not None:
-            json["backendNodeId"] = [i.to_json() for i in self.backend_node_id]
+            json['backendNodeId'] = [i.to_json() for i in self.backend_node_id]
         if self.attributes is not None:
-            json["attributes"] = [i.to_json() for i in self.attributes]
+            json['attributes'] = [i.to_json() for i in self.attributes]
         if self.text_value is not None:
-            json["textValue"] = self.text_value.to_json()
+            json['textValue'] = self.text_value.to_json()
         if self.input_value is not None:
-            json["inputValue"] = self.input_value.to_json()
+            json['inputValue'] = self.input_value.to_json()
         if self.input_checked is not None:
-            json["inputChecked"] = self.input_checked.to_json()
+            json['inputChecked'] = self.input_checked.to_json()
         if self.option_selected is not None:
-            json["optionSelected"] = self.option_selected.to_json()
+            json['optionSelected'] = self.option_selected.to_json()
         if self.content_document_index is not None:
-            json["contentDocumentIndex"] = self.content_document_index.to_json()
+            json['contentDocumentIndex'] = self.content_document_index.to_json()
         if self.pseudo_type is not None:
-            json["pseudoType"] = self.pseudo_type.to_json()
+            json['pseudoType'] = self.pseudo_type.to_json()
         if self.pseudo_identifier is not None:
-            json["pseudoIdentifier"] = self.pseudo_identifier.to_json()
+            json['pseudoIdentifier'] = self.pseudo_identifier.to_json()
         if self.is_clickable is not None:
-            json["isClickable"] = self.is_clickable.to_json()
+            json['isClickable'] = self.is_clickable.to_json()
         if self.current_source_url is not None:
-            json["currentSourceURL"] = self.current_source_url.to_json()
+            json['currentSourceURL'] = self.current_source_url.to_json()
         if self.origin_url is not None:
-            json["originURL"] = self.origin_url.to_json()
+            json['originURL'] = self.origin_url.to_json()
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> NodeTreeSnapshot:
         return cls(
-            parent_index=(
-                [int(i) for i in json["parentIndex"]]
-                if json.get("parentIndex", None) is not None
-                else None
-            ),
-            node_type=(
-                [int(i) for i in json["nodeType"]]
-                if json.get("nodeType", None) is not None
-                else None
-            ),
-            shadow_root_type=(
-                RareStringData.from_json(json["shadowRootType"])
-                if json.get("shadowRootType", None) is not None
-                else None
-            ),
-            node_name=(
-                [StringIndex.from_json(i) for i in json["nodeName"]]
-                if json.get("nodeName", None) is not None
-                else None
-            ),
-            node_value=(
-                [StringIndex.from_json(i) for i in json["nodeValue"]]
-                if json.get("nodeValue", None) is not None
-                else None
-            ),
-            backend_node_id=(
-                [dom.BackendNodeId.from_json(i) for i in json["backendNodeId"]]
-                if json.get("backendNodeId", None) is not None
-                else None
-            ),
-            attributes=(
-                [ArrayOfStrings.from_json(i) for i in json["attributes"]]
-                if json.get("attributes", None) is not None
-                else None
-            ),
-            text_value=(
-                RareStringData.from_json(json["textValue"])
-                if json.get("textValue", None) is not None
-                else None
-            ),
-            input_value=(
-                RareStringData.from_json(json["inputValue"])
-                if json.get("inputValue", None) is not None
-                else None
-            ),
-            input_checked=(
-                RareBooleanData.from_json(json["inputChecked"])
-                if json.get("inputChecked", None) is not None
-                else None
-            ),
-            option_selected=(
-                RareBooleanData.from_json(json["optionSelected"])
-                if json.get("optionSelected", None) is not None
-                else None
-            ),
-            content_document_index=(
-                RareIntegerData.from_json(json["contentDocumentIndex"])
-                if json.get("contentDocumentIndex", None) is not None
-                else None
-            ),
-            pseudo_type=(
-                RareStringData.from_json(json["pseudoType"])
-                if json.get("pseudoType", None) is not None
-                else None
-            ),
-            pseudo_identifier=(
-                RareStringData.from_json(json["pseudoIdentifier"])
-                if json.get("pseudoIdentifier", None) is not None
-                else None
-            ),
-            is_clickable=(
-                RareBooleanData.from_json(json["isClickable"])
-                if json.get("isClickable", None) is not None
-                else None
-            ),
-            current_source_url=(
-                RareStringData.from_json(json["currentSourceURL"])
-                if json.get("currentSourceURL", None) is not None
-                else None
-            ),
-            origin_url=(
-                RareStringData.from_json(json["originURL"])
-                if json.get("originURL", None) is not None
-                else None
-            ),
+            parent_index=[int(i) for i in json['parentIndex']] if json.get('parentIndex', None) is not None else None,
+            node_type=[int(i) for i in json['nodeType']] if json.get('nodeType', None) is not None else None,
+            shadow_root_type=RareStringData.from_json(json['shadowRootType']) if json.get('shadowRootType', None) is not None else None,
+            node_name=[StringIndex.from_json(i) for i in json['nodeName']] if json.get('nodeName', None) is not None else None,
+            node_value=[StringIndex.from_json(i) for i in json['nodeValue']] if json.get('nodeValue', None) is not None else None,
+            backend_node_id=[dom.BackendNodeId.from_json(i) for i in json['backendNodeId']] if json.get('backendNodeId', None) is not None else None,
+            attributes=[ArrayOfStrings.from_json(i) for i in json['attributes']] if json.get('attributes', None) is not None else None,
+            text_value=RareStringData.from_json(json['textValue']) if json.get('textValue', None) is not None else None,
+            input_value=RareStringData.from_json(json['inputValue']) if json.get('inputValue', None) is not None else None,
+            input_checked=RareBooleanData.from_json(json['inputChecked']) if json.get('inputChecked', None) is not None else None,
+            option_selected=RareBooleanData.from_json(json['optionSelected']) if json.get('optionSelected', None) is not None else None,
+            content_document_index=RareIntegerData.from_json(json['contentDocumentIndex']) if json.get('contentDocumentIndex', None) is not None else None,
+            pseudo_type=RareStringData.from_json(json['pseudoType']) if json.get('pseudoType', None) is not None else None,
+            pseudo_identifier=RareStringData.from_json(json['pseudoIdentifier']) if json.get('pseudoIdentifier', None) is not None else None,
+            is_clickable=RareBooleanData.from_json(json['isClickable']) if json.get('isClickable', None) is not None else None,
+            current_source_url=RareStringData.from_json(json['currentSourceURL']) if json.get('currentSourceURL', None) is not None else None,
+            origin_url=RareStringData.from_json(json['originURL']) if json.get('originURL', None) is not None else None,
         )
 
 
 @dataclass
 class LayoutTreeSnapshot:
-    """
+    '''
     Table of details of an element in the DOM tree with a LayoutObject.
-    """
-
+    '''
     #: Index of the corresponding node in the ``NodeTreeSnapshot`` array returned by ``captureSnapshot``.
     node_index: typing.List[int]
 
@@ -905,75 +693,48 @@ class LayoutTreeSnapshot:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["nodeIndex"] = [i for i in self.node_index]
-        json["styles"] = [i.to_json() for i in self.styles]
-        json["bounds"] = [i.to_json() for i in self.bounds]
-        json["text"] = [i.to_json() for i in self.text]
-        json["stackingContexts"] = self.stacking_contexts.to_json()
+        json['nodeIndex'] = [i for i in self.node_index]
+        json['styles'] = [i.to_json() for i in self.styles]
+        json['bounds'] = [i.to_json() for i in self.bounds]
+        json['text'] = [i.to_json() for i in self.text]
+        json['stackingContexts'] = self.stacking_contexts.to_json()
         if self.paint_orders is not None:
-            json["paintOrders"] = [i for i in self.paint_orders]
+            json['paintOrders'] = [i for i in self.paint_orders]
         if self.offset_rects is not None:
-            json["offsetRects"] = [i.to_json() for i in self.offset_rects]
+            json['offsetRects'] = [i.to_json() for i in self.offset_rects]
         if self.scroll_rects is not None:
-            json["scrollRects"] = [i.to_json() for i in self.scroll_rects]
+            json['scrollRects'] = [i.to_json() for i in self.scroll_rects]
         if self.client_rects is not None:
-            json["clientRects"] = [i.to_json() for i in self.client_rects]
+            json['clientRects'] = [i.to_json() for i in self.client_rects]
         if self.blended_background_colors is not None:
-            json["blendedBackgroundColors"] = [
-                i.to_json() for i in self.blended_background_colors
-            ]
+            json['blendedBackgroundColors'] = [i.to_json() for i in self.blended_background_colors]
         if self.text_color_opacities is not None:
-            json["textColorOpacities"] = [i for i in self.text_color_opacities]
+            json['textColorOpacities'] = [i for i in self.text_color_opacities]
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> LayoutTreeSnapshot:
         return cls(
-            node_index=[int(i) for i in json["nodeIndex"]],
-            styles=[ArrayOfStrings.from_json(i) for i in json["styles"]],
-            bounds=[Rectangle.from_json(i) for i in json["bounds"]],
-            text=[StringIndex.from_json(i) for i in json["text"]],
-            stacking_contexts=RareBooleanData.from_json(json["stackingContexts"]),
-            paint_orders=(
-                [int(i) for i in json["paintOrders"]]
-                if json.get("paintOrders", None) is not None
-                else None
-            ),
-            offset_rects=(
-                [Rectangle.from_json(i) for i in json["offsetRects"]]
-                if json.get("offsetRects", None) is not None
-                else None
-            ),
-            scroll_rects=(
-                [Rectangle.from_json(i) for i in json["scrollRects"]]
-                if json.get("scrollRects", None) is not None
-                else None
-            ),
-            client_rects=(
-                [Rectangle.from_json(i) for i in json["clientRects"]]
-                if json.get("clientRects", None) is not None
-                else None
-            ),
-            blended_background_colors=(
-                [StringIndex.from_json(i) for i in json["blendedBackgroundColors"]]
-                if json.get("blendedBackgroundColors", None) is not None
-                else None
-            ),
-            text_color_opacities=(
-                [float(i) for i in json["textColorOpacities"]]
-                if json.get("textColorOpacities", None) is not None
-                else None
-            ),
+            node_index=[int(i) for i in json['nodeIndex']],
+            styles=[ArrayOfStrings.from_json(i) for i in json['styles']],
+            bounds=[Rectangle.from_json(i) for i in json['bounds']],
+            text=[StringIndex.from_json(i) for i in json['text']],
+            stacking_contexts=RareBooleanData.from_json(json['stackingContexts']),
+            paint_orders=[int(i) for i in json['paintOrders']] if json.get('paintOrders', None) is not None else None,
+            offset_rects=[Rectangle.from_json(i) for i in json['offsetRects']] if json.get('offsetRects', None) is not None else None,
+            scroll_rects=[Rectangle.from_json(i) for i in json['scrollRects']] if json.get('scrollRects', None) is not None else None,
+            client_rects=[Rectangle.from_json(i) for i in json['clientRects']] if json.get('clientRects', None) is not None else None,
+            blended_background_colors=[StringIndex.from_json(i) for i in json['blendedBackgroundColors']] if json.get('blendedBackgroundColors', None) is not None else None,
+            text_color_opacities=[float(i) for i in json['textColorOpacities']] if json.get('textColorOpacities', None) is not None else None,
         )
 
 
 @dataclass
 class TextBoxSnapshot:
-    """
+    '''
     Table of details of the post layout rendered text positions. The exact layout should not be regarded as
     stable and may change between versions.
-    """
-
+    '''
     #: Index of the layout tree node that owns this box collection.
     layout_index: typing.List[int]
 
@@ -990,56 +751,50 @@ class TextBoxSnapshot:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["layoutIndex"] = [i for i in self.layout_index]
-        json["bounds"] = [i.to_json() for i in self.bounds]
-        json["start"] = [i for i in self.start]
-        json["length"] = [i for i in self.length]
+        json['layoutIndex'] = [i for i in self.layout_index]
+        json['bounds'] = [i.to_json() for i in self.bounds]
+        json['start'] = [i for i in self.start]
+        json['length'] = [i for i in self.length]
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> TextBoxSnapshot:
         return cls(
-            layout_index=[int(i) for i in json["layoutIndex"]],
-            bounds=[Rectangle.from_json(i) for i in json["bounds"]],
-            start=[int(i) for i in json["start"]],
-            length=[int(i) for i in json["length"]],
+            layout_index=[int(i) for i in json['layoutIndex']],
+            bounds=[Rectangle.from_json(i) for i in json['bounds']],
+            start=[int(i) for i in json['start']],
+            length=[int(i) for i in json['length']],
         )
 
 
-def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def disable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Disables DOM snapshot agent for the given page.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "DOMSnapshot.disable",
+        'method': 'DOMSnapshot.disable',
     }
     json = yield cmd_dict
 
 
-def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def enable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Enables DOM snapshot agent for the given page.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "DOMSnapshot.enable",
+        'method': 'DOMSnapshot.enable',
     }
     json = yield cmd_dict
 
 
 @deprecated(version="1.3")
 def get_snapshot(
-    computed_style_whitelist: typing.List[str],
-    include_event_listeners: typing.Optional[bool] = None,
-    include_paint_order: typing.Optional[bool] = None,
-    include_user_agent_shadow_tree: typing.Optional[bool] = None,
-) -> typing.Generator[
-    T_JSON_DICT,
-    T_JSON_DICT,
-    typing.Tuple[
-        typing.List[DOMNode], typing.List[LayoutTreeNode], typing.List[ComputedStyle]
-    ],
-]:
-    """
+        computed_style_whitelist: typing.List[str],
+        include_event_listeners: typing.Optional[bool] = None,
+        include_paint_order: typing.Optional[bool] = None,
+        include_user_agent_shadow_tree: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[typing.List[DOMNode], typing.List[LayoutTreeNode], typing.List[ComputedStyle]]]:
+    '''
     Returns a document snapshot, including the full DOM tree of the root node (including iframes,
     template contents, and imported documents) in a flattened array, as well as layout and
     white-listed computed style information for the nodes. Shadow DOM in the returned DOM tree is
@@ -1056,39 +811,35 @@ def get_snapshot(
         0. **domNodes** - The nodes in the DOM tree. The DOMNode at index 0 corresponds to the root document.
         1. **layoutTreeNodes** - The nodes in the layout tree.
         2. **computedStyles** - Whitelisted ComputedStyle properties for each node in the layout tree.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["computedStyleWhitelist"] = [i for i in computed_style_whitelist]
+    params['computedStyleWhitelist'] = [i for i in computed_style_whitelist]
     if include_event_listeners is not None:
-        params["includeEventListeners"] = include_event_listeners
+        params['includeEventListeners'] = include_event_listeners
     if include_paint_order is not None:
-        params["includePaintOrder"] = include_paint_order
+        params['includePaintOrder'] = include_paint_order
     if include_user_agent_shadow_tree is not None:
-        params["includeUserAgentShadowTree"] = include_user_agent_shadow_tree
+        params['includeUserAgentShadowTree'] = include_user_agent_shadow_tree
     cmd_dict: T_JSON_DICT = {
-        "method": "DOMSnapshot.getSnapshot",
-        "params": params,
+        'method': 'DOMSnapshot.getSnapshot',
+        'params': params,
     }
     json = yield cmd_dict
     return (
-        [DOMNode.from_json(i) for i in json["domNodes"]],
-        [LayoutTreeNode.from_json(i) for i in json["layoutTreeNodes"]],
-        [ComputedStyle.from_json(i) for i in json["computedStyles"]],
+        [DOMNode.from_json(i) for i in json['domNodes']],
+        [LayoutTreeNode.from_json(i) for i in json['layoutTreeNodes']],
+        [ComputedStyle.from_json(i) for i in json['computedStyles']]
     )
 
 
 def capture_snapshot(
-    computed_styles: typing.List[str],
-    include_paint_order: typing.Optional[bool] = None,
-    include_dom_rects: typing.Optional[bool] = None,
-    include_blended_background_colors: typing.Optional[bool] = None,
-    include_text_color_opacities: typing.Optional[bool] = None,
-) -> typing.Generator[
-    T_JSON_DICT,
-    T_JSON_DICT,
-    typing.Tuple[typing.List[DocumentSnapshot], typing.List[str]],
-]:
-    """
+        computed_styles: typing.List[str],
+        include_paint_order: typing.Optional[bool] = None,
+        include_dom_rects: typing.Optional[bool] = None,
+        include_blended_background_colors: typing.Optional[bool] = None,
+        include_text_color_opacities: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[typing.List[DocumentSnapshot], typing.List[str]]]:
+    '''
     Returns a document snapshot, including the full DOM tree of the root node (including iframes,
     template contents, and imported documents) in a flattened array, as well as layout and
     white-listed computed style information for the nodes. Shadow DOM in the returned DOM tree is
@@ -1103,23 +854,23 @@ def capture_snapshot(
 
         0. **documents** - The nodes in the DOM tree. The DOMNode at index 0 corresponds to the root document.
         1. **strings** - Shared string table that all string properties refer to with indexes.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["computedStyles"] = [i for i in computed_styles]
+    params['computedStyles'] = [i for i in computed_styles]
     if include_paint_order is not None:
-        params["includePaintOrder"] = include_paint_order
+        params['includePaintOrder'] = include_paint_order
     if include_dom_rects is not None:
-        params["includeDOMRects"] = include_dom_rects
+        params['includeDOMRects'] = include_dom_rects
     if include_blended_background_colors is not None:
-        params["includeBlendedBackgroundColors"] = include_blended_background_colors
+        params['includeBlendedBackgroundColors'] = include_blended_background_colors
     if include_text_color_opacities is not None:
-        params["includeTextColorOpacities"] = include_text_color_opacities
+        params['includeTextColorOpacities'] = include_text_color_opacities
     cmd_dict: T_JSON_DICT = {
-        "method": "DOMSnapshot.captureSnapshot",
-        "params": params,
+        'method': 'DOMSnapshot.captureSnapshot',
+        'params': params,
     }
     json = yield cmd_dict
     return (
-        [DocumentSnapshot.from_json(i) for i in json["documents"]],
-        [str(i) for i in json["strings"]],
+        [DocumentSnapshot.from_json(i) for i in json['documents']],
+        [str(i) for i in json['strings']]
     )

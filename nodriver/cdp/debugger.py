@@ -12,14 +12,13 @@ from dataclasses import dataclass
 from .util import event_class, T_JSON_DICT
 
 from . import runtime
-from deprecated.sphinx import deprecated  # type: ignore
+from deprecated.sphinx import deprecated # type: ignore
 
 
 class BreakpointId(str):
-    """
+    '''
     Breakpoint identifier.
-    """
-
+    '''
     def to_json(self) -> str:
         return self
 
@@ -28,14 +27,13 @@ class BreakpointId(str):
         return cls(json)
 
     def __repr__(self):
-        return "BreakpointId({})".format(super().__repr__())
+        return 'BreakpointId({})'.format(super().__repr__())
 
 
 class CallFrameId(str):
-    """
+    '''
     Call frame identifier.
-    """
-
+    '''
     def to_json(self) -> str:
         return self
 
@@ -44,15 +42,14 @@ class CallFrameId(str):
         return cls(json)
 
     def __repr__(self):
-        return "CallFrameId({})".format(super().__repr__())
+        return 'CallFrameId({})'.format(super().__repr__())
 
 
 @dataclass
 class Location:
-    """
+    '''
     Location in the source code.
-    """
-
+    '''
     #: Script identifier as reported in the ``Debugger.scriptParsed``.
     script_id: runtime.ScriptId
 
@@ -64,55 +61,49 @@ class Location:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["scriptId"] = self.script_id.to_json()
-        json["lineNumber"] = self.line_number
+        json['scriptId'] = self.script_id.to_json()
+        json['lineNumber'] = self.line_number
         if self.column_number is not None:
-            json["columnNumber"] = self.column_number
+            json['columnNumber'] = self.column_number
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> Location:
         return cls(
-            script_id=runtime.ScriptId.from_json(json["scriptId"]),
-            line_number=int(json["lineNumber"]),
-            column_number=(
-                int(json["columnNumber"])
-                if json.get("columnNumber", None) is not None
-                else None
-            ),
+            script_id=runtime.ScriptId.from_json(json['scriptId']),
+            line_number=int(json['lineNumber']),
+            column_number=int(json['columnNumber']) if json.get('columnNumber', None) is not None else None,
         )
 
 
 @dataclass
 class ScriptPosition:
-    """
+    '''
     Location in the source code.
-    """
-
+    '''
     line_number: int
 
     column_number: int
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["lineNumber"] = self.line_number
-        json["columnNumber"] = self.column_number
+        json['lineNumber'] = self.line_number
+        json['columnNumber'] = self.column_number
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ScriptPosition:
         return cls(
-            line_number=int(json["lineNumber"]),
-            column_number=int(json["columnNumber"]),
+            line_number=int(json['lineNumber']),
+            column_number=int(json['columnNumber']),
         )
 
 
 @dataclass
 class LocationRange:
-    """
+    '''
     Location range within one script.
-    """
-
+    '''
     script_id: runtime.ScriptId
 
     start: ScriptPosition
@@ -121,26 +112,25 @@ class LocationRange:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["scriptId"] = self.script_id.to_json()
-        json["start"] = self.start.to_json()
-        json["end"] = self.end.to_json()
+        json['scriptId'] = self.script_id.to_json()
+        json['start'] = self.start.to_json()
+        json['end'] = self.end.to_json()
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> LocationRange:
         return cls(
-            script_id=runtime.ScriptId.from_json(json["scriptId"]),
-            start=ScriptPosition.from_json(json["start"]),
-            end=ScriptPosition.from_json(json["end"]),
+            script_id=runtime.ScriptId.from_json(json['scriptId']),
+            start=ScriptPosition.from_json(json['start']),
+            end=ScriptPosition.from_json(json['end']),
         )
 
 
 @dataclass
 class CallFrame:
-    """
+    '''
     JavaScript call frame. Array of call frames form the call stack.
-    """
-
+    '''
     #: Call frame identifier. This identifier is only valid while the virtual machine is paused.
     call_frame_id: CallFrameId
 
@@ -175,53 +165,40 @@ class CallFrame:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["callFrameId"] = self.call_frame_id.to_json()
-        json["functionName"] = self.function_name
-        json["location"] = self.location.to_json()
-        json["url"] = self.url
-        json["scopeChain"] = [i.to_json() for i in self.scope_chain]
-        json["this"] = self.this.to_json()
+        json['callFrameId'] = self.call_frame_id.to_json()
+        json['functionName'] = self.function_name
+        json['location'] = self.location.to_json()
+        json['url'] = self.url
+        json['scopeChain'] = [i.to_json() for i in self.scope_chain]
+        json['this'] = self.this.to_json()
         if self.function_location is not None:
-            json["functionLocation"] = self.function_location.to_json()
+            json['functionLocation'] = self.function_location.to_json()
         if self.return_value is not None:
-            json["returnValue"] = self.return_value.to_json()
+            json['returnValue'] = self.return_value.to_json()
         if self.can_be_restarted is not None:
-            json["canBeRestarted"] = self.can_be_restarted
+            json['canBeRestarted'] = self.can_be_restarted
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> CallFrame:
         return cls(
-            call_frame_id=CallFrameId.from_json(json["callFrameId"]),
-            function_name=str(json["functionName"]),
-            location=Location.from_json(json["location"]),
-            url=str(json["url"]),
-            scope_chain=[Scope.from_json(i) for i in json["scopeChain"]],
-            this=runtime.RemoteObject.from_json(json["this"]),
-            function_location=(
-                Location.from_json(json["functionLocation"])
-                if json.get("functionLocation", None) is not None
-                else None
-            ),
-            return_value=(
-                runtime.RemoteObject.from_json(json["returnValue"])
-                if json.get("returnValue", None) is not None
-                else None
-            ),
-            can_be_restarted=(
-                bool(json["canBeRestarted"])
-                if json.get("canBeRestarted", None) is not None
-                else None
-            ),
+            call_frame_id=CallFrameId.from_json(json['callFrameId']),
+            function_name=str(json['functionName']),
+            location=Location.from_json(json['location']),
+            url=str(json['url']),
+            scope_chain=[Scope.from_json(i) for i in json['scopeChain']],
+            this=runtime.RemoteObject.from_json(json['this']),
+            function_location=Location.from_json(json['functionLocation']) if json.get('functionLocation', None) is not None else None,
+            return_value=runtime.RemoteObject.from_json(json['returnValue']) if json.get('returnValue', None) is not None else None,
+            can_be_restarted=bool(json['canBeRestarted']) if json.get('canBeRestarted', None) is not None else None,
         )
 
 
 @dataclass
 class Scope:
-    """
+    '''
     Scope description.
-    """
-
+    '''
     #: Scope type.
     type_: str
 
@@ -240,41 +217,32 @@ class Scope:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["type"] = self.type_
-        json["object"] = self.object_.to_json()
+        json['type'] = self.type_
+        json['object'] = self.object_.to_json()
         if self.name is not None:
-            json["name"] = self.name
+            json['name'] = self.name
         if self.start_location is not None:
-            json["startLocation"] = self.start_location.to_json()
+            json['startLocation'] = self.start_location.to_json()
         if self.end_location is not None:
-            json["endLocation"] = self.end_location.to_json()
+            json['endLocation'] = self.end_location.to_json()
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> Scope:
         return cls(
-            type_=str(json["type"]),
-            object_=runtime.RemoteObject.from_json(json["object"]),
-            name=str(json["name"]) if json.get("name", None) is not None else None,
-            start_location=(
-                Location.from_json(json["startLocation"])
-                if json.get("startLocation", None) is not None
-                else None
-            ),
-            end_location=(
-                Location.from_json(json["endLocation"])
-                if json.get("endLocation", None) is not None
-                else None
-            ),
+            type_=str(json['type']),
+            object_=runtime.RemoteObject.from_json(json['object']),
+            name=str(json['name']) if json.get('name', None) is not None else None,
+            start_location=Location.from_json(json['startLocation']) if json.get('startLocation', None) is not None else None,
+            end_location=Location.from_json(json['endLocation']) if json.get('endLocation', None) is not None else None,
         )
 
 
 @dataclass
 class SearchMatch:
-    """
+    '''
     Search match for resource.
-    """
-
+    '''
     #: Line number in resource content.
     line_number: float
 
@@ -283,15 +251,15 @@ class SearchMatch:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["lineNumber"] = self.line_number
-        json["lineContent"] = self.line_content
+        json['lineNumber'] = self.line_number
+        json['lineContent'] = self.line_content
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> SearchMatch:
         return cls(
-            line_number=float(json["lineNumber"]),
-            line_content=str(json["lineContent"]),
+            line_number=float(json['lineNumber']),
+            line_content=str(json['lineContent']),
         )
 
 
@@ -310,25 +278,21 @@ class BreakLocation:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["scriptId"] = self.script_id.to_json()
-        json["lineNumber"] = self.line_number
+        json['scriptId'] = self.script_id.to_json()
+        json['lineNumber'] = self.line_number
         if self.column_number is not None:
-            json["columnNumber"] = self.column_number
+            json['columnNumber'] = self.column_number
         if self.type_ is not None:
-            json["type"] = self.type_
+            json['type'] = self.type_
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> BreakLocation:
         return cls(
-            script_id=runtime.ScriptId.from_json(json["scriptId"]),
-            line_number=int(json["lineNumber"]),
-            column_number=(
-                int(json["columnNumber"])
-                if json.get("columnNumber", None) is not None
-                else None
-            ),
-            type_=str(json["type"]) if json.get("type", None) is not None else None,
+            script_id=runtime.ScriptId.from_json(json['scriptId']),
+            line_number=int(json['lineNumber']),
+            column_number=int(json['columnNumber']) if json.get('columnNumber', None) is not None else None,
+            type_=str(json['type']) if json.get('type', None) is not None else None,
         )
 
 
@@ -342,23 +306,22 @@ class WasmDisassemblyChunk:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["lines"] = [i for i in self.lines]
-        json["bytecodeOffsets"] = [i for i in self.bytecode_offsets]
+        json['lines'] = [i for i in self.lines]
+        json['bytecodeOffsets'] = [i for i in self.bytecode_offsets]
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> WasmDisassemblyChunk:
         return cls(
-            lines=[str(i) for i in json["lines"]],
-            bytecode_offsets=[int(i) for i in json["bytecodeOffsets"]],
+            lines=[str(i) for i in json['lines']],
+            bytecode_offsets=[int(i) for i in json['bytecodeOffsets']],
         )
 
 
 class ScriptLanguage(enum.Enum):
-    """
+    '''
     Enum of possible script languages.
-    """
-
+    '''
     JAVA_SCRIPT = "JavaScript"
     WEB_ASSEMBLY = "WebAssembly"
 
@@ -372,10 +335,9 @@ class ScriptLanguage(enum.Enum):
 
 @dataclass
 class DebugSymbols:
-    """
+    '''
     Debug symbols available for a wasm script.
-    """
-
+    '''
     #: Type of the debug symbols.
     type_: str
 
@@ -384,90 +346,83 @@ class DebugSymbols:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["type"] = self.type_
+        json['type'] = self.type_
         if self.external_url is not None:
-            json["externalURL"] = self.external_url
+            json['externalURL'] = self.external_url
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> DebugSymbols:
         return cls(
-            type_=str(json["type"]),
-            external_url=(
-                str(json["externalURL"])
-                if json.get("externalURL", None) is not None
-                else None
-            ),
+            type_=str(json['type']),
+            external_url=str(json['externalURL']) if json.get('externalURL', None) is not None else None,
         )
 
 
 def continue_to_location(
-    location: Location, target_call_frames: typing.Optional[str] = None
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        location: Location,
+        target_call_frames: typing.Optional[str] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Continues execution until specific location is reached.
 
     :param location: Location to continue to.
     :param target_call_frames: *(Optional)*
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["location"] = location.to_json()
+    params['location'] = location.to_json()
     if target_call_frames is not None:
-        params["targetCallFrames"] = target_call_frames
+        params['targetCallFrames'] = target_call_frames
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.continueToLocation",
-        "params": params,
+        'method': 'Debugger.continueToLocation',
+        'params': params,
     }
     json = yield cmd_dict
 
 
-def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def disable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Disables debugger for given page.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.disable",
+        'method': 'Debugger.disable',
     }
     json = yield cmd_dict
 
 
 def enable(
-    max_scripts_cache_size: typing.Optional[float] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, runtime.UniqueDebuggerId]:
-    """
+        max_scripts_cache_size: typing.Optional[float] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,runtime.UniqueDebuggerId]:
+    '''
     Enables debugger for the given page. Clients should not assume that the debugging has been
     enabled until the result for this command is received.
 
     :param max_scripts_cache_size: **(EXPERIMENTAL)** *(Optional)* The maximum size in bytes of collected scripts (not referenced by other heap objects) the debugger can hold. Puts no limit if parameter is omitted.
     :returns: Unique identifier of the debugger.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if max_scripts_cache_size is not None:
-        params["maxScriptsCacheSize"] = max_scripts_cache_size
+        params['maxScriptsCacheSize'] = max_scripts_cache_size
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.enable",
-        "params": params,
+        'method': 'Debugger.enable',
+        'params': params,
     }
     json = yield cmd_dict
-    return runtime.UniqueDebuggerId.from_json(json["debuggerId"])
+    return runtime.UniqueDebuggerId.from_json(json['debuggerId'])
 
 
 def evaluate_on_call_frame(
-    call_frame_id: CallFrameId,
-    expression: str,
-    object_group: typing.Optional[str] = None,
-    include_command_line_api: typing.Optional[bool] = None,
-    silent: typing.Optional[bool] = None,
-    return_by_value: typing.Optional[bool] = None,
-    generate_preview: typing.Optional[bool] = None,
-    throw_on_side_effect: typing.Optional[bool] = None,
-    timeout: typing.Optional[runtime.TimeDelta] = None,
-) -> typing.Generator[
-    T_JSON_DICT,
-    T_JSON_DICT,
-    typing.Tuple[runtime.RemoteObject, typing.Optional[runtime.ExceptionDetails]],
-]:
-    """
+        call_frame_id: CallFrameId,
+        expression: str,
+        object_group: typing.Optional[str] = None,
+        include_command_line_api: typing.Optional[bool] = None,
+        silent: typing.Optional[bool] = None,
+        return_by_value: typing.Optional[bool] = None,
+        generate_preview: typing.Optional[bool] = None,
+        throw_on_side_effect: typing.Optional[bool] = None,
+        timeout: typing.Optional[runtime.TimeDelta] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[runtime.RemoteObject, typing.Optional[runtime.ExceptionDetails]]]:
+    '''
     Evaluates expression on a given call frame.
 
     :param call_frame_id: Call frame identifier to evaluate on.
@@ -483,45 +438,41 @@ def evaluate_on_call_frame(
 
         0. **result** - Object wrapper for the evaluation result.
         1. **exceptionDetails** - *(Optional)* Exception details.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["callFrameId"] = call_frame_id.to_json()
-    params["expression"] = expression
+    params['callFrameId'] = call_frame_id.to_json()
+    params['expression'] = expression
     if object_group is not None:
-        params["objectGroup"] = object_group
+        params['objectGroup'] = object_group
     if include_command_line_api is not None:
-        params["includeCommandLineAPI"] = include_command_line_api
+        params['includeCommandLineAPI'] = include_command_line_api
     if silent is not None:
-        params["silent"] = silent
+        params['silent'] = silent
     if return_by_value is not None:
-        params["returnByValue"] = return_by_value
+        params['returnByValue'] = return_by_value
     if generate_preview is not None:
-        params["generatePreview"] = generate_preview
+        params['generatePreview'] = generate_preview
     if throw_on_side_effect is not None:
-        params["throwOnSideEffect"] = throw_on_side_effect
+        params['throwOnSideEffect'] = throw_on_side_effect
     if timeout is not None:
-        params["timeout"] = timeout.to_json()
+        params['timeout'] = timeout.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.evaluateOnCallFrame",
-        "params": params,
+        'method': 'Debugger.evaluateOnCallFrame',
+        'params': params,
     }
     json = yield cmd_dict
     return (
-        runtime.RemoteObject.from_json(json["result"]),
-        (
-            runtime.ExceptionDetails.from_json(json["exceptionDetails"])
-            if json.get("exceptionDetails", None) is not None
-            else None
-        ),
+        runtime.RemoteObject.from_json(json['result']),
+        runtime.ExceptionDetails.from_json(json['exceptionDetails']) if json.get('exceptionDetails', None) is not None else None
     )
 
 
 def get_possible_breakpoints(
-    start: Location,
-    end: typing.Optional[Location] = None,
-    restrict_to_function: typing.Optional[bool] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[BreakLocation]]:
-    """
+        start: Location,
+        end: typing.Optional[Location] = None,
+        restrict_to_function: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[BreakLocation]]:
+    '''
     Returns possible locations for breakpoint. scriptId in start and end range locations should be
     the same.
 
@@ -529,27 +480,25 @@ def get_possible_breakpoints(
     :param end: *(Optional)* End of range to search possible breakpoint locations in (excluding). When not specified, end of scripts is used as end of range.
     :param restrict_to_function: *(Optional)* Only consider locations which are in the same (non-nested) function as start.
     :returns: List of the possible breakpoint locations.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["start"] = start.to_json()
+    params['start'] = start.to_json()
     if end is not None:
-        params["end"] = end.to_json()
+        params['end'] = end.to_json()
     if restrict_to_function is not None:
-        params["restrictToFunction"] = restrict_to_function
+        params['restrictToFunction'] = restrict_to_function
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.getPossibleBreakpoints",
-        "params": params,
+        'method': 'Debugger.getPossibleBreakpoints',
+        'params': params,
     }
     json = yield cmd_dict
-    return [BreakLocation.from_json(i) for i in json["locations"]]
+    return [BreakLocation.from_json(i) for i in json['locations']]
 
 
 def get_script_source(
-    script_id: runtime.ScriptId,
-) -> typing.Generator[
-    T_JSON_DICT, T_JSON_DICT, typing.Tuple[str, typing.Optional[str]]
-]:
-    """
+        script_id: runtime.ScriptId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[str, typing.Optional[str]]]:
+    '''
     Returns source for the script with given id.
 
     :param script_id: Id of the script to get source for.
@@ -557,28 +506,24 @@ def get_script_source(
 
         0. **scriptSource** - Script source (empty in case of Wasm bytecode).
         1. **bytecode** - *(Optional)* Wasm bytecode. (Encoded as a base64 string when passed over JSON)
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["scriptId"] = script_id.to_json()
+    params['scriptId'] = script_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.getScriptSource",
-        "params": params,
+        'method': 'Debugger.getScriptSource',
+        'params': params,
     }
     json = yield cmd_dict
     return (
-        str(json["scriptSource"]),
-        str(json["bytecode"]) if json.get("bytecode", None) is not None else None,
+        str(json['scriptSource']),
+        str(json['bytecode']) if json.get('bytecode', None) is not None else None
     )
 
 
 def disassemble_wasm_module(
-    script_id: runtime.ScriptId,
-) -> typing.Generator[
-    T_JSON_DICT,
-    T_JSON_DICT,
-    typing.Tuple[typing.Optional[str], int, typing.List[int], WasmDisassemblyChunk],
-]:
-    """
+        script_id: runtime.ScriptId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[typing.Optional[str], int, typing.List[int], WasmDisassemblyChunk]]:
+    '''
 
 
     **EXPERIMENTAL**
@@ -590,26 +535,26 @@ def disassemble_wasm_module(
         1. **totalNumberOfLines** - The total number of lines in the disassembly text.
         2. **functionBodyOffsets** - The offsets of all function bodies, in the format [start1, end1, start2, end2, ...] where all ends are exclusive.
         3. **chunk** - The first chunk of disassembly.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["scriptId"] = script_id.to_json()
+    params['scriptId'] = script_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.disassembleWasmModule",
-        "params": params,
+        'method': 'Debugger.disassembleWasmModule',
+        'params': params,
     }
     json = yield cmd_dict
     return (
-        str(json["streamId"]) if json.get("streamId", None) is not None else None,
-        int(json["totalNumberOfLines"]),
-        [int(i) for i in json["functionBodyOffsets"]],
-        WasmDisassemblyChunk.from_json(json["chunk"]),
+        str(json['streamId']) if json.get('streamId', None) is not None else None,
+        int(json['totalNumberOfLines']),
+        [int(i) for i in json['functionBodyOffsets']],
+        WasmDisassemblyChunk.from_json(json['chunk'])
     )
 
 
 def next_wasm_disassembly_chunk(
-    stream_id: str,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, WasmDisassemblyChunk]:
-    """
+        stream_id: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,WasmDisassemblyChunk]:
+    '''
     Disassemble the next chunk of lines for the module corresponding to the
     stream. If disassembly is complete, this API will invalidate the streamId
     and return an empty chunk. Any subsequent calls for the now invalid stream
@@ -619,75 +564,75 @@ def next_wasm_disassembly_chunk(
 
     :param stream_id:
     :returns: The next chunk of disassembly.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["streamId"] = stream_id
+    params['streamId'] = stream_id
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.nextWasmDisassemblyChunk",
-        "params": params,
+        'method': 'Debugger.nextWasmDisassemblyChunk',
+        'params': params,
     }
     json = yield cmd_dict
-    return WasmDisassemblyChunk.from_json(json["chunk"])
+    return WasmDisassemblyChunk.from_json(json['chunk'])
 
 
 @deprecated(version="1.3")
 def get_wasm_bytecode(
-    script_id: runtime.ScriptId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
-    """
+        script_id: runtime.ScriptId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,str]:
+    '''
     This command is deprecated. Use getScriptSource instead.
 
     .. deprecated:: 1.3
 
     :param script_id: Id of the Wasm script to get source for.
     :returns: Script source. (Encoded as a base64 string when passed over JSON)
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["scriptId"] = script_id.to_json()
+    params['scriptId'] = script_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.getWasmBytecode",
-        "params": params,
+        'method': 'Debugger.getWasmBytecode',
+        'params': params,
     }
     json = yield cmd_dict
-    return str(json["bytecode"])
+    return str(json['bytecode'])
 
 
 def get_stack_trace(
-    stack_trace_id: runtime.StackTraceId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, runtime.StackTrace]:
-    """
+        stack_trace_id: runtime.StackTraceId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,runtime.StackTrace]:
+    '''
     Returns stack trace with given ``stackTraceId``.
 
     **EXPERIMENTAL**
 
     :param stack_trace_id:
-    :returns:
-    """
+    :returns: 
+    '''
     params: T_JSON_DICT = dict()
-    params["stackTraceId"] = stack_trace_id.to_json()
+    params['stackTraceId'] = stack_trace_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.getStackTrace",
-        "params": params,
+        'method': 'Debugger.getStackTrace',
+        'params': params,
     }
     json = yield cmd_dict
-    return runtime.StackTrace.from_json(json["stackTrace"])
+    return runtime.StackTrace.from_json(json['stackTrace'])
 
 
-def pause() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def pause() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Stops on the next JavaScript statement.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.pause",
+        'method': 'Debugger.pause',
     }
     json = yield cmd_dict
 
 
 @deprecated(version="1.3")
 def pause_on_async_call(
-    parent_stack_trace_id: runtime.StackTraceId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        parent_stack_trace_id: runtime.StackTraceId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
 
 
     .. deprecated:: 1.3
@@ -695,45 +640,38 @@ def pause_on_async_call(
     **EXPERIMENTAL**
 
     :param parent_stack_trace_id: Debugger will pause when async call with given stack trace is started.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["parentStackTraceId"] = parent_stack_trace_id.to_json()
+    params['parentStackTraceId'] = parent_stack_trace_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.pauseOnAsyncCall",
-        "params": params,
+        'method': 'Debugger.pauseOnAsyncCall',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def remove_breakpoint(
-    breakpoint_id: BreakpointId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        breakpoint_id: BreakpointId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Removes JavaScript breakpoint.
 
     :param breakpoint_id:
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["breakpointId"] = breakpoint_id.to_json()
+    params['breakpointId'] = breakpoint_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.removeBreakpoint",
-        "params": params,
+        'method': 'Debugger.removeBreakpoint',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def restart_frame(
-    call_frame_id: CallFrameId, mode: typing.Optional[str] = None
-) -> typing.Generator[
-    T_JSON_DICT,
-    T_JSON_DICT,
-    typing.Tuple[
-        typing.List[CallFrame],
-        typing.Optional[runtime.StackTrace],
-        typing.Optional[runtime.StackTraceId],
-    ],
-]:
-    """
+        call_frame_id: CallFrameId,
+        mode: typing.Optional[str] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[typing.List[CallFrame], typing.Optional[runtime.StackTrace], typing.Optional[runtime.StackTraceId]]]:
+    '''
     Restarts particular call frame from the beginning. The old, deprecated
     behavior of ``restartFrame`` is to stay paused and allow further CDP commands
     after a restart was scheduled. This can cause problems with restarting, so
@@ -755,56 +693,48 @@ def restart_frame(
         0. **callFrames** - New stack trace.
         1. **asyncStackTrace** - *(Optional)* Async stack trace, if any.
         2. **asyncStackTraceId** - *(Optional)* Async stack trace, if any.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["callFrameId"] = call_frame_id.to_json()
+    params['callFrameId'] = call_frame_id.to_json()
     if mode is not None:
-        params["mode"] = mode
+        params['mode'] = mode
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.restartFrame",
-        "params": params,
+        'method': 'Debugger.restartFrame',
+        'params': params,
     }
     json = yield cmd_dict
     return (
-        [CallFrame.from_json(i) for i in json["callFrames"]],
-        (
-            runtime.StackTrace.from_json(json["asyncStackTrace"])
-            if json.get("asyncStackTrace", None) is not None
-            else None
-        ),
-        (
-            runtime.StackTraceId.from_json(json["asyncStackTraceId"])
-            if json.get("asyncStackTraceId", None) is not None
-            else None
-        ),
+        [CallFrame.from_json(i) for i in json['callFrames']],
+        runtime.StackTrace.from_json(json['asyncStackTrace']) if json.get('asyncStackTrace', None) is not None else None,
+        runtime.StackTraceId.from_json(json['asyncStackTraceId']) if json.get('asyncStackTraceId', None) is not None else None
     )
 
 
 def resume(
-    terminate_on_resume: typing.Optional[bool] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        terminate_on_resume: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Resumes JavaScript execution.
 
     :param terminate_on_resume: *(Optional)* Set to true to terminate execution upon resuming execution. In contrast to Runtime.terminateExecution, this will allows to execute further JavaScript (i.e. via evaluation) until execution of the paused code is actually resumed, at which point termination is triggered. If execution is currently not paused, this parameter has no effect.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if terminate_on_resume is not None:
-        params["terminateOnResume"] = terminate_on_resume
+        params['terminateOnResume'] = terminate_on_resume
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.resume",
-        "params": params,
+        'method': 'Debugger.resume',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def search_in_content(
-    script_id: runtime.ScriptId,
-    query: str,
-    case_sensitive: typing.Optional[bool] = None,
-    is_regex: typing.Optional[bool] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[SearchMatch]]:
-    """
+        script_id: runtime.ScriptId,
+        query: str,
+        case_sensitive: typing.Optional[bool] = None,
+        is_regex: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[SearchMatch]]:
+    '''
     Searches for given string in script content.
 
     :param script_id: Id of the script to search in.
@@ -812,43 +742,65 @@ def search_in_content(
     :param case_sensitive: *(Optional)* If true, search is case sensitive.
     :param is_regex: *(Optional)* If true, treats string parameter as regex.
     :returns: List of search matches.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["scriptId"] = script_id.to_json()
-    params["query"] = query
+    params['scriptId'] = script_id.to_json()
+    params['query'] = query
     if case_sensitive is not None:
-        params["caseSensitive"] = case_sensitive
+        params['caseSensitive'] = case_sensitive
     if is_regex is not None:
-        params["isRegex"] = is_regex
+        params['isRegex'] = is_regex
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.searchInContent",
-        "params": params,
+        'method': 'Debugger.searchInContent',
+        'params': params,
     }
     json = yield cmd_dict
-    return [SearchMatch.from_json(i) for i in json["result"]]
+    return [SearchMatch.from_json(i) for i in json['result']]
 
 
 def set_async_call_stack_depth(
-    max_depth: int,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        max_depth: int
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Enables or disables async call stacks tracking.
 
     :param max_depth: Maximum depth of async call stacks. Setting to ```0``` will effectively disable collecting async call stacks (default).
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["maxDepth"] = max_depth
+    params['maxDepth'] = max_depth
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.setAsyncCallStackDepth",
-        "params": params,
+        'method': 'Debugger.setAsyncCallStackDepth',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
+def set_blackbox_execution_contexts(
+        unique_ids: typing.List[str]
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Replace previous blackbox execution contexts with passed ones. Forces backend to skip
+    stepping/pausing in scripts in these execution contexts. VM will try to leave blackboxed script by
+    performing 'step in' several times, finally resorting to 'step out' if unsuccessful.
+
+    **EXPERIMENTAL**
+
+    :param unique_ids: Array of execution context unique ids for the debugger to ignore.
+    '''
+    params: T_JSON_DICT = dict()
+    params['uniqueIds'] = [i for i in unique_ids]
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Debugger.setBlackboxExecutionContexts',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def set_blackbox_patterns(
-    patterns: typing.List[str],
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        patterns: typing.List[str],
+        skip_anonymous: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Replace previous blackbox patterns with passed ones. Forces backend to skip stepping/pausing in
     scripts with url matching one of the patterns. VM will try to leave blackboxed script by
     performing 'step in' several times, finally resorting to 'step out' if unsuccessful.
@@ -856,20 +808,24 @@ def set_blackbox_patterns(
     **EXPERIMENTAL**
 
     :param patterns: Array of regexps that will be used to check script url for blackbox state.
-    """
+    :param skip_anonymous: *(Optional)* If true, also ignore scripts with no source url.
+    '''
     params: T_JSON_DICT = dict()
-    params["patterns"] = [i for i in patterns]
+    params['patterns'] = [i for i in patterns]
+    if skip_anonymous is not None:
+        params['skipAnonymous'] = skip_anonymous
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.setBlackboxPatterns",
-        "params": params,
+        'method': 'Debugger.setBlackboxPatterns',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def set_blackboxed_ranges(
-    script_id: runtime.ScriptId, positions: typing.List[ScriptPosition]
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        script_id: runtime.ScriptId,
+        positions: typing.List[ScriptPosition]
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Makes backend skip steps in the script in blackboxed ranges. VM will try leave blacklisted
     scripts by performing 'step in' several times, finally resorting to 'step out' if unsuccessful.
     Positions array contains positions where blackbox state is changed. First interval isn't
@@ -879,21 +835,22 @@ def set_blackboxed_ranges(
 
     :param script_id: Id of the script.
     :param positions:
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["scriptId"] = script_id.to_json()
-    params["positions"] = [i.to_json() for i in positions]
+    params['scriptId'] = script_id.to_json()
+    params['positions'] = [i.to_json() for i in positions]
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.setBlackboxedRanges",
-        "params": params,
+        'method': 'Debugger.setBlackboxedRanges',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def set_breakpoint(
-    location: Location, condition: typing.Optional[str] = None
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[BreakpointId, Location]]:
-    """
+        location: Location,
+        condition: typing.Optional[str] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[BreakpointId, Location]]:
+    '''
     Sets JavaScript breakpoint at a given location.
 
     :param location: Location to set breakpoint in.
@@ -902,52 +859,50 @@ def set_breakpoint(
 
         0. **breakpointId** - Id of the created breakpoint for further reference.
         1. **actualLocation** - Location this breakpoint resolved into.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["location"] = location.to_json()
+    params['location'] = location.to_json()
     if condition is not None:
-        params["condition"] = condition
+        params['condition'] = condition
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.setBreakpoint",
-        "params": params,
+        'method': 'Debugger.setBreakpoint',
+        'params': params,
     }
     json = yield cmd_dict
     return (
-        BreakpointId.from_json(json["breakpointId"]),
-        Location.from_json(json["actualLocation"]),
+        BreakpointId.from_json(json['breakpointId']),
+        Location.from_json(json['actualLocation'])
     )
 
 
 def set_instrumentation_breakpoint(
-    instrumentation: str,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, BreakpointId]:
-    """
+        instrumentation: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,BreakpointId]:
+    '''
     Sets instrumentation breakpoint.
 
     :param instrumentation: Instrumentation name.
     :returns: Id of the created breakpoint for further reference.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["instrumentation"] = instrumentation
+    params['instrumentation'] = instrumentation
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.setInstrumentationBreakpoint",
-        "params": params,
+        'method': 'Debugger.setInstrumentationBreakpoint',
+        'params': params,
     }
     json = yield cmd_dict
-    return BreakpointId.from_json(json["breakpointId"])
+    return BreakpointId.from_json(json['breakpointId'])
 
 
 def set_breakpoint_by_url(
-    line_number: int,
-    url: typing.Optional[str] = None,
-    url_regex: typing.Optional[str] = None,
-    script_hash: typing.Optional[str] = None,
-    column_number: typing.Optional[int] = None,
-    condition: typing.Optional[str] = None,
-) -> typing.Generator[
-    T_JSON_DICT, T_JSON_DICT, typing.Tuple[BreakpointId, typing.List[Location]]
-]:
-    """
+        line_number: int,
+        url: typing.Optional[str] = None,
+        url_regex: typing.Optional[str] = None,
+        script_hash: typing.Optional[str] = None,
+        column_number: typing.Optional[int] = None,
+        condition: typing.Optional[str] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[BreakpointId, typing.List[Location]]]:
+    '''
     Sets JavaScript breakpoint at given location specified either by URL or URL regex. Once this
     command is issued, all existing parsed scripts will have breakpoints resolved and returned in
     ``locations`` property. Further matching script parsing will result in subsequent
@@ -963,34 +918,35 @@ def set_breakpoint_by_url(
 
         0. **breakpointId** - Id of the created breakpoint for further reference.
         1. **locations** - List of the locations this breakpoint resolved into upon addition.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["lineNumber"] = line_number
+    params['lineNumber'] = line_number
     if url is not None:
-        params["url"] = url
+        params['url'] = url
     if url_regex is not None:
-        params["urlRegex"] = url_regex
+        params['urlRegex'] = url_regex
     if script_hash is not None:
-        params["scriptHash"] = script_hash
+        params['scriptHash'] = script_hash
     if column_number is not None:
-        params["columnNumber"] = column_number
+        params['columnNumber'] = column_number
     if condition is not None:
-        params["condition"] = condition
+        params['condition'] = condition
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.setBreakpointByUrl",
-        "params": params,
+        'method': 'Debugger.setBreakpointByUrl',
+        'params': params,
     }
     json = yield cmd_dict
     return (
-        BreakpointId.from_json(json["breakpointId"]),
-        [Location.from_json(i) for i in json["locations"]],
+        BreakpointId.from_json(json['breakpointId']),
+        [Location.from_json(i) for i in json['locations']]
     )
 
 
 def set_breakpoint_on_function_call(
-    object_id: runtime.RemoteObjectId, condition: typing.Optional[str] = None
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, BreakpointId]:
-    """
+        object_id: runtime.RemoteObjectId,
+        condition: typing.Optional[str] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,BreakpointId]:
+    '''
     Sets JavaScript breakpoint before each call to the given function.
     If another function was created from the same source as a given one,
     calling it will also trigger the breakpoint.
@@ -1000,91 +956,80 @@ def set_breakpoint_on_function_call(
     :param object_id: Function object id.
     :param condition: *(Optional)* Expression to use as a breakpoint condition. When specified, debugger will stop on the breakpoint if this expression evaluates to true.
     :returns: Id of the created breakpoint for further reference.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["objectId"] = object_id.to_json()
+    params['objectId'] = object_id.to_json()
     if condition is not None:
-        params["condition"] = condition
+        params['condition'] = condition
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.setBreakpointOnFunctionCall",
-        "params": params,
+        'method': 'Debugger.setBreakpointOnFunctionCall',
+        'params': params,
     }
     json = yield cmd_dict
-    return BreakpointId.from_json(json["breakpointId"])
+    return BreakpointId.from_json(json['breakpointId'])
 
 
 def set_breakpoints_active(
-    active: bool,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        active: bool
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Activates / deactivates all breakpoints on the page.
 
     :param active: New value for breakpoints active state.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["active"] = active
+    params['active'] = active
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.setBreakpointsActive",
-        "params": params,
+        'method': 'Debugger.setBreakpointsActive',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def set_pause_on_exceptions(
-    state: str,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        state: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Defines pause on exceptions state. Can be set to stop on all exceptions, uncaught exceptions,
     or caught exceptions, no exceptions. Initial pause on exceptions state is ``none``.
 
     :param state: Pause on exceptions mode.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["state"] = state
+    params['state'] = state
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.setPauseOnExceptions",
-        "params": params,
+        'method': 'Debugger.setPauseOnExceptions',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def set_return_value(
-    new_value: runtime.CallArgument,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        new_value: runtime.CallArgument
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Changes return value in top frame. Available only at return break position.
 
     **EXPERIMENTAL**
 
     :param new_value: New return value.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["newValue"] = new_value.to_json()
+    params['newValue'] = new_value.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.setReturnValue",
-        "params": params,
+        'method': 'Debugger.setReturnValue',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def set_script_source(
-    script_id: runtime.ScriptId,
-    script_source: str,
-    dry_run: typing.Optional[bool] = None,
-    allow_top_frame_editing: typing.Optional[bool] = None,
-) -> typing.Generator[
-    T_JSON_DICT,
-    T_JSON_DICT,
-    typing.Tuple[
-        typing.Optional[typing.List[CallFrame]],
-        typing.Optional[bool],
-        typing.Optional[runtime.StackTrace],
-        typing.Optional[runtime.StackTraceId],
-        str,
-        typing.Optional[runtime.ExceptionDetails],
-    ],
-]:
-    """
+        script_id: runtime.ScriptId,
+        script_source: str,
+        dry_run: typing.Optional[bool] = None,
+        allow_top_frame_editing: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[typing.Optional[typing.List[CallFrame]], typing.Optional[bool], typing.Optional[runtime.StackTrace], typing.Optional[runtime.StackTraceId], str, typing.Optional[runtime.ExceptionDetails]]]:
+    '''
     Edits JavaScript source live.
 
     In general, functions that are currently on the stack can not be edited with
@@ -1105,71 +1050,53 @@ def set_script_source(
         3. **asyncStackTraceId** - *(Optional)* Async stack trace, if any.
         4. **status** - Whether the operation was successful or not. Only `` Ok`` denotes a successful live edit while the other enum variants denote why the live edit failed.
         5. **exceptionDetails** - *(Optional)* Exception details if any. Only present when `` status`` is `` CompileError`.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["scriptId"] = script_id.to_json()
-    params["scriptSource"] = script_source
+    params['scriptId'] = script_id.to_json()
+    params['scriptSource'] = script_source
     if dry_run is not None:
-        params["dryRun"] = dry_run
+        params['dryRun'] = dry_run
     if allow_top_frame_editing is not None:
-        params["allowTopFrameEditing"] = allow_top_frame_editing
+        params['allowTopFrameEditing'] = allow_top_frame_editing
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.setScriptSource",
-        "params": params,
+        'method': 'Debugger.setScriptSource',
+        'params': params,
     }
     json = yield cmd_dict
     return (
-        (
-            [CallFrame.from_json(i) for i in json["callFrames"]]
-            if json.get("callFrames", None) is not None
-            else None
-        ),
-        (
-            bool(json["stackChanged"])
-            if json.get("stackChanged", None) is not None
-            else None
-        ),
-        (
-            runtime.StackTrace.from_json(json["asyncStackTrace"])
-            if json.get("asyncStackTrace", None) is not None
-            else None
-        ),
-        (
-            runtime.StackTraceId.from_json(json["asyncStackTraceId"])
-            if json.get("asyncStackTraceId", None) is not None
-            else None
-        ),
-        str(json["status"]),
-        (
-            runtime.ExceptionDetails.from_json(json["exceptionDetails"])
-            if json.get("exceptionDetails", None) is not None
-            else None
-        ),
+        [CallFrame.from_json(i) for i in json['callFrames']] if json.get('callFrames', None) is not None else None,
+        bool(json['stackChanged']) if json.get('stackChanged', None) is not None else None,
+        runtime.StackTrace.from_json(json['asyncStackTrace']) if json.get('asyncStackTrace', None) is not None else None,
+        runtime.StackTraceId.from_json(json['asyncStackTraceId']) if json.get('asyncStackTraceId', None) is not None else None,
+        str(json['status']),
+        runtime.ExceptionDetails.from_json(json['exceptionDetails']) if json.get('exceptionDetails', None) is not None else None
     )
 
 
-def set_skip_all_pauses(skip: bool) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def set_skip_all_pauses(
+        skip: bool
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Makes page not interrupt on any pauses (breakpoint, exception, dom exception etc).
 
     :param skip: New value for skip pauses state.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["skip"] = skip
+    params['skip'] = skip
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.setSkipAllPauses",
-        "params": params,
+        'method': 'Debugger.setSkipAllPauses',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def set_variable_value(
-    scope_number: int,
-    variable_name: str,
-    new_value: runtime.CallArgument,
-    call_frame_id: CallFrameId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        scope_number: int,
+        variable_name: str,
+        new_value: runtime.CallArgument,
+        call_frame_id: CallFrameId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Changes value of variable in a callframe. Object-based scopes are not supported and must be
     mutated manually.
 
@@ -1177,76 +1104,75 @@ def set_variable_value(
     :param variable_name: Variable name.
     :param new_value: New variable value.
     :param call_frame_id: Id of callframe that holds variable.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["scopeNumber"] = scope_number
-    params["variableName"] = variable_name
-    params["newValue"] = new_value.to_json()
-    params["callFrameId"] = call_frame_id.to_json()
+    params['scopeNumber'] = scope_number
+    params['variableName'] = variable_name
+    params['newValue'] = new_value.to_json()
+    params['callFrameId'] = call_frame_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.setVariableValue",
-        "params": params,
+        'method': 'Debugger.setVariableValue',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def step_into(
-    break_on_async_call: typing.Optional[bool] = None,
-    skip_list: typing.Optional[typing.List[LocationRange]] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        break_on_async_call: typing.Optional[bool] = None,
+        skip_list: typing.Optional[typing.List[LocationRange]] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Steps into the function call.
 
     :param break_on_async_call: **(EXPERIMENTAL)** *(Optional)* Debugger will pause on the execution of the first async task which was scheduled before next pause.
     :param skip_list: **(EXPERIMENTAL)** *(Optional)* The skipList specifies location ranges that should be skipped on step into.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if break_on_async_call is not None:
-        params["breakOnAsyncCall"] = break_on_async_call
+        params['breakOnAsyncCall'] = break_on_async_call
     if skip_list is not None:
-        params["skipList"] = [i.to_json() for i in skip_list]
+        params['skipList'] = [i.to_json() for i in skip_list]
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.stepInto",
-        "params": params,
+        'method': 'Debugger.stepInto',
+        'params': params,
     }
     json = yield cmd_dict
 
 
-def step_out() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def step_out() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Steps out of the function call.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.stepOut",
+        'method': 'Debugger.stepOut',
     }
     json = yield cmd_dict
 
 
 def step_over(
-    skip_list: typing.Optional[typing.List[LocationRange]] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        skip_list: typing.Optional[typing.List[LocationRange]] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Steps over the statement.
 
     :param skip_list: **(EXPERIMENTAL)** *(Optional)* The skipList specifies location ranges that should be skipped on step over.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if skip_list is not None:
-        params["skipList"] = [i.to_json() for i in skip_list]
+        params['skipList'] = [i.to_json() for i in skip_list]
     cmd_dict: T_JSON_DICT = {
-        "method": "Debugger.stepOver",
-        "params": params,
+        'method': 'Debugger.stepOver',
+        'params': params,
     }
     json = yield cmd_dict
 
 
-@event_class("Debugger.breakpointResolved")
+@event_class('Debugger.breakpointResolved')
 @dataclass
 class BreakpointResolved:
-    """
+    '''
     Fired when breakpoint is resolved to an actual script and location.
-    """
-
+    '''
     #: Breakpoint unique identifier.
     breakpoint_id: BreakpointId
     #: Actual breakpoint location.
@@ -1255,18 +1181,17 @@ class BreakpointResolved:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> BreakpointResolved:
         return cls(
-            breakpoint_id=BreakpointId.from_json(json["breakpointId"]),
-            location=Location.from_json(json["location"]),
+            breakpoint_id=BreakpointId.from_json(json['breakpointId']),
+            location=Location.from_json(json['location'])
         )
 
 
-@event_class("Debugger.paused")
+@event_class('Debugger.paused')
 @dataclass
 class Paused:
-    """
+    '''
     Fired when the virtual machine stopped on breakpoint or exception or any other stop criteria.
-    """
-
+    '''
     #: Call stack the virtual machine stopped on.
     call_frames: typing.List[CallFrame]
     #: Pause reason.
@@ -1285,51 +1210,37 @@ class Paused:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> Paused:
         return cls(
-            call_frames=[CallFrame.from_json(i) for i in json["callFrames"]],
-            reason=str(json["reason"]),
-            data=dict(json["data"]) if json.get("data", None) is not None else None,
-            hit_breakpoints=(
-                [str(i) for i in json["hitBreakpoints"]]
-                if json.get("hitBreakpoints", None) is not None
-                else None
-            ),
-            async_stack_trace=(
-                runtime.StackTrace.from_json(json["asyncStackTrace"])
-                if json.get("asyncStackTrace", None) is not None
-                else None
-            ),
-            async_stack_trace_id=(
-                runtime.StackTraceId.from_json(json["asyncStackTraceId"])
-                if json.get("asyncStackTraceId", None) is not None
-                else None
-            ),
-            async_call_stack_trace_id=(
-                runtime.StackTraceId.from_json(json["asyncCallStackTraceId"])
-                if json.get("asyncCallStackTraceId", None) is not None
-                else None
-            ),
+            call_frames=[CallFrame.from_json(i) for i in json['callFrames']],
+            reason=str(json['reason']),
+            data=dict(json['data']) if json.get('data', None) is not None else None,
+            hit_breakpoints=[str(i) for i in json['hitBreakpoints']] if json.get('hitBreakpoints', None) is not None else None,
+            async_stack_trace=runtime.StackTrace.from_json(json['asyncStackTrace']) if json.get('asyncStackTrace', None) is not None else None,
+            async_stack_trace_id=runtime.StackTraceId.from_json(json['asyncStackTraceId']) if json.get('asyncStackTraceId', None) is not None else None,
+            async_call_stack_trace_id=runtime.StackTraceId.from_json(json['asyncCallStackTraceId']) if json.get('asyncCallStackTraceId', None) is not None else None
         )
 
 
-@event_class("Debugger.resumed")
+@event_class('Debugger.resumed')
 @dataclass
 class Resumed:
-    """
+    '''
     Fired when the virtual machine resumed execution.
-    """
+    '''
+
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> Resumed:
-        return cls()
+        return cls(
+
+        )
 
 
-@event_class("Debugger.scriptFailedToParse")
+@event_class('Debugger.scriptFailedToParse')
 @dataclass
 class ScriptFailedToParse:
-    """
+    '''
     Fired when virtual machine fails to parse the script.
-    """
-
+    '''
     #: Identifier of the script parsed.
     script_id: runtime.ScriptId
     #: URL or name of the script parsed (if any).
@@ -1368,70 +1279,33 @@ class ScriptFailedToParse:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ScriptFailedToParse:
         return cls(
-            script_id=runtime.ScriptId.from_json(json["scriptId"]),
-            url=str(json["url"]),
-            start_line=int(json["startLine"]),
-            start_column=int(json["startColumn"]),
-            end_line=int(json["endLine"]),
-            end_column=int(json["endColumn"]),
-            execution_context_id=runtime.ExecutionContextId.from_json(
-                json["executionContextId"]
-            ),
-            hash_=str(json["hash"]),
-            execution_context_aux_data=(
-                dict(json["executionContextAuxData"])
-                if json.get("executionContextAuxData", None) is not None
-                else None
-            ),
-            source_map_url=(
-                str(json["sourceMapURL"])
-                if json.get("sourceMapURL", None) is not None
-                else None
-            ),
-            has_source_url=(
-                bool(json["hasSourceURL"])
-                if json.get("hasSourceURL", None) is not None
-                else None
-            ),
-            is_module=(
-                bool(json["isModule"])
-                if json.get("isModule", None) is not None
-                else None
-            ),
-            length=(
-                int(json["length"]) if json.get("length", None) is not None else None
-            ),
-            stack_trace=(
-                runtime.StackTrace.from_json(json["stackTrace"])
-                if json.get("stackTrace", None) is not None
-                else None
-            ),
-            code_offset=(
-                int(json["codeOffset"])
-                if json.get("codeOffset", None) is not None
-                else None
-            ),
-            script_language=(
-                ScriptLanguage.from_json(json["scriptLanguage"])
-                if json.get("scriptLanguage", None) is not None
-                else None
-            ),
-            embedder_name=(
-                str(json["embedderName"])
-                if json.get("embedderName", None) is not None
-                else None
-            ),
+            script_id=runtime.ScriptId.from_json(json['scriptId']),
+            url=str(json['url']),
+            start_line=int(json['startLine']),
+            start_column=int(json['startColumn']),
+            end_line=int(json['endLine']),
+            end_column=int(json['endColumn']),
+            execution_context_id=runtime.ExecutionContextId.from_json(json['executionContextId']),
+            hash_=str(json['hash']),
+            execution_context_aux_data=dict(json['executionContextAuxData']) if json.get('executionContextAuxData', None) is not None else None,
+            source_map_url=str(json['sourceMapURL']) if json.get('sourceMapURL', None) is not None else None,
+            has_source_url=bool(json['hasSourceURL']) if json.get('hasSourceURL', None) is not None else None,
+            is_module=bool(json['isModule']) if json.get('isModule', None) is not None else None,
+            length=int(json['length']) if json.get('length', None) is not None else None,
+            stack_trace=runtime.StackTrace.from_json(json['stackTrace']) if json.get('stackTrace', None) is not None else None,
+            code_offset=int(json['codeOffset']) if json.get('codeOffset', None) is not None else None,
+            script_language=ScriptLanguage.from_json(json['scriptLanguage']) if json.get('scriptLanguage', None) is not None else None,
+            embedder_name=str(json['embedderName']) if json.get('embedderName', None) is not None else None
         )
 
 
-@event_class("Debugger.scriptParsed")
+@event_class('Debugger.scriptParsed')
 @dataclass
 class ScriptParsed:
-    """
+    '''
     Fired when virtual machine parses script. This event is also fired for all known and uncollected
     scripts upon enabling debugger.
-    """
-
+    '''
     #: Identifier of the script parsed.
     script_id: runtime.ScriptId
     #: URL or name of the script parsed (if any).
@@ -1466,75 +1340,31 @@ class ScriptParsed:
     code_offset: typing.Optional[int]
     #: The language of the script.
     script_language: typing.Optional[ScriptLanguage]
-    #: If the scriptLanguage is WebASsembly, the source of debug symbols for the module.
-    debug_symbols: typing.Optional[DebugSymbols]
+    #: If the scriptLanguage is WebAssembly, the source of debug symbols for the module.
+    debug_symbols: typing.Optional[typing.List[DebugSymbols]]
     #: The name the embedder supplied for this script.
     embedder_name: typing.Optional[str]
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ScriptParsed:
         return cls(
-            script_id=runtime.ScriptId.from_json(json["scriptId"]),
-            url=str(json["url"]),
-            start_line=int(json["startLine"]),
-            start_column=int(json["startColumn"]),
-            end_line=int(json["endLine"]),
-            end_column=int(json["endColumn"]),
-            execution_context_id=runtime.ExecutionContextId.from_json(
-                json["executionContextId"]
-            ),
-            hash_=str(json["hash"]),
-            execution_context_aux_data=(
-                dict(json["executionContextAuxData"])
-                if json.get("executionContextAuxData", None) is not None
-                else None
-            ),
-            is_live_edit=(
-                bool(json["isLiveEdit"])
-                if json.get("isLiveEdit", None) is not None
-                else None
-            ),
-            source_map_url=(
-                str(json["sourceMapURL"])
-                if json.get("sourceMapURL", None) is not None
-                else None
-            ),
-            has_source_url=(
-                bool(json["hasSourceURL"])
-                if json.get("hasSourceURL", None) is not None
-                else None
-            ),
-            is_module=(
-                bool(json["isModule"])
-                if json.get("isModule", None) is not None
-                else None
-            ),
-            length=(
-                int(json["length"]) if json.get("length", None) is not None else None
-            ),
-            stack_trace=(
-                runtime.StackTrace.from_json(json["stackTrace"])
-                if json.get("stackTrace", None) is not None
-                else None
-            ),
-            code_offset=(
-                int(json["codeOffset"])
-                if json.get("codeOffset", None) is not None
-                else None
-            ),
-            script_language=(
-                ScriptLanguage.from_json(json["scriptLanguage"])
-                if json.get("scriptLanguage", None) is not None
-                else None
-            ),
-            debug_symbols=(
-                DebugSymbols.from_json(json["debugSymbols"])
-                if json.get("debugSymbols", None) is not None
-                else None
-            ),
-            embedder_name=(
-                str(json["embedderName"])
-                if json.get("embedderName", None) is not None
-                else None
-            ),
+            script_id=runtime.ScriptId.from_json(json['scriptId']),
+            url=str(json['url']),
+            start_line=int(json['startLine']),
+            start_column=int(json['startColumn']),
+            end_line=int(json['endLine']),
+            end_column=int(json['endColumn']),
+            execution_context_id=runtime.ExecutionContextId.from_json(json['executionContextId']),
+            hash_=str(json['hash']),
+            execution_context_aux_data=dict(json['executionContextAuxData']) if json.get('executionContextAuxData', None) is not None else None,
+            is_live_edit=bool(json['isLiveEdit']) if json.get('isLiveEdit', None) is not None else None,
+            source_map_url=str(json['sourceMapURL']) if json.get('sourceMapURL', None) is not None else None,
+            has_source_url=bool(json['hasSourceURL']) if json.get('hasSourceURL', None) is not None else None,
+            is_module=bool(json['isModule']) if json.get('isModule', None) is not None else None,
+            length=int(json['length']) if json.get('length', None) is not None else None,
+            stack_trace=runtime.StackTrace.from_json(json['stackTrace']) if json.get('stackTrace', None) is not None else None,
+            code_offset=int(json['codeOffset']) if json.get('codeOffset', None) is not None else None,
+            script_language=ScriptLanguage.from_json(json['scriptLanguage']) if json.get('scriptLanguage', None) is not None else None,
+            debug_symbols=[DebugSymbols.from_json(i) for i in json['debugSymbols']] if json.get('debugSymbols', None) is not None else None,
+            embedder_name=str(json['embedderName']) if json.get('embedderName', None) is not None else None
         )

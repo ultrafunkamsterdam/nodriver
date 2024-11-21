@@ -1,7 +1,8 @@
+import logging
 import re
 import warnings as _warnings
-from collections.abc import Mapping as _Mapping, Sequence as _Sequence
-import logging
+from collections.abc import Mapping as _Mapping
+from collections.abc import Sequence as _Sequence
 
 __logger__ = logging.getLogger(__name__)
 

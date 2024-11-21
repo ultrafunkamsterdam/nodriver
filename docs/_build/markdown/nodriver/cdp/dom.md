@@ -51,13 +51,19 @@ Pseudo element type.
 
 #### FIRST_LETTER *= 'first-letter'*
 
+#### CHECK *= 'check'*
+
 #### BEFORE *= 'before'*
 
 #### AFTER *= 'after'*
 
+#### SELECT_ARROW *= 'select-arrow'*
+
 #### MARKER *= 'marker'*
 
 #### BACKDROP *= 'backdrop'*
+
+#### COLUMN *= 'column'*
 
 #### SELECTION *= 'selection'*
 
@@ -76,6 +82,10 @@ Pseudo element type.
 #### SCROLL_MARKER *= 'scroll-marker'*
 
 #### SCROLL_MARKER_GROUP *= 'scroll-marker-group'*
+
+#### SCROLL_NEXT_BUTTON *= 'scroll-next-button'*
+
+#### SCROLL_PREV_BUTTON *= 'scroll-prev-button'*
 
 #### SCROLLBAR *= 'scrollbar'*
 
@@ -102,6 +112,14 @@ Pseudo element type.
 #### VIEW_TRANSITION_OLD *= 'view-transition-old'*
 
 #### VIEW_TRANSITION_NEW *= 'view-transition-new'*
+
+#### PLACEHOLDER *= 'placeholder'*
+
+#### FILE_SELECTOR_BUTTON *= 'file-selector-button'*
+
+#### DETAILS_CONTENT *= 'details-content'*
+
+#### PICKER *= 'picker'*
 
 ### *class* ShadowRootType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -151,7 +169,7 @@ Physical scroll orientation
 
 #### VERTICAL *= 'vertical'*
 
-### *class* Node(node_id, backend_node_id, node_type, node_name, local_name, node_value, parent_id=None, child_node_count=None, children=None, attributes=None, document_url=None, base_url=None, public_id=None, system_id=None, internal_subset=None, xml_version=None, name=None, value=None, pseudo_type=None, pseudo_identifier=None, shadow_root_type=None, frame_id=None, content_document=None, shadow_roots=None, template_content=None, pseudo_elements=None, imported_document=None, distributed_nodes=None, is_svg=None, compatibility_mode=None, assigned_slot=None)
+### *class* Node(node_id, backend_node_id, node_type, node_name, local_name, node_value, parent_id=None, child_node_count=None, children=None, attributes=None, document_url=None, base_url=None, public_id=None, system_id=None, internal_subset=None, xml_version=None, name=None, value=None, pseudo_type=None, pseudo_identifier=None, shadow_root_type=None, frame_id=None, content_document=None, shadow_roots=None, template_content=None, pseudo_elements=None, imported_document=None, distributed_nodes=None, is_svg=None, compatibility_mode=None, assigned_slot=None, is_scrollable=None)
 
 DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes.
 DOMNode is a base node mirror type.
@@ -280,6 +298,16 @@ Whether the node is SVG.
 #### compatibility_mode*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CompatibilityMode`](#nodriver.cdp.dom.CompatibilityMode)]* *= None*
 
 #### assigned_slot*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNode`](#nodriver.cdp.dom.BackendNode)]* *= None*
+
+#### is_scrollable*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+### *class* DetachedElementInfo(tree_node, retained_node_ids)
+
+A structure to hold the top-level node of a detached tree and an array of its retained descendants.
+
+#### tree_node*: [`Node`](#nodriver.cdp.dom.Node)*
+
+#### retained_node_ids*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`NodeId`](#nodriver.cdp.dom.NodeId)]*
 
 ### *class* RGBA(r, g, b, a=None)
 
@@ -520,12 +548,13 @@ Returns boxes for the given node.
 * **Returns:**
   Box model for the node.
 
-### get_container_for_node(node_id, container_name=None, physical_axes=None, logical_axes=None)
+### get_container_for_node(node_id, container_name=None, physical_axes=None, logical_axes=None, queries_scroll_state=None)
 
 Returns the query container of the given node based on container query
-conditions: containerName, physical, and logical axes. If no axes are
-provided, the style container is returned, which is the direct parent or the
-closest element with a matching container-name.
+conditions: containerName, physical and logical axes, and whether it queries
+scroll-state. If no axes are provided and queriesScrollState is false, the
+style container is returned, which is the direct parent or the closest
+element with a matching container-name.
 
 **EXPERIMENTAL**
 
@@ -534,6 +563,7 @@ closest element with a matching container-name.
   * **container_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)*
   * **physical_axes** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PhysicalAxes`](#nodriver.cdp.dom.PhysicalAxes)]) – *(Optional)*
   * **logical_axes** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LogicalAxes`](#nodriver.cdp.dom.LogicalAxes)]) – *(Optional)*
+  * **queries_scroll_state** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)*
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]]
 * **Returns:**
@@ -554,6 +584,17 @@ might return multiple quads for inline nodes.
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Quad`](#nodriver.cdp.dom.Quad)]]
 * **Returns:**
   Quads that describe node layout relative to viewport.
+
+### get_detached_dom_nodes()
+
+Returns list of detached nodes
+
+**EXPERIMENTAL**
+
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`DetachedElementInfo`](#nodriver.cdp.dom.DetachedElementInfo)]]
+* **Returns:**
+  The list of detached nodes
 
 ### get_document(depth=None, pierce=None)
 
@@ -1169,6 +1210,20 @@ The added pseudo element.
 **EXPERIMENTAL**
 
 Called when top layer elements are changed.
+
+### *class* ScrollableFlagUpdated(node_id, is_scrollable)
+
+**EXPERIMENTAL**
+
+Fired when a node’s scrollability state changes.
+
+#### node_id*: [`NodeId`](#nodriver.cdp.dom.NodeId)*
+
+The id of the node.
+
+#### is_scrollable*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+
+If the node is scrollable.
 
 ### *class* PseudoElementRemoved(parent_id, pseudo_element_id)
 

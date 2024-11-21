@@ -17,6 +17,8 @@ arguments to other commands.
 ### *class* RequestId
 
 Unique request identifier.
+Note that this does not identify individual HTTP requests that are part of
+a network request.
 
 ### *class* RequestStage(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 

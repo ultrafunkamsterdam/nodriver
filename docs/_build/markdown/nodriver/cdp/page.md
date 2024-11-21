@@ -97,6 +97,8 @@ in third_party/blink/renderer/core/permissions_policy/permissions_policy_feature
 
 #### ACCELEROMETER *= 'accelerometer'*
 
+#### ALL_SCREENS_CAPTURE *= 'all-screens-capture'*
+
 #### AMBIENT_LIGHT_SENSOR *= 'ambient-light-sensor'*
 
 #### ATTRIBUTION_REPORTING *= 'attribution-reporting'*
@@ -163,11 +165,19 @@ in third_party/blink/renderer/core/permissions_policy/permissions_policy_feature
 
 #### COMPUTE_PRESSURE *= 'compute-pressure'*
 
+#### CONTROLLED_FRAME *= 'controlled-frame'*
+
 #### CROSS_ORIGIN_ISOLATED *= 'cross-origin-isolated'*
 
 #### DEFERRED_FETCH *= 'deferred-fetch'*
 
+#### DEFERRED_FETCH_MINIMAL *= 'deferred-fetch-minimal'*
+
+#### DIGITAL_CREDENTIALS_GET *= 'digital-credentials-get'*
+
 #### DIRECT_SOCKETS *= 'direct-sockets'*
+
+#### DIRECT_SOCKETS_PRIVATE *= 'direct-sockets-private'*
 
 #### DISPLAY_CAPTURE *= 'display-capture'*
 
@@ -178,6 +188,8 @@ in third_party/blink/renderer/core/permissions_policy/permissions_policy_feature
 #### EXECUTION_WHILE_OUT_OF_VIEWPORT *= 'execution-while-out-of-viewport'*
 
 #### EXECUTION_WHILE_NOT_RENDERED *= 'execution-while-not-rendered'*
+
+#### FENCED_UNPARTITIONED_STORAGE_READ *= 'fenced-unpartitioned-storage-read'*
 
 #### FOCUS_WITHOUT_USER_ACTIVATION *= 'focus-without-user-activation'*
 
@@ -207,6 +219,8 @@ in third_party/blink/renderer/core/permissions_policy/permissions_policy_feature
 
 #### MAGNETOMETER *= 'magnetometer'*
 
+#### MEDIA_PLAYBACK_WHILE_NOT_VISIBLE *= 'media-playback-while-not-visible'*
+
 #### MICROPHONE *= 'microphone'*
 
 #### MIDI *= 'midi'*
@@ -216,6 +230,8 @@ in third_party/blink/renderer/core/permissions_policy/permissions_policy_feature
 #### PAYMENT *= 'payment'*
 
 #### PICTURE_IN_PICTURE *= 'picture-in-picture'*
+
+#### POPINS *= 'popins'*
 
 #### PRIVATE_AGGREGATION *= 'private-aggregation'*
 
@@ -256,6 +272,8 @@ in third_party/blink/renderer/core/permissions_policy/permissions_policy_feature
 #### USB_UNRESTRICTED *= 'usb-unrestricted'*
 
 #### VERTICAL_SCROLL *= 'vertical-scroll'*
+
+#### WEB_APP_INSTALLATION *= 'web-app-installation'*
 
 #### WEB_PRINTING *= 'web-printing'*
 
@@ -763,21 +781,25 @@ Default fixed font size.
 
 ### *class* ClientNavigationReason(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
+#### ANCHOR_CLICK *= 'anchorClick'*
+
 #### FORM_SUBMISSION_GET *= 'formSubmissionGet'*
 
 #### FORM_SUBMISSION_POST *= 'formSubmissionPost'*
 
 #### HTTP_HEADER_REFRESH *= 'httpHeaderRefresh'*
 
-#### SCRIPT_INITIATED *= 'scriptInitiated'*
+#### INITIAL_FRAME_NAVIGATION *= 'initialFrameNavigation'*
 
 #### META_TAG_REFRESH *= 'metaTagRefresh'*
+
+#### OTHER *= 'other'*
 
 #### PAGE_BLOCK_INTERSTITIAL *= 'pageBlockInterstitial'*
 
 #### RELOAD *= 'reload'*
 
-#### ANCHOR_CLICK *= 'anchorClick'*
+#### SCRIPT_INITIATED *= 'scriptInitiated'*
 
 ### *class* ClientNavigationDisposition(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -1222,8 +1244,6 @@ List of not restored reasons for back-forward cache.
 
 #### PICTURE_IN_PICTURE *= 'PictureInPicture'*
 
-#### PORTAL *= 'Portal'*
-
 #### SPEECH_RECOGNIZER *= 'SpeechRecognizer'*
 
 #### IDLE_MANAGER *= 'IdleManager'*
@@ -1284,6 +1304,8 @@ List of not restored reasons for back-forward cache.
 
 #### CONTENT_SCREEN_READER *= 'ContentScreenReader'*
 
+#### CONTENT_DISCARDED *= 'ContentDiscarded'*
+
 #### EMBEDDER_POPUP_BLOCKER_TAB_HELPER *= 'EmbedderPopupBlockerTabHelper'*
 
 #### EMBEDDER_SAFE_BROWSING_TRIGGERED_POPUP_BLOCKER *= 'EmbedderSafeBrowsingTriggeredPopupBlocker'*
@@ -1315,6 +1337,8 @@ List of not restored reasons for back-forward cache.
 #### EMBEDDER_EXTENSION_SENT_MESSAGE_TO_CACHED_FRAME *= 'EmbedderExtensionSentMessageToCachedFrame'*
 
 #### REQUESTED_BY_WEB_VIEW_CLIENT *= 'RequestedByWebViewClient'*
+
+#### POST_MESSAGE_BY_WEB_VIEW_CLIENT *= 'PostMessageByWebViewClient'*
 
 ### *class* BackForwardCacheNotRestoredReasonType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -2233,6 +2257,17 @@ Id of the frame that has been detached.
 
 #### reason*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
+### *class* FrameSubtreeWillBeDetached(frame_id)
+
+**EXPERIMENTAL**
+
+Fired before frame subtree is detached. Emitted before any frame of the
+subtree is actually detached.
+
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
+
+Id of the frame that is the root of the subtree that will be detached.
+
 ### *class* FrameNavigated(frame, type_)
 
 Fired once navigation of the frame has completed. Frame is now associated with the new loader.
@@ -2426,7 +2461,8 @@ Default dialog prompt.
 
 ### *class* LifecycleEvent(frame_id, loader_id, name, timestamp)
 
-Fired for top level page lifecycle events such as navigation, load, paint, etc.
+Fired for lifecycle events (navigation, load, paint, etc) in the current
+target (including local frames).
 
 #### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
 
@@ -2469,7 +2505,7 @@ Tree structure of reasons why the page could not be cached for each frame.
 
 #### timestamp*: [`MonotonicTime`](network.md#nodriver.cdp.network.MonotonicTime)*
 
-### *class* NavigatedWithinDocument(frame_id, url)
+### *class* NavigatedWithinDocument(frame_id, url, navigation_type)
 
 **EXPERIMENTAL**
 
@@ -2482,6 +2518,10 @@ Id of the frame.
 #### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Frame’s new url.
+
+#### navigation_type*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+Navigation type
 
 ### *class* ScreencastFrame(data, metadata, session_id)
 

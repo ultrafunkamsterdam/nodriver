@@ -13,14 +13,13 @@ from .util import event_class, T_JSON_DICT
 
 from . import page
 from . import runtime
-from deprecated.sphinx import deprecated  # type: ignore
+from deprecated.sphinx import deprecated # type: ignore
 
 
 class NodeId(int):
-    """
+    '''
     Unique DOM node identifier.
-    """
-
+    '''
     def to_json(self) -> int:
         return self
 
@@ -29,15 +28,14 @@ class NodeId(int):
         return cls(json)
 
     def __repr__(self):
-        return "NodeId({})".format(super().__repr__())
+        return 'NodeId({})'.format(super().__repr__())
 
 
 class BackendNodeId(int):
-    """
+    '''
     Unique DOM node identifier used to reference a node that may not have been pushed to the
     front-end.
-    """
-
+    '''
     def to_json(self) -> int:
         return self
 
@@ -46,15 +44,14 @@ class BackendNodeId(int):
         return cls(json)
 
     def __repr__(self):
-        return "BackendNodeId({})".format(super().__repr__())
+        return 'BackendNodeId({})'.format(super().__repr__())
 
 
 @dataclass
 class BackendNode:
-    """
+    '''
     Backend node with a friendly name.
-    """
-
+    '''
     #: ``Node``'s nodeType.
     node_type: int
 
@@ -65,31 +62,33 @@ class BackendNode:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["nodeType"] = self.node_type
-        json["nodeName"] = self.node_name
-        json["backendNodeId"] = self.backend_node_id.to_json()
+        json['nodeType'] = self.node_type
+        json['nodeName'] = self.node_name
+        json['backendNodeId'] = self.backend_node_id.to_json()
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> BackendNode:
         return cls(
-            node_type=int(json["nodeType"]),
-            node_name=str(json["nodeName"]),
-            backend_node_id=BackendNodeId.from_json(json["backendNodeId"]),
+            node_type=int(json['nodeType']),
+            node_name=str(json['nodeName']),
+            backend_node_id=BackendNodeId.from_json(json['backendNodeId']),
         )
 
 
 class PseudoType(enum.Enum):
-    """
+    '''
     Pseudo element type.
-    """
-
+    '''
     FIRST_LINE = "first-line"
     FIRST_LETTER = "first-letter"
+    CHECK = "check"
     BEFORE = "before"
     AFTER = "after"
+    SELECT_ARROW = "select-arrow"
     MARKER = "marker"
     BACKDROP = "backdrop"
+    COLUMN = "column"
     SELECTION = "selection"
     SEARCH_TEXT = "search-text"
     TARGET_TEXT = "target-text"
@@ -99,6 +98,8 @@ class PseudoType(enum.Enum):
     FIRST_LINE_INHERITED = "first-line-inherited"
     SCROLL_MARKER = "scroll-marker"
     SCROLL_MARKER_GROUP = "scroll-marker-group"
+    SCROLL_NEXT_BUTTON = "scroll-next-button"
+    SCROLL_PREV_BUTTON = "scroll-prev-button"
     SCROLLBAR = "scrollbar"
     SCROLLBAR_THUMB = "scrollbar-thumb"
     SCROLLBAR_BUTTON = "scrollbar-button"
@@ -112,6 +113,10 @@ class PseudoType(enum.Enum):
     VIEW_TRANSITION_IMAGE_PAIR = "view-transition-image-pair"
     VIEW_TRANSITION_OLD = "view-transition-old"
     VIEW_TRANSITION_NEW = "view-transition-new"
+    PLACEHOLDER = "placeholder"
+    FILE_SELECTOR_BUTTON = "file-selector-button"
+    DETAILS_CONTENT = "details-content"
+    PICKER = "picker"
 
     def to_json(self) -> str:
         return self.value
@@ -122,10 +127,9 @@ class PseudoType(enum.Enum):
 
 
 class ShadowRootType(enum.Enum):
-    """
+    '''
     Shadow root type.
-    """
-
+    '''
     USER_AGENT = "user-agent"
     OPEN_ = "open"
     CLOSED = "closed"
@@ -139,10 +143,9 @@ class ShadowRootType(enum.Enum):
 
 
 class CompatibilityMode(enum.Enum):
-    """
+    '''
     Document compatibility mode.
-    """
-
+    '''
     QUIRKS_MODE = "QuirksMode"
     LIMITED_QUIRKS_MODE = "LimitedQuirksMode"
     NO_QUIRKS_MODE = "NoQuirksMode"
@@ -156,10 +159,9 @@ class CompatibilityMode(enum.Enum):
 
 
 class PhysicalAxes(enum.Enum):
-    """
+    '''
     ContainerSelector physical axes
-    """
-
+    '''
     HORIZONTAL = "Horizontal"
     VERTICAL = "Vertical"
     BOTH = "Both"
@@ -173,10 +175,9 @@ class PhysicalAxes(enum.Enum):
 
 
 class LogicalAxes(enum.Enum):
-    """
+    '''
     ContainerSelector logical axes
-    """
-
+    '''
     INLINE = "Inline"
     BLOCK = "Block"
     BOTH = "Both"
@@ -190,10 +191,9 @@ class LogicalAxes(enum.Enum):
 
 
 class ScrollOrientation(enum.Enum):
-    """
+    '''
     Physical scroll orientation
-    """
-
+    '''
     HORIZONTAL = "horizontal"
     VERTICAL = "vertical"
 
@@ -207,11 +207,10 @@ class ScrollOrientation(enum.Enum):
 
 @dataclass
 class Node:
-    """
+    '''
     DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes.
     DOMNode is a base node mirror type.
-    """
-
+    '''
     #: Node identifier that is passed into the rest of the DOM messages as the ``nodeId``. Backend
     #: will only push node with given ``id`` once. It is aware of all requested nodes and will only
     #: fire DOM events for nodes known to the client.
@@ -308,195 +307,136 @@ class Node:
 
     assigned_slot: typing.Optional[BackendNode] = None
 
+    is_scrollable: typing.Optional[bool] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["nodeId"] = self.node_id.to_json()
-        json["backendNodeId"] = self.backend_node_id.to_json()
-        json["nodeType"] = self.node_type
-        json["nodeName"] = self.node_name
-        json["localName"] = self.local_name
-        json["nodeValue"] = self.node_value
+        json['nodeId'] = self.node_id.to_json()
+        json['backendNodeId'] = self.backend_node_id.to_json()
+        json['nodeType'] = self.node_type
+        json['nodeName'] = self.node_name
+        json['localName'] = self.local_name
+        json['nodeValue'] = self.node_value
         if self.parent_id is not None:
-            json["parentId"] = self.parent_id.to_json()
+            json['parentId'] = self.parent_id.to_json()
         if self.child_node_count is not None:
-            json["childNodeCount"] = self.child_node_count
+            json['childNodeCount'] = self.child_node_count
         if self.children is not None:
-            json["children"] = [i.to_json() for i in self.children]
+            json['children'] = [i.to_json() for i in self.children]
         if self.attributes is not None:
-            json["attributes"] = [i for i in self.attributes]
+            json['attributes'] = [i for i in self.attributes]
         if self.document_url is not None:
-            json["documentURL"] = self.document_url
+            json['documentURL'] = self.document_url
         if self.base_url is not None:
-            json["baseURL"] = self.base_url
+            json['baseURL'] = self.base_url
         if self.public_id is not None:
-            json["publicId"] = self.public_id
+            json['publicId'] = self.public_id
         if self.system_id is not None:
-            json["systemId"] = self.system_id
+            json['systemId'] = self.system_id
         if self.internal_subset is not None:
-            json["internalSubset"] = self.internal_subset
+            json['internalSubset'] = self.internal_subset
         if self.xml_version is not None:
-            json["xmlVersion"] = self.xml_version
+            json['xmlVersion'] = self.xml_version
         if self.name is not None:
-            json["name"] = self.name
+            json['name'] = self.name
         if self.value is not None:
-            json["value"] = self.value
+            json['value'] = self.value
         if self.pseudo_type is not None:
-            json["pseudoType"] = self.pseudo_type.to_json()
+            json['pseudoType'] = self.pseudo_type.to_json()
         if self.pseudo_identifier is not None:
-            json["pseudoIdentifier"] = self.pseudo_identifier
+            json['pseudoIdentifier'] = self.pseudo_identifier
         if self.shadow_root_type is not None:
-            json["shadowRootType"] = self.shadow_root_type.to_json()
+            json['shadowRootType'] = self.shadow_root_type.to_json()
         if self.frame_id is not None:
-            json["frameId"] = self.frame_id.to_json()
+            json['frameId'] = self.frame_id.to_json()
         if self.content_document is not None:
-            json["contentDocument"] = self.content_document.to_json()
+            json['contentDocument'] = self.content_document.to_json()
         if self.shadow_roots is not None:
-            json["shadowRoots"] = [i.to_json() for i in self.shadow_roots]
+            json['shadowRoots'] = [i.to_json() for i in self.shadow_roots]
         if self.template_content is not None:
-            json["templateContent"] = self.template_content.to_json()
+            json['templateContent'] = self.template_content.to_json()
         if self.pseudo_elements is not None:
-            json["pseudoElements"] = [i.to_json() for i in self.pseudo_elements]
+            json['pseudoElements'] = [i.to_json() for i in self.pseudo_elements]
         if self.imported_document is not None:
-            json["importedDocument"] = self.imported_document.to_json()
+            json['importedDocument'] = self.imported_document.to_json()
         if self.distributed_nodes is not None:
-            json["distributedNodes"] = [i.to_json() for i in self.distributed_nodes]
+            json['distributedNodes'] = [i.to_json() for i in self.distributed_nodes]
         if self.is_svg is not None:
-            json["isSVG"] = self.is_svg
+            json['isSVG'] = self.is_svg
         if self.compatibility_mode is not None:
-            json["compatibilityMode"] = self.compatibility_mode.to_json()
+            json['compatibilityMode'] = self.compatibility_mode.to_json()
         if self.assigned_slot is not None:
-            json["assignedSlot"] = self.assigned_slot.to_json()
+            json['assignedSlot'] = self.assigned_slot.to_json()
+        if self.is_scrollable is not None:
+            json['isScrollable'] = self.is_scrollable
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> Node:
         return cls(
-            node_id=NodeId.from_json(json["nodeId"]),
-            backend_node_id=BackendNodeId.from_json(json["backendNodeId"]),
-            node_type=int(json["nodeType"]),
-            node_name=str(json["nodeName"]),
-            local_name=str(json["localName"]),
-            node_value=str(json["nodeValue"]),
-            parent_id=(
-                NodeId.from_json(json["parentId"])
-                if json.get("parentId", None) is not None
-                else None
-            ),
-            child_node_count=(
-                int(json["childNodeCount"])
-                if json.get("childNodeCount", None) is not None
-                else None
-            ),
-            children=(
-                [Node.from_json(i) for i in json["children"]]
-                if json.get("children", None) is not None
-                else None
-            ),
-            attributes=(
-                [str(i) for i in json["attributes"]]
-                if json.get("attributes", None) is not None
-                else None
-            ),
-            document_url=(
-                str(json["documentURL"])
-                if json.get("documentURL", None) is not None
-                else None
-            ),
-            base_url=(
-                str(json["baseURL"]) if json.get("baseURL", None) is not None else None
-            ),
-            public_id=(
-                str(json["publicId"])
-                if json.get("publicId", None) is not None
-                else None
-            ),
-            system_id=(
-                str(json["systemId"])
-                if json.get("systemId", None) is not None
-                else None
-            ),
-            internal_subset=(
-                str(json["internalSubset"])
-                if json.get("internalSubset", None) is not None
-                else None
-            ),
-            xml_version=(
-                str(json["xmlVersion"])
-                if json.get("xmlVersion", None) is not None
-                else None
-            ),
-            name=str(json["name"]) if json.get("name", None) is not None else None,
-            value=str(json["value"]) if json.get("value", None) is not None else None,
-            pseudo_type=(
-                PseudoType.from_json(json["pseudoType"])
-                if json.get("pseudoType", None) is not None
-                else None
-            ),
-            pseudo_identifier=(
-                str(json["pseudoIdentifier"])
-                if json.get("pseudoIdentifier", None) is not None
-                else None
-            ),
-            shadow_root_type=(
-                ShadowRootType.from_json(json["shadowRootType"])
-                if json.get("shadowRootType", None) is not None
-                else None
-            ),
-            frame_id=(
-                page.FrameId.from_json(json["frameId"])
-                if json.get("frameId", None) is not None
-                else None
-            ),
-            content_document=(
-                Node.from_json(json["contentDocument"])
-                if json.get("contentDocument", None) is not None
-                else None
-            ),
-            shadow_roots=(
-                [Node.from_json(i) for i in json["shadowRoots"]]
-                if json.get("shadowRoots", None) is not None
-                else None
-            ),
-            template_content=(
-                Node.from_json(json["templateContent"])
-                if json.get("templateContent", None) is not None
-                else None
-            ),
-            pseudo_elements=(
-                [Node.from_json(i) for i in json["pseudoElements"]]
-                if json.get("pseudoElements", None) is not None
-                else None
-            ),
-            imported_document=(
-                Node.from_json(json["importedDocument"])
-                if json.get("importedDocument", None) is not None
-                else None
-            ),
-            distributed_nodes=(
-                [BackendNode.from_json(i) for i in json["distributedNodes"]]
-                if json.get("distributedNodes", None) is not None
-                else None
-            ),
-            is_svg=bool(json["isSVG"]) if json.get("isSVG", None) is not None else None,
-            compatibility_mode=(
-                CompatibilityMode.from_json(json["compatibilityMode"])
-                if json.get("compatibilityMode", None) is not None
-                else None
-            ),
-            assigned_slot=(
-                BackendNode.from_json(json["assignedSlot"])
-                if json.get("assignedSlot", None) is not None
-                else None
-            ),
+            node_id=NodeId.from_json(json['nodeId']),
+            backend_node_id=BackendNodeId.from_json(json['backendNodeId']),
+            node_type=int(json['nodeType']),
+            node_name=str(json['nodeName']),
+            local_name=str(json['localName']),
+            node_value=str(json['nodeValue']),
+            parent_id=NodeId.from_json(json['parentId']) if json.get('parentId', None) is not None else None,
+            child_node_count=int(json['childNodeCount']) if json.get('childNodeCount', None) is not None else None,
+            children=[Node.from_json(i) for i in json['children']] if json.get('children', None) is not None else None,
+            attributes=[str(i) for i in json['attributes']] if json.get('attributes', None) is not None else None,
+            document_url=str(json['documentURL']) if json.get('documentURL', None) is not None else None,
+            base_url=str(json['baseURL']) if json.get('baseURL', None) is not None else None,
+            public_id=str(json['publicId']) if json.get('publicId', None) is not None else None,
+            system_id=str(json['systemId']) if json.get('systemId', None) is not None else None,
+            internal_subset=str(json['internalSubset']) if json.get('internalSubset', None) is not None else None,
+            xml_version=str(json['xmlVersion']) if json.get('xmlVersion', None) is not None else None,
+            name=str(json['name']) if json.get('name', None) is not None else None,
+            value=str(json['value']) if json.get('value', None) is not None else None,
+            pseudo_type=PseudoType.from_json(json['pseudoType']) if json.get('pseudoType', None) is not None else None,
+            pseudo_identifier=str(json['pseudoIdentifier']) if json.get('pseudoIdentifier', None) is not None else None,
+            shadow_root_type=ShadowRootType.from_json(json['shadowRootType']) if json.get('shadowRootType', None) is not None else None,
+            frame_id=page.FrameId.from_json(json['frameId']) if json.get('frameId', None) is not None else None,
+            content_document=Node.from_json(json['contentDocument']) if json.get('contentDocument', None) is not None else None,
+            shadow_roots=[Node.from_json(i) for i in json['shadowRoots']] if json.get('shadowRoots', None) is not None else None,
+            template_content=Node.from_json(json['templateContent']) if json.get('templateContent', None) is not None else None,
+            pseudo_elements=[Node.from_json(i) for i in json['pseudoElements']] if json.get('pseudoElements', None) is not None else None,
+            imported_document=Node.from_json(json['importedDocument']) if json.get('importedDocument', None) is not None else None,
+            distributed_nodes=[BackendNode.from_json(i) for i in json['distributedNodes']] if json.get('distributedNodes', None) is not None else None,
+            is_svg=bool(json['isSVG']) if json.get('isSVG', None) is not None else None,
+            compatibility_mode=CompatibilityMode.from_json(json['compatibilityMode']) if json.get('compatibilityMode', None) is not None else None,
+            assigned_slot=BackendNode.from_json(json['assignedSlot']) if json.get('assignedSlot', None) is not None else None,
+            is_scrollable=bool(json['isScrollable']) if json.get('isScrollable', None) is not None else None,
+        )
+
+
+@dataclass
+class DetachedElementInfo:
+    '''
+    A structure to hold the top-level node of a detached tree and an array of its retained descendants.
+    '''
+    tree_node: Node
+
+    retained_node_ids: typing.List[NodeId]
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['treeNode'] = self.tree_node.to_json()
+        json['retainedNodeIds'] = [i.to_json() for i in self.retained_node_ids]
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> DetachedElementInfo:
+        return cls(
+            tree_node=Node.from_json(json['treeNode']),
+            retained_node_ids=[NodeId.from_json(i) for i in json['retainedNodeIds']],
         )
 
 
 @dataclass
 class RGBA:
-    """
+    '''
     A structure holding an RGBA color.
-    """
-
+    '''
     #: The red component, in the [0-255] range.
     r: int
 
@@ -511,28 +451,27 @@ class RGBA:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["r"] = self.r
-        json["g"] = self.g
-        json["b"] = self.b
+        json['r'] = self.r
+        json['g'] = self.g
+        json['b'] = self.b
         if self.a is not None:
-            json["a"] = self.a
+            json['a'] = self.a
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> RGBA:
         return cls(
-            r=int(json["r"]),
-            g=int(json["g"]),
-            b=int(json["b"]),
-            a=float(json["a"]) if json.get("a", None) is not None else None,
+            r=int(json['r']),
+            g=int(json['g']),
+            b=int(json['b']),
+            a=float(json['a']) if json.get('a', None) is not None else None,
         )
 
 
 class Quad(list):
-    """
+    '''
     An array of quad vertices, x immediately followed by y for each point, points clock-wise.
-    """
-
+    '''
     def to_json(self) -> typing.List[float]:
         return self
 
@@ -541,15 +480,14 @@ class Quad(list):
         return cls(json)
 
     def __repr__(self):
-        return "Quad({})".format(super().__repr__())
+        return 'Quad({})'.format(super().__repr__())
 
 
 @dataclass
 class BoxModel:
-    """
+    '''
     Box model.
-    """
-
+    '''
     #: Content box
     content: Quad
 
@@ -573,39 +511,34 @@ class BoxModel:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["content"] = self.content.to_json()
-        json["padding"] = self.padding.to_json()
-        json["border"] = self.border.to_json()
-        json["margin"] = self.margin.to_json()
-        json["width"] = self.width
-        json["height"] = self.height
+        json['content'] = self.content.to_json()
+        json['padding'] = self.padding.to_json()
+        json['border'] = self.border.to_json()
+        json['margin'] = self.margin.to_json()
+        json['width'] = self.width
+        json['height'] = self.height
         if self.shape_outside is not None:
-            json["shapeOutside"] = self.shape_outside.to_json()
+            json['shapeOutside'] = self.shape_outside.to_json()
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> BoxModel:
         return cls(
-            content=Quad.from_json(json["content"]),
-            padding=Quad.from_json(json["padding"]),
-            border=Quad.from_json(json["border"]),
-            margin=Quad.from_json(json["margin"]),
-            width=int(json["width"]),
-            height=int(json["height"]),
-            shape_outside=(
-                ShapeOutsideInfo.from_json(json["shapeOutside"])
-                if json.get("shapeOutside", None) is not None
-                else None
-            ),
+            content=Quad.from_json(json['content']),
+            padding=Quad.from_json(json['padding']),
+            border=Quad.from_json(json['border']),
+            margin=Quad.from_json(json['margin']),
+            width=int(json['width']),
+            height=int(json['height']),
+            shape_outside=ShapeOutsideInfo.from_json(json['shapeOutside']) if json.get('shapeOutside', None) is not None else None,
         )
 
 
 @dataclass
 class ShapeOutsideInfo:
-    """
+    '''
     CSS Shape Outside details.
-    """
-
+    '''
     #: Shape bounds
     bounds: Quad
 
@@ -617,26 +550,25 @@ class ShapeOutsideInfo:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["bounds"] = self.bounds.to_json()
-        json["shape"] = [i for i in self.shape]
-        json["marginShape"] = [i for i in self.margin_shape]
+        json['bounds'] = self.bounds.to_json()
+        json['shape'] = [i for i in self.shape]
+        json['marginShape'] = [i for i in self.margin_shape]
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ShapeOutsideInfo:
         return cls(
-            bounds=Quad.from_json(json["bounds"]),
-            shape=[i for i in json["shape"]],
-            margin_shape=[i for i in json["marginShape"]],
+            bounds=Quad.from_json(json['bounds']),
+            shape=[i for i in json['shape']],
+            margin_shape=[i for i in json['marginShape']],
         )
 
 
 @dataclass
 class Rect:
-    """
+    '''
     Rectangle.
-    """
-
+    '''
     #: X coordinate
     x: float
 
@@ -651,19 +583,19 @@ class Rect:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["x"] = self.x
-        json["y"] = self.y
-        json["width"] = self.width
-        json["height"] = self.height
+        json['x'] = self.x
+        json['y'] = self.y
+        json['width'] = self.width
+        json['height'] = self.height
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> Rect:
         return cls(
-            x=float(json["x"]),
-            y=float(json["y"]),
-            width=float(json["width"]),
-            height=float(json["height"]),
+            x=float(json['x']),
+            y=float(json['y']),
+            width=float(json['width']),
+            height=float(json['height']),
         )
 
 
@@ -677,45 +609,45 @@ class CSSComputedStyleProperty:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["name"] = self.name
-        json["value"] = self.value
+        json['name'] = self.name
+        json['value'] = self.value
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> CSSComputedStyleProperty:
         return cls(
-            name=str(json["name"]),
-            value=str(json["value"]),
+            name=str(json['name']),
+            value=str(json['value']),
         )
 
 
 def collect_class_names_from_subtree(
-    node_id: NodeId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[str]]:
-    """
+        node_id: NodeId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[str]]:
+    '''
     Collects class names for the node with given id and all of it's child nodes.
 
     **EXPERIMENTAL**
 
     :param node_id: Id of the node to collect class names.
     :returns: Class name list.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
+    params['nodeId'] = node_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.collectClassNamesFromSubtree",
-        "params": params,
+        'method': 'DOM.collectClassNamesFromSubtree',
+        'params': params,
     }
     json = yield cmd_dict
-    return [str(i) for i in json["classNames"]]
+    return [str(i) for i in json['classNames']]
 
 
 def copy_to(
-    node_id: NodeId,
-    target_node_id: NodeId,
-    insert_before_node_id: typing.Optional[NodeId] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
-    """
+        node_id: NodeId,
+        target_node_id: NodeId,
+        insert_before_node_id: typing.Optional[NodeId] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,NodeId]:
+    '''
     Creates a deep copy of the specified node and places it into the target container before the
     given anchor.
 
@@ -725,28 +657,28 @@ def copy_to(
     :param target_node_id: Id of the element to drop the copy into.
     :param insert_before_node_id: *(Optional)* Drop the copy before this node (if absent, the copy becomes the last child of ```targetNodeId```).
     :returns: Id of the node clone.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
-    params["targetNodeId"] = target_node_id.to_json()
+    params['nodeId'] = node_id.to_json()
+    params['targetNodeId'] = target_node_id.to_json()
     if insert_before_node_id is not None:
-        params["insertBeforeNodeId"] = insert_before_node_id.to_json()
+        params['insertBeforeNodeId'] = insert_before_node_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.copyTo",
-        "params": params,
+        'method': 'DOM.copyTo',
+        'params': params,
     }
     json = yield cmd_dict
-    return NodeId.from_json(json["nodeId"])
+    return NodeId.from_json(json['nodeId'])
 
 
 def describe_node(
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
-    depth: typing.Optional[int] = None,
-    pierce: typing.Optional[bool] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, Node]:
-    """
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        depth: typing.Optional[int] = None,
+        pierce: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,Node]:
+    '''
     Describes node given its id, does not require domain to be enabled. Does not start tracking any
     objects, can be used for automation.
 
@@ -756,33 +688,33 @@ def describe_node(
     :param depth: *(Optional)* The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
     :param pierce: *(Optional)* Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false).
     :returns: Node description.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if node_id is not None:
-        params["nodeId"] = node_id.to_json()
+        params['nodeId'] = node_id.to_json()
     if backend_node_id is not None:
-        params["backendNodeId"] = backend_node_id.to_json()
+        params['backendNodeId'] = backend_node_id.to_json()
     if object_id is not None:
-        params["objectId"] = object_id.to_json()
+        params['objectId'] = object_id.to_json()
     if depth is not None:
-        params["depth"] = depth
+        params['depth'] = depth
     if pierce is not None:
-        params["pierce"] = pierce
+        params['pierce'] = pierce
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.describeNode",
-        "params": params,
+        'method': 'DOM.describeNode',
+        'params': params,
     }
     json = yield cmd_dict
-    return Node.from_json(json["node"])
+    return Node.from_json(json['node'])
 
 
 def scroll_into_view_if_needed(
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
-    rect: typing.Optional[Rect] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        rect: typing.Optional[Rect] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Scrolls the specified rect of the given node into view if not already visible.
     Note: exactly one between nodeId, backendNodeId and objectId should be passed
     to identify the node.
@@ -791,150 +723,150 @@ def scroll_into_view_if_needed(
     :param backend_node_id: *(Optional)* Identifier of the backend node.
     :param object_id: *(Optional)* JavaScript object id of the node wrapper.
     :param rect: *(Optional)* The rect to be scrolled into view, relative to the node's border box, in CSS pixels. When omitted, center of the node will be used, similar to Element.scrollIntoView.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if node_id is not None:
-        params["nodeId"] = node_id.to_json()
+        params['nodeId'] = node_id.to_json()
     if backend_node_id is not None:
-        params["backendNodeId"] = backend_node_id.to_json()
+        params['backendNodeId'] = backend_node_id.to_json()
     if object_id is not None:
-        params["objectId"] = object_id.to_json()
+        params['objectId'] = object_id.to_json()
     if rect is not None:
-        params["rect"] = rect.to_json()
+        params['rect'] = rect.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.scrollIntoViewIfNeeded",
-        "params": params,
+        'method': 'DOM.scrollIntoViewIfNeeded',
+        'params': params,
     }
     json = yield cmd_dict
 
 
-def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def disable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Disables DOM agent for the given page.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.disable",
+        'method': 'DOM.disable',
     }
     json = yield cmd_dict
 
 
 def discard_search_results(
-    search_id: str,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        search_id: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Discards search results from the session with the given id. ``getSearchResults`` should no longer
     be called for that search.
 
     **EXPERIMENTAL**
 
     :param search_id: Unique search session identifier.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["searchId"] = search_id
+    params['searchId'] = search_id
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.discardSearchResults",
-        "params": params,
+        'method': 'DOM.discardSearchResults',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def enable(
-    include_whitespace: typing.Optional[str] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        include_whitespace: typing.Optional[str] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Enables DOM agent for the given page.
 
     :param include_whitespace: **(EXPERIMENTAL)** *(Optional)* Whether to include whitespaces in the children array of returned Nodes.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if include_whitespace is not None:
-        params["includeWhitespace"] = include_whitespace
+        params['includeWhitespace'] = include_whitespace
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.enable",
-        "params": params,
+        'method': 'DOM.enable',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def focus(
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Focuses the given element.
 
     :param node_id: *(Optional)* Identifier of the node.
     :param backend_node_id: *(Optional)* Identifier of the backend node.
     :param object_id: *(Optional)* JavaScript object id of the node wrapper.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if node_id is not None:
-        params["nodeId"] = node_id.to_json()
+        params['nodeId'] = node_id.to_json()
     if backend_node_id is not None:
-        params["backendNodeId"] = backend_node_id.to_json()
+        params['backendNodeId'] = backend_node_id.to_json()
     if object_id is not None:
-        params["objectId"] = object_id.to_json()
+        params['objectId'] = object_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.focus",
-        "params": params,
+        'method': 'DOM.focus',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def get_attributes(
-    node_id: NodeId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[str]]:
-    """
+        node_id: NodeId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[str]]:
+    '''
     Returns attributes for the specified node.
 
     :param node_id: Id of the node to retrieve attributes for.
     :returns: An interleaved array of node attribute names and values.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
+    params['nodeId'] = node_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getAttributes",
-        "params": params,
+        'method': 'DOM.getAttributes',
+        'params': params,
     }
     json = yield cmd_dict
-    return [str(i) for i in json["attributes"]]
+    return [str(i) for i in json['attributes']]
 
 
 def get_box_model(
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, BoxModel]:
-    """
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,BoxModel]:
+    '''
     Returns boxes for the given node.
 
     :param node_id: *(Optional)* Identifier of the node.
     :param backend_node_id: *(Optional)* Identifier of the backend node.
     :param object_id: *(Optional)* JavaScript object id of the node wrapper.
     :returns: Box model for the node.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if node_id is not None:
-        params["nodeId"] = node_id.to_json()
+        params['nodeId'] = node_id.to_json()
     if backend_node_id is not None:
-        params["backendNodeId"] = backend_node_id.to_json()
+        params['backendNodeId'] = backend_node_id.to_json()
     if object_id is not None:
-        params["objectId"] = object_id.to_json()
+        params['objectId'] = object_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getBoxModel",
-        "params": params,
+        'method': 'DOM.getBoxModel',
+        'params': params,
     }
     json = yield cmd_dict
-    return BoxModel.from_json(json["model"])
+    return BoxModel.from_json(json['model'])
 
 
 def get_content_quads(
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[Quad]]:
-    """
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[Quad]]:
+    '''
     Returns quads that describe node position on the page. This method
     might return multiple quads for inline nodes.
 
@@ -944,51 +876,53 @@ def get_content_quads(
     :param backend_node_id: *(Optional)* Identifier of the backend node.
     :param object_id: *(Optional)* JavaScript object id of the node wrapper.
     :returns: Quads that describe node layout relative to viewport.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if node_id is not None:
-        params["nodeId"] = node_id.to_json()
+        params['nodeId'] = node_id.to_json()
     if backend_node_id is not None:
-        params["backendNodeId"] = backend_node_id.to_json()
+        params['backendNodeId'] = backend_node_id.to_json()
     if object_id is not None:
-        params["objectId"] = object_id.to_json()
+        params['objectId'] = object_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getContentQuads",
-        "params": params,
+        'method': 'DOM.getContentQuads',
+        'params': params,
     }
     json = yield cmd_dict
-    return [Quad.from_json(i) for i in json["quads"]]
+    return [Quad.from_json(i) for i in json['quads']]
 
 
 def get_document(
-    depth: typing.Optional[int] = None, pierce: typing.Optional[bool] = None
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, Node]:
-    """
+        depth: typing.Optional[int] = None,
+        pierce: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,Node]:
+    '''
     Returns the root DOM node (and optionally the subtree) to the caller.
     Implicitly enables the DOM domain events for the current target.
 
     :param depth: *(Optional)* The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
     :param pierce: *(Optional)* Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false).
     :returns: Resulting node.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if depth is not None:
-        params["depth"] = depth
+        params['depth'] = depth
     if pierce is not None:
-        params["pierce"] = pierce
+        params['pierce'] = pierce
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getDocument",
-        "params": params,
+        'method': 'DOM.getDocument',
+        'params': params,
     }
     json = yield cmd_dict
-    return Node.from_json(json["root"])
+    return Node.from_json(json['root'])
 
 
 @deprecated(version="1.3")
 def get_flattened_document(
-    depth: typing.Optional[int] = None, pierce: typing.Optional[bool] = None
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[Node]]:
-    """
+        depth: typing.Optional[int] = None,
+        pierce: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[Node]]:
+    '''
     Returns the root DOM node (and optionally the subtree) to the caller.
     Deprecated, as it is not designed to work well with the rest of the DOM agent.
     Use DOMSnapshot.captureSnapshot instead.
@@ -998,26 +932,26 @@ def get_flattened_document(
     :param depth: *(Optional)* The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
     :param pierce: *(Optional)* Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false).
     :returns: Resulting node.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if depth is not None:
-        params["depth"] = depth
+        params['depth'] = depth
     if pierce is not None:
-        params["pierce"] = pierce
+        params['pierce'] = pierce
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getFlattenedDocument",
-        "params": params,
+        'method': 'DOM.getFlattenedDocument',
+        'params': params,
     }
     json = yield cmd_dict
-    return [Node.from_json(i) for i in json["nodes"]]
+    return [Node.from_json(i) for i in json['nodes']]
 
 
 def get_nodes_for_subtree_by_style(
-    node_id: NodeId,
-    computed_styles: typing.List[CSSComputedStyleProperty],
-    pierce: typing.Optional[bool] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[NodeId]]:
-    """
+        node_id: NodeId,
+        computed_styles: typing.List[CSSComputedStyleProperty],
+        pierce: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[NodeId]]:
+    '''
     Finds nodes with a given computed style in a subtree.
 
     **EXPERIMENTAL**
@@ -1026,31 +960,27 @@ def get_nodes_for_subtree_by_style(
     :param computed_styles: The style to filter nodes by (includes nodes if any of properties matches).
     :param pierce: *(Optional)* Whether or not iframes and shadow roots in the same target should be traversed when returning the results (default is false).
     :returns: Resulting nodes.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
-    params["computedStyles"] = [i.to_json() for i in computed_styles]
+    params['nodeId'] = node_id.to_json()
+    params['computedStyles'] = [i.to_json() for i in computed_styles]
     if pierce is not None:
-        params["pierce"] = pierce
+        params['pierce'] = pierce
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getNodesForSubtreeByStyle",
-        "params": params,
+        'method': 'DOM.getNodesForSubtreeByStyle',
+        'params': params,
     }
     json = yield cmd_dict
-    return [NodeId.from_json(i) for i in json["nodeIds"]]
+    return [NodeId.from_json(i) for i in json['nodeIds']]
 
 
 def get_node_for_location(
-    x: int,
-    y: int,
-    include_user_agent_shadow_dom: typing.Optional[bool] = None,
-    ignore_pointer_events_none: typing.Optional[bool] = None,
-) -> typing.Generator[
-    T_JSON_DICT,
-    T_JSON_DICT,
-    typing.Tuple[BackendNodeId, page.FrameId, typing.Optional[NodeId]],
-]:
-    """
+        x: int,
+        y: int,
+        include_user_agent_shadow_dom: typing.Optional[bool] = None,
+        ignore_pointer_events_none: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[BackendNodeId, page.FrameId, typing.Optional[NodeId]]]:
+    '''
     Returns node id at given location. Depending on whether DOM domain is enabled, nodeId is
     either returned or not.
 
@@ -1063,83 +993,81 @@ def get_node_for_location(
         0. **backendNodeId** - Resulting node.
         1. **frameId** - Frame this node belongs to.
         2. **nodeId** - *(Optional)* Id of the node at given coordinates, only when enabled and requested document.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["x"] = x
-    params["y"] = y
+    params['x'] = x
+    params['y'] = y
     if include_user_agent_shadow_dom is not None:
-        params["includeUserAgentShadowDOM"] = include_user_agent_shadow_dom
+        params['includeUserAgentShadowDOM'] = include_user_agent_shadow_dom
     if ignore_pointer_events_none is not None:
-        params["ignorePointerEventsNone"] = ignore_pointer_events_none
+        params['ignorePointerEventsNone'] = ignore_pointer_events_none
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getNodeForLocation",
-        "params": params,
+        'method': 'DOM.getNodeForLocation',
+        'params': params,
     }
     json = yield cmd_dict
     return (
-        BackendNodeId.from_json(json["backendNodeId"]),
-        page.FrameId.from_json(json["frameId"]),
-        (
-            NodeId.from_json(json["nodeId"])
-            if json.get("nodeId", None) is not None
-            else None
-        ),
+        BackendNodeId.from_json(json['backendNodeId']),
+        page.FrameId.from_json(json['frameId']),
+        NodeId.from_json(json['nodeId']) if json.get('nodeId', None) is not None else None
     )
 
 
 def get_outer_html(
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
-    """
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,str]:
+    '''
     Returns node's HTML markup.
 
     :param node_id: *(Optional)* Identifier of the node.
     :param backend_node_id: *(Optional)* Identifier of the backend node.
     :param object_id: *(Optional)* JavaScript object id of the node wrapper.
     :returns: Outer HTML markup.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if node_id is not None:
-        params["nodeId"] = node_id.to_json()
+        params['nodeId'] = node_id.to_json()
     if backend_node_id is not None:
-        params["backendNodeId"] = backend_node_id.to_json()
+        params['backendNodeId'] = backend_node_id.to_json()
     if object_id is not None:
-        params["objectId"] = object_id.to_json()
+        params['objectId'] = object_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getOuterHTML",
-        "params": params,
+        'method': 'DOM.getOuterHTML',
+        'params': params,
     }
     json = yield cmd_dict
-    return str(json["outerHTML"])
+    return str(json['outerHTML'])
 
 
 def get_relayout_boundary(
-    node_id: NodeId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
-    """
+        node_id: NodeId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,NodeId]:
+    '''
     Returns the id of the nearest ancestor that is a relayout boundary.
 
     **EXPERIMENTAL**
 
     :param node_id: Id of the node.
     :returns: Relayout boundary node id for the given node.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
+    params['nodeId'] = node_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getRelayoutBoundary",
-        "params": params,
+        'method': 'DOM.getRelayoutBoundary',
+        'params': params,
     }
     json = yield cmd_dict
-    return NodeId.from_json(json["nodeId"])
+    return NodeId.from_json(json['nodeId'])
 
 
 def get_search_results(
-    search_id: str, from_index: int, to_index: int
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[NodeId]]:
-    """
+        search_id: str,
+        from_index: int,
+        to_index: int
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[NodeId]]:
+    '''
     Returns search results from given ``fromIndex`` to given ``toIndex`` from the search with the given
     identifier.
 
@@ -1149,91 +1077,92 @@ def get_search_results(
     :param from_index: Start index of the search result to be returned.
     :param to_index: End index of the search result to be returned.
     :returns: Ids of the search result nodes.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["searchId"] = search_id
-    params["fromIndex"] = from_index
-    params["toIndex"] = to_index
+    params['searchId'] = search_id
+    params['fromIndex'] = from_index
+    params['toIndex'] = to_index
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getSearchResults",
-        "params": params,
+        'method': 'DOM.getSearchResults',
+        'params': params,
     }
     json = yield cmd_dict
-    return [NodeId.from_json(i) for i in json["nodeIds"]]
+    return [NodeId.from_json(i) for i in json['nodeIds']]
 
 
-def hide_highlight() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def hide_highlight() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Hides any highlight.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.hideHighlight",
+        'method': 'DOM.hideHighlight',
     }
     json = yield cmd_dict
 
 
-def highlight_node() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def highlight_node() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Highlights DOM node.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.highlightNode",
+        'method': 'DOM.highlightNode',
     }
     json = yield cmd_dict
 
 
-def highlight_rect() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def highlight_rect() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Highlights given rectangle.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.highlightRect",
+        'method': 'DOM.highlightRect',
     }
     json = yield cmd_dict
 
 
-def mark_undoable_state() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def mark_undoable_state() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Marks last undoable state.
 
     **EXPERIMENTAL**
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.markUndoableState",
+        'method': 'DOM.markUndoableState',
     }
     json = yield cmd_dict
 
 
 def move_to(
-    node_id: NodeId,
-    target_node_id: NodeId,
-    insert_before_node_id: typing.Optional[NodeId] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
-    """
+        node_id: NodeId,
+        target_node_id: NodeId,
+        insert_before_node_id: typing.Optional[NodeId] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,NodeId]:
+    '''
     Moves node into the new container, places it before the given anchor.
 
     :param node_id: Id of the node to move.
     :param target_node_id: Id of the element to drop the moved node into.
     :param insert_before_node_id: *(Optional)* Drop node before this one (if absent, the moved node becomes the last child of ```targetNodeId```).
     :returns: New id of the moved node.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
-    params["targetNodeId"] = target_node_id.to_json()
+    params['nodeId'] = node_id.to_json()
+    params['targetNodeId'] = target_node_id.to_json()
     if insert_before_node_id is not None:
-        params["insertBeforeNodeId"] = insert_before_node_id.to_json()
+        params['insertBeforeNodeId'] = insert_before_node_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.moveTo",
-        "params": params,
+        'method': 'DOM.moveTo',
+        'params': params,
     }
     json = yield cmd_dict
-    return NodeId.from_json(json["nodeId"])
+    return NodeId.from_json(json['nodeId'])
 
 
 def perform_search(
-    query: str, include_user_agent_shadow_dom: typing.Optional[bool] = None
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[str, int]]:
-    """
+        query: str,
+        include_user_agent_shadow_dom: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[str, int]]:
+    '''
     Searches for a given string in the DOM tree. Use ``getSearchResults`` to access search results or
     ``cancelSearch`` to end this search session.
 
@@ -1245,107 +1174,110 @@ def perform_search(
 
         0. **searchId** - Unique search session identifier.
         1. **resultCount** - Number of search results.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["query"] = query
+    params['query'] = query
     if include_user_agent_shadow_dom is not None:
-        params["includeUserAgentShadowDOM"] = include_user_agent_shadow_dom
+        params['includeUserAgentShadowDOM'] = include_user_agent_shadow_dom
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.performSearch",
-        "params": params,
+        'method': 'DOM.performSearch',
+        'params': params,
     }
     json = yield cmd_dict
-    return (str(json["searchId"]), int(json["resultCount"]))
+    return (
+        str(json['searchId']),
+        int(json['resultCount'])
+    )
 
 
 def push_node_by_path_to_frontend(
-    path: str,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
-    """
+        path: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,NodeId]:
+    '''
     Requests that the node is sent to the caller given its path. // FIXME, use XPath
 
     **EXPERIMENTAL**
 
     :param path: Path to node in the proprietary format.
     :returns: Id of the node for given path.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["path"] = path
+    params['path'] = path
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.pushNodeByPathToFrontend",
-        "params": params,
+        'method': 'DOM.pushNodeByPathToFrontend',
+        'params': params,
     }
     json = yield cmd_dict
-    return NodeId.from_json(json["nodeId"])
+    return NodeId.from_json(json['nodeId'])
 
 
 def push_nodes_by_backend_ids_to_frontend(
-    backend_node_ids: typing.List[BackendNodeId],
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[NodeId]]:
-    """
+        backend_node_ids: typing.List[BackendNodeId]
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[NodeId]]:
+    '''
     Requests that a batch of nodes is sent to the caller given their backend node ids.
 
     **EXPERIMENTAL**
 
     :param backend_node_ids: The array of backend node ids.
     :returns: The array of ids of pushed nodes that correspond to the backend ids specified in backendNodeIds.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["backendNodeIds"] = [i.to_json() for i in backend_node_ids]
+    params['backendNodeIds'] = [i.to_json() for i in backend_node_ids]
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.pushNodesByBackendIdsToFrontend",
-        "params": params,
+        'method': 'DOM.pushNodesByBackendIdsToFrontend',
+        'params': params,
     }
     json = yield cmd_dict
-    return [NodeId.from_json(i) for i in json["nodeIds"]]
+    return [NodeId.from_json(i) for i in json['nodeIds']]
 
 
 def query_selector(
-    node_id: NodeId, selector: str
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
-    """
+        node_id: NodeId,
+        selector: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,NodeId]:
+    '''
     Executes ``querySelector`` on a given node.
 
     :param node_id: Id of the node to query upon.
     :param selector: Selector string.
     :returns: Query selector result.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
-    params["selector"] = selector
+    params['nodeId'] = node_id.to_json()
+    params['selector'] = selector
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.querySelector",
-        "params": params,
+        'method': 'DOM.querySelector',
+        'params': params,
     }
     json = yield cmd_dict
-    return NodeId.from_json(json["nodeId"])
+    return NodeId.from_json(json['nodeId'])
 
 
 def query_selector_all(
-    node_id: NodeId, selector: str
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[NodeId]]:
-    """
+        node_id: NodeId,
+        selector: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[NodeId]]:
+    '''
     Executes ``querySelectorAll`` on a given node.
 
     :param node_id: Id of the node to query upon.
     :param selector: Selector string.
     :returns: Query selector result.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
-    params["selector"] = selector
+    params['nodeId'] = node_id.to_json()
+    params['selector'] = selector
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.querySelectorAll",
-        "params": params,
+        'method': 'DOM.querySelectorAll',
+        'params': params,
     }
     json = yield cmd_dict
-    return [NodeId.from_json(i) for i in json["nodeIds"]]
+    return [NodeId.from_json(i) for i in json['nodeIds']]
 
 
-def get_top_layer_elements() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[NodeId]]
-):
-    """
+def get_top_layer_elements() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[NodeId]]:
+    '''
     Returns NodeIds of current top layer elements.
     Top layer is rendered closest to the user within a viewport, therefore its elements always
     appear on top of all other content.
@@ -1353,18 +1285,19 @@ def get_top_layer_elements() -> (
     **EXPERIMENTAL**
 
     :returns: NodeIds of top layer elements
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getTopLayerElements",
+        'method': 'DOM.getTopLayerElements',
     }
     json = yield cmd_dict
-    return [NodeId.from_json(i) for i in json["nodeIds"]]
+    return [NodeId.from_json(i) for i in json['nodeIds']]
 
 
 def get_element_by_relation(
-    node_id: NodeId, relation: str
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
-    """
+        node_id: NodeId,
+        relation: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,NodeId]:
+    '''
     Returns the NodeId of the matched element according to certain relations.
 
     **EXPERIMENTAL**
@@ -1372,70 +1305,73 @@ def get_element_by_relation(
     :param node_id: Id of the node from which to query the relation.
     :param relation: Type of relation to get.
     :returns: NodeId of the element matching the queried relation.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
-    params["relation"] = relation
+    params['nodeId'] = node_id.to_json()
+    params['relation'] = relation
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getElementByRelation",
-        "params": params,
+        'method': 'DOM.getElementByRelation',
+        'params': params,
     }
     json = yield cmd_dict
-    return NodeId.from_json(json["nodeId"])
+    return NodeId.from_json(json['nodeId'])
 
 
-def redo() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def redo() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Re-does the last undone action.
 
     **EXPERIMENTAL**
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.redo",
+        'method': 'DOM.redo',
     }
     json = yield cmd_dict
 
 
 def remove_attribute(
-    node_id: NodeId, name: str
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        node_id: NodeId,
+        name: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Removes attribute with given name from an element with given id.
 
     :param node_id: Id of the element to remove attribute from.
     :param name: Name of the attribute to remove.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
-    params["name"] = name
+    params['nodeId'] = node_id.to_json()
+    params['name'] = name
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.removeAttribute",
-        "params": params,
+        'method': 'DOM.removeAttribute',
+        'params': params,
     }
     json = yield cmd_dict
 
 
-def remove_node(node_id: NodeId) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def remove_node(
+        node_id: NodeId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Removes node with given id.
 
     :param node_id: Id of the node to remove.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
+    params['nodeId'] = node_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.removeNode",
-        "params": params,
+        'method': 'DOM.removeNode',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def request_child_nodes(
-    node_id: NodeId,
-    depth: typing.Optional[int] = None,
-    pierce: typing.Optional[bool] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        node_id: NodeId,
+        depth: typing.Optional[int] = None,
+        pierce: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Requests that children of the node with given id are returned to the caller in form of
     ``setChildNodes`` events where not only immediate children are retrieved, but all children down to
     the specified depth.
@@ -1443,48 +1379,48 @@ def request_child_nodes(
     :param node_id: Id of the node to get children for.
     :param depth: *(Optional)* The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
     :param pierce: *(Optional)* Whether or not iframes and shadow roots should be traversed when returning the sub-tree (default is false).
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
+    params['nodeId'] = node_id.to_json()
     if depth is not None:
-        params["depth"] = depth
+        params['depth'] = depth
     if pierce is not None:
-        params["pierce"] = pierce
+        params['pierce'] = pierce
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.requestChildNodes",
-        "params": params,
+        'method': 'DOM.requestChildNodes',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def request_node(
-    object_id: runtime.RemoteObjectId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
-    """
+        object_id: runtime.RemoteObjectId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,NodeId]:
+    '''
     Requests that the node is sent to the caller given the JavaScript node object reference. All
     nodes that form the path from the node to the root are also sent to the client as a series of
     ``setChildNodes`` notifications.
 
     :param object_id: JavaScript object id to convert into node.
     :returns: Node id for given object.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["objectId"] = object_id.to_json()
+    params['objectId'] = object_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.requestNode",
-        "params": params,
+        'method': 'DOM.requestNode',
+        'params': params,
     }
     json = yield cmd_dict
-    return NodeId.from_json(json["nodeId"])
+    return NodeId.from_json(json['nodeId'])
 
 
 def resolve_node(
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_group: typing.Optional[str] = None,
-    execution_context_id: typing.Optional[runtime.ExecutionContextId] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, runtime.RemoteObject]:
-    """
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_group: typing.Optional[str] = None,
+        execution_context_id: typing.Optional[runtime.ExecutionContextId] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,runtime.RemoteObject]:
+    '''
     Resolves the JavaScript node object for a given NodeId or BackendNodeId.
 
     :param node_id: *(Optional)* Id of the node to resolve.
@@ -1492,260 +1428,276 @@ def resolve_node(
     :param object_group: *(Optional)* Symbolic group name that can be used to release multiple objects.
     :param execution_context_id: *(Optional)* Execution context in which to resolve the node.
     :returns: JavaScript object wrapper for given node.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if node_id is not None:
-        params["nodeId"] = node_id.to_json()
+        params['nodeId'] = node_id.to_json()
     if backend_node_id is not None:
-        params["backendNodeId"] = backend_node_id.to_json()
+        params['backendNodeId'] = backend_node_id.to_json()
     if object_group is not None:
-        params["objectGroup"] = object_group
+        params['objectGroup'] = object_group
     if execution_context_id is not None:
-        params["executionContextId"] = execution_context_id.to_json()
+        params['executionContextId'] = execution_context_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.resolveNode",
-        "params": params,
+        'method': 'DOM.resolveNode',
+        'params': params,
     }
     json = yield cmd_dict
-    return runtime.RemoteObject.from_json(json["object"])
+    return runtime.RemoteObject.from_json(json['object'])
 
 
 def set_attribute_value(
-    node_id: NodeId, name: str, value: str
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        node_id: NodeId,
+        name: str,
+        value: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Sets attribute for an element with given id.
 
     :param node_id: Id of the element to set attribute for.
     :param name: Attribute name.
     :param value: Attribute value.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
-    params["name"] = name
-    params["value"] = value
+    params['nodeId'] = node_id.to_json()
+    params['name'] = name
+    params['value'] = value
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.setAttributeValue",
-        "params": params,
+        'method': 'DOM.setAttributeValue',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def set_attributes_as_text(
-    node_id: NodeId, text: str, name: typing.Optional[str] = None
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        node_id: NodeId,
+        text: str,
+        name: typing.Optional[str] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Sets attributes on element with given id. This method is useful when user edits some existing
     attribute value and types in several attribute name/value pairs.
 
     :param node_id: Id of the element to set attributes for.
     :param text: Text with a number of attributes. Will parse this text using HTML parser.
     :param name: *(Optional)* Attribute name to replace with new attributes derived from text in case text parsed successfully.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
-    params["text"] = text
+    params['nodeId'] = node_id.to_json()
+    params['text'] = text
     if name is not None:
-        params["name"] = name
+        params['name'] = name
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.setAttributesAsText",
-        "params": params,
+        'method': 'DOM.setAttributesAsText',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def set_file_input_files(
-    files: typing.List[str],
-    node_id: typing.Optional[NodeId] = None,
-    backend_node_id: typing.Optional[BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        files: typing.List[str],
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Sets files for the given file input element.
 
     :param files: Array of file paths to set.
     :param node_id: *(Optional)* Identifier of the node.
     :param backend_node_id: *(Optional)* Identifier of the backend node.
     :param object_id: *(Optional)* JavaScript object id of the node wrapper.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["files"] = [i for i in files]
+    params['files'] = [i for i in files]
     if node_id is not None:
-        params["nodeId"] = node_id.to_json()
+        params['nodeId'] = node_id.to_json()
     if backend_node_id is not None:
-        params["backendNodeId"] = backend_node_id.to_json()
+        params['backendNodeId'] = backend_node_id.to_json()
     if object_id is not None:
-        params["objectId"] = object_id.to_json()
+        params['objectId'] = object_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.setFileInputFiles",
-        "params": params,
+        'method': 'DOM.setFileInputFiles',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def set_node_stack_traces_enabled(
-    enable: bool,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        enable: bool
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Sets if stack traces should be captured for Nodes. See ``Node.getNodeStackTraces``. Default is disabled.
 
     **EXPERIMENTAL**
 
     :param enable: Enable or disable.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["enable"] = enable
+    params['enable'] = enable
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.setNodeStackTracesEnabled",
-        "params": params,
+        'method': 'DOM.setNodeStackTracesEnabled',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def get_node_stack_traces(
-    node_id: NodeId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Optional[runtime.StackTrace]]:
-    """
+        node_id: NodeId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Optional[runtime.StackTrace]]:
+    '''
     Gets stack traces associated with a Node. As of now, only provides stack trace for Node creation.
 
     **EXPERIMENTAL**
 
     :param node_id: Id of the node to get stack traces for.
     :returns: *(Optional)* Creation stack trace, if available.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
+    params['nodeId'] = node_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getNodeStackTraces",
-        "params": params,
+        'method': 'DOM.getNodeStackTraces',
+        'params': params,
     }
     json = yield cmd_dict
-    return (
-        runtime.StackTrace.from_json(json["creation"])
-        if json.get("creation", None) is not None
-        else None
-    )
+    return runtime.StackTrace.from_json(json['creation']) if json.get('creation', None) is not None else None
 
 
 def get_file_info(
-    object_id: runtime.RemoteObjectId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
-    """
+        object_id: runtime.RemoteObjectId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,str]:
+    '''
     Returns file information for the given
     File wrapper.
 
     **EXPERIMENTAL**
 
     :param object_id: JavaScript object id of the node wrapper.
-    :returns:
-    """
+    :returns: 
+    '''
     params: T_JSON_DICT = dict()
-    params["objectId"] = object_id.to_json()
+    params['objectId'] = object_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getFileInfo",
-        "params": params,
+        'method': 'DOM.getFileInfo',
+        'params': params,
     }
     json = yield cmd_dict
-    return str(json["path"])
+    return str(json['path'])
+
+
+def get_detached_dom_nodes() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[DetachedElementInfo]]:
+    '''
+    Returns list of detached nodes
+
+    **EXPERIMENTAL**
+
+    :returns: The list of detached nodes
+    '''
+    cmd_dict: T_JSON_DICT = {
+        'method': 'DOM.getDetachedDomNodes',
+    }
+    json = yield cmd_dict
+    return [DetachedElementInfo.from_json(i) for i in json['detachedNodes']]
 
 
 def set_inspected_node(
-    node_id: NodeId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        node_id: NodeId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Enables console to refer to the node with given id via $x (see Command Line API for more details
     $x functions).
 
     **EXPERIMENTAL**
 
     :param node_id: DOM node id to be accessible by means of $x command line API.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
+    params['nodeId'] = node_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.setInspectedNode",
-        "params": params,
+        'method': 'DOM.setInspectedNode',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def set_node_name(
-    node_id: NodeId, name: str
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
-    """
+        node_id: NodeId,
+        name: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,NodeId]:
+    '''
     Sets node name for a node with given id.
 
     :param node_id: Id of the node to set name for.
     :param name: New node's name.
     :returns: New node's id.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
-    params["name"] = name
+    params['nodeId'] = node_id.to_json()
+    params['name'] = name
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.setNodeName",
-        "params": params,
+        'method': 'DOM.setNodeName',
+        'params': params,
     }
     json = yield cmd_dict
-    return NodeId.from_json(json["nodeId"])
+    return NodeId.from_json(json['nodeId'])
 
 
 def set_node_value(
-    node_id: NodeId, value: str
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        node_id: NodeId,
+        value: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Sets node value for a node with given id.
 
     :param node_id: Id of the node to set value for.
     :param value: New node's value.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
-    params["value"] = value
+    params['nodeId'] = node_id.to_json()
+    params['value'] = value
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.setNodeValue",
-        "params": params,
+        'method': 'DOM.setNodeValue',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def set_outer_html(
-    node_id: NodeId, outer_html: str
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        node_id: NodeId,
+        outer_html: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Sets node HTML markup, returns new node id.
 
     :param node_id: Id of the node to set markup for.
     :param outer_html: Outer HTML markup to set.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
-    params["outerHTML"] = outer_html
+    params['nodeId'] = node_id.to_json()
+    params['outerHTML'] = outer_html
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.setOuterHTML",
-        "params": params,
+        'method': 'DOM.setOuterHTML',
+        'params': params,
     }
     json = yield cmd_dict
 
 
-def undo() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def undo() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Undoes the last performed action.
 
     **EXPERIMENTAL**
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.undo",
+        'method': 'DOM.undo',
     }
     json = yield cmd_dict
 
 
 def get_frame_owner(
-    frame_id: page.FrameId,
-) -> typing.Generator[
-    T_JSON_DICT, T_JSON_DICT, typing.Tuple[BackendNodeId, typing.Optional[NodeId]]
-]:
-    """
+        frame_id: page.FrameId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[BackendNodeId, typing.Optional[NodeId]]]:
+    '''
     Returns iframe node that owns iframe with the given domain.
 
     **EXPERIMENTAL**
@@ -1755,35 +1707,33 @@ def get_frame_owner(
 
         0. **backendNodeId** - Resulting node.
         1. **nodeId** - *(Optional)* Id of the node at given coordinates, only when enabled and requested document.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["frameId"] = frame_id.to_json()
+    params['frameId'] = frame_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getFrameOwner",
-        "params": params,
+        'method': 'DOM.getFrameOwner',
+        'params': params,
     }
     json = yield cmd_dict
     return (
-        BackendNodeId.from_json(json["backendNodeId"]),
-        (
-            NodeId.from_json(json["nodeId"])
-            if json.get("nodeId", None) is not None
-            else None
-        ),
+        BackendNodeId.from_json(json['backendNodeId']),
+        NodeId.from_json(json['nodeId']) if json.get('nodeId', None) is not None else None
     )
 
 
 def get_container_for_node(
-    node_id: NodeId,
-    container_name: typing.Optional[str] = None,
-    physical_axes: typing.Optional[PhysicalAxes] = None,
-    logical_axes: typing.Optional[LogicalAxes] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Optional[NodeId]]:
-    """
+        node_id: NodeId,
+        container_name: typing.Optional[str] = None,
+        physical_axes: typing.Optional[PhysicalAxes] = None,
+        logical_axes: typing.Optional[LogicalAxes] = None,
+        queries_scroll_state: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Optional[NodeId]]:
+    '''
     Returns the query container of the given node based on container query
-    conditions: containerName, physical, and logical axes. If no axes are
-    provided, the style container is returned, which is the direct parent or the
-    closest element with a matching container-name.
+    conditions: containerName, physical and logical axes, and whether it queries
+    scroll-state. If no axes are provided and queriesScrollState is false, the
+    style container is returned, which is the direct parent or the closest
+    element with a matching container-name.
 
     **EXPERIMENTAL**
 
@@ -1791,32 +1741,31 @@ def get_container_for_node(
     :param container_name: *(Optional)*
     :param physical_axes: *(Optional)*
     :param logical_axes: *(Optional)*
+    :param queries_scroll_state: *(Optional)*
     :returns: *(Optional)* The container node for the given node, or null if not found.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
+    params['nodeId'] = node_id.to_json()
     if container_name is not None:
-        params["containerName"] = container_name
+        params['containerName'] = container_name
     if physical_axes is not None:
-        params["physicalAxes"] = physical_axes.to_json()
+        params['physicalAxes'] = physical_axes.to_json()
     if logical_axes is not None:
-        params["logicalAxes"] = logical_axes.to_json()
+        params['logicalAxes'] = logical_axes.to_json()
+    if queries_scroll_state is not None:
+        params['queriesScrollState'] = queries_scroll_state
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getContainerForNode",
-        "params": params,
+        'method': 'DOM.getContainerForNode',
+        'params': params,
     }
     json = yield cmd_dict
-    return (
-        NodeId.from_json(json["nodeId"])
-        if json.get("nodeId", None) is not None
-        else None
-    )
+    return NodeId.from_json(json['nodeId']) if json.get('nodeId', None) is not None else None
 
 
 def get_querying_descendants_for_container(
-    node_id: NodeId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[NodeId]]:
-    """
+        node_id: NodeId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[NodeId]]:
+    '''
     Returns the descendants of a container query container that have
     container queries against this container.
 
@@ -1824,21 +1773,22 @@ def get_querying_descendants_for_container(
 
     :param node_id: Id of the container node to find querying descendants from.
     :returns: Descendant nodes with container queries against the given container.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
+    params['nodeId'] = node_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getQueryingDescendantsForContainer",
-        "params": params,
+        'method': 'DOM.getQueryingDescendantsForContainer',
+        'params': params,
     }
     json = yield cmd_dict
-    return [NodeId.from_json(i) for i in json["nodeIds"]]
+    return [NodeId.from_json(i) for i in json['nodeIds']]
 
 
 def get_anchor_element(
-    node_id: NodeId, anchor_specifier: typing.Optional[str] = None
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, NodeId]:
-    """
+        node_id: NodeId,
+        anchor_specifier: typing.Optional[str] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,NodeId]:
+    '''
     Returns the target anchor element of the given anchor query according to
     https://www.w3.org/TR/css-anchor-position-1/#target.
 
@@ -1847,26 +1797,25 @@ def get_anchor_element(
     :param node_id: Id of the positioned element from which to find the anchor.
     :param anchor_specifier: *(Optional)* An optional anchor specifier, as defined in https://www.w3.org/TR/css-anchor-position-1/#anchor-specifier. If not provided, it will return the implicit anchor element for the given positioned element.
     :returns: The anchor element of the given anchor query.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["nodeId"] = node_id.to_json()
+    params['nodeId'] = node_id.to_json()
     if anchor_specifier is not None:
-        params["anchorSpecifier"] = anchor_specifier
+        params['anchorSpecifier'] = anchor_specifier
     cmd_dict: T_JSON_DICT = {
-        "method": "DOM.getAnchorElement",
-        "params": params,
+        'method': 'DOM.getAnchorElement',
+        'params': params,
     }
     json = yield cmd_dict
-    return NodeId.from_json(json["nodeId"])
+    return NodeId.from_json(json['nodeId'])
 
 
-@event_class("DOM.attributeModified")
+@event_class('DOM.attributeModified')
 @dataclass
 class AttributeModified:
-    """
+    '''
     Fired when ``Element``'s attribute is modified.
-    """
-
+    '''
     #: Id of the node that has changed.
     node_id: NodeId
     #: Attribute name.
@@ -1877,19 +1826,18 @@ class AttributeModified:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> AttributeModified:
         return cls(
-            node_id=NodeId.from_json(json["nodeId"]),
-            name=str(json["name"]),
-            value=str(json["value"]),
+            node_id=NodeId.from_json(json['nodeId']),
+            name=str(json['name']),
+            value=str(json['value'])
         )
 
 
-@event_class("DOM.attributeRemoved")
+@event_class('DOM.attributeRemoved')
 @dataclass
 class AttributeRemoved:
-    """
+    '''
     Fired when ``Element``'s attribute is removed.
-    """
-
+    '''
     #: Id of the node that has changed.
     node_id: NodeId
     #: A ttribute name.
@@ -1897,16 +1845,18 @@ class AttributeRemoved:
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> AttributeRemoved:
-        return cls(node_id=NodeId.from_json(json["nodeId"]), name=str(json["name"]))
+        return cls(
+            node_id=NodeId.from_json(json['nodeId']),
+            name=str(json['name'])
+        )
 
 
-@event_class("DOM.characterDataModified")
+@event_class('DOM.characterDataModified')
 @dataclass
 class CharacterDataModified:
-    """
+    '''
     Mirrors ``DOMCharacterDataModified`` event.
-    """
-
+    '''
     #: Id of the node that has changed.
     node_id: NodeId
     #: New text value.
@@ -1915,18 +1865,17 @@ class CharacterDataModified:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> CharacterDataModified:
         return cls(
-            node_id=NodeId.from_json(json["nodeId"]),
-            character_data=str(json["characterData"]),
+            node_id=NodeId.from_json(json['nodeId']),
+            character_data=str(json['characterData'])
         )
 
 
-@event_class("DOM.childNodeCountUpdated")
+@event_class('DOM.childNodeCountUpdated')
 @dataclass
 class ChildNodeCountUpdated:
-    """
+    '''
     Fired when ``Container``'s child node count has changed.
-    """
-
+    '''
     #: Id of the node that has changed.
     node_id: NodeId
     #: New node count.
@@ -1935,18 +1884,17 @@ class ChildNodeCountUpdated:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ChildNodeCountUpdated:
         return cls(
-            node_id=NodeId.from_json(json["nodeId"]),
-            child_node_count=int(json["childNodeCount"]),
+            node_id=NodeId.from_json(json['nodeId']),
+            child_node_count=int(json['childNodeCount'])
         )
 
 
-@event_class("DOM.childNodeInserted")
+@event_class('DOM.childNodeInserted')
 @dataclass
 class ChildNodeInserted:
-    """
+    '''
     Mirrors ``DOMNodeInserted`` event.
-    """
-
+    '''
     #: Id of the node that has changed.
     parent_node_id: NodeId
     #: Id of the previous sibling.
@@ -1957,19 +1905,18 @@ class ChildNodeInserted:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ChildNodeInserted:
         return cls(
-            parent_node_id=NodeId.from_json(json["parentNodeId"]),
-            previous_node_id=NodeId.from_json(json["previousNodeId"]),
-            node=Node.from_json(json["node"]),
+            parent_node_id=NodeId.from_json(json['parentNodeId']),
+            previous_node_id=NodeId.from_json(json['previousNodeId']),
+            node=Node.from_json(json['node'])
         )
 
 
-@event_class("DOM.childNodeRemoved")
+@event_class('DOM.childNodeRemoved')
 @dataclass
 class ChildNodeRemoved:
-    """
+    '''
     Mirrors ``DOMNodeRemoved`` event.
-    """
-
+    '''
     #: Parent id.
     parent_node_id: NodeId
     #: Id of the node that has been removed.
@@ -1978,20 +1925,19 @@ class ChildNodeRemoved:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ChildNodeRemoved:
         return cls(
-            parent_node_id=NodeId.from_json(json["parentNodeId"]),
-            node_id=NodeId.from_json(json["nodeId"]),
+            parent_node_id=NodeId.from_json(json['parentNodeId']),
+            node_id=NodeId.from_json(json['nodeId'])
         )
 
 
-@event_class("DOM.distributedNodesUpdated")
+@event_class('DOM.distributedNodesUpdated')
 @dataclass
 class DistributedNodesUpdated:
-    """
+    '''
     **EXPERIMENTAL**
 
     Called when distribution is changed.
-    """
-
+    '''
     #: Insertion point where distributed nodes were updated.
     insertion_point_id: NodeId
     #: Distributed nodes for given insertion point.
@@ -2000,51 +1946,52 @@ class DistributedNodesUpdated:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> DistributedNodesUpdated:
         return cls(
-            insertion_point_id=NodeId.from_json(json["insertionPointId"]),
-            distributed_nodes=[
-                BackendNode.from_json(i) for i in json["distributedNodes"]
-            ],
+            insertion_point_id=NodeId.from_json(json['insertionPointId']),
+            distributed_nodes=[BackendNode.from_json(i) for i in json['distributedNodes']]
         )
 
 
-@event_class("DOM.documentUpdated")
+@event_class('DOM.documentUpdated')
 @dataclass
 class DocumentUpdated:
-    """
+    '''
     Fired when ``Document`` has been totally updated. Node ids are no longer valid.
-    """
+    '''
+
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> DocumentUpdated:
-        return cls()
+        return cls(
+
+        )
 
 
-@event_class("DOM.inlineStyleInvalidated")
+@event_class('DOM.inlineStyleInvalidated')
 @dataclass
 class InlineStyleInvalidated:
-    """
+    '''
     **EXPERIMENTAL**
 
     Fired when ``Element``'s inline style is modified via a CSS property modification.
-    """
-
+    '''
     #: Ids of the nodes for which the inline styles have been invalidated.
     node_ids: typing.List[NodeId]
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> InlineStyleInvalidated:
-        return cls(node_ids=[NodeId.from_json(i) for i in json["nodeIds"]])
+        return cls(
+            node_ids=[NodeId.from_json(i) for i in json['nodeIds']]
+        )
 
 
-@event_class("DOM.pseudoElementAdded")
+@event_class('DOM.pseudoElementAdded')
 @dataclass
 class PseudoElementAdded:
-    """
+    '''
     **EXPERIMENTAL**
 
     Called when a pseudo element is added to an element.
-    """
-
+    '''
     #: Pseudo element's parent element id.
     parent_id: NodeId
     #: The added pseudo element.
@@ -2053,34 +2000,57 @@ class PseudoElementAdded:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> PseudoElementAdded:
         return cls(
-            parent_id=NodeId.from_json(json["parentId"]),
-            pseudo_element=Node.from_json(json["pseudoElement"]),
+            parent_id=NodeId.from_json(json['parentId']),
+            pseudo_element=Node.from_json(json['pseudoElement'])
         )
 
 
-@event_class("DOM.topLayerElementsUpdated")
+@event_class('DOM.topLayerElementsUpdated')
 @dataclass
 class TopLayerElementsUpdated:
-    """
+    '''
     **EXPERIMENTAL**
 
     Called when top layer elements are changed.
-    """
+    '''
+
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> TopLayerElementsUpdated:
-        return cls()
+        return cls(
+
+        )
 
 
-@event_class("DOM.pseudoElementRemoved")
+@event_class('DOM.scrollableFlagUpdated')
 @dataclass
-class PseudoElementRemoved:
+class ScrollableFlagUpdated:
     """
     **EXPERIMENTAL**
 
-    Called when a pseudo element is removed from an element.
+    Fired when a node's scrollability state changes.
     """
+    #: The id of the node.
+    node_id: NodeId
+    #: If the node is scrollable.
+    is_scrollable: bool
 
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> ScrollableFlagUpdated:
+        return cls(
+            node_id=NodeId.from_json(json['nodeId']),
+            is_scrollable=bool(json['isScrollable'])
+        )
+
+
+@event_class('DOM.pseudoElementRemoved')
+@dataclass
+class PseudoElementRemoved:
+    '''
+    **EXPERIMENTAL**
+
+    Called when a pseudo element is removed from an element.
+    '''
     #: Pseudo element's parent element id.
     parent_id: NodeId
     #: The removed pseudo element id.
@@ -2089,19 +2059,18 @@ class PseudoElementRemoved:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> PseudoElementRemoved:
         return cls(
-            parent_id=NodeId.from_json(json["parentId"]),
-            pseudo_element_id=NodeId.from_json(json["pseudoElementId"]),
+            parent_id=NodeId.from_json(json['parentId']),
+            pseudo_element_id=NodeId.from_json(json['pseudoElementId'])
         )
 
 
-@event_class("DOM.setChildNodes")
+@event_class('DOM.setChildNodes')
 @dataclass
 class SetChildNodes:
-    """
+    '''
     Fired when backend wants to provide client with the missing DOM structure. This happens upon
     most of the calls requesting node ids.
-    """
-
+    '''
     #: Parent node id to populate with children.
     parent_id: NodeId
     #: Child nodes array.
@@ -2110,20 +2079,19 @@ class SetChildNodes:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> SetChildNodes:
         return cls(
-            parent_id=NodeId.from_json(json["parentId"]),
-            nodes=[Node.from_json(i) for i in json["nodes"]],
+            parent_id=NodeId.from_json(json['parentId']),
+            nodes=[Node.from_json(i) for i in json['nodes']]
         )
 
 
-@event_class("DOM.shadowRootPopped")
+@event_class('DOM.shadowRootPopped')
 @dataclass
 class ShadowRootPopped:
-    """
+    '''
     **EXPERIMENTAL**
 
     Called when shadow root is popped from the element.
-    """
-
+    '''
     #: Host element id.
     host_id: NodeId
     #: Shadow root id.
@@ -2132,20 +2100,19 @@ class ShadowRootPopped:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ShadowRootPopped:
         return cls(
-            host_id=NodeId.from_json(json["hostId"]),
-            root_id=NodeId.from_json(json["rootId"]),
+            host_id=NodeId.from_json(json['hostId']),
+            root_id=NodeId.from_json(json['rootId'])
         )
 
 
-@event_class("DOM.shadowRootPushed")
+@event_class('DOM.shadowRootPushed')
 @dataclass
 class ShadowRootPushed:
-    """
+    '''
     **EXPERIMENTAL**
 
     Called when shadow root is pushed into the element.
-    """
-
+    '''
     #: Host element id.
     host_id: NodeId
     #: Shadow root.
@@ -2154,5 +2121,6 @@ class ShadowRootPushed:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> ShadowRootPushed:
         return cls(
-            host_id=NodeId.from_json(json["hostId"]), root=Node.from_json(json["root"])
+            host_id=NodeId.from_json(json['hostId']),
+            root=Node.from_json(json['root'])
         )

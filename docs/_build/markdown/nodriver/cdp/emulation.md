@@ -124,8 +124,6 @@ See [https://w3c.github.io/sensors/#automation](https://w3c.github.io/sensors/#a
 
 #### MAGNETOMETER *= 'magnetometer'*
 
-#### PROXIMITY *= 'proximity'*
-
 #### RELATIVE_ORIENTATION *= 'relative-orientation'*
 
 ### *class* SensorMetadata(available=None, minimum_frequency=None, maximum_frequency=None)
@@ -165,6 +163,24 @@ See [https://w3c.github.io/sensors/#automation](https://w3c.github.io/sensors/#a
 #### xyz*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SensorReadingXYZ`](#nodriver.cdp.emulation.SensorReadingXYZ)]* *= None*
 
 #### quaternion*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SensorReadingQuaternion`](#nodriver.cdp.emulation.SensorReadingQuaternion)]* *= None*
+
+### *class* PressureSource(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
+
+#### CPU *= 'cpu'*
+
+### *class* PressureState(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
+
+#### NOMINAL *= 'nominal'*
+
+#### FAIR *= 'fair'*
+
+#### SERIOUS *= 'serious'*
+
+#### CRITICAL *= 'critical'*
+
+### *class* PressureMetadata(available=None)
+
+#### available*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 ### *class* DisabledImageType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -454,6 +470,36 @@ Sets a specified page scale factor.
 
 * **Parameters:**
   **page_scale_factor** ([`float`](https://docs.python.org/3/library/functions.html#float)) – Page scale factor.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### set_pressure_source_override_enabled(enabled, source, metadata=None)
+
+Overrides a pressure source of a given type, as used by the Compute
+Pressure API, so that updates to PressureObserver.observe() are provided
+via setPressureStateOverride instead of being retrieved from
+platform-provided telemetry data.
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  * **enabled** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – 
+  * **source** ([`PressureSource`](#nodriver.cdp.emulation.PressureSource)) – 
+  * **metadata** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PressureMetadata`](#nodriver.cdp.emulation.PressureMetadata)]) – *(Optional)*
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### set_pressure_state_override(source, state)
+
+Provides a given pressure state that will be processed and eventually be
+delivered to PressureObserver users. `source` must have been previously
+overridden by setPressureSourceOverrideEnabled.
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  * **source** ([`PressureSource`](#nodriver.cdp.emulation.PressureSource)) – 
+  * **state** ([`PressureState`](#nodriver.cdp.emulation.PressureState)) – 
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 

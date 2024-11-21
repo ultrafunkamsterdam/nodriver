@@ -4,10 +4,10 @@ import pathlib
 import secrets
 import sys
 import tempfile
-from typing import Union, List, Optional
-from types import MethodType
 import zipfile
-import tempfile
+from types import MethodType
+from typing import List, Optional, Union
+
 from ._contradict import ContraDict
 
 __all__ = [
@@ -244,7 +244,8 @@ def is_root():
     :return:
     :rtype:
     """
-    import ctypes, os
+    import ctypes
+    import os
 
     try:
         return os.getuid() == 0

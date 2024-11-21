@@ -64,6 +64,10 @@ Information about the frame affected by an inspector issue.
 
 #### EXCLUDE_THIRD_PARTY_PHASEOUT *= 'ExcludeThirdPartyPhaseout'*
 
+#### EXCLUDE_PORT_MISMATCH *= 'ExcludePortMismatch'*
+
+#### EXCLUDE_SCHEME_MISMATCH *= 'ExcludeSchemeMismatch'*
+
 ### *class* CookieWarningReason(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 #### WARN_SAME_SITE_UNSPECIFIED_CROSS_SITE_CONTEXT *= 'WarnSameSiteUnspecifiedCrossSiteContext'*
@@ -89,6 +93,10 @@ Information about the frame affected by an inspector issue.
 #### WARN_THIRD_PARTY_PHASEOUT *= 'WarnThirdPartyPhaseout'*
 
 #### WARN_CROSS_SITE_REDIRECT_DOWNGRADE_CHANGES_INCLUSION *= 'WarnCrossSiteRedirectDowngradeChangesInclusion'*
+
+#### WARN_DEPRECATION_TRIAL_METADATA *= 'WarnDeprecationTrialMetadata'*
+
+#### WARN_THIRD_PARTY_COOKIE_HEURISTIC *= 'WarnThirdPartyCookieHeuristic'*
 
 ### *class* CookieOperation(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -423,6 +431,8 @@ CORS RFC1918 enforcement.
 
 #### NO_REGISTER_OS_TRIGGER_HEADER *= 'NoRegisterOsTriggerHeader'*
 
+#### NAVIGATION_REGISTRATION_UNIQUE_SCOPE_ALREADY_SET *= 'NavigationRegistrationUniqueScopeAlreadySet'*
+
 ### *class* SharedDictionaryError(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 #### USE_ERROR_CROSS_ORIGIN_NO_CORS_REQUEST *= 'UseErrorCrossOriginNoCorsRequest'*
@@ -515,8 +525,6 @@ instead of “limited-quirks”.
 #### request*: [`AffectedRequest`](#nodriver.cdp.audits.AffectedRequest)*
 
 ### *class* GenericIssueErrorType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
-
-#### CROSS_ORIGIN_PORTAL_POST_MESSAGE_ERROR *= 'CrossOriginPortalPostMessageError'*
 
 #### FORM_LABEL_FOR_NAME_ERROR *= 'FormLabelForNameError'*
 
@@ -694,7 +702,7 @@ all cases except for success.
 
 #### MISSING_TRANSIENT_USER_ACTIVATION *= 'MissingTransientUserActivation'*
 
-#### REPLACED_BY_BUTTON_MODE *= 'ReplacedByButtonMode'*
+#### REPLACED_BY_ACTIVE_MODE *= 'ReplacedByActiveMode'*
 
 #### INVALID_FIELDS_SPECIFIED *= 'InvalidFieldsSpecified'*
 

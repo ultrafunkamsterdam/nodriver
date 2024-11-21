@@ -67,6 +67,22 @@ or hexadecimal (0x prefixed) string.
 
 Size of the module in bytes.
 
+### *class* DOMCounter(name, count)
+
+DOM object counter data.
+
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+object names should be presumed volatile and clients should not expect
+the returned names to be consistent across runs.
+
+* **Type:**
+  Object name. Note
+
+#### count*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+Object count.
+
 ## Commands
 
 Each command is a generator function. The return
@@ -105,6 +121,8 @@ collected since browser process startup.
 
 ### get_dom_counters()
 
+Retruns current DOM object counters.
+
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`int`](https://docs.python.org/3/library/functions.html#int), [`int`](https://docs.python.org/3/library/functions.html#int), [`int`](https://docs.python.org/3/library/functions.html#int)]]
 * **Returns:**
@@ -112,6 +130,15 @@ collected since browser process startup.
   1. **documents** -
   2. **nodes** -
   3. **jsEventListeners** -
+
+### get_dom_counters_for_leak_detection()
+
+Retruns DOM object counters after preparing renderer for leak detection.
+
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`DOMCounter`](#nodriver.cdp.memory.DOMCounter)]]
+* **Returns:**
+  DOM object counters.
 
 ### get_sampling_profile()
 
@@ -123,6 +150,9 @@ Retrieve native memory allocations profile collected since last
 * **Returns:**
 
 ### prepare_for_leak_detection()
+
+Prepares for leak detection by terminating workers, stopping spellcheckers,
+dropping non-essential internal caches, running garbage collections, etc.
 
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]

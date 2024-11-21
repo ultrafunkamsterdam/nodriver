@@ -61,7 +61,9 @@ Unique loader identifier.
 
 ### *class* RequestId
 
-Unique request identifier.
+Unique network request identifier.
+Note that this does not identify individual HTTP requests that are part of
+a network request.
 
 ### *class* InterceptionId
 
@@ -847,6 +849,7 @@ Type of this initiator.
 #### stack*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)]* *= None*
 
 Initiator JavaScript stack trace, set for Script only.
+Requires the Debugger domain to be enabled.
 
 #### url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
@@ -1034,6 +1037,10 @@ Types of reasons why a cookie may not be sent with a request.
 
 #### NAME_VALUE_PAIR_EXCEEDS_MAX_SIZE *= 'NameValuePairExceedsMaxSize'*
 
+#### PORT_MISMATCH *= 'PortMismatch'*
+
+#### SCHEME_MISMATCH *= 'SchemeMismatch'*
+
 ### *class* CookieExemptionReason(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 Types of reasons why a cookie should have been blocked by 3PCD but is exempted for the request.
@@ -1046,6 +1053,8 @@ Types of reasons why a cookie should have been blocked by 3PCD but is exempted f
 
 #### TPCD_DEPRECATION_TRIAL *= 'TPCDDeprecationTrial'*
 
+#### TOP_LEVEL_TPCD_DEPRECATION_TRIAL *= 'TopLevelTPCDDeprecationTrial'*
+
 #### TPCD_HEURISTICS *= 'TPCDHeuristics'*
 
 #### ENTERPRISE_POLICY *= 'EnterprisePolicy'*
@@ -1053,8 +1062,6 @@ Types of reasons why a cookie should have been blocked by 3PCD but is exempted f
 #### STORAGE_ACCESS *= 'StorageAccess'*
 
 #### TOP_LEVEL_STORAGE_ACCESS *= 'TopLevelStorageAccess'*
-
-#### CORS_OPT_IN *= 'CorsOptIn'*
 
 #### SCHEME *= 'Scheme'*
 
@@ -1422,6 +1429,8 @@ the same request (but not for redirected requests).
 #### SAME_ORIGIN_PLUS_COEP *= 'SameOriginPlusCoep'*
 
 #### RESTRICT_PROPERTIES_PLUS_COEP *= 'RestrictPropertiesPlusCoep'*
+
+#### NOOPENER_ALLOW_POPUPS *= 'NoopenerAllowPopups'*
 
 ### *class* CrossOriginOpenerPolicyStatus(value, report_only_value, reporting_endpoint=None, report_only_reporting_endpoint=None)
 

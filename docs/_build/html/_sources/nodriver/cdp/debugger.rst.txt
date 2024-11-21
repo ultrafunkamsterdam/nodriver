@@ -124,6 +124,8 @@ to. For more information, see
 
 .. autofunction:: set_async_call_stack_depth
 
+.. autofunction:: set_blackbox_execution_contexts
+
 .. autofunction:: set_blackbox_patterns
 
 .. autofunction:: set_blackboxed_ranges

@@ -5,20 +5,19 @@ import atexit
 import json
 import logging
 import os
-import pickle
 import pathlib
+import pickle
 import typing
 import urllib.parse
 import urllib.request
 import warnings
 from collections import defaultdict
-from typing import List, Union, Tuple
+from typing import List, Tuple, Union
 
 from .. import cdp
-from . import util
-from . import tab
+from . import tab, util
 from ._contradict import ContraDict
-from .config import PathLike, Config, is_posix
+from .config import Config, PathLike, is_posix
 from .connection import Connection
 
 logger = logging.getLogger(__name__)
@@ -432,8 +431,9 @@ class Browser:
         await self.connection.send(cdp.browser.grant_permissions(permissions))
 
     async def tile_windows(self, windows=None, max_columns: int = 0):
-        import mss
         import math
+
+        import mss
 
         m = mss.mss()
         screen, screen_width, screen_height = 3 * (None,)

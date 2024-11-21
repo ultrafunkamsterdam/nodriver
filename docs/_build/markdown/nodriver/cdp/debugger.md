@@ -422,7 +422,20 @@ Enables or disables async call stacks tracking.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
-### set_blackbox_patterns(patterns)
+### set_blackbox_execution_contexts(unique_ids)
+
+Replace previous blackbox execution contexts with passed ones. Forces backend to skip
+stepping/pausing in scripts in these execution contexts. VM will try to leave blackboxed script by
+performing ‘step in’ several times, finally resorting to ‘step out’ if unsuccessful.
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  **unique_ids** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – Array of execution context unique ids for the debugger to ignore.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### set_blackbox_patterns(patterns, skip_anonymous=None)
 
 Replace previous blackbox patterns with passed ones. Forces backend to skip stepping/pausing in
 scripts with url matching one of the patterns. VM will try to leave blackboxed script by
@@ -431,7 +444,8 @@ performing ‘step in’ several times, finally resorting to ‘step out’ if u
 **EXPERIMENTAL**
 
 * **Parameters:**
-  **patterns** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – Array of regexps that will be used to check script url for blackbox state.
+  * **patterns** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – Array of regexps that will be used to check script url for blackbox state.
+  * **skip_anonymous** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If true, also ignore scripts with no source url.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -825,9 +839,9 @@ If the scriptLanguage is WebAssembly, the code section offset in the module.
 
 The language of the script.
 
-#### debug_symbols*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`DebugSymbols`](#nodriver.cdp.debugger.DebugSymbols)]*
+#### debug_symbols*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`DebugSymbols`](#nodriver.cdp.debugger.DebugSymbols)]]*
 
-If the scriptLanguage is WebASsembly, the source of debug symbols for the module.
+If the scriptLanguage is WebAssembly, the source of debug symbols for the module.
 
 #### embedder_name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 

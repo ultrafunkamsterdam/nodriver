@@ -37,6 +37,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: DOMCounter
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 Commands
 --------
 
@@ -56,6 +61,8 @@ to. For more information, see
 .. autofunction:: get_browser_sampling_profile
 
 .. autofunction:: get_dom_counters
+
+.. autofunction:: get_dom_counters_for_leak_detection
 
 .. autofunction:: get_sampling_profile
 

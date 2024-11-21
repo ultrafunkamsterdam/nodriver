@@ -58,7 +58,7 @@ Frame id of originating window (is only set if target has an opener).
 #### subtype*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Provides additional details for specific target types. For example, for
-the type of “page”, this may be set to “portal” or “prerender”.
+the type of “page”, this may be set to “prerender”.
 
 ### *class* FilterEntry(exclude=None, type_=None)
 

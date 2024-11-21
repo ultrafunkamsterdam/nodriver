@@ -16,11 +16,10 @@ from . import target
 
 @dataclass
 class FileHandlerAccept:
-    """
+    '''
     The following types are the replica of
     https://crsrc.org/c/chrome/browser/web_applications/proto/web_app_os_integration_state.proto;drc=9910d3be894c8f142c977ba1023f30a656bc13fc;l=67
-    """
-
+    '''
     #: New name of the mimetype according to
     #: https://www.iana.org/assignments/media-types/media-types.xhtml
     media_type: str
@@ -29,15 +28,15 @@ class FileHandlerAccept:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["mediaType"] = self.media_type
-        json["fileExtensions"] = [i for i in self.file_extensions]
+        json['mediaType'] = self.media_type
+        json['fileExtensions'] = [i for i in self.file_extensions]
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> FileHandlerAccept:
         return cls(
-            media_type=str(json["mediaType"]),
-            file_extensions=[str(i) for i in json["fileExtensions"]],
+            media_type=str(json['mediaType']),
+            file_extensions=[str(i) for i in json['fileExtensions']],
         )
 
 
@@ -51,25 +50,24 @@ class FileHandler:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["action"] = self.action
-        json["accepts"] = [i.to_json() for i in self.accepts]
-        json["displayName"] = self.display_name
+        json['action'] = self.action
+        json['accepts'] = [i.to_json() for i in self.accepts]
+        json['displayName'] = self.display_name
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> FileHandler:
         return cls(
-            action=str(json["action"]),
-            accepts=[FileHandlerAccept.from_json(i) for i in json["accepts"]],
-            display_name=str(json["displayName"]),
+            action=str(json['action']),
+            accepts=[FileHandlerAccept.from_json(i) for i in json['accepts']],
+            display_name=str(json['displayName']),
         )
 
 
 class DisplayMode(enum.Enum):
-    """
+    '''
     If user prefers opening the app in browser or an app window.
-    """
-
+    '''
     STANDALONE = "standalone"
     BROWSER = "browser"
 
@@ -82,36 +80,35 @@ class DisplayMode(enum.Enum):
 
 
 def get_os_app_state(
-    manifest_id: str,
-) -> typing.Generator[
-    T_JSON_DICT, T_JSON_DICT, typing.Tuple[int, typing.List[FileHandler]]
-]:
-    """
+        manifest_id: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[int, typing.List[FileHandler]]]:
+    '''
     Returns the following OS state for the given manifest id.
 
     :param manifest_id: The id from the webapp's manifest file, commonly it's the url of the site installing the webapp. See https://web.dev/learn/pwa/web-app-manifest.
     :returns: A tuple with the following items:
 
-        0. **badgeCount** -
-        1. **fileHandlers** -
-    """
+        0. **badgeCount** - 
+        1. **fileHandlers** - 
+    '''
     params: T_JSON_DICT = dict()
-    params["manifestId"] = manifest_id
+    params['manifestId'] = manifest_id
     cmd_dict: T_JSON_DICT = {
-        "method": "PWA.getOsAppState",
-        "params": params,
+        'method': 'PWA.getOsAppState',
+        'params': params,
     }
     json = yield cmd_dict
     return (
-        int(json["badgeCount"]),
-        [FileHandler.from_json(i) for i in json["fileHandlers"]],
+        int(json['badgeCount']),
+        [FileHandler.from_json(i) for i in json['fileHandlers']]
     )
 
 
 def install(
-    manifest_id: str, install_url_or_bundle_url: typing.Optional[str] = None
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        manifest_id: str,
+        install_url_or_bundle_url: typing.Optional[str] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Installs the given manifest identity, optionally using the given install_url
     or IWA bundle location.
 
@@ -125,37 +122,40 @@ def install(
 
     :param manifest_id:
     :param install_url_or_bundle_url: *(Optional)* The location of the app or bundle overriding the one derived from the manifestId.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["manifestId"] = manifest_id
+    params['manifestId'] = manifest_id
     if install_url_or_bundle_url is not None:
-        params["installUrlOrBundleUrl"] = install_url_or_bundle_url
+        params['installUrlOrBundleUrl'] = install_url_or_bundle_url
     cmd_dict: T_JSON_DICT = {
-        "method": "PWA.install",
-        "params": params,
+        'method': 'PWA.install',
+        'params': params,
     }
     json = yield cmd_dict
 
 
-def uninstall(manifest_id: str) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def uninstall(
+        manifest_id: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Uninstalls the given manifest_id and closes any opened app windows.
 
     :param manifest_id:
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["manifestId"] = manifest_id
+    params['manifestId'] = manifest_id
     cmd_dict: T_JSON_DICT = {
-        "method": "PWA.uninstall",
-        "params": params,
+        'method': 'PWA.uninstall',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def launch(
-    manifest_id: str, url: typing.Optional[str] = None
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, target.TargetID]:
-    """
+        manifest_id: str,
+        url: typing.Optional[str] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,target.TargetID]:
+    '''
     Launches the installed web app, or an url in the same web app instead of the
     default start url if it is provided. Returns a page Target.TargetID which
     can be used to attach to via Target.attachToTarget or similar APIs.
@@ -163,23 +163,24 @@ def launch(
     :param manifest_id:
     :param url: *(Optional)*
     :returns: ID of the tab target created as a result.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["manifestId"] = manifest_id
+    params['manifestId'] = manifest_id
     if url is not None:
-        params["url"] = url
+        params['url'] = url
     cmd_dict: T_JSON_DICT = {
-        "method": "PWA.launch",
-        "params": params,
+        'method': 'PWA.launch',
+        'params': params,
     }
     json = yield cmd_dict
-    return target.TargetID.from_json(json["targetId"])
+    return target.TargetID.from_json(json['targetId'])
 
 
 def launch_files_in_app(
-    manifest_id: str, files: typing.List[str]
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[target.TargetID]]:
-    """
+        manifest_id: str,
+        files: typing.List[str]
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[target.TargetID]]:
+    '''
     Opens one or more local files from an installed web app identified by its
     manifestId. The web app needs to have file handlers registered to process
     the files. The API returns one or more page Target.TargetIDs which can be
@@ -197,43 +198,43 @@ def launch_files_in_app(
     :param manifest_id:
     :param files:
     :returns: IDs of the tab targets created as the result.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["manifestId"] = manifest_id
-    params["files"] = [i for i in files]
+    params['manifestId'] = manifest_id
+    params['files'] = [i for i in files]
     cmd_dict: T_JSON_DICT = {
-        "method": "PWA.launchFilesInApp",
-        "params": params,
+        'method': 'PWA.launchFilesInApp',
+        'params': params,
     }
     json = yield cmd_dict
-    return [target.TargetID.from_json(i) for i in json["targetIds"]]
+    return [target.TargetID.from_json(i) for i in json['targetIds']]
 
 
 def open_current_page_in_app(
-    manifest_id: str,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        manifest_id: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Opens the current page in its web app identified by the manifest id, needs
     to be called on a page target. This function returns immediately without
     waiting for the app to finish loading.
 
     :param manifest_id:
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["manifestId"] = manifest_id
+    params['manifestId'] = manifest_id
     cmd_dict: T_JSON_DICT = {
-        "method": "PWA.openCurrentPageInApp",
-        "params": params,
+        'method': 'PWA.openCurrentPageInApp',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def change_app_user_settings(
-    manifest_id: str,
-    link_capturing: typing.Optional[bool] = None,
-    display_mode: typing.Optional[DisplayMode] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        manifest_id: str,
+        link_capturing: typing.Optional[bool] = None,
+        display_mode: typing.Optional[DisplayMode] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Changes user settings of the web app identified by its manifestId. If the
     app was not installed, this command returns an error. Unset parameters will
     be ignored; unrecognized values will cause an error.
@@ -247,15 +248,15 @@ def change_app_user_settings(
     :param manifest_id:
     :param link_capturing: *(Optional)* If user allows the links clicked on by the user in the app's scope, or extended scope if the manifest has scope extensions and the flags ```DesktopPWAsLinkCapturingWithScopeExtensions```` and ````WebAppEnableScopeExtensions``` are enabled.  Note, the API does not support resetting the linkCapturing to the initial value, uninstalling and installing the web app again will reset it.  TODO(crbug.com/339453269): Setting this value on ChromeOS is not supported yet.
     :param display_mode: *(Optional)*
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["manifestId"] = manifest_id
+    params['manifestId'] = manifest_id
     if link_capturing is not None:
-        params["linkCapturing"] = link_capturing
+        params['linkCapturing'] = link_capturing
     if display_mode is not None:
-        params["displayMode"] = display_mode.to_json()
+        params['displayMode'] = display_mode.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "PWA.changeAppUserSettings",
-        "params": params,
+        'method': 'PWA.changeAppUserSettings',
+        'params': params,
     }
     json = yield cmd_dict

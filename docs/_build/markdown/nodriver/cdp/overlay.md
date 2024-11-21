@@ -867,12 +867,18 @@ Paints viewport size upon main frame resize.
 
 ### set_show_web_vitals(show)
 
-Request that backend shows an overlay with web vital metrics.
+Deprecated, no longer has any effect.
+
+#### Deprecated
+Deprecated since version 1.3.
 
 * **Parameters:**
   **show** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – 
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+#### Deprecated
+Deprecated since version 1.3.
 
 ### set_show_window_controls_overlay(window_controls_overlay_config=None)
 

@@ -149,6 +149,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: CSSStartingStyle
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: CSSLayerData
       :members:
       :undoc-members:
@@ -170,11 +175,6 @@ arguments to other commands.
       :exclude-members: from_json, to_json
 
 .. autoclass:: CSSTryRule
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: CSSPositionFallbackRule
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -288,6 +288,8 @@ to. For more information, see
 
 .. autofunction:: track_computed_style_updates
 
+.. autofunction:: track_computed_style_updates_for_node
+
 Events
 ------
 
@@ -316,6 +318,11 @@ you use the event's attributes.
       :exclude-members: from_json, to_json
 
 .. autoclass:: StyleSheetRemoved
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: ComputedStyleUpdated
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

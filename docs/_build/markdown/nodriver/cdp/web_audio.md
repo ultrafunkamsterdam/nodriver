@@ -39,6 +39,8 @@ Enum of AudioContextState from the spec
 
 #### CLOSED *= 'closed'*
 
+#### INTERRUPTED *= 'interrupted'*
+
 ### *class* NodeType
 
 Enum of AudioNode types

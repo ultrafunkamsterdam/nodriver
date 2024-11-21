@@ -112,6 +112,8 @@ The window state. Default to normal.
 
 #### WAKE_LOCK_SYSTEM *= 'wakeLockSystem'*
 
+#### WEB_APP_INSTALLATION *= 'webAppInstallation'*
+
 #### WINDOW_MANAGEMENT *= 'windowManagement'*
 
 ### *class* PermissionSetting(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)

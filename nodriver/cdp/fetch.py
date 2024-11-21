@@ -17,10 +17,11 @@ from . import page
 
 
 class RequestId(str):
-    """
+    '''
     Unique request identifier.
-    """
-
+    Note that this does not identify individual HTTP requests that are part of
+    a network request.
+    '''
     def to_json(self) -> str:
         return self
 
@@ -29,16 +30,15 @@ class RequestId(str):
         return cls(json)
 
     def __repr__(self):
-        return "RequestId({})".format(super().__repr__())
+        return 'RequestId({})'.format(super().__repr__())
 
 
 class RequestStage(enum.Enum):
-    """
+    '''
     Stages of the request to handle. Request will intercept before the request is
     sent. Response will intercept after the response is received (but before response
     body is received).
-    """
-
+    '''
     REQUEST = "Request"
     RESPONSE = "Response"
 
@@ -65,64 +65,50 @@ class RequestPattern:
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         if self.url_pattern is not None:
-            json["urlPattern"] = self.url_pattern
+            json['urlPattern'] = self.url_pattern
         if self.resource_type is not None:
-            json["resourceType"] = self.resource_type.to_json()
+            json['resourceType'] = self.resource_type.to_json()
         if self.request_stage is not None:
-            json["requestStage"] = self.request_stage.to_json()
+            json['requestStage'] = self.request_stage.to_json()
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> RequestPattern:
         return cls(
-            url_pattern=(
-                str(json["urlPattern"])
-                if json.get("urlPattern", None) is not None
-                else None
-            ),
-            resource_type=(
-                network.ResourceType.from_json(json["resourceType"])
-                if json.get("resourceType", None) is not None
-                else None
-            ),
-            request_stage=(
-                RequestStage.from_json(json["requestStage"])
-                if json.get("requestStage", None) is not None
-                else None
-            ),
+            url_pattern=str(json['urlPattern']) if json.get('urlPattern', None) is not None else None,
+            resource_type=network.ResourceType.from_json(json['resourceType']) if json.get('resourceType', None) is not None else None,
+            request_stage=RequestStage.from_json(json['requestStage']) if json.get('requestStage', None) is not None else None,
         )
 
 
 @dataclass
 class HeaderEntry:
-    """
+    '''
     Response HTTP header entry
-    """
-
+    '''
     name: str
 
     value: str
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["name"] = self.name
-        json["value"] = self.value
+        json['name'] = self.name
+        json['value'] = self.value
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> HeaderEntry:
         return cls(
-            name=str(json["name"]),
-            value=str(json["value"]),
+            name=str(json['name']),
+            value=str(json['value']),
         )
 
 
 @dataclass
 class AuthChallenge:
-    """
+    '''
     Authorization challenge for HTTP status code 401 or 407.
-    """
-
+    '''
     #: Origin of the challenger.
     origin: str
 
@@ -137,31 +123,28 @@ class AuthChallenge:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["origin"] = self.origin
-        json["scheme"] = self.scheme
-        json["realm"] = self.realm
+        json['origin'] = self.origin
+        json['scheme'] = self.scheme
+        json['realm'] = self.realm
         if self.source is not None:
-            json["source"] = self.source
+            json['source'] = self.source
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> AuthChallenge:
         return cls(
-            origin=str(json["origin"]),
-            scheme=str(json["scheme"]),
-            realm=str(json["realm"]),
-            source=(
-                str(json["source"]) if json.get("source", None) is not None else None
-            ),
+            origin=str(json['origin']),
+            scheme=str(json['scheme']),
+            realm=str(json['realm']),
+            source=str(json['source']) if json.get('source', None) is not None else None,
         )
 
 
 @dataclass
 class AuthChallengeResponse:
-    """
+    '''
     Response to an AuthChallenge.
-    """
-
+    '''
     #: The decision on what to do in response to the authorization challenge.  Default means
     #: deferring to the default behavior of the net stack, which will likely either the Cancel
     #: authentication or display a popup dialog box.
@@ -177,91 +160,84 @@ class AuthChallengeResponse:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["response"] = self.response
+        json['response'] = self.response
         if self.username is not None:
-            json["username"] = self.username
+            json['username'] = self.username
         if self.password is not None:
-            json["password"] = self.password
+            json['password'] = self.password
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> AuthChallengeResponse:
         return cls(
-            response=str(json["response"]),
-            username=(
-                str(json["username"])
-                if json.get("username", None) is not None
-                else None
-            ),
-            password=(
-                str(json["password"])
-                if json.get("password", None) is not None
-                else None
-            ),
+            response=str(json['response']),
+            username=str(json['username']) if json.get('username', None) is not None else None,
+            password=str(json['password']) if json.get('password', None) is not None else None,
         )
 
 
-def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+def disable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Disables the fetch domain.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "Fetch.disable",
+        'method': 'Fetch.disable',
     }
     json = yield cmd_dict
 
 
 def enable(
-    patterns: typing.Optional[typing.List[RequestPattern]] = None,
-    handle_auth_requests: typing.Optional[bool] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        patterns: typing.Optional[typing.List[RequestPattern]] = None,
+        handle_auth_requests: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Enables issuing of requestPaused events. A request will be paused until client
     calls one of failRequest, fulfillRequest or continueRequest/continueWithAuth.
 
     :param patterns: *(Optional)* If specified, only requests matching any of these patterns will produce fetchRequested event and will be paused until clients response. If not set, all requests will be affected.
     :param handle_auth_requests: *(Optional)* If true, authRequired events will be issued and requests will be paused expecting a call to continueWithAuth.
-    """
+    '''
     params: T_JSON_DICT = dict()
     if patterns is not None:
-        params["patterns"] = [i.to_json() for i in patterns]
+        params['patterns'] = [i.to_json() for i in patterns]
     if handle_auth_requests is not None:
-        params["handleAuthRequests"] = handle_auth_requests
+        params['handleAuthRequests'] = handle_auth_requests
     cmd_dict: T_JSON_DICT = {
-        "method": "Fetch.enable",
-        "params": params,
+        'method': 'Fetch.enable',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def fail_request(
-    request_id: RequestId, error_reason: network.ErrorReason
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        request_id: RequestId,
+        error_reason: network.ErrorReason
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Causes the request to fail with specified reason.
 
     :param request_id: An id the client received in requestPaused event.
     :param error_reason: Causes the request to fail with the given reason.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["requestId"] = request_id.to_json()
-    params["errorReason"] = error_reason.to_json()
+    params['requestId'] = request_id.to_json()
+    params['errorReason'] = error_reason.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "Fetch.failRequest",
-        "params": params,
+        'method': 'Fetch.failRequest',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def fulfill_request(
-    request_id: RequestId,
-    response_code: int,
-    response_headers: typing.Optional[typing.List[HeaderEntry]] = None,
-    binary_response_headers: typing.Optional[str] = None,
-    body: typing.Optional[str] = None,
-    response_phrase: typing.Optional[str] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    r"""
+        request_id: RequestId,
+        response_code: int,
+        response_headers: typing.Optional[typing.List[HeaderEntry]] = None,
+        binary_response_headers: typing.Optional[str] = None,
+        body: typing.Optional[str] = None,
+        response_phrase: typing.Optional[str] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    r'''
     Provides response to the request.
 
     :param request_id: An id the client received in requestPaused event.
@@ -270,34 +246,34 @@ def fulfill_request(
     :param binary_response_headers: *(Optional)* Alternative way of specifying response headers as a \0-separated series of name: value pairs. Prefer the above method unless you need to represent some non-UTF8 values that can't be transmitted over the protocol as text. (Encoded as a base64 string when passed over JSON)
     :param body: *(Optional)* A response body. If absent, original response body will be used if the request is intercepted at the response stage and empty body will be used if the request is intercepted at the request stage. (Encoded as a base64 string when passed over JSON)
     :param response_phrase: *(Optional)* A textual representation of responseCode. If absent, a standard phrase matching responseCode is used.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["requestId"] = request_id.to_json()
-    params["responseCode"] = response_code
+    params['requestId'] = request_id.to_json()
+    params['responseCode'] = response_code
     if response_headers is not None:
-        params["responseHeaders"] = [i.to_json() for i in response_headers]
+        params['responseHeaders'] = [i.to_json() for i in response_headers]
     if binary_response_headers is not None:
-        params["binaryResponseHeaders"] = binary_response_headers
+        params['binaryResponseHeaders'] = binary_response_headers
     if body is not None:
-        params["body"] = body
+        params['body'] = body
     if response_phrase is not None:
-        params["responsePhrase"] = response_phrase
+        params['responsePhrase'] = response_phrase
     cmd_dict: T_JSON_DICT = {
-        "method": "Fetch.fulfillRequest",
-        "params": params,
+        'method': 'Fetch.fulfillRequest',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def continue_request(
-    request_id: RequestId,
-    url: typing.Optional[str] = None,
-    method: typing.Optional[str] = None,
-    post_data: typing.Optional[str] = None,
-    headers: typing.Optional[typing.List[HeaderEntry]] = None,
-    intercept_response: typing.Optional[bool] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        request_id: RequestId,
+        url: typing.Optional[str] = None,
+        method: typing.Optional[str] = None,
+        post_data: typing.Optional[str] = None,
+        headers: typing.Optional[typing.List[HeaderEntry]] = None,
+        intercept_response: typing.Optional[bool] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Continues the request, optionally modifying some of its parameters.
 
     :param request_id: An id the client received in requestPaused event.
@@ -306,53 +282,54 @@ def continue_request(
     :param post_data: *(Optional)* If set, overrides the post data in the request. (Encoded as a base64 string when passed over JSON)
     :param headers: *(Optional)* If set, overrides the request headers. Note that the overrides do not extend to subsequent redirect hops, if a redirect happens. Another override may be applied to a different request produced by a redirect.
     :param intercept_response: **(EXPERIMENTAL)** *(Optional)* If set, overrides response interception behavior for this request.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["requestId"] = request_id.to_json()
+    params['requestId'] = request_id.to_json()
     if url is not None:
-        params["url"] = url
+        params['url'] = url
     if method is not None:
-        params["method"] = method
+        params['method'] = method
     if post_data is not None:
-        params["postData"] = post_data
+        params['postData'] = post_data
     if headers is not None:
-        params["headers"] = [i.to_json() for i in headers]
+        params['headers'] = [i.to_json() for i in headers]
     if intercept_response is not None:
-        params["interceptResponse"] = intercept_response
+        params['interceptResponse'] = intercept_response
     cmd_dict: T_JSON_DICT = {
-        "method": "Fetch.continueRequest",
-        "params": params,
+        'method': 'Fetch.continueRequest',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def continue_with_auth(
-    request_id: RequestId, auth_challenge_response: AuthChallengeResponse
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    """
+        request_id: RequestId,
+        auth_challenge_response: AuthChallengeResponse
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
     Continues a request supplying authChallengeResponse following authRequired event.
 
     :param request_id: An id the client received in authRequired event.
     :param auth_challenge_response: Response to  with an authChallenge.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["requestId"] = request_id.to_json()
-    params["authChallengeResponse"] = auth_challenge_response.to_json()
+    params['requestId'] = request_id.to_json()
+    params['authChallengeResponse'] = auth_challenge_response.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "Fetch.continueWithAuth",
-        "params": params,
+        'method': 'Fetch.continueWithAuth',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def continue_response(
-    request_id: RequestId,
-    response_code: typing.Optional[int] = None,
-    response_phrase: typing.Optional[str] = None,
-    response_headers: typing.Optional[typing.List[HeaderEntry]] = None,
-    binary_response_headers: typing.Optional[str] = None,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-    r"""
+        request_id: RequestId,
+        response_code: typing.Optional[int] = None,
+        response_phrase: typing.Optional[str] = None,
+        response_headers: typing.Optional[typing.List[HeaderEntry]] = None,
+        binary_response_headers: typing.Optional[str] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    r'''
     Continues loading of the paused response, optionally modifying the
     response headers. If either responseCode or headers are modified, all of them
     must be present.
@@ -364,28 +341,28 @@ def continue_response(
     :param response_phrase: *(Optional)* A textual representation of responseCode. If absent, a standard phrase matching responseCode is used.
     :param response_headers: *(Optional)* Response headers. If absent, original response headers will be used.
     :param binary_response_headers: *(Optional)* Alternative way of specifying response headers as a \0-separated series of name: value pairs. Prefer the above method unless you need to represent some non-UTF8 values that can't be transmitted over the protocol as text. (Encoded as a base64 string when passed over JSON)
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["requestId"] = request_id.to_json()
+    params['requestId'] = request_id.to_json()
     if response_code is not None:
-        params["responseCode"] = response_code
+        params['responseCode'] = response_code
     if response_phrase is not None:
-        params["responsePhrase"] = response_phrase
+        params['responsePhrase'] = response_phrase
     if response_headers is not None:
-        params["responseHeaders"] = [i.to_json() for i in response_headers]
+        params['responseHeaders'] = [i.to_json() for i in response_headers]
     if binary_response_headers is not None:
-        params["binaryResponseHeaders"] = binary_response_headers
+        params['binaryResponseHeaders'] = binary_response_headers
     cmd_dict: T_JSON_DICT = {
-        "method": "Fetch.continueResponse",
-        "params": params,
+        'method': 'Fetch.continueResponse',
+        'params': params,
     }
     json = yield cmd_dict
 
 
 def get_response_body(
-    request_id: RequestId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[str, bool]]:
-    """
+        request_id: RequestId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[str, bool]]:
+    '''
     Causes the body of the response to be received from the server and
     returned as a single string. May only be issued for a request that
     is paused in the Response stage and is mutually exclusive with
@@ -402,21 +379,24 @@ def get_response_body(
 
         0. **body** - Response body.
         1. **base64Encoded** - True, if content was sent as base64.
-    """
+    '''
     params: T_JSON_DICT = dict()
-    params["requestId"] = request_id.to_json()
+    params['requestId'] = request_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "Fetch.getResponseBody",
-        "params": params,
+        'method': 'Fetch.getResponseBody',
+        'params': params,
     }
     json = yield cmd_dict
-    return (str(json["body"]), bool(json["base64Encoded"]))
+    return (
+        str(json['body']),
+        bool(json['base64Encoded'])
+    )
 
 
 def take_response_body_as_stream(
-    request_id: RequestId,
-) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, io.StreamHandle]:
-    """
+        request_id: RequestId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,io.StreamHandle]:
+    '''
     Returns a handle to the stream representing the response body.
     The request must be paused in the HeadersReceived stage.
     Note that after this command the request can't be continued
@@ -429,22 +409,22 @@ def take_response_body_as_stream(
     domain before body is received results in an undefined behavior.
 
     :param request_id:
-    :returns:
-    """
+    :returns: 
+    '''
     params: T_JSON_DICT = dict()
-    params["requestId"] = request_id.to_json()
+    params['requestId'] = request_id.to_json()
     cmd_dict: T_JSON_DICT = {
-        "method": "Fetch.takeResponseBodyAsStream",
-        "params": params,
+        'method': 'Fetch.takeResponseBodyAsStream',
+        'params': params,
     }
     json = yield cmd_dict
-    return io.StreamHandle.from_json(json["stream"])
+    return io.StreamHandle.from_json(json['stream'])
 
 
-@event_class("Fetch.requestPaused")
+@event_class('Fetch.requestPaused')
 @dataclass
 class RequestPaused:
-    """
+    '''
     Issued when the domain is enabled and the request URL matches the
     specified filter. The request is paused until the client responds
     with one of continueRequest, failRequest or fulfillRequest.
@@ -456,8 +436,7 @@ class RequestPaused:
     of ``responseStatusCode`` (which is one of 301, 302, 303, 307, 308) along with
     presence of the ``location`` header. Requests resulting from a redirect will
     have ``redirectedRequestId`` field set.
-    """
-
+    '''
     #: Each request the page makes will have a unique id.
     request_id: RequestId
     #: The details of the request.
@@ -484,51 +463,26 @@ class RequestPaused:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> RequestPaused:
         return cls(
-            request_id=RequestId.from_json(json["requestId"]),
-            request=network.Request.from_json(json["request"]),
-            frame_id=page.FrameId.from_json(json["frameId"]),
-            resource_type=network.ResourceType.from_json(json["resourceType"]),
-            response_error_reason=(
-                network.ErrorReason.from_json(json["responseErrorReason"])
-                if json.get("responseErrorReason", None) is not None
-                else None
-            ),
-            response_status_code=(
-                int(json["responseStatusCode"])
-                if json.get("responseStatusCode", None) is not None
-                else None
-            ),
-            response_status_text=(
-                str(json["responseStatusText"])
-                if json.get("responseStatusText", None) is not None
-                else None
-            ),
-            response_headers=(
-                [HeaderEntry.from_json(i) for i in json["responseHeaders"]]
-                if json.get("responseHeaders", None) is not None
-                else None
-            ),
-            network_id=(
-                network.RequestId.from_json(json["networkId"])
-                if json.get("networkId", None) is not None
-                else None
-            ),
-            redirected_request_id=(
-                RequestId.from_json(json["redirectedRequestId"])
-                if json.get("redirectedRequestId", None) is not None
-                else None
-            ),
+            request_id=RequestId.from_json(json['requestId']),
+            request=network.Request.from_json(json['request']),
+            frame_id=page.FrameId.from_json(json['frameId']),
+            resource_type=network.ResourceType.from_json(json['resourceType']),
+            response_error_reason=network.ErrorReason.from_json(json['responseErrorReason']) if json.get('responseErrorReason', None) is not None else None,
+            response_status_code=int(json['responseStatusCode']) if json.get('responseStatusCode', None) is not None else None,
+            response_status_text=str(json['responseStatusText']) if json.get('responseStatusText', None) is not None else None,
+            response_headers=[HeaderEntry.from_json(i) for i in json['responseHeaders']] if json.get('responseHeaders', None) is not None else None,
+            network_id=network.RequestId.from_json(json['networkId']) if json.get('networkId', None) is not None else None,
+            redirected_request_id=RequestId.from_json(json['redirectedRequestId']) if json.get('redirectedRequestId', None) is not None else None
         )
 
 
-@event_class("Fetch.authRequired")
+@event_class('Fetch.authRequired')
 @dataclass
 class AuthRequired:
-    """
+    '''
     Issued when the domain is enabled with handleAuthRequests set to true.
     The request is paused until client responds with continueWithAuth.
-    """
-
+    '''
     #: Each request the page makes will have a unique id.
     request_id: RequestId
     #: The details of the request.
@@ -545,9 +499,9 @@ class AuthRequired:
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> AuthRequired:
         return cls(
-            request_id=RequestId.from_json(json["requestId"]),
-            request=network.Request.from_json(json["request"]),
-            frame_id=page.FrameId.from_json(json["frameId"]),
-            resource_type=network.ResourceType.from_json(json["resourceType"]),
-            auth_challenge=AuthChallenge.from_json(json["authChallenge"]),
+            request_id=RequestId.from_json(json['requestId']),
+            request=network.Request.from_json(json['request']),
+            frame_id=page.FrameId.from_json(json['frameId']),
+            resource_type=network.ResourceType.from_json(json['resourceType']),
+            auth_challenge=AuthChallenge.from_json(json['authChallenge'])
         )

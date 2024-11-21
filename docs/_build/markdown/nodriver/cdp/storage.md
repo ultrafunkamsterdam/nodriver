@@ -367,7 +367,42 @@ int
 
 #### MODULUS *= 'modulus'*
 
-### *class* AttributionReportingSourceRegistration(time, expiry, trigger_specs, aggregatable_report_window, type_, source_origin, reporting_origin, destination_sites, event_id, priority, filter_data, aggregation_keys, trigger_data_matching, debug_key=None)
+### *class* AttributionReportingAggregatableDebugReportingData(key_piece, value, types)
+
+#### key_piece*: [`UnsignedInt128AsBase16`](#nodriver.cdp.storage.UnsignedInt128AsBase16)*
+
+#### value*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+
+number instead of integer because not all uint32 can be represented by
+int
+
+#### types*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+
+### *class* AttributionReportingAggregatableDebugReportingConfig(key_piece, debug_data, budget=None, aggregation_coordinator_origin=None)
+
+#### key_piece*: [`UnsignedInt128AsBase16`](#nodriver.cdp.storage.UnsignedInt128AsBase16)*
+
+#### debug_data*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingAggregatableDebugReportingData`](#nodriver.cdp.storage.AttributionReportingAggregatableDebugReportingData)]*
+
+#### budget*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+
+number instead of integer because not all uint32 can be represented by
+int, only present for source registrations
+
+#### aggregation_coordinator_origin*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+### *class* AttributionScopesData(values, limit, max_event_states)
+
+#### values*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+
+#### limit*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+
+number instead of integer because not all uint32 can be represented by
+int
+
+#### max_event_states*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+
+### *class* AttributionReportingSourceRegistration(time, expiry, trigger_specs, aggregatable_report_window, type_, source_origin, reporting_origin, destination_sites, event_id, priority, filter_data, aggregation_keys, trigger_data_matching, destination_limit_priority, aggregatable_debug_reporting_config, max_event_level_reports, debug_key=None, scopes_data=None)
 
 #### time*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
@@ -399,7 +434,15 @@ duration in seconds
 
 #### trigger_data_matching*: [`AttributionReportingTriggerDataMatching`](#nodriver.cdp.storage.AttributionReportingTriggerDataMatching)*
 
+#### destination_limit_priority*: [`SignedInt64AsBase10`](#nodriver.cdp.storage.SignedInt64AsBase10)*
+
+#### aggregatable_debug_reporting_config*: [`AttributionReportingAggregatableDebugReportingConfig`](#nodriver.cdp.storage.AttributionReportingAggregatableDebugReportingConfig)*
+
+#### max_event_level_reports*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
 #### debug_key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)]* *= None*
+
+#### scopes_data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AttributionScopesData`](#nodriver.cdp.storage.AttributionScopesData)]* *= None*
 
 ### *class* AttributionReportingSourceRegistrationResult(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -427,7 +470,11 @@ duration in seconds
 
 #### EXCEEDS_MAX_CHANNEL_CAPACITY *= 'exceedsMaxChannelCapacity'*
 
+#### EXCEEDS_MAX_SCOPES_CHANNEL_CAPACITY *= 'exceedsMaxScopesChannelCapacity'*
+
 #### EXCEEDS_MAX_TRIGGER_STATE_CARDINALITY *= 'exceedsMaxTriggerStateCardinality'*
+
+#### EXCEEDS_MAX_EVENT_STATES_LIMIT *= 'exceedsMaxEventStatesLimit'*
 
 #### DESTINATION_PER_DAY_REPORTING_LIMIT_REACHED *= 'destinationPerDayReportingLimitReached'*
 
@@ -437,7 +484,7 @@ duration in seconds
 
 #### EXCLUDE *= 'exclude'*
 
-### *class* AttributionReportingAggregatableValueDictEntry(key, value)
+### *class* AttributionReportingAggregatableValueDictEntry(key, value, filtering_id)
 
 #### key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
@@ -445,6 +492,8 @@ duration in seconds
 
 number instead of integer because not all uint32 can be represented by
 int
+
+#### filtering_id*: [`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)*
 
 ### *class* AttributionReportingAggregatableValueEntry(values, filters)
 
@@ -476,7 +525,7 @@ int
 
 #### dedup_key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)]* *= None*
 
-### *class* AttributionReportingTriggerRegistration(filters, aggregatable_dedup_keys, event_trigger_data, aggregatable_trigger_data, aggregatable_values, debug_reporting, source_registration_time_config, debug_key=None, aggregation_coordinator_origin=None, trigger_context_id=None)
+### *class* AttributionReportingTriggerRegistration(filters, aggregatable_dedup_keys, event_trigger_data, aggregatable_trigger_data, aggregatable_values, aggregatable_filtering_id_max_bytes, debug_reporting, source_registration_time_config, aggregatable_debug_reporting_config, scopes, debug_key=None, aggregation_coordinator_origin=None, trigger_context_id=None)
 
 #### filters*: [`AttributionReportingFilterPair`](#nodriver.cdp.storage.AttributionReportingFilterPair)*
 
@@ -488,9 +537,15 @@ int
 
 #### aggregatable_values*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingAggregatableValueEntry`](#nodriver.cdp.storage.AttributionReportingAggregatableValueEntry)]*
 
+#### aggregatable_filtering_id_max_bytes*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
 #### debug_reporting*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 #### source_registration_time_config*: [`AttributionReportingSourceRegistrationTimeConfig`](#nodriver.cdp.storage.AttributionReportingSourceRegistrationTimeConfig)*
+
+#### aggregatable_debug_reporting_config*: [`AttributionReportingAggregatableDebugReportingConfig`](#nodriver.cdp.storage.AttributionReportingAggregatableDebugReportingConfig)*
+
+#### scopes*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 #### debug_key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)]* *= None*
 
@@ -555,6 +610,8 @@ int
 #### NO_HISTOGRAMS *= 'noHistograms'*
 
 #### INSUFFICIENT_BUDGET *= 'insufficientBudget'*
+
+#### INSUFFICIENT_NAMED_BUDGET *= 'insufficientNamedBudget'*
 
 #### NO_MATCHING_SOURCE_FILTER_DATA *= 'noMatchingSourceFilterData'*
 
