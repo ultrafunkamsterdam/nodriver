@@ -121,11 +121,11 @@ class Tab(Connection):
     _download_behavior: List[str] = None
 
     def __init__(
-            self,
-            websocket_url: str,
-            target: cdp.target.TargetInfo,
-            browser: Optional["nodriver.Browser"] = None,
-            **kwargs,
+        self,
+        websocket_url: str,
+        target: cdp.target.TargetInfo,
+        browser: Optional["nodriver.Browser"] = None,
+        **kwargs,
     ):
         super().__init__(websocket_url, target, browser, **kwargs)
         self.browser = browser
@@ -157,11 +157,11 @@ class Tab(Connection):
         webbrowser.open(self.inspector_url)
 
     async def find(
-            self,
-            text: str,
-            best_match: bool = True,
-            return_enclosing_element=True,
-            timeout: Union[int, float] = 10,
+        self,
+        text: str,
+        best_match: bool = True,
+        return_enclosing_element=True,
+        timeout: Union[int, float] = 10,
     ):
         """
         find single element by text
@@ -216,9 +216,9 @@ class Tab(Connection):
         return item
 
     async def select(
-            self,
-            selector: str,
-            timeout: Union[int, float] = 10,
+        self,
+        selector: str,
+        timeout: Union[int, float] = 10,
     ) -> nodriver.Element:
         """
         find single element by css selector.
@@ -248,9 +248,9 @@ class Tab(Connection):
         return item
 
     async def find_all(
-            self,
-            text: str,
-            timeout: Union[int, float] = 10,
+        self,
+        text: str,
+        timeout: Union[int, float] = 10,
     ) -> List[nodriver.Element]:
         """
         find multiple elements by text
@@ -279,7 +279,7 @@ class Tab(Connection):
         return items
 
     async def select_all(
-            self, selector: str, timeout: Union[int, float] = 10, include_frames=False
+        self, selector: str, timeout: Union[int, float] = 10, include_frames=False
     ) -> List[nodriver.Element]:
         """
         find multiple elements by css selector.
@@ -316,7 +316,7 @@ class Tab(Connection):
         return items
 
     async def get(
-            self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
+        self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
     ):
         """top level get. utilizes the first tab to retrieve given url.
 
@@ -344,9 +344,9 @@ class Tab(Connection):
             return self
 
     async def query_selector_all(
-            self,
-            selector: str,
-            _node: Optional[Union[cdp.dom.Node, "element.Element"]] = None,
+        self,
+        selector: str,
+        _node: Optional[Union[cdp.dom.Node, "element.Element"]] = None,
     ):
         """
         equivalent of javascripts document.querySelectorAll.
@@ -407,9 +407,9 @@ class Tab(Connection):
         return items
 
     async def query_selector(
-            self,
-            selector: str,
-            _node: Optional[Union[cdp.dom.Node, element.Element]] = None,
+        self,
+        selector: str,
+        _node: Optional[Union[cdp.dom.Node, element.Element]] = None,
     ):
         """
         find single element based on css selector string
@@ -456,9 +456,9 @@ class Tab(Connection):
         return element.create(node, self, doc)
 
     async def find_elements_by_text(
-            self,
-            text: str,
-            tag_hint: Optional[str] = None,
+        self,
+        text: str,
+        tag_hint: Optional[str] = None,
     ) -> List[element.Element]:
         """
         returns element which match the given text.
@@ -527,7 +527,7 @@ class Tab(Connection):
                     iframe_text_nodes = util.filter_recurse_all(
                         iframe_elem,
                         lambda node: node.node_type == 3  # noqa
-                                     and text.lower() in node.node_value.lower(),
+                        and text.lower() in node.node_value.lower(),
                     )
                     if iframe_text_nodes:
                         iframe_text_elems = [
@@ -541,10 +541,10 @@ class Tab(Connection):
         return items or []
 
     async def find_element_by_text(
-            self,
-            text: str,
-            best_match: Optional[bool] = False,
-            return_enclosing_element: Optional[bool] = True,
+        self,
+        text: str,
+        best_match: Optional[bool] = False,
+        return_enclosing_element: Optional[bool] = True,
     ) -> Union[element.Element, None]:
         """
         finds and returns the first element containing <text>, or best match
@@ -607,7 +607,7 @@ class Tab(Connection):
                 iframe_text_nodes = util.filter_recurse_all(
                     iframe_elem,
                     lambda node: node.node_type == 3  # noqa
-                                 and text.lower() in node.node_value.lower(),
+                    and text.lower() in node.node_value.lower(),
                 )
                 if iframe_text_nodes:
                     iframe_text_elems = [
@@ -647,9 +647,9 @@ class Tab(Connection):
         await self.send(cdp.runtime.evaluate("window.history.forward()"))
 
     async def reload(
-            self,
-            ignore_cache: Optional[bool] = True,
-            script_to_evaluate_on_load: Optional[str] = None,
+        self,
+        ignore_cache: Optional[bool] = True,
+        script_to_evaluate_on_load: Optional[str] = None,
     ):
         """
         Reloads the page
@@ -669,7 +669,7 @@ class Tab(Connection):
         )
 
     async def evaluate(
-            self, expression: str, await_promise=False, return_by_value=True
+        self, expression: str, await_promise=False, return_by_value=True
     ):
         remote_object, errors = await self.send(
             cdp.runtime.evaluate(
@@ -692,7 +692,7 @@ class Tab(Connection):
                 return remote_object, errors
 
     async def js_dumps(
-            self, obj_name: str, return_by_value: Optional[bool] = True
+        self, obj_name: str, return_by_value: Optional[bool] = True
     ) -> typing.Union[
         typing.Dict,
         typing.Tuple[cdp.runtime.RemoteObject, cdp.runtime.ExceptionDetails],
@@ -734,7 +734,7 @@ class Tab(Connection):
             '
         """
         js_code_a = (
-                """
+            """
                                function ___dump(obj, _d = 0) {
                                    let _typesA = ['object', 'function'];
                                    let _typesB = ['number', 'string', 'boolean'];
@@ -807,10 +807,10 @@ class Tab(Connection):
                                }
                                ___dumpY( %s )
                        """
-                % obj_name
+            % obj_name
         )
         js_code_b = (
-                """
+            """
                 ((obj, visited = new WeakSet()) => {
                      if (visited.has(obj)) {
                          return {}
@@ -836,7 +836,7 @@ class Tab(Connection):
                     return result;
                 })(%s)
             """
-                % obj_name
+            % obj_name
         )
 
         # we're purposely not calling self.evaluate here to prevent infinite loop on certain expressions
@@ -951,7 +951,7 @@ class Tab(Connection):
         await self.activate()
 
     async def set_window_state(
-            self, left=0, top=0, width=1280, height=720, state="normal"
+        self, left=0, top=0, width=1280, height=720, state="normal"
     ):
         """
         sets the window size or state.
@@ -1065,10 +1065,10 @@ class Tab(Connection):
         )
 
     async def wait_for(
-            self,
-            selector: Optional[str] = "",
-            text: Optional[str] = "",
-            timeout: Optional[Union[int, float]] = 10,
+        self,
+        selector: Optional[str] = "",
+        text: Optional[str] = "",
+        timeout: Optional[Union[int, float]] = 10,
     ) -> element.Element:
         """
         variant on query_selector_all and find_elements_by_text
@@ -1172,10 +1172,10 @@ class Tab(Connection):
         )
 
     async def save_screenshot(
-            self,
-            filename: Optional[PathLike] = "auto",
-            format: Optional[str] = "jpeg",
-            full_page: Optional[bool] = False,
+        self,
+        filename: Optional[PathLike] = "auto",
+        format: Optional[str] = "jpeg",
+        full_page: Optional[bool] = False,
     ) -> str:
         """
         Saves a screenshot of the page.
@@ -1357,10 +1357,10 @@ class Tab(Connection):
         )
 
     def __call__(
-            self,
-            text: Optional[str] = "",
-            selector: Optional[str] = "",
-            timeout: Optional[Union[int, float]] = 10,
+        self,
+        text: Optional[str] = "",
+        selector: Optional[str] = "",
+        timeout: Optional[Union[int, float]] = 10,
     ):
         """
         alias to query_selector_all or find_elements_by_text, depending
@@ -1417,8 +1417,12 @@ async def get_cf_label(tab: Tab):
     #             return elem
     #     else:
     #         return elems
-    return await tab.evaluate("""
-        [...document.querySelectorAll('*')].filter( e => e.shadowRoot)?.[0].shadowRoot.children[0].contentDocument.children[0].children[1].shadowRoot.children[1].children[0].querySelector('label')""", return_by_value=False)
+    return await tab.evaluate(
+        """
+        [...document.querySelectorAll('*')].filter( e => e.shadowRoot)?.[0].shadowRoot.children[0].contentDocument.children[0].children[1].shadowRoot.children[1].children[0].querySelector('label')""",
+        return_by_value=False,
+    )
+
 
 async def click_cf_label(tab: Tab):
     obj, _ = await get_cf_label(tab)

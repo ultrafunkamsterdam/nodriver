@@ -181,6 +181,7 @@
 <li class="toctree-l2"><a class="reference internal" href="nodriver/cdp/audits.html">Audits</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nodriver/cdp/autofill.html">Autofill</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nodriver/cdp/background_service.html">BackgroundService</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nodriver/cdp/bluetooth_emulation.html">BluetoothEmulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nodriver/cdp/browser.html">Browser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nodriver/cdp/cache_storage.html">CacheStorage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nodriver/cdp/cast.html">Cast</a></li>
@@ -199,6 +200,7 @@
 <li class="toctree-l2"><a class="reference internal" href="nodriver/cdp/extensions.html">Extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nodriver/cdp/fed_cm.html">FedCm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nodriver/cdp/fetch.html">Fetch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nodriver/cdp/file_system.html">FileSystem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nodriver/cdp/headless_experimental.html">HeadlessExperimental</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nodriver/cdp/heap_profiler.html">HeapProfiler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nodriver/cdp/indexed_db.html">IndexedDB</a></li>
@@ -265,8 +267,8 @@
         <article role="main">
           <section id="nodriver">
 <h1>NODRIVER<a class="headerlink" href="#nodriver" title="Link to this heading">#</a></h1>
-<section id="id1">
-<h2><a class="reference external" href="https://ultrafunkamsterdam.github.io/nodriver/">CLICK HERE FOR DOCS</a><a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="for-docs-click-here">
+<h2>for docs click <a class="reference external" href="https://ultrafunkamsterdam.github.io/nodriver">here</a><a class="headerlink" href="#for-docs-click-here" title="Link to this heading">#</a></h2>
 <p><strong>This package provides next level webscraping and browser automation
 using a relatively simple interface.</strong></p>
 <ul class="simple">
@@ -304,21 +306,51 @@ naively return the first match, but will match candidates by closest matching te
 to a nodriver.Browser instance and contintue from there</p></li>
 <li><p>packed with helpers and utility methods for most used and important operations</p></li>
 </ul>
+</section>
+<section id="what-is-new">
+<h3>what is new<a class="headerlink" href="#what-is-new" title="Link to this heading">#</a></h3>
+<p><strong>tab.open_external_debugger()</strong></p>
+<p>lets you inspect the tab without breaking your connection</p>
+<p><strong>tab.get_local_storage()</strong></p>
+<p>get localstorage content</p>
+<p><strong>tab.set_local_storage(dict)</strong></p>
+<p>set localstorage content</p>
+<p><strong>tab.add_handler(someEvent, callback)</strong></p>
+<p>callback may accept a single argument (event), or 2 arguments (event, tab).</p>
+<p><strong>start(expert=True)</strong></p>
+<p>does some hacking for more experienced users. It disables web security and origin-trials, as well as ensures shadow-roots are always  open.</p>
+</section>
+<section id="some-examples-of-what-the-api-looks-like">
+<h3>Some examples of what the api looks like<a class="headerlink" href="#some-examples-of-what-the-api-looks-like" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">`elem.text`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`elem.text_all`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`elem.parent.parent.parent.attrs`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`anchor_elem.href</span> <span class="pre">and</span> <span class="pre">anchor_elem['href']`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`anchor_elem.href</span> <span class="pre">=</span> <span class="pre">'someotherthing';</span> <span class="pre">await</span> <span class="pre">anchor_elem.save()`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`elem.children[-1].children[0].children[4].parent.parent`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`await</span> <span class="pre">html5video_element.record_video()`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`await</span> <span class="pre">html5video_element('pause')`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`await</span> <span class="pre">html5video_element.apply('''(el)</span> <span class="pre">=&gt;</span> <span class="pre">el.currentTime</span> <span class="pre">=</span> <span class="pre">0''')`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`tab</span> <span class="pre">=</span> <span class="pre">await</span> <span class="pre">browser.get(url,</span> <span class="pre">new_tab=True)`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`tab_win</span> <span class="pre">=</span> <span class="pre">await</span> <span class="pre">browser.get(url,</span> <span class="pre">new_window=True)`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`first</span> <span class="pre">=</span> <span class="pre">await</span> <span class="pre">tab.find('search</span> <span class="pre">text')`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`best</span> <span class="pre">=</span> <span class="pre">await</span> <span class="pre">tab.find('search</span> <span class="pre">text',</span> <span class="pre">best_match=True)`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`all_results</span> <span class="pre">=</span> <span class="pre">await</span> <span class="pre">tab.find_all('search</span> <span class="pre">text')`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`first_submit_button</span> <span class="pre">=</span> <span class="pre">await</span> <span class="pre">tab.select(selector='button[type=submit]')`</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">`inputs_in_form</span> <span class="pre">=</span> <span class="pre">await</span> <span class="pre">tab.select_all('form</span> <span class="pre">input')`</span></code></p></li>
+</ul>
+</div></blockquote>
+</section>
 <section id="installation">
-<h4>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h4>
-<p>Since it’s a part of undetected-chromedriver, installation goes via</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">undetected</span><span class="o">-</span><span class="n">chromedriver</span>
-</pre></div>
-</div>
-<hr class="docutils" />
-<p>In case you don’t want undetected-chromedriver, this package can be installed
-using</p>
+<h3>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">nodriver</span>
 </pre></div>
 </div>
 </section>
 <section id="usage-example">
-<span id="getting-started-commands"></span><h4>usage example<a class="headerlink" href="#usage-example" title="Link to this heading">#</a></h4>
+<span id="getting-started-commands"></span><h3>usage example<a class="headerlink" href="#usage-example" title="Link to this heading">#</a></h3>
 <p>The aim of this project (just like undetected-chromedriver, somewhere long ago)
 is to keep it short and simple, so you can quickly open an editor or interactive session,
 type or paste a few lines and off you go.</p>
@@ -486,7 +518,6 @@ shows a script to create a twitter account</p>
 </section>
 </section>
 </section>
-</section>
 
         </article>
       </div>
@@ -526,12 +557,12 @@ shows a script to create a twitter account</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">NODRIVER</a><ul>
-<li><a class="reference internal" href="#id1">CLICK HERE FOR DOCS</a><ul>
-<li><a class="reference internal" href="#some-features">Some features</a><ul>
+<li><a class="reference internal" href="#for-docs-click-here">for docs click here</a><ul>
+<li><a class="reference internal" href="#some-features">Some features</a></li>
+<li><a class="reference internal" href="#what-is-new">what is new</a></li>
+<li><a class="reference internal" href="#some-examples-of-what-the-api-looks-like">Some examples of what the api looks like</a></li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#usage-example">usage example</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>

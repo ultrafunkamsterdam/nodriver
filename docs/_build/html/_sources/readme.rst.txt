@@ -4,8 +4,11 @@
 NODRIVER
 ##################
 
-`CLICK HERE FOR DOCS  <https://ultrafunkamsterdam.github.io/nodriver/>`_
-____
+**************
+for docs click `here`_
+**************
+
+.. _here: https://ultrafunkamsterdam.github.io/nodriver
 
 **This package provides next level webscraping and browser automation
 using a relatively simple interface.**
@@ -31,7 +34,7 @@ to fully customizable everything using the entire array of
 
 
 Some features
-^^^^^^^^^^^^^^^^^^^^^^
+=============
 
 * A blazing fast undetected chrome (-ish) automation library
 
@@ -58,7 +61,32 @@ Some features
 
 * packed with helpers and utility methods for most used and important operations
 
+what is new
+=============
+**tab.open_external_debugger()**
+
+lets you inspect the tab without breaking your connection
+
+**tab.get_local_storage()**
+
+get localstorage content
+
+**tab.set_local_storage(dict)**
+
+set localstorage content
+
+**tab.add_handler(someEvent, callback)**
+
+callback may accept a single argument (event), or 2 arguments (event, tab).
+
+**start(expert=True)**
+
+does some hacking for more experienced users. It disables web security and origin-trials, as well as ensures shadow-roots are always  open.
+
+Some examples of what the api looks like
+=============
 ..
+
    * ```elem.text```
    * ```elem.text_all```
 
@@ -82,16 +110,6 @@ Some features
 
 Installation
 =============
-Since it's a part of undetected-chromedriver, installation goes via
-
-.. code-block::
-
-    pip install undetected-chromedriver
-
---------
-
-In case you don't want undetected-chromedriver, this package can be installed
-using
 
 .. code-block::
 

@@ -82,6 +82,21 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: PressureSource
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: PressureState
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: PressureMetadata
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: DisabledImageType
       :members:
       :undoc-members:
@@ -148,6 +163,10 @@ to. For more information, see
 .. autofunction:: set_navigator_overrides
 
 .. autofunction:: set_page_scale_factor
+
+.. autofunction:: set_pressure_source_override_enabled
+
+.. autofunction:: set_pressure_state_override
 
 .. autofunction:: set_script_execution_disabled
 

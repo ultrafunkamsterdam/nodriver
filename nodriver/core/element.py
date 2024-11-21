@@ -510,12 +510,12 @@ class Element:
             )
 
     async def mouse_click(
-            self,
-            button: str = "left",
-            buttons: typing.Optional[int] = 1,
-            modifiers: typing.Optional[int] = 0,
-            hold: bool = False,
-            _until_event: typing.Optional[type] = None,
+        self,
+        button: str = "left",
+        buttons: typing.Optional[int] = 1,
+        modifiers: typing.Optional[int] = 0,
+        hold: bool = False,
+        _until_event: typing.Optional[type] = None,
     ):
         """native click (on element) . note: this likely does not work atm, use click() instead
 
@@ -586,10 +586,10 @@ class Element:
         )
 
     async def mouse_drag(
-            self,
-            destination: typing.Union[Element, typing.Tuple[int, int]],
-            relative: bool = False,
-            steps: int = 1,
+        self,
+        destination: typing.Union[Element, typing.Tuple[int, int]],
+        relative: bool = False,
+        steps: int = 1,
     ):
         """
         drag an element to another element or target coordinates. dragging of elements should be supported  by the site of course
@@ -817,10 +817,10 @@ class Element:
 
     #
     async def save_screenshot(
-            self,
-            filename: typing.Optional[PathLike] = "auto",
-            format: typing.Optional[str] = "jpeg",
-            scale: typing.Optional[typing.Union[int, float]] = 1,
+        self,
+        filename: typing.Optional[PathLike] = "auto",
+        format: typing.Optional[str] = "jpeg",
+        scale: typing.Optional[typing.Union[int, float]] = 1,
     ):
         """
         Saves a screenshot of this element (only)
@@ -997,10 +997,10 @@ class Element:
         setattr(self, "_is_highlighted", 1)
 
     async def record_video(
-            self,
-            filename: typing.Optional[str] = None,
-            folder: typing.Optional[str] = None,
-            duration: typing.Optional[typing.Union[int, float]] = None,
+        self,
+        filename: typing.Optional[str] = None,
+        folder: typing.Optional[str] = None,
+        duration: typing.Optional[typing.Union[int, float]] = None,
     ):
         """
         experimental option.

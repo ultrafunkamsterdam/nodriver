@@ -1,9 +1,7 @@
 Extensions
 ==========
 
-Defines commands and events for browser extensions. Available if the client
-is connected using the --remote-debugging-pipe flag and
-the --enable-unsafe-extension-debugging flag is set.
+Defines commands and events for browser extensions.
 
 *This CDP domain is experimental.*
 
@@ -16,7 +14,15 @@ the --enable-unsafe-extension-debugging flag is set.
 Types
 -----
 
-*There are no types in this module.*
+Generally, you do not need to instantiate CDP types
+yourself. Instead, the API creates objects for you as return
+values from commands, and then you can use those objects as
+arguments to other commands.
+
+.. autoclass:: StorageArea
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
 
 Commands
 --------
@@ -30,7 +36,15 @@ commands, and ``z`` is the return type you should pay attention
 to. For more information, see
 :ref:`Getting Started: Commands <getting-started-commands>`.
 
+.. autofunction:: clear_storage_items
+
+.. autofunction:: get_storage_items
+
 .. autofunction:: load_unpacked
+
+.. autofunction:: remove_storage_items
+
+.. autofunction:: set_storage_items
 
 Events
 ------

@@ -157,6 +157,21 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: AttributionReportingAggregatableDebugReportingData
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: AttributionReportingAggregatableDebugReportingConfig
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: AttributionScopesData
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: AttributionReportingSourceRegistration
       :members:
       :undoc-members:

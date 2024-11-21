@@ -1,9 +1,12 @@
-Memory
-======
+BluetoothEmulation
+==================
+
+This domain allows configuring virtual Bluetooth devices to test
+the web-bluetooth API.
 
 *This CDP domain is experimental.*
 
-.. module:: nodriver.cdp.memory
+.. module:: nodriver.cdp.bluetooth_emulation
 
 * Types_
 * Commands_
@@ -17,27 +20,22 @@ yourself. Instead, the API creates objects for you as return
 values from commands, and then you can use those objects as
 arguments to other commands.
 
-.. autoclass:: PressureLevel
+.. autoclass:: CentralState
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: SamplingProfileNode
+.. autoclass:: ManufacturerData
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: SamplingProfile
+.. autoclass:: ScanRecord
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: Module
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: DOMCounter
+.. autoclass:: ScanEntry
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -54,27 +52,13 @@ commands, and ``z`` is the return type you should pay attention
 to. For more information, see
 :ref:`Getting Started: Commands <getting-started-commands>`.
 
-.. autofunction:: forcibly_purge_java_script_memory
+.. autofunction:: disable
 
-.. autofunction:: get_all_time_sampling_profile
+.. autofunction:: enable
 
-.. autofunction:: get_browser_sampling_profile
+.. autofunction:: simulate_advertisement
 
-.. autofunction:: get_dom_counters
-
-.. autofunction:: get_dom_counters_for_leak_detection
-
-.. autofunction:: get_sampling_profile
-
-.. autofunction:: prepare_for_leak_detection
-
-.. autofunction:: set_pressure_notifications_suppressed
-
-.. autofunction:: simulate_pressure_notification
-
-.. autofunction:: start_sampling
-
-.. autofunction:: stop_sampling
+.. autofunction:: simulate_preconnected_peripheral
 
 Events
 ------
