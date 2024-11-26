@@ -304,22 +304,13 @@ def find_chrome_executable(return_all=False):
                 % candidate
             )
 
-    winner = None
+    if not rv:
+        raise FileNotFoundError(
+            "could not find a valid chrome browser binary. please make sure chrome is installed."
+            "or use the keyword argument 'browser_executable_path=/path/to/your/browser' "
+        )
 
-    if return_all and rv:
+    if return_all:
         return rv
 
-    if rv and len(rv) > 1:
-        # assuming the shortest path wins
-        winner = min(rv, key=lambda x: len(x))
-
-    elif len(rv) == 1:
-        winner = rv[0]
-
-    if winner:
-        return os.path.normpath(winner)
-
-    raise FileNotFoundError(
-        "could not find a valid chrome browser binary. please make sure chrome is installed."
-        "or use the keyword argument 'browser_executable_path=/path/to/your/browser' "
-    )
+    return os.path.normpath(rv[0])
