@@ -2,7 +2,7 @@
 
 ## Config class
 
-### *class* Config(user_data_dir=None, headless=False, browser_executable_path=None, browser_args=None, sandbox=True, lang='en-US', \*\*kwargs)
+### *class* Config(user_data_dir=None, headless=False, browser_executable_path=None, browser_args=None, sandbox=True, lang='en-US', host=None, port=None, expert=None, \*\*kwargs)
 
 Config object
 
@@ -10,7 +10,7 @@ Config object
 
 #### *property* user_data_dir
 
-#### *property* uses_custom_data_dir*: [bool](https://docs.python.org/3/library/functions.html#bool)*
+#### *property* uses_custom_data_dir *: [bool](https://docs.python.org/3/library/functions.html#bool)*
 
 #### add_extension(extension_path)
 

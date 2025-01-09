@@ -53,33 +53,33 @@ in Chromium based browsers, there is a parent process which keeps running all th
 there are no visible browser windows. sometimes it’s stubborn to close it, so make sure after using
 this library, the browser is correctly and fully closed/exited/killed.
 
-#### *async classmethod* create(config=None, \*, user_data_dir=None, headless=False, browser_executable_path=None, browser_args=None, sandbox=True, \*\*kwargs)
+#### *async classmethod* create(config=None, \*, user_data_dir=None, headless=False, browser_executable_path=None, browser_args=None, sandbox=True, host=None, port=None, \*\*kwargs)
 
 entry point for creating an instance
 
 * **Return type:**
   [`Browser`](#nodriver.Browser)
 
-#### config*: [`Config`](others_and_helpers.md#nodriver.Config)*
+#### config *: [`Config`](others_and_helpers.md#nodriver.Config)*
 
-#### targets*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)*
+#### targets *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)*
 
 current targets (all types
 
-#### connection*: `Connection`*
+#### connection *: `Connection`*
 
 #### *property* websocket_url
 
-#### *property* main_tab*: [Tab](tab.md#nodriver.Tab)*
+#### *property* main_tab *: [Tab](tab.md#nodriver.Tab)*
 
 returns the target which was launched with the browser
 
-#### *property* tabs*: [List](https://docs.python.org/3/library/typing.html#typing.List)[[Tab](tab.md#nodriver.Tab)]*
+#### *property* tabs *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[Tab](tab.md#nodriver.Tab)]*
 
 returns the current targets which are of type “page”
 :return:
 
-#### *property* cookies*: CookieJar*
+#### *property* cookies *: CookieJar*
 
 #### *property* stopped
 

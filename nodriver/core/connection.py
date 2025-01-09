@@ -12,7 +12,7 @@ import types
 from asyncio import iscoroutine, iscoroutinefunction
 from typing import Any, Awaitable, Callable, Generator, TypeVar, Union
 
-import websockets
+import websockets.asyncio.client
 
 from .. import cdp
 from . import util
@@ -180,7 +180,7 @@ class CantTouchThis(type):
 
 class Connection(metaclass=CantTouchThis):
     attached: bool = None
-    websocket: websockets.WebSocketClientProtocol
+    websocket: websockets.asyncio.client.ClientConnection
     _target: cdp.target.TargetInfo
 
     def __init__(
@@ -221,7 +221,7 @@ class Connection(metaclass=CantTouchThis):
     def closed(self):
         if not self.websocket:
             return True
-        return self.websocket.closed
+        return bool(self.websocket.close_code)
 
     def add_handler(
         self,
@@ -273,7 +273,7 @@ class Connection(metaclass=CantTouchThis):
         :return:
         """
 
-        if not self.websocket or self.websocket.closed:
+        if not self.websocket or bool(self.websocket.close_code):
             try:
                 self.websocket = await websockets.connect(
                     self.websocket_url,
@@ -299,7 +299,7 @@ class Connection(metaclass=CantTouchThis):
         """
         closes the websocket connection. should not be called manually by users.
         """
-        if self.websocket and not self.websocket.closed:
+        if self.websocket:
             if self.listener and self.listener.running:
                 self.listener.cancel()
                 self.enabled_domains.clear()
@@ -402,7 +402,7 @@ class Connection(metaclass=CantTouchThis):
         :return:
         """
         await self.aopen()
-        if not self.websocket or self.closed:
+        if not self.websocket or bool(self.websocket.close_code):
             return
         if self._owner:
             browser = self._owner
