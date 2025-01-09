@@ -331,7 +331,7 @@
 <span class="sd">        :param autodiscover_targets: use autodiscovery of targets</span>
 <span class="sd">        :param lang: language string to use other than the default &quot;en-US,en;q=0.9&quot;</span>
 <span class="sd">        :param expert: when set to True, enabled &quot;expert&quot; mode.</span>
-<span class="sd">               This conveys, the inclusion of parameters: --disable-web-security ----disable-site-isolation-trials,</span>
+<span class="sd">               This conveys, the inclusion of parameters:  ----disable-site-isolation-trials,</span>
 <span class="sd">               as well as some scripts and patching useful for debugging (for example, ensuring shadow-root is always in &quot;open&quot; mode)</span>
 
 <span class="sd">        :param kwargs:</span>
@@ -369,7 +369,7 @@
         <span class="c1"># when using posix-ish operating system and running as root</span>
         <span class="c1"># you must use no_sandbox = True, which in case is corrected here</span>
         <span class="k">if</span> <span class="n">is_posix</span> <span class="ow">and</span> <span class="n">is_root</span><span class="p">()</span> <span class="ow">and</span> <span class="n">sandbox</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;detected root usage, autoo disabling sandbox mode&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;detected root usage, auto disabling sandbox mode&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sandbox</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">autodiscover_targets</span> <span class="o">=</span> <span class="kc">True</span>
@@ -388,12 +388,7 @@
             <span class="s2">&quot;--password-store=basic&quot;</span><span class="p">,</span>
             <span class="s2">&quot;--disable-infobars&quot;</span><span class="p">,</span>
             <span class="s2">&quot;--disable-breakpad&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;--disable-component-update&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;--disable-backgrounding-occluded-windows&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;--disable-renderer-backgrounding&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;--disable-background-networking&quot;</span><span class="p">,</span>
             <span class="s2">&quot;--disable-dev-shm-usage&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;--disable-features=IsolateOrigins,site-per-process&quot;</span><span class="p">,</span>
             <span class="s2">&quot;--disable-session-crashed-bubble&quot;</span><span class="p">,</span>
             <span class="s2">&quot;--disable-search-engine-choice-screen&quot;</span><span class="p">,</span>
         <span class="p">]</span>
@@ -444,20 +439,16 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_extensions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
 
 
-    <span class="c1"># def __getattr__(self, item):</span>
-    <span class="c1">#     if item not in self.__dict__:</span>
-
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># the host and port will be added when starting</span>
         <span class="c1"># the browser, as by the time it starts, the port</span>
         <span class="c1"># is probably already taken</span>
         <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_browser_args</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--user-data-dir=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_data_dir</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-features=IsolateOrigins,site-per-process&quot;</span><span class="p">]</span>
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-session-crashed-bubble&quot;</span><span class="p">]</span>
+        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-features=IsolateOrigins,site-per-process&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expert</span><span class="p">:</span>
-            <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-web-security&quot;</span><span class="p">,</span> <span class="s2">&quot;--disable-site-isolation-trials&quot;</span><span class="p">]</span>
+            <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--disable-site-isolation-trials&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser_args</span><span class="p">:</span>
             <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser_args</span> <span class="k">if</span> <span class="n">arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="p">])</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">headless</span><span class="p">:</span>
@@ -505,11 +496,6 @@
             <span class="n">s</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\t</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">s</span></div>
 
-
-    <span class="c1">#     d = self.__dict__.copy()</span>
-    <span class="c1">#     d.pop(&quot;browser_args&quot;)</span>
-    <span class="c1">#     d[&quot;browser_args&quot;] = self()</span>
-    <span class="c1">#     return d</span>
 
 
 <span class="k">def</span> <span class="nf">is_root</span><span class="p">():</span>

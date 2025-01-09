@@ -336,6 +336,27 @@ webpage. So whenever you get stuck and things crashes or element could not be fo
 it “breathe”  by calling <cite>await page</cite>  and/or <cite>await page.sleep()</cite></p>
 <p>also, it’s ensuring <code class="xref py py-obj docutils literal notranslate"><span class="pre">url</span></code> will be updated to the most recent one, which is quite important in some
 other methods.</p>
+<p>attempts to find the location of given template image in the current viewport
+the only real use case for this is bot-detection systems.
+you can find for example the location of a ‘verify’-checkbox,
+which are hidden from dom using shadow-root’s or workers.</p>
+</section>
+<section id="await-tab-template-location-and-await-tab-verify-cf">
+<h2>await <a class="reference internal" href="#nodriver.Tab.template_location" title="nodriver.Tab.template_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tab.template_location</span></code></a> (and await <a class="reference internal" href="#nodriver.Tab.verify_cf" title="nodriver.Tab.verify_cf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tab.verify_cf</span></code></a>)<a class="headerlink" href="#await-tab-template-location-and-await-tab-verify-cf" title="Link to this heading">#</a></h2>
+<p>attempts to find the location of given template image in the current viewport.
+the only real use case for this is bot-detection systems.
+you can find, for example the location of a ‘verify’-checkbox, which are hidden from dom
+using shadow-root’s or/or workers and cannot be controlled by normal methods.</p>
+<p>template_image can be custom (for example your language, included is english only),
+but you need to create the template image yourself, which is just a cropped
+image of the area, see example image, where the target is exactly in the center.
+template_image can be custom (for example your language), but you need to
+create the template image yourself, where the target is exactly in the center.</p>
+</section>
+<section id="example-111x71">
+<h2>example (111x71)<a class="headerlink" href="#example-111x71" title="Link to this heading">#</a></h2>
+<p>this includes the white space on the left, to make the box center</p>
+<a class="reference internal image-reference" href="../../_images/template_example.png"><img alt="example template image" src="../../_images/template_example.png" style="width: 111px;" /></a>
 <section id="using-other-and-custom-cdp-commands">
 <h3>Using other and custom CDP commands<a class="headerlink" href="#using-other-and-custom-cdp-commands" title="Link to this heading">#</a></h3>
 <p>using the included cdp module, you can easily craft commands, which will always return an generator object.
@@ -422,6 +443,15 @@ for example, you want to check the network traffic:</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.bypass_insecure_connection_warning">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bypass_insecure_connection_warning</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.bypass_insecure_connection_warning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.bypass_insecure_connection_warning" title="Link to this definition">#</a></dt>
+<dd><p>when you enter a site where the certificate is invalid
+you get a warning. call this function to “proceed”
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.close">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.close" title="Link to this definition">#</a></dt>
 <dd><p>close the current target (ie: tab,window,page)
@@ -451,6 +481,11 @@ for example, you want to check the network traffic:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.evaluate">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">await_promise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_by_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.evaluate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="nodriver.Tab.execution_contexts_list">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">execution_contexts_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ExecutionContext</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#nodriver.Tab.execution_contexts_list" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -567,10 +602,20 @@ which happen to contain that text.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.flash_point">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flash_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.flash_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.flash_point" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.forward">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.forward" title="Link to this definition">#</a></dt>
 <dd><p>history forward</p>
 </dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="nodriver.Tab.frames_list">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">frames_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Frame</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#nodriver.Tab.frames_list" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.fullscreen">
@@ -634,6 +679,35 @@ way of navigating.</p>
 <dt class="sig sig-object py" id="nodriver.Tab.get_content">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_content</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.get_content"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.get_content" title="Link to this definition">#</a></dt>
 <dd><p>gets the current page source content (html)
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.get_frame_resource_tree">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_frame_resource_tree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.get_frame_resource_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.get_frame_resource_tree" title="Link to this definition">#</a></dt>
+<dd><p>retrieves the frame resource tree for current tab.
+There seems no real difference between <span class="xref std std-ref">Tab.get_frame_tree()</span>
+but still it returns a different object
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.get_frame_resource_urls">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_frame_resource_urls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.get_frame_resource_urls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.get_frame_resource_urls" title="Link to this definition">#</a></dt>
+<dd><p>gets the
+:param urls_only:
+:type urls_only:
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.get_frame_tree">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_frame_tree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.get_frame_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.get_frame_tree" title="Link to this definition">#</a></dt>
+<dd><p>retrieves the frame tree for current tab
+There seems no real difference between <span class="xref std std-ref">Tab.get_frame_resource_tree()</span>
 :return:
 :rtype:</p>
 </dd></dl>
@@ -732,6 +806,66 @@ print(x)</p>
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.minimize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.minimize" title="Link to this definition">#</a></dt>
 <dd><p>minimize page/tab/window</p>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.mouse_click">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mouse_click</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">button</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'left'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buttons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modifiers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_until_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.mouse_click"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.mouse_click" title="Link to this definition">#</a></dt>
+<dd><p>native click on position x,y
+:type y: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>
+:param y:
+:type y:
+:type x: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>
+:param x:
+:type x:
+:type button: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>
+:param button: str (default = “left”)
+:type buttons: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>
+:param buttons: which button (default 1 = left)
+:type modifiers: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>
+:param modifiers: <em>(Optional)</em> Bit field representing pressed modifier keys.</p>
+<blockquote>
+<div><p>Alt=1, Ctrl=2, Meta/Command=4, Shift=8 (default: 0).</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>_until_event</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></a>]</span>) – internal. event to wait for before returning</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.mouse_drag">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mouse_drag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.mouse_drag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.mouse_drag" title="Link to this definition">#</a></dt>
+<dd><p>drag mouse from one point to another. holding button pressed
+you are probably looking for <code class="xref py py-meth docutils literal notranslate"><span class="pre">element.Element.mouse_drag()</span></code> method. where you
+can drag on the element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dest_point</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – </p></li>
+<li><p><strong>source_point</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – </p></li>
+<li><p><strong>relative</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – when True, treats point as relative. for example (-100, 200) will move left 100px and down 200px</p></li>
+<li><p><strong>steps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – move in &lt;steps&gt; points, this could make it look more “natural” (default 1),
+but also a lot slower.
+for very smooth action use 50-100</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.mouse_move">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mouse_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flash</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.mouse_move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.mouse_move" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.open_external_inspector">
@@ -854,6 +988,11 @@ This is not the same as <a class="reference internal" href="element.html#nodrive
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.search_frame_resources">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">search_frame_resources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.search_frame_resources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.search_frame_resources" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.select">
@@ -1013,19 +1152,78 @@ in case state is set other than “normal”, the left, top, width, and height a
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.template_location">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">template_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.template_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.template_location" title="Link to this definition">#</a></dt>
+<dd><p>attempts to find the location of given template image in the current viewport
+the only real use case for this is bot-detection systems.
+you can find for example the location of a ‘verify’-checkbox,
+which are hidden from dom using shadow-root’s or workers.</p>
+<p>template_image can be custom (for example your language, included is english only),
+but you need to create the template image yourself, which is just a cropped
+image of the area, see example image, where the target is exactly in the center.
+template_image can be custom (for example your language), but you need to
+create the template image yourself, where the target is exactly in the center.</p>
+<section id="id1">
+<h3>example (111x71)<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>this includes the white space on the left, to make the box center</p>
+<a class="reference internal image-reference" href="../../_images/template_example.png"><img alt="example template image" src="../../_images/template_example.png" style="width: 111px;" /></a>
+<dl class="field-list simple">
+<dt class="field-odd">type template_img<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">FileLike</span></code>, bound= <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>)</span></p>
+</dd>
+<dt class="field-even">param template_img<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">type template_img<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">return<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.update_target">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_target</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Tab.update_target" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.verify_cf">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">verify_cf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.verify_cf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.verify_cf" title="Link to this definition">#</a></dt>
-<dd><p>an attempt..</p>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">verify_cf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flash</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.verify_cf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.verify_cf" title="Link to this definition">#</a></dt>
+<dd><p>convenience function to verify cf checkbox</p>
+<p>template_image can be custom (for example your language, included is english only),
+but you need to create the template image yourself, which is just a cropped
+image of the area, see example image, where the target is exactly in the center.</p>
+<section id="id2">
+<h3>example (111x71)<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>this includes the white space on the left, to make the box center</p>
+<a class="reference internal image-reference" href="../../_images/template_example.png"><img alt="example template image" src="../../_images/template_example.png" style="width: 111px;" /></a>
+<dl class="field-list simple">
+<dt class="field-odd">type template_image<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+<dt class="field-even">param template_image<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">type template_image<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type flash<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">param flash<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type flash<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.wait">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Tab.wait" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.wait" title="Link to this definition">#</a></dt>
 <dd><p>waits until the event listener reports idle (no new events received in certain timespan).
 when <cite>t</cite> is provided, ensures waiting for <cite>t</cite> seconds, no matter what.</p>
 <dl class="field-list simple">
@@ -1071,7 +1269,7 @@ an TimeoutError will be raised</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.Tab.websocket">
-<span class="sig-name descname"><span class="pre">websocket</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">websockets.WebSocketClientProtocol</span></em><a class="headerlink" href="#nodriver.Tab.websocket" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">websocket</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">websockets.asyncio.client.ClientConnection</span></em><a class="headerlink" href="#nodriver.Tab.websocket" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1144,21 +1342,28 @@ an TimeoutError will be raised</p>
 <li><a class="reference internal" href="#nodriver.Tab.back"><code class="docutils literal notranslate"><span class="pre">Tab.back()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.bring_to_front"><code class="docutils literal notranslate"><span class="pre">Tab.bring_to_front()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.browser"><code class="docutils literal notranslate"><span class="pre">Tab.browser</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.bypass_insecure_connection_warning"><code class="docutils literal notranslate"><span class="pre">Tab.bypass_insecure_connection_warning()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.close"><code class="docutils literal notranslate"><span class="pre">Tab.close()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.closed"><code class="docutils literal notranslate"><span class="pre">Tab.closed</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.download_file"><code class="docutils literal notranslate"><span class="pre">Tab.download_file()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.evaluate"><code class="docutils literal notranslate"><span class="pre">Tab.evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.execution_contexts_list"><code class="docutils literal notranslate"><span class="pre">Tab.execution_contexts_list</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.feed_cdp"><code class="docutils literal notranslate"><span class="pre">Tab.feed_cdp()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.find"><code class="docutils literal notranslate"><span class="pre">Tab.find()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.find_all"><code class="docutils literal notranslate"><span class="pre">Tab.find_all()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.find_element_by_text"><code class="docutils literal notranslate"><span class="pre">Tab.find_element_by_text()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.find_elements_by_text"><code class="docutils literal notranslate"><span class="pre">Tab.find_elements_by_text()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.flash_point"><code class="docutils literal notranslate"><span class="pre">Tab.flash_point()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.forward"><code class="docutils literal notranslate"><span class="pre">Tab.forward()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.frames_list"><code class="docutils literal notranslate"><span class="pre">Tab.frames_list</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.fullscreen"><code class="docutils literal notranslate"><span class="pre">Tab.fullscreen()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.get"><code class="docutils literal notranslate"><span class="pre">Tab.get()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.get_all_linked_sources"><code class="docutils literal notranslate"><span class="pre">Tab.get_all_linked_sources()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.get_all_urls"><code class="docutils literal notranslate"><span class="pre">Tab.get_all_urls()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.get_content"><code class="docutils literal notranslate"><span class="pre">Tab.get_content()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.get_frame_resource_tree"><code class="docutils literal notranslate"><span class="pre">Tab.get_frame_resource_tree()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.get_frame_resource_urls"><code class="docutils literal notranslate"><span class="pre">Tab.get_frame_resource_urls()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.get_frame_tree"><code class="docutils literal notranslate"><span class="pre">Tab.get_frame_tree()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.get_local_storage"><code class="docutils literal notranslate"><span class="pre">Tab.get_local_storage()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.get_window"><code class="docutils literal notranslate"><span class="pre">Tab.get_window()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.inspector_open"><code class="docutils literal notranslate"><span class="pre">Tab.inspector_open()</span></code></a></li>
@@ -1167,6 +1372,9 @@ an TimeoutError will be raised</p>
 <li><a class="reference internal" href="#nodriver.Tab.maximize"><code class="docutils literal notranslate"><span class="pre">Tab.maximize()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.medimize"><code class="docutils literal notranslate"><span class="pre">Tab.medimize()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.minimize"><code class="docutils literal notranslate"><span class="pre">Tab.minimize()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.mouse_click"><code class="docutils literal notranslate"><span class="pre">Tab.mouse_click()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.mouse_drag"><code class="docutils literal notranslate"><span class="pre">Tab.mouse_drag()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.mouse_move"><code class="docutils literal notranslate"><span class="pre">Tab.mouse_move()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.open_external_inspector"><code class="docutils literal notranslate"><span class="pre">Tab.open_external_inspector()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.query_selector"><code class="docutils literal notranslate"><span class="pre">Tab.query_selector()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.query_selector_all"><code class="docutils literal notranslate"><span class="pre">Tab.query_selector_all()</span></code></a></li>
@@ -1174,6 +1382,7 @@ an TimeoutError will be raised</p>
 <li><a class="reference internal" href="#nodriver.Tab.save_screenshot"><code class="docutils literal notranslate"><span class="pre">Tab.save_screenshot()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.scroll_down"><code class="docutils literal notranslate"><span class="pre">Tab.scroll_down()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.scroll_up"><code class="docutils literal notranslate"><span class="pre">Tab.scroll_up()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.search_frame_resources"><code class="docutils literal notranslate"><span class="pre">Tab.search_frame_resources()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.select"><code class="docutils literal notranslate"><span class="pre">Tab.select()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.select_all"><code class="docutils literal notranslate"><span class="pre">Tab.select_all()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.send"><code class="docutils literal notranslate"><span class="pre">Tab.send()</span></code></a></li>
@@ -1183,6 +1392,7 @@ an TimeoutError will be raised</p>
 <li><a class="reference internal" href="#nodriver.Tab.set_window_state"><code class="docutils literal notranslate"><span class="pre">Tab.set_window_state()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.sleep"><code class="docutils literal notranslate"><span class="pre">Tab.sleep()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.target"><code class="docutils literal notranslate"><span class="pre">Tab.target</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.template_location"><code class="docutils literal notranslate"><span class="pre">Tab.template_location()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.update_target"><code class="docutils literal notranslate"><span class="pre">Tab.update_target()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.verify_cf"><code class="docutils literal notranslate"><span class="pre">Tab.verify_cf()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.wait"><code class="docutils literal notranslate"><span class="pre">Tab.wait()</span></code></a></li>

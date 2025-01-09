@@ -47,7 +47,7 @@ this is also suitable to use as wait condition.
 
 ## [`find()`](#nodriver.Tab.find) |  find(text, best_match=True) or find(text, True)
 
-Much more powerful (and expensive!!) than the above, is the use of the find(text, best_match=True) flag.
+Much more powerful (and expensive!!) than the above, is the use of the `find(text, best_match=True)` flag.
 It will still return 1 element, but when multiple matches are found, picks the one having the
 most similar text length.
 How would that help?
@@ -71,10 +71,10 @@ this is also suitable to use as wait condition.
 
 ## await [`Tab`](#nodriver.Tab)
 
-calling await tab will do a lot of stuff under the hood, and ensures all references
+calling `await tab` will do a lot of stuff under the hood, and ensures all references
 are up to date. also it allows for the script to “breathe”, as it is oftentime faster than your browser or
 webpage. So whenever you get stuck and things crashes or element could not be found, you should probably let
-it “breathe”  by calling await page  and/or await page.sleep()
+it “breathe”  by calling `await page`  and/or `await page.sleep()`
 
 also, it’s ensuring `url` will be updated to the most recent one, which is quite important in some
 other methods.
@@ -131,7 +131,7 @@ opens the websocket connection. should not be called manually by users
 :param kw:
 :return:
 
-#### attached*: bool* *= None*
+#### attached *: bool* *= None*
 
 #### *async* back()
 
@@ -141,7 +141,7 @@ history back
 
 alias to self.activate
 
-#### browser*: nodriver.core.browser.Browser*
+#### browser *: nodriver.core.browser.Browser*
 
 #### *async* close()
 
@@ -161,6 +161,20 @@ downloads file by given url.
 
 #### *async* evaluate(expression, await_promise=False, return_by_value=True)
 
+#### feed_cdp(cdp_obj)
+
+used in specific cases, mostly during cdp.fetch.RequestPaused events,
+in which the browser literally blocks. using feed_cdp you can issue
+a response without a blocking “await”.
+
+note: this method won’t cause a response.
+note: this is not an async method, just a regular method!
+
+* **Parameters:**
+  **cdp_obj** – 
+* **Returns:**
+* **Return type:**
+
 #### *async* find(text, best_match=True, return_enclosing_element=True, timeout=10)
 
 find single element by text
@@ -177,7 +191,7 @@ can also be used to wait for such element to appear.
       When False, it will return naively just the first match (but is way faster).
     * **type best_match:**
       bool
-  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float)*,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
 
 #### *async* find_all(text, timeout=10)
 
@@ -186,7 +200,7 @@ can also be used to wait for such element to appear.
 
 * **Parameters:**
   * **text** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – text to search for. note: script contents are also considered text
-  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float)*,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
 * **Return type:**
   [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Element`](element.md#nodriver.Element)]
 
@@ -263,6 +277,13 @@ convenience function, which returns all links (a,link,img,script,meta)
 gets the current page source content (html)
 :return:
 :rtype:
+
+#### *async* get_local_storage()
+
+get local storage items as dict of strings (careful!, proper deserialization needs to be done if needed)
+
+* **Returns:**
+* **Return type:**
 
 #### *async* get_window()
 
@@ -402,7 +423,7 @@ can also be used to wait for such element to appear.
 
 * **Parameters:**
   * **selector** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – css selector, eg a[href], button[class\*=close], a > img[src]
-  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float)*,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
 * **Return type:**
   [`Element`](element.md#nodriver.Element)
 
@@ -413,7 +434,7 @@ can also be used to wait for such element to appear.
 
 * **Parameters:**
   * **selector** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – css selector, eg a[href], button[class\*=close], a > img[src]
-  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float)*,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
   * **include_frames** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – whether to include results in iframes.
 * **Return type:**
   [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Element`](element.md#nodriver.Element)]
@@ -442,6 +463,16 @@ this is required for any download function to work (well not entirely, since whe
 * **Returns:**
 * **Return type:**
 
+#### *async* set_local_storage(items)
+
+set local storage.
+dict items must be strings. simple types will be converted to strings automatically.
+
+* **Parameters:**
+  **items** ([*dict*](https://docs.python.org/3/library/stdtypes.html#dict) *[*[*str*](https://docs.python.org/3/library/stdtypes.html#str) *,*[*str*](https://docs.python.org/3/library/stdtypes.html#str) *]*) – dict containing {key:str, value:str}
+* **Returns:**
+* **Return type:**
+
 #### *async* set_window_size(left=0, top=0, width=1280, height=1024)
 
 set window size and position
@@ -467,7 +498,9 @@ in case state is set other than “normal”, the left, top, width, and height a
   * **top** ([*int*](https://docs.python.org/3/library/functions.html#int)) – desired offset from the top, in pixels
   * **width** ([*int*](https://docs.python.org/3/library/functions.html#int)) – desired width in pixels
   * **height** ([*int*](https://docs.python.org/3/library/functions.html#int)) – desired height in pixels
-  * **state** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – can be one of the following strings:
+  * **state** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+
+    can be one of the following strings:
     : - normal
       - fullscreen
       - maximized
@@ -475,7 +508,7 @@ in case state is set other than “normal”, the left, top, width, and height a
 
 #### *async* sleep(t=0.25)
 
-#### *property* target*: [TargetInfo](../cdp/target.md#nodriver.cdp.target.TargetInfo)*
+#### *property* target *: [TargetInfo](../cdp/target.md#nodriver.cdp.target.TargetInfo)*
 
 #### *async* update_target()
 
@@ -486,7 +519,7 @@ an attempt..
 #### *async* wait(t=None)
 
 waits until the event listener reports idle (no new events received in certain timespan).
-when t is provided, ensures waiting for t seconds, no matter what.
+when `t` is provided, ensures waiting for `t` seconds, no matter what.
 
 * **Parameters:**
   **t** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`int`](https://docs.python.org/3/library/functions.html#int), [`float`](https://docs.python.org/3/library/functions.html#float)]) – 
@@ -512,4 +545,4 @@ an TimeoutError will be raised
 * **Raises:**
   asyncio.TimeoutError
 
-#### websocket*: websockets.WebSocketClientProtocol*
+#### websocket *: websockets.asyncio.client.ClientConnection*

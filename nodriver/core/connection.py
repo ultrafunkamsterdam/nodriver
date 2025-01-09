@@ -12,7 +12,7 @@ import types
 from asyncio import iscoroutine, iscoroutinefunction
 from typing import Any, Awaitable, Callable, Generator, TypeVar, Union
 
-import websockets
+import websockets.asyncio.client
 
 from .. import cdp
 from . import util
@@ -25,7 +25,7 @@ PING_TIMEOUT: int = 900  # 15 minutes
 
 TargetType = Union[cdp.target.TargetInfo, cdp.target.TargetID]
 
-logger = logging.getLogger("uc.connection")
+logger = logging.getLogger(__name__)
 
 
 class ProtocolException(Exception):
@@ -88,6 +88,7 @@ class Transaction(asyncio.Future):
 
     @property
     def message(self):
+
         return json.dumps({"method": self.method, "params": self.params, "id": self.id})
 
     @property
@@ -180,7 +181,7 @@ class CantTouchThis(type):
 
 class Connection(metaclass=CantTouchThis):
     attached: bool = None
-    websocket: websockets.WebSocketClientProtocol
+    websocket: websockets.asyncio.client.ClientConnection
     _target: cdp.target.TargetInfo
 
     def __init__(
@@ -221,7 +222,7 @@ class Connection(metaclass=CantTouchThis):
     def closed(self):
         if not self.websocket:
             return True
-        return self.websocket.closed
+        return bool(self.websocket.close_code)
 
     def add_handler(
         self,
@@ -273,7 +274,7 @@ class Connection(metaclass=CantTouchThis):
         :return:
         """
 
-        if not self.websocket or self.websocket.closed:
+        if not self.websocket or bool(self.websocket.close_code):
             try:
                 self.websocket = await websockets.connect(
                     self.websocket_url,
@@ -299,7 +300,7 @@ class Connection(metaclass=CantTouchThis):
         """
         closes the websocket connection. should not be called manually by users.
         """
-        if self.websocket and not self.websocket.closed:
+        if self.websocket:
             if self.listener and self.listener.running:
                 self.listener.cancel()
                 self.enabled_domains.clear()
@@ -402,7 +403,7 @@ class Connection(metaclass=CantTouchThis):
         :return:
         """
         await self.aopen()
-        if not self.websocket or self.closed:
+        if not self.websocket or bool(self.websocket.close_code):
             return
         if self._owner:
             browser = self._owner
@@ -416,8 +417,11 @@ class Connection(metaclass=CantTouchThis):
         try:
             tx = Transaction(cdp_obj)
             tx.connection = self
-            if not self.mapper:
+            # if not self.mapper:
+            if not _is_update:
+                self.mapper.clear()
                 self.__count__ = itertools.count(0)
+
             tx.id = next(self.__count__)
             self.mapper.update({tx.id: tx})
             if not _is_update:
@@ -626,7 +630,7 @@ class Listener:
 
                     # thanks to zxsleebu for discovering the memory leak
                     # pop to prevent memory leaks
-                    tx = self.connection.mapper.pop(message["id"])
+                    tx = self.connection.mapper[message["id"]]
                     logger.debug("got answer for %s (message_id:%d)", tx, message["id"])
 
                     # complete the transaction, which is a Future object

@@ -505,7 +505,6 @@ class Browser:
                     existing_tab.target.__dict__.update(t.__dict__)
                     break
             else:
-
                 self.targets.append(
                     Connection(
                         (
@@ -531,6 +530,27 @@ class Browser:
     def __iter__(self):
         self._i = self.tabs.index(self.main_tab)
         return self
+
+    def __getitem__(self, item: Union[str, int]):
+        """
+        allows to get py:obj:`tab.Tab` instances by using browser[0], browser[1], etc.
+        a string is also allowed. it will then return the first tab where the py:obj:`cdp.target.TargetInfo` object
+        (as json string) contains the given key, or the first tab in case no matches are found. eg:
+        `browser["google"]` gives the first tab which has "google" in it's serialized target object.
+
+        :param item:
+        :type item:
+        :return:
+        :rtype: tab.Tab
+        """
+        if isinstance(item, int):
+            return self.tabs[item]
+        if isinstance(item, str):
+            for t in self.tabs:
+                if item.lower() in str(t.target.to_json()).lower():
+                    return t
+            else:
+                return self.tabs[0]
 
     def __reversed__(self):
         return reversed(list(self.tabs))

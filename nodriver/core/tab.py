@@ -1,12 +1,17 @@
 from __future__ import annotations
 
 import asyncio
+import functools
+import itertools
 import json
 import logging
+import os
 import pathlib
+import secrets
 import typing
 import warnings
-from typing import List, Optional, Tuple, Union
+from pathlib import Path
+from typing import Any, Generator, List, Optional, Tuple, TypeVar, Union
 
 import nodriver.core.browser
 
@@ -14,6 +19,8 @@ from .. import cdp
 from . import element, util
 from .config import PathLike
 from .connection import Connection, ProtocolException
+
+FileLike = TypeVar("FileLike", bound=Path | str)
 
 logger = logging.getLogger(__name__)
 
@@ -102,6 +109,37 @@ class Tab(Connection):
     also, it's ensuring :py:obj:`~url` will be updated to the most recent one, which is quite important in some
     other methods.
 
+    attempts to find the location of given template image in the current viewport
+    the only real use case for this is bot-detection systems.
+    you can find for example the location of a 'verify'-checkbox,
+    which are hidden from dom using shadow-root's or workers.
+
+
+
+    await :py:obj:`Tab.template_location` (and await :py:obj:`Tab.verify_cf`)
+    ------------------------------------------------------------------------------
+
+    attempts to find the location of given template image in the current viewport.
+    the only real use case for this is bot-detection systems.
+    you can find, for example the location of a ‘verify’-checkbox, which are hidden from dom
+    using shadow-root’s or/or workers and cannot be controlled by normal methods.
+
+    template_image can be custom (for example your language, included is english only),
+    but you need to create the template image yourself, which is just a cropped
+    image of the area, see example image, where the target is exactly in the center.
+    template_image can be custom (for example your language), but you need to
+    create the template image yourself, where the target is exactly in the center.
+
+
+    example (111x71)
+    ---------
+    this includes the white space on the left, to make the box center
+
+    .. image:: template_example.png
+        :width: 111
+        :alt: example template image
+
+
     Using other and custom CDP commands
     ======================================================
     using the included cdp module, you can easily craft commands, which will always return an generator object.
@@ -129,8 +167,137 @@ class Tab(Connection):
     ):
         super().__init__(websocket_url, target, browser, **kwargs)
         self.browser = browser
+
+        self.add_handler(
+            cdp.runtime.ExecutionContextCreated, self._execution_contexts_handler
+        )
+        self.add_handler(
+            cdp.runtime.ExecutionContextDestroyed, self._execution_contexts_handler
+        )
+        self.add_handler(
+            cdp.runtime.ExecutionContextsCleared, self._execution_contexts_handler
+        )
+
+        self.add_handler(cdp.page.FrameAttached, self._frame_handler)
+        self.add_handler(cdp.page.FrameDetached, self._frame_handler)
+        self.add_handler(cdp.page.FrameStartedLoading, self._frame_handler)
+        self.add_handler(cdp.page.FrameStoppedLoading, self._frame_handler)
+
+        self.execution_contexts: typing.Dict[str, ExecutionContext] = {}
+        # self.execution_contexts: List[ExecutionContext] = []
+        self.frames: typing.Dict[str, Frame] = {}
         self._dom = None
         self._window_id = None
+
+    @property
+    def frames_list(self) -> List[Frame]:
+        return list(self.frames.values())
+
+    @property
+    def execution_contexts_list(self) -> List[ExecutionContext]:
+        return list(self.execution_contexts.values())
+
+    async def _execution_contexts_handler(
+        self,
+        event: Union[
+            cdp.runtime.ExecutionContextsCleared,
+            cdp.runtime.ExecutionContextCreated,
+            cdp.runtime.ExecutionContextDestroyed,
+        ],
+        *args,
+        **kwargs,
+    ):
+
+        if type(event) is cdp.runtime.ExecutionContextCreated:
+            context = event.context
+            frame_id = context.aux_data.get("frameId")
+
+            try:
+                if context.id_ in self.execution_contexts:
+                    self.execution_contexts.__dict__.update(**vars(context))
+                else:
+                    execution_context = ExecutionContext(tab=self, **vars(context))
+                    self.execution_contexts[context.unique_id] = execution_context
+
+                frame: Frame = next(filter(lambda key: key == frame_id, self.frames))
+                if frame and context.unique_id in self.execution_contexts:
+                    self.frames[str(frame_id)].execution_contexts[context.unique_id] = (
+                        self.execution_contexts[context.unique_id]
+                    )
+
+            except StopIteration:
+                frame: None = None
+                return
+
+        elif type(event) is cdp.runtime.ExecutionContextDestroyed:
+            unique_id = event.execution_context_unique_id
+            for frame_id in self.frames.keys():
+                try:
+                    self.frames[str(frame_id)].execution_contexts.pop(unique_id)
+                except KeyError:
+                    pass
+
+        elif type(event) is cdp.runtime.ExecutionContextsCleared:
+            self.frames.clear()
+
+    async def _frame_handler(
+        self,
+        event: Union[
+            cdp.page.FrameAttached,
+            cdp.page.FrameDetached,
+            cdp.page.FrameStartedLoading,
+            cdp.page.FrameStoppedLoading,
+        ],
+        tab: Tab = None,
+    ):
+        """
+
+        :param event:
+        :type event:
+        :return:
+        :rtype:
+        """
+        ev_typ = type(event)
+        ev: ev_typ = event
+
+        if ev_typ is cdp.page.FrameAttached:
+            try:
+                frame = next(filter(lambda fid: ev.frame_id == fid, self.frames))
+            except:
+                frame = Frame(id_=ev.frame_id, parent_id=ev.parent_frame_id)
+                self.frames[str(ev.frame_id)] = frame
+
+            for exid in self.execution_contexts:
+                if exid not in frame.execution_contexts:
+                    frame.execution_contexts[exid] = self.execution_contexts[exid]
+                    frame.loading = True
+
+        if ev_typ is cdp.page.FrameDetached:
+            try:
+                # frame = next(filter(lambda fid: fid  ==  ev.frame_id, self.frames))
+                self.frames.pop(ev.frame_id)
+            except (KeyError,):
+                pass
+            return
+
+        if ev_typ is cdp.page.FrameStartedLoading:
+            try:
+                frame: Frame = self.frames[ev.frame_id]
+                if frame:
+                    frame.loading = True
+
+            except (StopIteration, KeyError):
+                frame = Frame(id_=ev.frame_id)
+                frame.loading = True
+                self.frames[str(frame.id_)] = frame
+
+        if ev_typ is cdp.page.FrameStoppedLoading:
+            try:
+                frame = self.frames[str(ev.frame_id)]
+                frame.loading = False
+            except (StopIteration, KeyError):
+                pass
+                # frame.loading = False
 
     @property
     def inspector_url(self):
@@ -209,9 +376,7 @@ class Tab(Connection):
                 text, best_match, return_enclosing_element
             )
             if loop.time() - start_time > timeout:
-                raise asyncio.TimeoutError(
-                    "time ran out while waiting for text: %s" % text
-                )
+                return item
             await self.sleep(0.5)
         return item
 
@@ -241,9 +406,7 @@ class Tab(Connection):
             await self
             item = await self.query_selector(selector)
             if loop.time() - start_time > timeout:
-                raise asyncio.TimeoutError(
-                    "time ran out while waiting for %s" % selector
-                )
+                return item
             await self.sleep(0.5)
         return item
 
@@ -272,9 +435,7 @@ class Tab(Connection):
             await self
             results = await self.find_elements_by_text(text)
             if loop.time() - now > timeout:
-                raise asyncio.TimeoutError(
-                    "time ran out while waiting for text: %s" % text
-                )
+                return items
             await self.sleep(0.5)
         return items
 
@@ -309,9 +470,7 @@ class Tab(Connection):
             await self
             items = await self.query_selector_all(selector)
             if loop.time() - now > timeout:
-                raise asyncio.TimeoutError(
-                    "time ran out while waiting for %s" % selector
-                )
+                return items
             await self.sleep(0.5)
         return items
 
@@ -368,12 +527,16 @@ class Tab(Connection):
             doc = _node
             if _node.node_name == "IFRAME":
                 doc = _node.content_document
+
         node_ids = []
 
         try:
             node_ids = await self.send(
                 cdp.dom.query_selector_all(doc.node_id, selector)
             )
+        except AttributeError:
+            # has no content_document
+            return
 
         except ProtocolException as e:
             if _node is not None:
@@ -735,107 +898,106 @@ class Tab(Connection):
         """
         js_code_a = (
             """
-                               function ___dump(obj, _d = 0) {
-                                   let _typesA = ['object', 'function'];
-                                   let _typesB = ['number', 'string', 'boolean'];
-                                   if (_d == 2) {
-                                       console.log('maxdepth reached for ', obj);
-                                       return
-                                   }
-                                   let tmp = {}
-                                   for (let k in obj) {
-                                       if (obj[k] == window) continue;
-                                       let v;
-                                       try {
-                                           if (obj[k] === null || obj[k] === undefined || obj[k] === NaN) {
-                                               console.log('obj[k] is null or undefined or Nan', k, '=>', obj[k])
-                                               tmp[k] = obj[k];
-                                               continue
+                                       function ___dump(obj, _d = 0) {
+                                           let _typesA = ['object', 'function'];
+                                           let _typesB = ['number', 'string', 'boolean'];
+                                           if (_d == 2) {
+                                               // console.log('maxdepth reached for ', obj);
+                                               return
                                            }
-                                       } catch (e) {
-                                           tmp[k] = null;
-                                           continue
-                                       }
-    
-    
-                                       if (_typesB.includes(typeof obj[k])) {
-                                           tmp[k] = obj[k]
-                                           continue
-                                       }
-    
-                                       try {
-                                           if (typeof obj[k] === 'function') {
-                                               tmp[k] = obj[k].toString()
-                                               continue
+                                           let tmp = {}
+                                           for (let k in obj) {
+                                               if (obj[k] == window) continue;
+                                               let v;
+                                               try {
+                                                   if (obj[k] === null || obj[k] === undefined || obj[k] === NaN) {
+                                                        // console.log('obj[k] is null or undefined or Nan', k, '=>', obj[k])
+                                                       tmp[k] = obj[k];
+                                                       continue
+                                                   }
+                                               } catch (e) {
+                                                   tmp[k] = null;
+                                                   continue
+                                               }
+            
+                                               if (_typesB.includes(typeof obj[k])) {
+                                                   tmp[k] = obj[k]
+                                                   continue
+                                               }
+            
+                                               try {
+                                                   if (typeof obj[k] === 'function') {
+                                                       tmp[k] = obj[k].toString()
+                                                       continue
+                                                   }
+            
+            
+                                                   if (typeof obj[k] === 'object') {
+                                                       tmp[k] = ___dump(obj[k], _d + 1);
+                                                       continue
+                                                   }
+            
+            
+                                               } catch (e) {}
+            
+                                               try {
+                                                   tmp[k] = JSON.stringify(obj[k])
+                                                   continue
+                                               } catch (e) {
+            
+                                               }
+                                               try {
+                                                   tmp[k] = obj[k].toString();
+                                                   continue
+                                               } catch (e) {}
                                            }
-    
-    
-                                           if (typeof obj[k] === 'object') {
-                                               tmp[k] = ___dump(obj[k], _d + 1);
-                                               continue
+                                           return tmp
+                                       }
+            
+                                       function ___dumpY(obj) {
+                                           var objKeys = (obj) => {
+                                               var [target, result] = [obj, []];
+                                               while (target !== null) {
+                                                   result = result.concat(Object.getOwnPropertyNames(target));
+                                                   target = Object.getPrototypeOf(target);
+                                               }
+                                               return result;
                                            }
-    
-    
-                                       } catch (e) {}
-    
-                                       try {
-                                           tmp[k] = JSON.stringify(obj[k])
-                                           continue
-                                       } catch (e) {
-    
+                                           return Object.fromEntries(
+                                               objKeys(obj).map(_ => [_, ___dump(obj[_])]))
+            
                                        }
-                                       try {
-                                           tmp[k] = obj[k].toString();
-                                           continue
-                                       } catch (e) {}
-                                   }
-                                   return tmp
-                               }
-    
-                               function ___dumpY(obj) {
-                                   var objKeys = (obj) => {
-                                       var [target, result] = [obj, []];
-                                       while (target !== null) {
-                                           result = result.concat(Object.getOwnPropertyNames(target));
-                                           target = Object.getPrototypeOf(target);
-                                       }
-                                       return result;
-                                   }
-                                   return Object.fromEntries(
-                                       objKeys(obj).map(_ => [_, ___dump(obj[_])]))
-    
-                               }
-                               ___dumpY( %s )
-                       """
+                                       ___dumpY( %s )
+                               """
             % obj_name
         )
         js_code_b = (
             """
-                ((obj, visited = new WeakSet()) => {
-                     if (visited.has(obj)) {
-                         return {}
-                     }
-                     visited.add(obj)
-                     var result = {}, _tmp;
-                     for (var i in obj) {
-                             try {
-                                 if (i === 'enabledPlugin' || typeof obj[i] === 'function') {
-                                     continue;
-                                 } else if (typeof obj[i] === 'object') {
-                                     _tmp = recurse(obj[i], visited);
-                                     if (Object.keys(_tmp).length) {
-                                         result[i] = _tmp;
-                                     }
-                                 } else {
-                                     result[i] = obj[i];
-                                 }
-                             } catch (error) {
-                                 // console.error('Error:', error);
+                        ((obj, visited = new WeakSet()) => {
+                             if (visited.has(obj)) {
+                                 return {}
                              }
-                         }
-                    return result;
-                })(%s)
-            """
+                             visited.add(obj)
+                             var result = {}, _tmp;
+                             for (var i in obj) {
+                                     try {
+                                         if (i === 'enabledPlugin' || typeof obj[i] === 'function') {
+                                             continue;
+                                         } else if (typeof obj[i] === 'object') {
+                                             _tmp = recurse(obj[i], visited);
+                                             if (Object.keys(_tmp).length) {
+                                                 result[i] = _tmp;
+                                             }
+                                         } else {
+                                             result[i] = obj[i];
+                                         }
+                                     } catch (error) {
+                                         // console.error('Error:', error);
+                                     }
+                                 }
+                            return result;
+                        })(%s)
+                    """
             % obj_name
         )
 
@@ -1064,6 +1226,17 @@ class Tab(Connection):
             )
         )
 
+    async def wait(self, t: Union[int, float] = None):
+        tree = await self.get_frame_tree()
+        tree_map = {str(f.id_): f for f in util.flatten_frame_tree(tree)}
+        for frame_id in tree_map:
+            if frame_id in self.frames:
+                self.frames[frame_id].__dict__.update(tree_map[frame_id].__dict__)
+        await super().wait(t)
+
+    def __await__(self):
+        return self.wait().__await__()
+
     async def wait_for(
         self,
         selector: Optional[str] = "",
@@ -1170,6 +1343,7 @@ class Tab(Connection):
                 arguments=[cdp.runtime.CallArgument(object_id=body.object_id)],
             )
         )
+        await self.wait(0.1)
 
     async def save_screenshot(
         self,
@@ -1289,20 +1463,6 @@ class Tab(Connection):
                         res.append(abs_url)
         return res
 
-    async def verify_cf(self):
-        """an attempt.."""
-        checkbox = None
-        checkbox_sibling = await self.wait_for(text="verify you are human")
-        if checkbox_sibling:
-            parent = checkbox_sibling.parent
-            while parent:
-                checkbox = await parent.query_selector("input[type=checkbox]")
-                if checkbox:
-                    break
-                parent = parent.parent
-        await checkbox.mouse_move()
-        await checkbox.mouse_click()
-
     async def get_local_storage(self):
         """
         get local storage items as dict of strings (careful!, proper deserialization needs to be done if needed)
@@ -1373,6 +1533,376 @@ class Tab(Connection):
         """
         return self.wait_for(text, selector, timeout)
 
+    async def get_frame_tree(self) -> cdp.page.FrameTree:
+        """
+        retrieves the frame tree for current tab
+        There seems no real difference between :ref:`Tab.get_frame_resource_tree()`
+        :return:
+        :rtype:
+        """
+        tree: cdp.page.FrameTree = await super().send(cdp.page.get_frame_tree())
+        return tree
+
+    async def get_frame_resource_tree(self) -> cdp.page.FrameResourceTree:
+        """
+        retrieves the frame resource tree for current tab.
+        There seems no real difference between :ref:`Tab.get_frame_tree()`
+        but still it returns a different object
+        :return:
+        :rtype:
+        """
+        tree: cdp.page.FrameResourceTree = await self.send(cdp.page.get_resource_tree())
+        return tree
+
+    async def get_frame_resource_urls(self) -> List[Tuple[str, List[str]]]:
+        """
+        gets the
+        :param urls_only:
+        :type urls_only:
+        :return:
+        :rtype:
+        """
+        _tree = await self.get_frame_resource_tree()
+        return functools.reduce(
+            lambda a, b: a + b[1], util.flatten_frame_tree(_tree), []
+        )
+
+    async def search_frame_resources(self, query: str):
+        list_of_tuples = await self.get_frame_resource_urls()
+        tasks = []
+        for frame_id, urls in list_of_tuples:
+            for url in urls:
+                tasks.append(
+                    self.send(
+                        cdp.page.search_in_resource(
+                            frame_id=cdp.page.FrameId(frame_id), url=url, query=query
+                        )
+                    )
+                )
+        return await asyncio.gather(*tasks)
+
+    async def verify_cf(self, template_image: str = None, flash=False):
+        """
+        convenience function to verify cf checkbox
+
+        template_image can be custom (for example your language, included is english only),
+        but you need to create the template image yourself, which is just a cropped
+        image of the area, see example image, where the target is exactly in the center.
+
+        example (111x71)
+        ---------
+        this includes the white space on the left, to make the box center
+
+        .. image:: template_example.png
+            :width: 111
+            :alt: example template image
+
+        :param template_image:
+        :type template_image:
+        :param flash:
+        :type flash:
+        :return:
+        :rtype:
+        """
+        if self.browser and self.browser.config and self.browser.config.expert:
+            raise Exception(
+                """
+                            this function is useless in expert mode, since it disables site-isolation-trials.
+                            while this is a useful future to have access to all elements (also in iframes),
+                            it is also being detected
+                            """
+            )
+        x, y = await self.template_location()
+        await self.mouse_click(x, y)
+        if flash:
+            await self.flash_point(x, y)
+
+    async def template_location(
+        self, template_img: FileLike = None
+    ) -> Union[Tuple[int, int], None]:
+        """
+        attempts to find the location of given template image in the current viewport
+        the only real use case for this is bot-detection systems.
+        you can find for example the location of a 'verify'-checkbox,
+        which are hidden from dom using shadow-root's or workers.
+
+        template_image can be custom (for example your language, included is english only),
+        but you need to create the template image yourself, which is just a cropped
+        image of the area, see example image, where the target is exactly in the center.
+        template_image can be custom (for example your language), but you need to
+        create the template image yourself, where the target is exactly in the center.
+
+        example (111x71)
+        ---------
+        this includes the white space on the left, to make the box center
+
+        .. image:: template_example.png
+            :width: 111
+            :alt: example template image
+
+
+        :param template_img:
+        :type template_img:
+        :return:
+        :rtype:
+        """
+        try:
+            import cv2
+        except ImportError:
+            logger.warning(
+                """
+                missing package
+                ----------------
+                template_location function needs the computer vision library "opencv-python" installed
+                to install:
+                pip install opencv-python
+            
+            """
+            )
+            return
+        try:
+
+            if template_img:
+                template_img = Path(template_img)
+                if not template_img.exists():
+                    raise FileNotFoundError(
+                        "%s was not found in the current location : %s"
+                        % (template_img, os.getcwd())
+                    )
+            await self.save_screenshot("screen.jpg")
+            await self.sleep(0.05)
+            im = cv2.imread("screen.jpg")
+            im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+            if template_img:
+                template = cv2.imread(str(template_img))
+            else:
+                with open("cf_template.png", "w+b") as fh:
+                    fh.write(util.get_cf_template())
+                template = cv2.imread("cf_template.png")
+            template_gray = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
+            match = cv2.matchTemplate(im_gray, template_gray, cv2.TM_CCOEFF_NORMED)
+            (min_v, max_v, min_l, max_l) = cv2.minMaxLoc(match)
+            (xs, ys) = max_l
+            tmp_h, tmp_w = template_gray.shape[:2]
+            xe = xs + tmp_w
+            ye = ys + tmp_h
+            cx = (xs + xe) // 2
+            cy = (ys + ye) // 2
+            return cx, cy
+        except (TypeError, OSError, PermissionError):
+            raise
+        finally:
+            try:
+                os.unlink("screen.jpg")
+            except:
+                logger.warning("could not unlink temporary screenshot")
+            if template_img:
+                return
+            try:
+                os.unlink("cf_template.png")
+            except:  # noqa
+                logger.warning("could not unlink template file cf_template.png")
+
+    async def bypass_insecure_connection_warning(self):
+        """
+        when you enter a site where the certificate is invalid
+        you get a warning. call this function to "proceed"
+        :return:
+        :rtype:
+        """
+        body = await self.select("body")
+        await body.send_keys("thisisunsafe")
+
+    async def mouse_move(self, x: float, y: float, steps=10, flash=False):
+        steps = 1 if (not steps or steps < 1) else steps
+        # probably the worst waay of calculating this. but couldn't think of a better solution today.
+        if steps > 1:
+            step_size_x = x // steps
+            step_size_y = y // steps
+            pathway = [(step_size_x * i, step_size_y * i) for i in range(steps + 1)]
+            for point in pathway:
+                if flash:
+                    await self.flash_point(point[0], point[1])
+                await self.send(
+                    cdp.input_.dispatch_mouse_event(
+                        "mouseMoved", x=point[0], y=point[1]
+                    )
+                )
+        else:
+            await self.send(cdp.input_.dispatch_mouse_event("mouseMoved", x=x, y=y))
+        if flash:
+            await self.flash_point(x, y)
+        else:
+            await self.sleep(0.05)
+        await self.send(cdp.input_.dispatch_mouse_event("mouseReleased", x=x, y=y))
+        if flash:
+            await self.flash_point(x, y)
+
+    async def mouse_click(
+        self,
+        x: float,
+        y: float,
+        button: str = "left",
+        buttons: typing.Optional[int] = 1,
+        modifiers: typing.Optional[int] = 0,
+        _until_event: typing.Optional[type] = None,
+    ):
+        """native click on position x,y
+        :param y:
+        :type y:
+        :param x:
+        :type x:
+        :param button: str (default = "left")
+        :param buttons: which button (default 1 = left)
+        :param modifiers: *(Optional)* Bit field representing pressed modifier keys.
+                Alt=1, Ctrl=2, Meta/Command=4, Shift=8 (default: 0).
+        :param _until_event: internal. event to wait for before returning
+        :return:
+        """
+
+        await self.send(
+            cdp.input_.dispatch_mouse_event(
+                "mousePressed",
+                x=x,
+                y=y,
+                modifiers=modifiers,
+                button=cdp.input_.MouseButton(button),
+                buttons=buttons,
+                click_count=1,
+            )
+        )
+
+        await self.send(
+            cdp.input_.dispatch_mouse_event(
+                "mouseReleased",
+                x=x,
+                y=y,
+                modifiers=modifiers,
+                button=cdp.input_.MouseButton(button),
+                buttons=buttons,
+                click_count=1,
+            )
+        )
+
+    async def mouse_drag(
+        self,
+        source_point: tuple[float, float],
+        dest_point: tuple[float, float],
+        relative: bool = False,
+        steps: int = 1,
+    ):
+        """
+        drag mouse from one point to another. holding button pressed
+        you are probably looking for :py:meth:`element.Element.mouse_drag` method. where you
+        can drag on the element
+
+        :param dest_point:
+        :type dest_point:
+        :param source_point:
+        :type source_point:
+        :param relative: when True, treats point as relative. for example (-100, 200) will move left 100px and down 200px
+        :type relative:
+
+        :param steps: move in <steps> points, this could make it look more "natural" (default 1),
+               but also a lot slower.
+               for very smooth action use 50-100
+        :type steps: int
+        :return:
+        :rtype:
+        """
+        if relative:
+            dest_point = (
+                source_point[0] + dest_point[0],
+                source_point[1] + dest_point[1],
+            )
+        await self.send(
+            cdp.input_.dispatch_mouse_event(
+                "mousePressed",
+                x=source_point[0],
+                y=source_point[1],
+                button=cdp.input_.MouseButton("left"),
+            )
+        )
+        steps = 1 if (not steps or steps < 1) else steps
+
+        if steps == 1:
+            await self.send(
+                cdp.input_.dispatch_mouse_event(
+                    "mouseMoved", x=dest_point[0], y=dest_point[1]
+                )
+            )
+        elif steps > 1:
+            # probably the worst waay of calculating this. but couldn't think of a better solution today.
+            step_size_x = (dest_point[0] - source_point[0]) / steps
+            step_size_y = (dest_point[1] - source_point[1]) / steps
+            pathway = [
+                (source_point[0] + step_size_x * i, source_point[1] + step_size_y * i)
+                for i in range(steps + 1)
+            ]
+            for point in pathway:
+                await self.send(
+                    cdp.input_.dispatch_mouse_event(
+                        "mouseMoved",
+                        x=point[0],
+                        y=point[1],
+                    )
+                )
+                await asyncio.sleep(0)
+
+        await self.send(
+            cdp.input_.dispatch_mouse_event(
+                type_="mouseReleased",
+                x=dest_point[0],
+                y=dest_point[1],
+                button=cdp.input_.MouseButton("left"),
+            )
+        )
+
+    async def flash_point(self, x, y, duration=0.5, size=10):
+        style = (
+            "position:absolute;z-index:99999999;padding:0;margin:0;"
+            "left:{:.1f}px; top: {:.1f}px;"
+            "opacity:1;"
+            "width:{:d}px;height:{:d}px;border-radius:50%;background:red;"
+            "animation:show-pointer-ani {:.2f}s ease 1;"
+        ).format(x - 8, y - 8, size, size, duration)
+        script = (
+            """
+                var css = document.styleSheets[0];
+                for( let css of [...document.styleSheets]) {{
+                    try {{
+                        css.insertRule(`
+                        @keyframes show-pointer-ani {{
+                              0% {{ opacity: 1; transform: scale(1, 1);}}
+                              50% {{ transform: scale(3, 3);}}
+                              100% {{ transform: scale(1, 1); opacity: 0;}}
+                        }}`,css.cssRules.length);
+                        break;
+                    }} catch (e) {{
+                        console.log(e)
+                    }}
+                }};
+                var _d = document.createElement('div');
+                _d.style = `{0:s}`;
+                _d.id = `{1:s}`;
+                document.body.insertAdjacentElement('afterBegin', _d);
+    
+                setTimeout( () => document.getElementById('{1:s}').remove(), {2:d});
+    
+            """.format(
+                style, secrets.token_hex(8), int(duration * 1000)
+            )
+            .replace("  ", "")
+            .replace("\n", "")
+        )
+        await self.send(
+            cdp.runtime.evaluate(
+                script,
+                await_promise=True,
+                user_gesture=True,
+            )
+        )
+
     def __eq__(self, other: Tab):
         try:
             return other.target == self.target
@@ -1395,28 +1925,80 @@ class Tab(Connection):
         return s
 
 
-async def get_cf_label(tab: Tab):
-    """
-    ;temp1 = [...document.querySelectorAll('*')].filter( e => e.shadowRoot)?.[0].shadowRoot/.children[0].shadowRoot.children[0].contentDocument.children[0].children[1].shadowRoot.children[1].children[0].querySelector('label').click()
-    ;label = [...document.querySelectorAll('*')].filter( e => e.shadowRoot)?.[0].shadowRoot.children[0].contentDocument.children[0].children[1].shadowRoot.children[1].children[0].querySelector('label')
-    temp1.children[1].children[0].shadowRoot.children[0].contentDocument.children[0].children[1].shadowRoot.children[1].children[0].querySelector('label').click()
-    """
-    # candidates = [
-    #     f for f in
-    #     (await tab.find_all('iframe'))
-    #     if f.src and 'challenges' in f.src]
-    # candidate = candidates.pop()
-    # iframe = element.create(candidate.node, tab, candidate.node.content_document)
-    # shadows = util.filter_recurse_all(iframe.tree, lambda e: e.shadow_roots is not None)
-    # if shadows:
-    #     inner_shadows = [shadow.shadow_roots[0] for shadow in shadows]
-    #     elems = [
-    #         element.create(inner_shadow, tab) for inner_shadow in inner_shadows]
-    #     for elem in elems:
-    #         if elem.children[-1].children[-1].children[0].children[0].children[0].children[0]:
-    #             return elem
-    #     else:
-    #         return elems
+from .connection import Transaction
+
+
+class TargetTransaction(Transaction):
+    session_id: cdp.target.SessionID
+
+    def __init__(self, cdp_obj: Generator, session_id: cdp.target.SessionID):
+        """
+        :param cdp_obj:
+        """
+        self.session_id = session_id
+        super().__init__(cdp_obj=cdp_obj)
+
+    @property
+    def message(self):
+        return json.dumps(
+            {
+                "method": self.method,
+                "params": self.params,
+                "id": self.id,
+                "sessionId": self.session_id,
+            }
+        )
+
+
+class TargetSession:
+
+    def __init__(self, tab: Tab):
+        self._tab = tab
+        self._browser = tab.browser
+        self._session_id = None
+        self._target_id = None
+
+    async def create_session(
+        self, target: Union[cdp.target.TargetID, cdp.target.TargetInfo]
+    ):
+        if isinstance(target, cdp.target.TargetID):
+            target = await self._tab.send(cdp.target.get_target_info(target))
+
+        self._target_id: cdp.target.TargetID = await self._tab.send(
+            cdp.target.create_target(url="")
+        )
+        self._session_id: cdp.target.SessionID = await self._tab.send(
+            cdp.target.attach_to_target(self._target_id, flatten=True)
+        )
+
+    async def send(self, cdp_obj: Generator[dict[str, Any], dict[str, Any], Any]):
+        tx = TargetTransaction(cdp_obj, self._session_id)
+        tx.id = next(self._tab.__count__)
+        self._tab.mapper.update({tx.id: tx})
+        return await self._tab.send(
+            cdp.target.send_message_to_target(
+                json.dumps(tx.message), self._session_id, target_id=self._target_id
+            )
+        )
+
+    #
+    #     """
+    #     targetPage._targetId =
+    #         (await dp.Target.createTarget(params)).result.targetId;
+    #
+    #     const sessionId = (await dp.Target.attachToTarget({
+    #                         targetId: targetPage._targetId,
+    #                         flatten: true,
+    #                       })).result.sessionId;
+    #     targetPage._session = browserSession.createSession(sessionId);
+    #     :param tab:
+    #     :type tab:
+    #     :return:
+    #     :rtype:
+    # """
+
+
+async def click_cf_checkbox(tab: Tab):
     return await tab.evaluate(
         """
         [...document.querySelectorAll('*')].filter( e => e.shadowRoot)?.[0].shadowRoot.children[0].contentDocument.children[0].children[1].shadowRoot.children[1].children[0].querySelector('label')""",
@@ -1425,7 +2007,7 @@ async def get_cf_label(tab: Tab):
 
 
 async def click_cf_label(tab: Tab):
-    obj, _ = await get_cf_label(tab)
+    obj, _ = await click_cf_checkbox(tab)
     if obj and obj.object_id:
         arguments = [cdp.runtime.CallArgument(object_id=obj.object_id)]
         return await tab.send(
@@ -1438,3 +2020,68 @@ async def click_cf_label(tab: Tab):
                 return_by_value=True,
             )
         )
+
+
+class Frame(cdp.page.Frame):
+    execution_contexts: typing.Dict[str, ExecutionContext] = {}
+
+    def __init__(self, id_: cdp.page.FrameId, **kw):
+        none_gen = itertools.repeat(None)
+        param_names = util.get_all_param_names(self.__class__)
+        param_names.remove("execution_contexts")
+        for k in kw:
+            param_names.remove(k)
+        params = dict(zip(param_names, none_gen))
+        params.update({"id_": id_, **kw})
+        super().__init__(**params)
+
+
+class ExecutionContext(dict):
+    id: cdp.runtime.ExecutionContextId
+    frame_id: str
+    unique_id: str
+    _tab: Tab
+
+    def __init__(self, *a, **kw):
+        super().__init__()
+        super().__setattr__("__dict__", self)
+        d: typing.Dict[str, Union[Tab, str]] = dict(*a, **kw)
+        self._tab: Tab = d.pop("tab", None)
+        self.__dict__.update(d)
+
+    def __repr__(self):
+        return "<ExecutionContext (\n{}\n)".format(
+            "".join(f"\t{k} = {v}\n" for k, v in super().items() if k not in ("_tab"))
+        )
+
+    async def evaluate(
+        self,
+        expression,
+        allow_unsafe_eval_blocked_by_csp: bool = True,
+        await_promises: bool = False,
+        generate_preview: bool = False,
+    ):
+        try:
+            raw = await self._tab.send(
+                cdp.runtime.evaluate(
+                    expression=expression,
+                    context_id=self.get("id_"),
+                    generate_preview=generate_preview,
+                    return_by_value=False,
+                    allow_unsafe_eval_blocked_by_csp=allow_unsafe_eval_blocked_by_csp,
+                    await_promise=await_promises,
+                )
+            )
+            if raw:
+                remote_object, errors = raw
+                if errors:
+                    raise ProtocolException(errors)
+
+                if remote_object:
+                    return remote_object
+
+                # else:
+                #     return remote_object, errors
+
+        except:  # noqa
+            raise

@@ -31,13 +31,13 @@ Indicates the various states of Central.
 
 Stores the manufacturer data
 
-#### key*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### key *: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Company identifier
 [https://bitbucket.org/bluetooth-SIG/public/src/main/assigned_numbers/company_identifiers/company_identifiers.yaml](https://bitbucket.org/bluetooth-SIG/public/src/main/assigned_numbers/company_identifiers/company_identifiers.yaml)
 [https://usb.org/developers](https://usb.org/developers)
 
-#### data*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### data *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Manufacturer-specific data (Encoded as a base64 string when passed over JSON)
 
@@ -45,19 +45,19 @@ Manufacturer-specific data (Encoded as a base64 string when passed over JSON)
 
 Stores the byte data of the advertisement packet sent by a Bluetooth device.
 
-#### name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### name *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
-#### uuids*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
+#### uuids *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
 
-#### appearance*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### appearance *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 Stores the external appearance description of the device.
 
-#### tx_power*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### tx_power *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 Stores the transmission power of a broadcasting device.
 
-#### manufacturer_data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ManufacturerData`](#nodriver.cdp.bluetooth_emulation.ManufacturerData)]]* *= None*
+#### manufacturer_data *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ManufacturerData`](#nodriver.cdp.bluetooth_emulation.ManufacturerData)]]* *= None*
 
 Key is the company identifier and the value is an array of bytes of
 manufacturer specific data.
@@ -66,11 +66,11 @@ manufacturer specific data.
 
 Stores the advertisement packet information that is sent by a Bluetooth device.
 
-#### device_address*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### device_address *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### rssi*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### rssi *: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
-#### scan_record*: [`ScanRecord`](#nodriver.cdp.bluetooth_emulation.ScanRecord)*
+#### scan_record *: [`ScanRecord`](#nodriver.cdp.bluetooth_emulation.ScanRecord)*
 
 ## Commands
 

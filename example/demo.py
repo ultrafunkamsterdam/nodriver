@@ -5,6 +5,7 @@ import asyncio
 import logging
 import logging.handlers
 import random
+
 import mss
 
 logger = logging.getLogger("demo")
@@ -14,11 +15,11 @@ logging.basicConfig(level=10)
 try:
     import nodriver as uc
 except (ModuleNotFoundError, ImportError):
-    import sys, os
+    import os
+    import sys
 
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
     import nodriver as uc
-
 
 import time
 

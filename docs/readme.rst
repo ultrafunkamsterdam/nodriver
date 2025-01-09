@@ -63,6 +63,21 @@ Some features
 
 what is new
 =============
+
+**tab.cf_verify()**
+
+finds the checkbox and click it successfully
+this only works when NOT in expert mode.
+currently built-in english only
+requires opencv-python package to be installed
+
+
+**tab.bypass_insecure_connection_warning()**
+
+convenience method, for insecure page warning.
+for example when a certificate is invalid.
+
+
 **tab.open_external_debugger()**
 
 lets you inspect the tab without breaking your connection
@@ -82,6 +97,7 @@ callback may accept a single argument (event), or 2 arguments (event, tab).
 **start(expert=True)**
 
 does some hacking for more experienced users. It disables web security and origin-trials, as well as ensures shadow-roots are always  open.
+
 
 Some examples of what the api looks like
 =============

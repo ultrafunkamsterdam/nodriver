@@ -1,9 +1,8 @@
-from pathlib import Path
 import re
-from packaging.version import Version
-
-
 import subprocess
+from pathlib import Path
+
+from packaging.version import Version
 
 docs = Path("docs")
 example = Path("example")

@@ -63,7 +63,7 @@ class Config:
         :param autodiscover_targets: use autodiscovery of targets
         :param lang: language string to use other than the default "en-US,en;q=0.9"
         :param expert: when set to True, enabled "expert" mode.
-               This conveys, the inclusion of parameters: --disable-web-security ----disable-site-isolation-trials,
+               This conveys, the inclusion of parameters:  ----disable-site-isolation-trials,
                as well as some scripts and patching useful for debugging (for example, ensuring shadow-root is always in "open" mode)
 
         :param kwargs:
@@ -101,7 +101,7 @@ class Config:
         # when using posix-ish operating system and running as root
         # you must use no_sandbox = True, which in case is corrected here
         if is_posix and is_root() and sandbox:
-            logger.info("detected root usage, autoo disabling sandbox mode")
+            logger.info("detected root usage, auto disabling sandbox mode")
             self.sandbox = False
 
         self.autodiscover_targets = True
@@ -120,12 +120,7 @@ class Config:
             "--password-store=basic",
             "--disable-infobars",
             "--disable-breakpad",
-            "--disable-component-update",
-            "--disable-backgrounding-occluded-windows",
-            "--disable-renderer-backgrounding",
-            "--disable-background-networking",
             "--disable-dev-shm-usage",
-            "--disable-features=IsolateOrigins,site-per-process",
             "--disable-session-crashed-bubble",
             "--disable-search-engine-choice-screen",
         ]
@@ -173,20 +168,16 @@ class Config:
                 path = item.parent
             self._extensions.append(path)
 
-    # def __getattr__(self, item):
-    #     if item not in self.__dict__:
-
     def __call__(self):
         # the host and port will be added when starting
         # the browser, as by the time it starts, the port
         # is probably already taken
         args = self._default_browser_args.copy()
-
         args += ["--user-data-dir=%s" % self.user_data_dir]
-        args += ["--disable-features=IsolateOrigins,site-per-process"]
         args += ["--disable-session-crashed-bubble"]
+        args += ["--disable-features=IsolateOrigins,site-per-process"]
         if self.expert:
-            args += ["--disable-web-security", "--disable-site-isolation-trials"]
+            args += ["--disable-site-isolation-trials"]
         if self._browser_args:
             args.extend([arg for arg in self._browser_args if arg not in args])
         if self.headless:
@@ -230,11 +221,6 @@ class Config:
                 continue
             s += f"\n\t{k} = {v}"
         return s
-
-    #     d = self.__dict__.copy()
-    #     d.pop("browser_args")
-    #     d["browser_args"] = self()
-    #     return d
 
 
 def is_root():

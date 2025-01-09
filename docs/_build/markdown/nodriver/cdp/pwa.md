@@ -21,20 +21,20 @@ arguments to other commands.
 The following types are the replica of
 [https://crsrc.org/c/chrome/browser/web_applications/proto/web_app_os_integration_state.proto;drc=9910d3be894c8f142c977ba1023f30a656bc13fc;l=67](https://crsrc.org/c/chrome/browser/web_applications/proto/web_app_os_integration_state.proto;drc=9910d3be894c8f142c977ba1023f30a656bc13fc;l=67)
 
-#### media_type*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### media_type *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 New name of the mimetype according to
 [https://www.iana.org/assignments/media-types/media-types.xhtml](https://www.iana.org/assignments/media-types/media-types.xhtml)
 
-#### file_extensions*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### file_extensions *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 ### *class* FileHandler(action, accepts, display_name)
 
-#### action*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### action *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### accepts*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FileHandlerAccept`](#nodriver.cdp.pwa.FileHandlerAccept)]*
+#### accepts *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FileHandlerAccept`](#nodriver.cdp.pwa.FileHandlerAccept)]*
 
-#### display_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### display_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ### *class* DisplayMode(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -69,8 +69,8 @@ See the comment of each parameter.
 
 * **Parameters:**
   * **manifest_id** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **link_capturing** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If user allows the links clicked on by the user in the app’s scope, or extended scope if the manifest has scope extensions and the flags ``DesktopPWAsLinkCapturingWithScopeExtensions``` and ```WebAppEnableScopeExtensions`` are enabled.  Note, the API does not support resetting the linkCapturing to the initial value, uninstalling and installing the web app again will reset it.  TODO(crbug.com/339453269): Setting this value on ChromeOS is not supported yet.
-  * **display_mode** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`DisplayMode`](#nodriver.cdp.pwa.DisplayMode)]) – *(Optional)*
+  * **link_capturing** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* If user allows the links clicked on by the user in the app’s scope, or extended scope if the manifest has scope extensions and the flags ``DesktopPWAsLinkCapturingWithScopeExtensions``` and ```WebAppEnableScopeExtensions`` are enabled.  Note, the API does not support resetting the linkCapturing to the initial value, uninstalling and installing the web app again will reset it.  TODO(crbug.com/339453269): Setting this value on ChromeOS is not supported yet.
+  * **display_mode** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`DisplayMode`](#nodriver.cdp.pwa.DisplayMode)]) –  *(Optional)*
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -102,7 +102,7 @@ mode, the installation will fail, regardless of the state of the allowlist.
 
 * **Parameters:**
   * **manifest_id** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **install_url_or_bundle_url** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* The location of the app or bundle overriding the one derived from the manifestId.
+  * **install_url_or_bundle_url** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* The location of the app or bundle overriding the one derived from the manifestId.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -114,7 +114,7 @@ can be used to attach to via Target.attachToTarget or similar APIs.
 
 * **Parameters:**
   * **manifest_id** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **url** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)*
+  * **url** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)*
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`TargetID`](target.md#nodriver.cdp.target.TargetID)]
 * **Returns:**

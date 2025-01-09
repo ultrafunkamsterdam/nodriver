@@ -51,9 +51,7 @@ class Element:
         if not node:
             raise Exception("node cannot be None")
         self._tab = tab
-        # if node.node_name == 'IFRAME':
-        #     self._node = node.content_document
-        # else:
+
         self._node = node
         self._tree = tree
         self._parent = None
@@ -514,7 +512,6 @@ class Element:
         button: str = "left",
         buttons: typing.Optional[int] = 1,
         modifiers: typing.Optional[int] = 0,
-        hold: bool = False,
         _until_event: typing.Optional[type] = None,
     ):
         """native click (on element) . note: this likely does not work atm, use click() instead
@@ -537,34 +534,39 @@ class Element:
 
         logger.debug("clicking on location %.2f, %.2f" % center)
 
-        await asyncio.gather(
-            self._tab.send(
-                cdp.input_.dispatch_mouse_event(
-                    "mousePressed",
-                    x=center[0],
-                    y=center[1],
-                    modifiers=modifiers,
-                    button=cdp.input_.MouseButton(button),
-                    buttons=buttons,
-                    click_count=1,
-                )
-            ),
-            self._tab.send(
-                cdp.input_.dispatch_mouse_event(
-                    "mouseReleased",
-                    x=center[0],
-                    y=center[1],
-                    modifiers=modifiers,
-                    button=cdp.input_.MouseButton(button),
-                    buttons=buttons,
-                    click_count=1,
-                )
-            ),
-        )
-        try:
-            await self.flash()
-        except:  # noqa
-            pass
+        await self._tab.mouse_click(center[0], center[1])
+        await self._tab.flash_point(center[0], center[1])
+
+        # await asyncio.gather(
+        #     self._tab.send(
+        #         cdp.input_.dispatch_mouse_event(
+        #             "mousePressed",
+        #             x=center[0],
+        #             y=center[1],
+        #             modifiers=modifiers,
+        #             button=cdp.input_.MouseButton(button),
+        #             buttons=buttons,
+        #             click_count=1,
+        #         )
+        #     ),
+        #     self._tab.send(
+        #         cdp.input_.dispatch_mouse_event(
+        #             "mouseReleased",
+        #             x=center[0],
+        #             y=center[1],
+        #             modifiers=modifiers,
+        #             button=cdp.input_.MouseButton(button),
+        #             buttons=buttons,
+        #             click_count=1,
+        #         )
+        #     ),
+        # )
+        # try:
+        #     await self.flash()
+        # except:  # noqa
+        #     pass
+
+    click_mouse = mouse_click
 
     async def mouse_move(self):
         """moves mouse (not click), to element position. when an element has an
@@ -577,13 +579,14 @@ class Element:
         logger.debug(
             "mouse move to location %.2f, %.2f where %s is located", *center, self
         )
-        await self._tab.send(
-            cdp.input_.dispatch_mouse_event("mouseMoved", x=center[0], y=center[1])
-        )
-        await self._tab.sleep(0.05)
-        await self._tab.send(
-            cdp.input_.dispatch_mouse_event("mouseReleased", x=center[0], y=center[1])
-        )
+        await self._tab.mouse_move(center[0], center[1])
+
+        #     cdp.input_.dispatch_mouse_event("mouseMoved", x=center[0], y=center[1])
+        # )
+        # await self._tab.sleep(0.05)
+        # await self._tab.send(
+        #     cdp.input_.dispatch_mouse_event("mouseReleased", x=center[0], y=center[1])
+        # )
 
     async def mouse_drag(
         self,
@@ -632,52 +635,54 @@ class Element:
                 )
             else:
                 end_point = destination
-
-        await self._tab.send(
-            cdp.input_.dispatch_mouse_event(
-                "mousePressed",
-                x=start_point[0],
-                y=start_point[1],
-                button=cdp.input_.MouseButton("left"),
-            )
+        await self._tab.mouse_drag(
+            start_point, end_point, relative=relative, steps=steps
         )
-
-        steps = 1 if (not steps or steps < 1) else steps
-        if steps == 1:
-            await self._tab.send(
-                cdp.input_.dispatch_mouse_event(
-                    "mouseMoved",
-                    x=end_point[0],
-                    y=end_point[1],
-                )
-            )
-        elif steps > 1:
-            # probably the worst waay of calculating this. but couldn't think of a better solution today.
-            step_size_x = (end_point[0] - start_point[0]) / steps
-            step_size_y = (end_point[1] - start_point[1]) / steps
-            pathway = [
-                (start_point[0] + step_size_x * i, start_point[1] + step_size_y * i)
-                for i in range(steps + 1)
-            ]
-
-            for point in pathway:
-                await self._tab.send(
-                    cdp.input_.dispatch_mouse_event(
-                        "mouseMoved",
-                        x=point[0],
-                        y=point[1],
-                    )
-                )
-                await asyncio.sleep(0)
-
-        await self._tab.send(
-            cdp.input_.dispatch_mouse_event(
-                type_="mouseReleased",
-                x=end_point[0],
-                y=end_point[1],
-                button=cdp.input_.MouseButton("left"),
-            )
-        )
+        # await self._tab.send(
+        #     cdp.input_.dispatch_mouse_event(
+        #         "mousePressed",
+        #         x=start_point[0],
+        #         y=start_point[1],
+        #         button=cdp.input_.MouseButton("left"),
+        #     )
+        # )
+        #
+        # steps = 1 if (not steps or steps < 1) else steps
+        # if steps == 1:
+        #     await self._tab.send(
+        #         cdp.input_.dispatch_mouse_event(
+        #             "mouseMoved",
+        #             x=end_point[0],
+        #             y=end_point[1],
+        #         )
+        #     )
+        # elif steps > 1:
+        #     # probably the worst waay of calculating this. but couldn't think of a better solution today.
+        #     step_size_x = (end_point[0] - start_point[0]) / steps
+        #     step_size_y = (end_point[1] - start_point[1]) / steps
+        #     pathway = [
+        #         (start_point[0] + step_size_x * i, start_point[1] + step_size_y * i)
+        #         for i in range(steps + 1)
+        #     ]
+        #
+        #     for point in pathway:
+        #         await self._tab.send(
+        #             cdp.input_.dispatch_mouse_event(
+        #                 "mouseMoved",
+        #                 x=point[0],
+        #                 y=point[1],
+        #             )
+        #         )
+        #         await asyncio.sleep(0)
+        #
+        # await self._tab.send(
+        #     cdp.input_.dispatch_mouse_event(
+        #         type_="mouseReleased",
+        #         x=end_point[0],
+        #         y=end_point[1],
+        #         button=cdp.input_.MouseButton("left"),
+        #     )
+        # )
 
     async def scroll_into_view(self):
         """scrolls element into view"""
@@ -815,7 +820,21 @@ class Element:
         await self.update()
         return await self.tab.query_selector(selector, self)
 
-    #
+    # async def find_all(self, string: str):
+    #     base_node = self.node
+    #     if self.node.node_name == "IFRAME":
+    #         if self.node.content_document:
+    #             base_node = self.node.content_document
+    #     cdp.target.attach_to_target()
+    #     cdp.target.create_target()
+    #     cdp.target.create_browser_context()
+    #     search_id, nresult = await self.tab.send(cdp.dom.perform_search(string, True))
+    #     if nresult:
+    #         node_ids = await self.send(
+    #             cdp.dom.get_search_results(search_id, 0, nresult)
+    #         )
+    #         # doc = await self.send(cdp.dom.get_document(-1, True))
+
     async def save_screenshot(
         self,
         filename: typing.Optional[PathLike] = "auto",
