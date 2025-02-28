@@ -51,6 +51,8 @@ this only works when NOT in expert mode.
 currently built-in english only
 requires opencv-python package to be installed
 
+
+
 **tab.bypass_insecure_connection_warning()**
 
 convenience method, for insecure page warning.

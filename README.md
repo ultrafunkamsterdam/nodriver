@@ -51,6 +51,9 @@ this only works when NOT in expert mode.
 currently built-in english only
 requires opencv-python package to be installed
 
+<video src="./docs/cf_verify_.mp4" width="700" autoplay playsInline controls></video>
+
+
 **tab.bypass_insecure_connection_warning()**
 
 convenience method, for insecure page warning.
