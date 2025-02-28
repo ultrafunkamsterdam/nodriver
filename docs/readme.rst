@@ -72,6 +72,13 @@ currently built-in english only
 requires opencv-python package to be installed
 
 
+.. video:: cf_verify_.mp4
+    :autoplay:
+    :playsinline:
+    :muted:
+    :width: 500
+
+
 **tab.bypass_insecure_connection_warning()**
 
 convenience method, for insecure page warning.

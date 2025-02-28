@@ -16,6 +16,7 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
     "sphinx_markdown_builder",
+    "sphinxcontrib.video",
 ]
 
 intersphinx_mapping = {

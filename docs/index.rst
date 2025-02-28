@@ -31,6 +31,14 @@ to fully customizable everything using the entire array of
 `CDP <https://chromedevtools.github.io/devtools-protocol />`_ domains, methods and events available.
 
 
+.. video:: cf_verify_.mp4
+    :autoplay:
+    :playsinline:
+    :muted:
+    :width: 500
+
+
+
 Some features
 ^^^^^^^^^^^^^^^^^^^^^^
 
