@@ -52,6 +52,11 @@ currently built-in english only
 requires opencv-python package to be installed
 
 
+<video autoplay loop muted playsInline src="https://github.com/user-attachments/assets/288c5e01-39c5-4453-9e64-2b40c3a8548d"></video>
+
+
+
+
 
 **tab.bypass_insecure_connection_warning()**
 
