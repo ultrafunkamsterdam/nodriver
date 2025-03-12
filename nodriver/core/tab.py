@@ -1548,12 +1548,14 @@ class Tab(Connection):
         :return:
         :rtype:
         """
-        tree: cdp.page.FrameResourceTree = await self.send(cdp.page.get_resource_tree())
+        tree: cdp.page.FrameResourceTree = await super().send(
+            cdp.page.get_resource_tree()
+        )
         return tree
 
-    async def get_frame_resource_urls(self) -> List[Tuple[str, List[str]]]:
+    async def get_frame_resource_urls(self) -> List[str]:
         """
-        gets the
+        gets the urls of resources
         :param urls_only:
         :type urls_only:
         :return:
@@ -1561,22 +1563,27 @@ class Tab(Connection):
         """
         _tree = await self.get_frame_resource_tree()
         return functools.reduce(
-            lambda a, b: a + b[1], util.flatten_frame_tree(_tree), []
+            lambda a, b: a + [b[1].url], util.flatten_frame_tree_resources(_tree), []
         )
+        # return functools.reduce(
+        #     lambda a, b: a + b[1], util.flatten_frame_tree_resources(_tree), [])
 
-    async def search_frame_resources(self, query: str):
-        list_of_tuples = await self.get_frame_resource_urls()
-        tasks = []
-        for frame_id, urls in list_of_tuples:
-            for url in urls:
-                tasks.append(
-                    self.send(
-                        cdp.page.search_in_resource(
-                            frame_id=cdp.page.FrameId(frame_id), url=url, query=query
-                        )
-                    )
+    async def search_frame_resources(
+        self, query: str
+    ) -> Dict[str, List[cdp.debugger.SearchMatch]]:
+        list_of_tuples = list(
+            util.flatten_frame_tree_resources(await self.get_frame_resource_tree())
+        )
+        results = {}
+        for frame, resource in list_of_tuples:
+            results[resource.url] = await self.send(
+                cdp.page.search_in_resource(
+                    frame_id=frame.id_, url=resource.url, query=query
                 )
-        return await asyncio.gather(*tasks)
+            )
+
+        return results
+        # return await asyncio.gather(*tasks)
 
     async def verify_cf(self, template_image: str = None, flash=False):
         """

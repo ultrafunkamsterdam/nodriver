@@ -9,13 +9,13 @@ from typing import (
     Any,
     Callable,
     Generator,
-    Iterator,
     List,
     Optional,
     Set,
     Tuple,
     TypeVar,
     Union,
+    Dict,
 )
 
 from .element import Element
@@ -227,6 +227,16 @@ def flatten_frame_tree(
     tree: Union[cdp.page.FrameResourceTree, cdp.page.FrameTree]
 ) -> Generator[cdp.page.Frame, None, None]:
     yield tree.frame
+    if tree.child_frames:
+        for child in tree.child_frames:
+            yield from flatten_frame_tree(child)
+
+
+def flatten_frame_tree_resources(
+    tree: cdp.page.FrameResourceTree,
+) -> Generator[Tuple[cdp.page.Frame, cdp.page.FrameResource], None, None]:
+    for res in tree.resources:
+        yield tree.frame, res
     if tree.child_frames:
         for child in tree.child_frames:
             yield from flatten_frame_tree(child)

@@ -57,6 +57,21 @@ class ContraDict(dict):
     def __setattr__(self, key, value):
         super().__setitem__(key, _wrap(self.__class__, value))
 
+    def __getitem__(self, item):
+        """
+        when used with an int it will return the item on that index (that means a dict of {key: value}
+        otherwise it works as usual and returns the value corresponding to item
+        :param item:
+        :type item:
+        :return:
+        :rtype:
+        """
+        if isinstance(item, int):
+            key = list(self.keys())[item]
+            value = self[key]
+            return {key: value}
+        return super().__getitem__(item)
+
     def __getattribute__(self, attribute):
         if attribute in self:
             return self[attribute]

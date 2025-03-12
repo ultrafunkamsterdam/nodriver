@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.core.tab - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -285,8 +285,6 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">element</span><span class="p">,</span> <span class="n">util</span>
 <span class="kn">from</span> <span class="nn">.config</span> <span class="kn">import</span> <span class="n">PathLike</span>
 <span class="kn">from</span> <span class="nn">.connection</span> <span class="kn">import</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">ProtocolException</span>
-
-<span class="n">FileLike</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;FileLike&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -685,7 +683,6 @@
             <span class="k">await</span> <span class="bp">self</span>
             <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_selector</span><span class="p">(</span><span class="n">selector</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
-
                 <span class="k">return</span> <span class="n">item</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">item</span></div>
@@ -716,7 +713,7 @@
 
         <span class="k">while</span> <span class="ow">not</span> <span class="n">items</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span>
-            <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">now</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">items</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
@@ -740,7 +737,6 @@
 <span class="sd">        :param include_frames: whether to include results in iframes.</span>
 <span class="sd">        :type include_frames: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
         <span class="n">now</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="n">selector</span> <span class="o">=</span> <span class="n">selector</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -1939,15 +1935,15 @@
 <span class="sd">        :return:</span>
 <span class="sd">        :rtype:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">tree</span><span class="p">:</span> <span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">FrameResourceTree</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">get_resource_tree</span><span class="p">())</span>
+        <span class="n">tree</span><span class="p">:</span> <span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">FrameResourceTree</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">get_resource_tree</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">tree</span></div>
 
 
 <div class="viewcode-block" id="Tab.get_frame_resource_urls">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.get_frame_resource_urls">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_frame_resource_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_frame_resource_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        gets the</span>
+<span class="sd">        gets the urls of resources</span>
 <span class="sd">        :param urls_only:</span>
 <span class="sd">        :type urls_only:</span>
 <span class="sd">        :return:</span>
@@ -1955,26 +1951,27 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_tree</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame_resource_tree</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">util</span><span class="o">.</span><span class="n">flatten_frame_tree</span><span class="p">(</span><span class="n">_tree</span><span class="p">),</span> <span class="p">[]</span>
-        <span class="p">)</span></div>
+            <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="p">[</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">url</span><span class="p">],</span> <span class="n">util</span><span class="o">.</span><span class="n">flatten_frame_tree_resources</span><span class="p">(</span><span class="n">_tree</span><span class="p">),</span> <span class="p">[])</span></div>
 
+        <span class="c1"># return functools.reduce(</span>
+        <span class="c1">#     lambda a, b: a + b[1], util.flatten_frame_tree_resources(_tree), [])</span>
 
 <div class="viewcode-block" id="Tab.search_frame_resources">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.search_frame_resources">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">search_frame_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">list_of_tuples</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame_resource_urls</span><span class="p">()</span>
-        <span class="n">tasks</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">frame_id</span><span class="p">,</span> <span class="n">urls</span> <span class="ow">in</span> <span class="n">list_of_tuples</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
-                <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
-                        <span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">search_in_resource</span><span class="p">(</span>
-                            <span class="n">frame_id</span><span class="o">=</span><span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="p">(</span><span class="n">frame_id</span><span class="p">),</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span>
-                        <span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">search_frame_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">debugger</span><span class="o">.</span><span class="n">SearchMatch</span><span class="p">]]:</span>
+        <span class="n">list_of_tuples</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">util</span><span class="o">.</span><span class="n">flatten_frame_tree_resources</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame_resource_tree</span><span class="p">()))</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">frame</span><span class="p">,</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">list_of_tuples</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">resource</span><span class="o">.</span><span class="n">url</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+                    <span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">search_in_resource</span><span class="p">(</span>
+                        <span class="n">frame_id</span><span class="o">=</span><span class="n">frame</span><span class="o">.</span><span class="n">id_</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">resource</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">)</span></div>
 
+        <span class="k">return</span> <span class="n">results</span></div>
+
+        <span class="c1"># return await asyncio.gather(*tasks)</span>
 
 <div class="viewcode-block" id="Tab.verify_cf">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.verify_cf">[docs]</a>
@@ -1995,8 +1992,13 @@
 <span class="sd">            :alt: example template image</span>
 
 <span class="sd">        :param template_image:</span>
+<span class="sd">            template_image can be custom (for example your language, included is english only),</span>
+<span class="sd">            but you need to create the template image yourself, which is just a cropped</span>
+<span class="sd">            image of the area, where the target is exactly in the center. see example on</span>
+<span class="sd">            (https://ultrafunkamsterdam.github.io/nodriver/nodriver/classes/tab.html#example-111x71),</span>
+
 <span class="sd">        :type template_image:</span>
-<span class="sd">        :param flash:</span>
+<span class="sd">        :param flash: whether to show an indicator where the mouse is clicking.</span>
 <span class="sd">        :type flash:</span>
 <span class="sd">        :return:</span>
 <span class="sd">        :rtype:</span>
@@ -2009,7 +2011,7 @@
 <span class="sd">                            it is also being detected</span>
 <span class="sd">                            &quot;&quot;&quot;</span>
             <span class="p">)</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_location</span><span class="p">()</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_location</span><span class="p">(</span><span class="n">template_img</span><span class="o">=</span><span class="n">template_image</span><span class="p">)</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">mouse_click</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">flash</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">flash_point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
@@ -2018,7 +2020,7 @@
 <div class="viewcode-block" id="Tab.template_location">
 <a class="viewcode-back" href="../../../nodriver/classes/tab.html#nodriver.Tab.template_location">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">template_location</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">template_img</span><span class="p">:</span> <span class="n">FileLike</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">template_img</span><span class="p">:</span> <span class="n">PathLike</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        attempts to find the location of given template image in the current viewport</span>
