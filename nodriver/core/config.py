@@ -6,7 +6,7 @@ import sys
 import tempfile
 import zipfile
 from types import MethodType
-from typing import List, Optional, Union
+from typing import List, Optional, TypeVar, Union
 
 from ._contradict import ContraDict
 
@@ -22,7 +22,7 @@ __all__ = [
 logger = logging.getLogger(__name__)
 is_posix = sys.platform.startswith(("darwin", "cygwin", "linux", "linux2"))
 
-PathLike = Union[str, pathlib.Path]
+PathLike = TypeVar("PathLike", bound=str | pathlib.Path)
 AUTO = None
 
 

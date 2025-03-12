@@ -20,8 +20,6 @@ from . import element, util
 from .config import PathLike
 from .connection import Connection, ProtocolException
 
-FileLike = TypeVar("FileLike", bound=Path | str)
-
 logger = logging.getLogger(__name__)
 
 
@@ -433,7 +431,7 @@ class Tab(Connection):
 
         while not items:
             await self
-            results = await self.find_elements_by_text(text)
+            items = await self.find_elements_by_text(text)
             if loop.time() - now > timeout:
                 return items
             await self.sleep(0.5)
@@ -454,7 +452,6 @@ class Tab(Connection):
         :param include_frames: whether to include results in iframes.
         :type include_frames: bool
         """
-
         loop = asyncio.get_running_loop()
         now = loop.time()
         selector = selector.strip()
@@ -1598,8 +1595,13 @@ class Tab(Connection):
             :alt: example template image
 
         :param template_image:
+            template_image can be custom (for example your language, included is english only),
+            but you need to create the template image yourself, which is just a cropped
+            image of the area, where the target is exactly in the center. see example on
+            (https://ultrafunkamsterdam.github.io/nodriver/nodriver/classes/tab.html#example-111x71),
+
         :type template_image:
-        :param flash:
+        :param flash: whether to show an indicator where the mouse is clicking.
         :type flash:
         :return:
         :rtype:
@@ -1612,13 +1614,13 @@ class Tab(Connection):
                             it is also being detected
                             """
             )
-        x, y = await self.template_location()
+        x, y = await self.template_location(template_img=template_image)
         await self.mouse_click(x, y)
         if flash:
             await self.flash_point(x, y)
 
     async def template_location(
-        self, template_img: FileLike = None
+        self, template_img: PathLike = None
     ) -> Union[Tuple[int, int], None]:
         """
         attempts to find the location of given template image in the current viewport
