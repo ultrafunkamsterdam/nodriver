@@ -56,6 +56,8 @@ to. For more information, see
 
 .. autofunction:: enable
 
+.. autofunction:: set_simulated_central_state
+
 .. autofunction:: simulate_advertisement
 
 .. autofunction:: simulate_preconnected_peripheral

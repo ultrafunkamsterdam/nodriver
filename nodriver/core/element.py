@@ -1116,7 +1116,8 @@ class Element:
 
     def __eq__(self, other: Element) -> bool:
         # if other.__dict__.values() == self.__dict__.values():
-        #     return True
+        if not other:
+            return False
         if other.backend_node_id and self.backend_node_id:
             return other.backend_node_id == self.backend_node_id
 

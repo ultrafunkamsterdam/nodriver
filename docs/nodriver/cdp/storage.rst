@@ -258,6 +258,8 @@ to. For more information, see
 
 .. autofunction:: delete_storage_bucket
 
+.. autofunction:: get_affected_urls_for_third_party_cookie_metadata
+
 .. autofunction:: get_cookies
 
 .. autofunction:: get_interest_group_details

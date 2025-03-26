@@ -52,6 +52,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: PreloadPipelineId
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: PrerenderFinalStatus
       :members:
       :undoc-members:

@@ -17,6 +17,11 @@ yourself. Instead, the API creates objects for you as return
 values from commands, and then you can use those objects as
 arguments to other commands.
 
+.. autoclass:: SafeAreaInsets
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: ScreenOrientation
       :members:
       :undoc-members:
@@ -167,6 +172,8 @@ to. For more information, see
 .. autofunction:: set_pressure_source_override_enabled
 
 .. autofunction:: set_pressure_state_override
+
+.. autofunction:: set_safe_area_insets_override
 
 .. autofunction:: set_script_execution_disabled
 

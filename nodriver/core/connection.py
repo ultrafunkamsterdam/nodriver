@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import asyncio
 import collections
-import functools
 import inspect
 import itertools
 import json
@@ -14,13 +13,13 @@ from typing import Any, Awaitable, Callable, Generator, TypeVar, Union
 
 import websockets.asyncio.client
 
-from .. import cdp
 from . import util
+from .. import cdp
 
 T = TypeVar("T")
 
 GLOBAL_DELAY = 0.005
-MAX_SIZE: int = 2**28
+MAX_SIZE: int = 2 ** 28
 PING_TIMEOUT: int = 900  # 15 minutes
 
 TargetType = Union[cdp.target.TargetInfo, cdp.target.TargetID]
@@ -96,7 +95,10 @@ class Transaction(asyncio.Future):
         try:
             if self.exception():
                 return True
-        except:  # noqa
+        except asyncio.InvalidStateError as e:  # noqa
+            if 'not set' in e.args:
+                return False
+        except:
             return True
         return False
 
@@ -185,11 +187,11 @@ class Connection(metaclass=CantTouchThis):
     _target: cdp.target.TargetInfo
 
     def __init__(
-        self,
-        websocket_url: str,
-        target: cdp.target.TargetInfo = None,
-        _owner: "Browser" = None,
-        **kwargs,
+            self,
+            websocket_url: str,
+            target: cdp.target.TargetInfo = None,
+            _owner: "Browser" = None,
+            **kwargs,
     ):
         super().__init__()
         self._target = target
@@ -225,9 +227,9 @@ class Connection(metaclass=CantTouchThis):
         return bool(self.websocket.close_code)
 
     def add_handler(
-        self,
-        event_type_or_domain: Union[type, types.ModuleType],
-        handler: Union[Callable, Awaitable],
+            self,
+            event_type_or_domain: Union[type, types.ModuleType],
+            handler: Union[Callable, Awaitable],
     ):
         """
         add a handler for given event
@@ -325,7 +327,7 @@ class Connection(metaclass=CantTouchThis):
         :return:
         :rtype:
         """
-        asyncio.ensure_future(self.send(cdp_obj))
+        asyncio.ensure_future(self._send_oneshot(cdp_obj))
 
     async def wait(self, t: Union[int, float] = None):
         """
@@ -389,7 +391,7 @@ class Connection(metaclass=CantTouchThis):
         self.target = target_info
 
     async def send(
-        self, cdp_obj: Generator[dict[str, Any], dict[str, Any], Any], _is_update=False
+            self, cdp_obj: Generator[dict[str, Any], dict[str, Any], Any], _is_update=False
     ) -> Any:
         """
         send a protocol command. the commands are made using any of the cdp.<domain>.<method>()'s
@@ -419,7 +421,8 @@ class Connection(metaclass=CantTouchThis):
             tx.connection = self
             # if not self.mapper:
             if not _is_update:
-                self.mapper.clear()
+                while len(self.mapper) > 100:
+                    self.mapper.popitem()
                 self.__count__ = itertools.count(0)
 
             tx.id = next(self.__count__)
@@ -515,6 +518,7 @@ class Connection(metaclass=CantTouchThis):
         if getattr(self, "_prep_expert_done", None):
             return
         if self._owner:
+            await self._send_oneshot(cdp.page.enable())
             await self._send_oneshot(
                 cdp.page.add_script_to_evaluate_on_new_document(
                     """
@@ -523,19 +527,30 @@ class Connection(metaclass=CantTouchThis):
                     Element.prototype.attachShadow = function () {
                         console.log('calling hooked attachShadow')
                         return this._attachShadow( { mode: "open" } );
-                    };
-                """
+                    };"""
+                    
+
                 )
             )
 
-            await self._send_oneshot(cdp.page.enable())
         setattr(self, "_prep_expert_done", True)
 
     async def _send_oneshot(self, cdp_obj):
-
+        await self.aopen()
         tx = Transaction(cdp_obj)
-        tx.connection = self
-        tx.id = -2
+
+        # since the cleanup of mapper to prevent memleak
+        # we can't use the fixed transaction of -2 for oneshot requests
+        # since it might be cleaned up by the time the response comes
+        # this results in weird hangs
+        # workaround
+        n = -2
+        try:
+            while self.mapper[n]:
+                n -= 1
+        except KeyError:
+            pass
+        tx.id = n
         self.mapper.update({tx.id: tx})
         await self.websocket.send(tx.message)
         try:
