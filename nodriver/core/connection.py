@@ -14,8 +14,7 @@ from typing import Any, Awaitable, Callable, Generator, TypeVar, Union
 import websockets.asyncio.client
 
 from .. import cdp
-from . import util
-from . import browser
+from . import browser, util
 
 T = TypeVar("T")
 
@@ -118,6 +117,8 @@ class Transaction(asyncio.Future):
         try:
             # try to parse the result according to the py cdp docs.
             self.__cdp_obj__.send(response["result"])
+        except KeyError as e:
+            raise KeyError(f"key '{e.args}' not found in message: {response['result']}")
         except StopIteration as e:
             # exception value holds the parsed response
             return self.set_result(e.value)
@@ -497,15 +498,14 @@ class Connection(metaclass=CantTouchThis):
 
         if getattr(self, "_prep_headless_done", None):
             return
-        response, error = await self._send_oneshot(
+        resp = await self._send_oneshot(
             cdp.runtime.evaluate(
                 expression="navigator.userAgent",
-                user_gesture=True,
-                await_promise=True,
-                return_by_value=True,
-                allow_unsafe_eval_blocked_by_csp=True,
             )
         )
+        if not resp:
+            return
+        response, error = resp
         if response and response.value:
             ua = response.value
             await self._send_oneshot(
@@ -642,8 +642,6 @@ class Listener:
                 if message["id"] in self.connection.mapper:
                     # get the corresponding Transaction
 
-                    # thanks to zxsleebu for discovering the memory leak
-                    # pop to prevent memory leaks
                     tx = self.connection.mapper[message["id"]]
                     logger.debug("got answer for %s (message_id:%d)", tx, message["id"])
 
@@ -661,8 +659,6 @@ class Listener:
                 try:
                     event = cdp.util.parse_json_event(message)
                     event_tx = EventTransaction(event)
-                    if not self.connection.mapper:
-                        self.connection.__count__ = itertools.count(0)
                     event_tx.id = next(self.connection.__count__)
                     self.connection.mapper[event_tx.id] = event_tx
                 except Exception as e:

@@ -125,6 +125,8 @@ to. For more information, see
 
 .. autofunction:: clear_device_posture_override
 
+.. autofunction:: clear_display_features_override
+
 .. autofunction:: clear_geolocation_override
 
 .. autofunction:: clear_idle_override
@@ -146,6 +148,8 @@ to. For more information, see
 .. autofunction:: set_device_posture_override
 
 .. autofunction:: set_disabled_image_types
+
+.. autofunction:: set_display_features_override
 
 .. autofunction:: set_document_cookie_disabled
 

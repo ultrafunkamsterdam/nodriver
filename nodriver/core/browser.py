@@ -454,7 +454,9 @@ class Browser:
                 self._handle_target_update
             ]
             await self.connection.send(cdp.target.set_discover_targets(discover=True))
+
         await self
+
         # self.connection.handlers[cdp.inspector.Detached] = [self.stop]
         # return self
 
@@ -1101,7 +1103,7 @@ class ProxyForwarder:
                 if not data:
                     break
                 # simply forward
-                print(data)
+
                 writer.write(data)
             except asyncio.TimeoutError:
                 continue

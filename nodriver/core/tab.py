@@ -574,36 +574,36 @@ class Tab(Connection):
         await self.send(cdp.dom.disable())
         return items or []
 
-    async def find_xpath(self, path: str):
-        """
-        this is not ready
-        :return:
-        :rtype:
-        """
-        js_impl = (
-            """
-   
-        function xPath(path){
-          var result = [];
-          var nodesSnapshot = document.evaluate(path, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
-          for ( var i=0 ; i < nodesSnapshot.snapshotLength; i++ ){
-            result.push( nodesSnapshot.snapshotItem(i) );
-          }
-          return result;
-        }
-        ;
-        xPath(`%s`)
-        """
-            % path
-        )
-        return await self.evaluate(js_impl, return_by_value=False)
+    # async def find_xpath(self, path: str):
+    #     """
+    #     this is not ready
+    #     :return:
+    #     :rtype:
+    #     """
+    #     js_impl = (
+    #         """
+    #
+    #     function xPath(path){
+    #       var result = [];
+    #       var nodesSnapshot = document.evaluate(path, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+    #       for ( var i=0 ; i < nodesSnapshot.snapshotLength; i++ ){
+    #         result.push( nodesSnapshot.snapshotItem(i) );
+    #       }
+    #       return result;
+    #     }
+    #     ;
+    #     xPath(`%s`)
+    #     """
+    #         % path
+    #     )
+    #     return await self.evaluate(js_impl, return_by_value=False)
 
-    async def find_element_by_regex(self, regex: str | re.Pattern):
-        if isinstance(regex, str):
-            regex = re.compile(regex)
-
-        items = await self.select_all("*")
-        return [item for item in items if item and regex.search(str(item))]
+    # async def find_element_by_regex(self, regex: str | re.Pattern):
+    #     if isinstance(regex, str):
+    #         regex = re.compile(regex)
+    #
+    #     items = await self.select_all("*")
+    #     return [item for item in items if item and regex.search(str(item))]
 
     async def find_element_by_text(
         self,
@@ -762,39 +762,39 @@ class Tab(Connection):
             else:
                 return remote_object, errors
 
-    async def _enable_shadow_root_visibility(self):
-        await self.send(cdp.page.enable())
-        return await self.send(
-            cdp.page.add_script_to_evaluate_on_new_document(
-                """
-            const shadowHosts = new WeakSet()
-            const original = Element.prototype.attachShadow
-            Element.prototype.attachShadow = function attachShadow(...args) {
-                const result = original.apply(this, args)
-                shadowHosts.add(this)
-                return result
-            }
-            window.$hasShadow = (el) => {
-                return shadowHosts.has(el)
-            }
-            """
-            )
-        )
-
-    async def get_shadow_roots(self):
-        return await self.send(
-            cdp.runtime.evaluate(
-                """[...document.querySelectorAll('*')].filter( _ => $hasShadow(_))""",
-                serialization_options=cdp.runtime.SerializationOptions(
-                    serialization="deep",
-                    max_depth=10,
-                    additional_parameters={
-                        "maxNodeDepth": 10,
-                        "includeShadowTree": "all",
-                    },
-                ),
-            )
-        )
+    # async def _enable_shadow_root_visibility(self):
+    #     await self.send(cdp.page.enable())
+    #     return await self.send(
+    #         cdp.page.add_script_to_evaluate_on_new_document(
+    #             """
+    #         const shadowHosts = new WeakSet()
+    #         const original = Element.prototype.attachShadow
+    #         Element.prototype.attachShadow = function attachShadow(...args) {
+    #             const result = original.apply(this, args)
+    #             shadowHosts.add(this)
+    #             return result
+    #         }
+    #         window.$hasShadow = (el) => {
+    #             return shadowHosts.has(el)
+    #         }
+    #         """
+    #         )
+    #     )
+    #
+    # async def get_shadow_roots(self):
+    #     return await self.send(
+    #         cdp.runtime.evaluate(
+    #             """[...document.querySelectorAll('*')].filter( _ => $hasShadow(_))""",
+    #             serialization_options=cdp.runtime.SerializationOptions(
+    #                 serialization="deep",
+    #                 max_depth=10,
+    #                 additional_parameters={
+    #                     "maxNodeDepth": 10,
+    #                     "includeShadowTree": "all",
+    #                 },
+    #             ),
+    #         )
+    #     )
 
     async def js_dumps(
         self, obj_name: str, return_by_value: Optional[bool] = True
@@ -1169,11 +1169,6 @@ class Tab(Connection):
         )
 
     async def wait(self, t: Union[int, float] = None):
-        # tree = await self.get_frame_tree()
-        # tree_map = {str(f.id_): f for f in util.flatten_frame_tree(tree)}
-        # for frame_id in tree_map:
-        #     if frame_id in self.frames:
-        #         self.frames[frame_id].__dict__.update(tree_map[frame_id].__dict__)
         await super().wait(t)
 
     def __await__(self):
@@ -1505,23 +1500,39 @@ class Tab(Connection):
         :rtype:
         """
         _tree = await self.get_frame_resource_tree()
-        return functools.reduce(
-            lambda a, b: a + [b[1].url], util.flatten_frame_tree_resources(_tree), []
-        )
+        return [
+            x
+            for x in functools.reduce(
+                lambda a, b: a + [b[1].url if isinstance(b, tuple) else ""],
+                util.flatten_frame_tree_resources(_tree),
+                [],
+            )
+            if x
+        ]
 
     async def search_frame_resources(
         self, query: str
     ) -> typing.Dict[str, List[cdp.debugger.SearchMatch]]:
-        list_of_tuples = list(
-            util.flatten_frame_tree_resources(await self.get_frame_resource_tree())
-        )
-        results = {}
-        for frame, resource in list_of_tuples:
-            results[resource.url] = await self.send(
-                cdp.page.search_in_resource(
-                    frame_id=frame.id_, url=resource.url, query=query
-                )
+        try:
+            await self._send_oneshot(cdp.page.enable())
+            list_of_tuples = list(
+                util.flatten_frame_tree_resources(await self.get_frame_resource_tree())
             )
+            results = {}
+            for item in list_of_tuples:
+                if not isinstance(item, tuple):
+                    continue
+                frame, resource = item
+                res = await self.send(
+                    cdp.page.search_in_resource(
+                        frame_id=frame.id_, url=resource.url, query=query
+                    )
+                )
+                if not res:
+                    continue
+                results[resource.url] = res
+        finally:
+            await self._send_oneshot(cdp.page.disable())
 
         return results
 
@@ -1697,12 +1708,12 @@ class Tab(Connection):
         :return:
         :rtype:
         """
-        return (
-            await self.evaluate(
-                "document.body.offsetHeight - window.innerHeight == window.scrollY"
-            )
-            or False
+
+        res = await self.evaluate(
+            "document.body.offsetHeight - window.innerHeight == window.scrollY"
         )
+        if res:
+            return res[0].value
 
     async def mouse_click(
         self,
