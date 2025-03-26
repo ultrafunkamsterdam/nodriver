@@ -895,11 +895,14 @@ class SharedDictionaryIssueDetails:
 class SRIMessageSignatureIssueDetails:
     error: SRIMessageSignatureError
 
+    signature_base: str
+
     request: AffectedRequest
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json['error'] = self.error.to_json()
+        json['signatureBase'] = self.signature_base
         json['request'] = self.request.to_json()
         return json
 
@@ -907,6 +910,7 @@ class SRIMessageSignatureIssueDetails:
     def from_json(cls, json: T_JSON_DICT) -> SRIMessageSignatureIssueDetails:
         return cls(
             error=SRIMessageSignatureError.from_json(json['error']),
+            signature_base=str(json['signatureBase']),
             request=AffectedRequest.from_json(json['request']),
         )
 

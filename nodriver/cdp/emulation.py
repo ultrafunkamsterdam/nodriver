@@ -651,7 +651,7 @@ def set_device_metrics_override(
     :param dont_set_visible_size: **(EXPERIMENTAL)** *(Optional)* Do not set visible view size, rely upon explicit setVisibleSize call.
     :param screen_orientation: *(Optional)* Screen orientation override.
     :param viewport: **(EXPERIMENTAL)** *(Optional)* If set, the visible area of the page will be overridden to this viewport. This viewport change is not observed by the page, e.g. viewport-relative elements do not change positions.
-    :param display_feature: **(EXPERIMENTAL)** *(Optional)* If set, the display feature of a multi-segment screen. If not set, multi-segment support is turned-off.
+    :param display_feature: **(DEPRECATED)** **(EXPERIMENTAL)** *(Optional)* If set, the display feature of a multi-segment screen. If not set, multi-segment support is turned-off. Deprecated, use Emulation.setDisplayFeaturesOverride.
     :param device_posture: **(DEPRECATED)** **(EXPERIMENTAL)** *(Optional)* If set, the posture of a foldable device. If not set the posture is set to continuous. Deprecated, use Emulation.setDevicePostureOverride.
     '''
     params: T_JSON_DICT = dict()
@@ -717,6 +717,41 @@ def clear_device_posture_override() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,
     '''
     cmd_dict: T_JSON_DICT = {
         'method': 'Emulation.clearDevicePostureOverride',
+    }
+    json = yield cmd_dict
+
+
+def set_display_features_override(
+        features: typing.List[DisplayFeature]
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Start using the given display features to pupulate the Viewport Segments API.
+    This override can also be set in setDeviceMetricsOverride().
+
+    **EXPERIMENTAL**
+
+    :param features:
+    '''
+    params: T_JSON_DICT = dict()
+    params['features'] = [i.to_json() for i in features]
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Emulation.setDisplayFeaturesOverride',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
+def clear_display_features_override() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Clears the display features override set with either setDeviceMetricsOverride()
+    or setDisplayFeaturesOverride() and starts using display features from the
+    platform again.
+    Does nothing if no override is set.
+
+    **EXPERIMENTAL**
+    '''
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Emulation.clearDisplayFeaturesOverride',
     }
     json = yield cmd_dict
 

@@ -28,6 +28,21 @@ class CentralState(enum.Enum):
         return cls(json)
 
 
+class GATTOperationType(enum.Enum):
+    '''
+    Indicates the various types of GATT event.
+    '''
+    CONNECTION = "connection"
+    DISCOVERY = "discovery"
+
+    def to_json(self) -> str:
+        return self.value
+
+    @classmethod
+    def from_json(cls, json: str) -> GATTOperationType:
+        return cls(json)
+
+
 @dataclass
 class ManufacturerData:
     '''
@@ -216,3 +231,46 @@ def simulate_advertisement(
         'params': params,
     }
     json = yield cmd_dict
+
+
+def simulate_gatt_operation_response(
+        address: str,
+        type_: GATTOperationType,
+        code: int
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Simulates the response code from the peripheral with ``address`` for a
+    GATT operation of ``type``. The ``code`` value follows the HCI Error Codes from
+    Bluetooth Core Specification Vol 2 Part D 1.3 List Of Error Codes.
+
+    :param address:
+    :param type_:
+    :param code:
+    '''
+    params: T_JSON_DICT = dict()
+    params['address'] = address
+    params['type'] = type_.to_json()
+    params['code'] = code
+    cmd_dict: T_JSON_DICT = {
+        'method': 'BluetoothEmulation.simulateGATTOperationResponse',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
+@event_class('BluetoothEmulation.gattOperationReceived')
+@dataclass
+class GattOperationReceived:
+    '''
+    Event for when a GATT operation of ``type`` to the peripheral with ``address``
+    happened.
+    '''
+    address: str
+    type_: GATTOperationType
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> GattOperationReceived:
+        return cls(
+            address=str(json['address']),
+            type_=GATTOperationType.from_json(json['type'])
+        )
