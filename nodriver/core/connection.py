@@ -13,13 +13,13 @@ from typing import Any, Awaitable, Callable, Generator, TypeVar, Union
 
 import websockets.asyncio.client
 
-from . import util
 from .. import cdp
+from . import util
 
 T = TypeVar("T")
 
 GLOBAL_DELAY = 0.005
-MAX_SIZE: int = 2 ** 28
+MAX_SIZE: int = 2**28
 PING_TIMEOUT: int = 900  # 15 minutes
 
 TargetType = Union[cdp.target.TargetInfo, cdp.target.TargetID]
@@ -96,7 +96,7 @@ class Transaction(asyncio.Future):
             if self.exception():
                 return True
         except asyncio.InvalidStateError as e:  # noqa
-            if 'not set' in e.args:
+            if "not set" in e.args:
                 return False
         except:
             return True
@@ -187,11 +187,11 @@ class Connection(metaclass=CantTouchThis):
     _target: cdp.target.TargetInfo
 
     def __init__(
-            self,
-            websocket_url: str,
-            target: cdp.target.TargetInfo = None,
-            _owner: "Browser" = None,
-            **kwargs,
+        self,
+        websocket_url: str,
+        target: cdp.target.TargetInfo = None,
+        _owner: "Browser" = None,
+        **kwargs,
     ):
         super().__init__()
         self._target = target
@@ -227,9 +227,9 @@ class Connection(metaclass=CantTouchThis):
         return bool(self.websocket.close_code)
 
     def add_handler(
-            self,
-            event_type_or_domain: Union[type, types.ModuleType],
-            handler: Union[Callable, Awaitable],
+        self,
+        event_type_or_domain: Union[type, types.ModuleType],
+        handler: Union[Callable, Awaitable],
     ):
         """
         add a handler for given event
@@ -391,7 +391,7 @@ class Connection(metaclass=CantTouchThis):
         self.target = target_info
 
     async def send(
-            self, cdp_obj: Generator[dict[str, Any], dict[str, Any], Any], _is_update=False
+        self, cdp_obj: Generator[dict[str, Any], dict[str, Any], Any], _is_update=False
     ) -> Any:
         """
         send a protocol command. the commands are made using any of the cdp.<domain>.<method>()'s
@@ -528,8 +528,6 @@ class Connection(metaclass=CantTouchThis):
                         console.log('calling hooked attachShadow')
                         return this._attachShadow( { mode: "open" } );
                     };"""
-                    
-
                 )
             )
 

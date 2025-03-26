@@ -13,11 +13,11 @@ import warnings
 from collections import defaultdict
 from typing import List, Tuple, Union
 
+from .. import cdp
 from . import tab, util
 from ._contradict import ContraDict
 from .config import Config, PathLike, is_posix
 from .connection import Connection
-from .. import cdp
 
 logger = logging.getLogger(__name__)
 
@@ -59,17 +59,17 @@ class Browser:
 
     @classmethod
     async def create(
-            cls,
-            config: Config = None,
-            *,
-            user_data_dir: PathLike = None,
-            headless: bool = False,
-            browser_executable_path: PathLike = None,
-            browser_args: List[str] = None,
-            sandbox: bool = True,
-            host: str = None,
-            port: int = None,
-            **kwargs,
+        cls,
+        config: Config = None,
+        *,
+        user_data_dir: PathLike = None,
+        headless: bool = False,
+        browser_executable_path: PathLike = None,
+        browser_args: List[str] = None,
+        sandbox: bool = True,
+        host: str = None,
+        port: int = None,
+        **kwargs,
     ) -> Browser:
         """
         entry point for creating an instance
@@ -160,13 +160,13 @@ class Browser:
     """alias for wait"""
 
     def _handle_target_update(
-            self,
-            event: Union[
-                cdp.target.TargetInfoChanged,
-                cdp.target.TargetDestroyed,
-                cdp.target.TargetCreated,
-                cdp.target.TargetCrashed,
-            ],
+        self,
+        event: Union[
+            cdp.target.TargetInfoChanged,
+            cdp.target.TargetDestroyed,
+            cdp.target.TargetCreated,
+            cdp.target.TargetCrashed,
+        ],
     ):
         """this is an internal handler which updates the targets when chrome emits the corresponding event"""
 
@@ -222,7 +222,7 @@ class Browser:
             self.targets.remove(current_tab)
 
     async def get(
-            self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
+        self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
     ) -> tab.Tab:
         """top level get. utilizes the first tab to retrieve given url.
 
@@ -266,14 +266,15 @@ class Browser:
         return connection
 
     async def create_context(
-            self,
-            url: str = "chrome://welcome",
-            new_tab: bool = False,
-            new_window: bool = True,
-            dispose_on_detach: bool = True,
-            proxy_server: str = None,
-            proxy_bypass_list: List[str] = None,
-            origins_with_universal_network_access: List[str] = None) -> tab.Tab:
+        self,
+        url: str = "chrome://welcome",
+        new_tab: bool = False,
+        new_window: bool = True,
+        dispose_on_detach: bool = True,
+        proxy_server: str = None,
+        proxy_bypass_list: List[str] = None,
+        origins_with_universal_network_access: List[str] = None,
+    ) -> tab.Tab:
         """
         creates a new browser context - mostly useful if you want to use proxies for different browser instances
         since chrome usually can only use 1 proxy per browser.
@@ -311,14 +312,15 @@ class Browser:
                 dispose_on_detach=dispose_on_detach,
                 proxy_server=proxy_server,
                 proxy_bypass_list=proxy_bypass_list,
-                origins_with_universal_network_access=origins_with_universal_network_access))
+                origins_with_universal_network_access=origins_with_universal_network_access,
+            )
+        )
         target_id: cdp.target.TargetID = await self.connection.send(
             cdp.target.create_target(
-                url,
-                browser_context_id=ctx,
-                new_window=new_window,
-                for_tab=new_tab))
-        await self.sleep(.5)
+                url, browser_context_id=ctx, new_window=new_window, for_tab=new_tab
+            )
+        )
+        await self.sleep(0.5)
         connection: tab.Tab = next(
             filter(
                 lambda item: item.type_ == "page" and item.target_id == target_id,
@@ -591,7 +593,9 @@ class Browser:
         self._i = self.tabs.index(self.main_tab)
         return self
 
-    def __getitem__(self, item: Union[str, int, slice]) -> Union[tab.Tab, List[tab.Tab]]:
+    def __getitem__(
+        self, item: Union[str, int, slice]
+    ) -> Union[tab.Tab, List[tab.Tab]]:
         """
         allows to get py:obj:`tab.Tab` instances by using browser[0], browser[1], etc.
         a string is also allowed. it will then return the first tab where the py:obj:`cdp.target.TargetInfo` object
@@ -723,7 +727,7 @@ class CookieJar:
         # self._connection = connection
 
     async def get_all(
-            self, requests_cookie_format: bool = False
+        self, requests_cookie_format: bool = False
     ) -> List[Union[cdp.network.Cookie, "http.cookiejar.Cookie"]]:
         """
         get all cookies
@@ -964,7 +968,7 @@ class ProxyForwarder:
                 self._proxy_server = url.geturl()
             else:
                 self.port = util.free_port()
-                self.host = '127.0.0.1'
+                self.host = "127.0.0.1"
                 self.scheme = url.scheme
                 self.fw_port = url.port
                 self.fw_host = url.hostname
@@ -974,23 +978,32 @@ class ProxyForwarder:
                 # report back ourselves as the proxy server
                 self._proxy_server = f"{self.scheme}://{self.host}:{self.port}"
 
-                logger.info('socks proxy with authentication is requested : %s' % proxy_server)
-                logger.info('starting forward proxy on %s:%d' % (self.host, self.port))
-                logger.info('which forwards to %s' % proxy_server)
+                logger.info(
+                    "socks proxy with authentication is requested : %s" % proxy_server
+                )
+                logger.info("starting forward proxy on %s:%d" % (self.host, self.port))
+                logger.info("which forwards to %s" % proxy_server)
                 asyncio.ensure_future(self.listen())
 
     async def listen(self):
-        self.server = await asyncio.start_server(self.handle_request, host=self.host, port=self.port)
+        self.server = await asyncio.start_server(
+            self.handle_request, host=self.host, port=self.port
+        )
         await self.server.start_serving()
 
-    async def handle_request(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
+    async def handle_request(
+        self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter
+    ):
         if self.scheme.startswith("socks"):
             return await self.handle_socks_request(reader, writer)
 
-    async def handle_socks_request(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
-        from struct import calcsize, unpack, pack
+    async def handle_socks_request(
+        self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter
+    ):
         import socket
-        NO_ADDR = '0.0.0.0'
+        from struct import calcsize, pack, unpack
+
+        NO_ADDR = "0.0.0.0"
         ATYP_IPv4 = 0x01
         ATYP_DNS = 0x03
         ATYP_IPv6 = 0x04
@@ -1044,42 +1057,47 @@ class ProxyForwarder:
 
         # handshake with upstream proxy
         remote_writer.write(pack(">BBB", version, 1, 2))
-        server_version, server_auth_method = await remote_reader.read(calcsize('>BB'))
+        server_version, server_auth_method = await remote_reader.read(calcsize(">BB"))
 
         #  authenticate to upstream proxy
         if server_auth_method == 2:
             auth_ticket = pack(
-                f'>BB{len(self.username)}sB{len(self.password)}s',
-                1, len(self.username), self.username.encode(), len(self.password), self.password.encode())
+                f">BB{len(self.username)}sB{len(self.password)}s",
+                1,
+                len(self.username),
+                self.username.encode(),
+                len(self.password),
+                self.password.encode(),
+            )
 
             remote_writer.write(auth_ticket)
             await remote_writer.drain()
-            ver, result = await remote_reader.read(calcsize('!BB'))
+            ver, result = await remote_reader.read(calcsize("!BB"))
 
             if result != 0:
                 raise Exception("socks authentication error: %s" % result)
 
         # forward client socks5 message to upstream proxy
-        remote_writer.write(pack('>BBBB', version, cmd, resv, atyp))
+        remote_writer.write(pack(">BBBB", version, cmd, resv, atyp))
         remote_writer.write(pack(">B", hostname_len))
         remote_writer.write(pack(f"!{hostname_len}s", hostname))
         remote_writer.write(pack("!H", port))
 
         # create a tunnel between client and upstream proxy
         event = asyncio.Event()
-        tasks = self.pipe(remote_reader, writer, event), self.pipe(reader, remote_writer, event)
+        tasks = self.pipe(remote_reader, writer, event), self.pipe(
+            reader, remote_writer, event
+        )
         await asyncio.gather(*tasks)
 
     @staticmethod
     async def pipe(
-                   reader: asyncio.StreamReader,
-                   writer: asyncio.StreamWriter,
-                   event: asyncio.Event
-                   ):
-        logger.debug('client proxy to authenticated proxy pipe')
+        reader: asyncio.StreamReader, writer: asyncio.StreamWriter, event: asyncio.Event
+    ):
+        logger.debug("client proxy to authenticated proxy pipe")
         while not event.is_set():
             try:
-                data = await asyncio.wait_for(reader.read(2 ** 16), 1)
+                data = await asyncio.wait_for(reader.read(2**16), 1)
                 if not data:
                     break
                 # simply forward
