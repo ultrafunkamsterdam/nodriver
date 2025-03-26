@@ -304,7 +304,7 @@ class Browser:
         :rtype:
         """
         if proxy_server:
-            fw = ProxyForwarder(proxy_server=proxy_server)
+            fw = util.ProxyForwarder(proxy_server=proxy_server)
             proxy_server = fw.proxy_server
 
         ctx: cdp.browser.BrowserContextID = await self.connection.send(
@@ -815,13 +815,7 @@ class CookieJar:
             break
         else:
             connection = self._browser.connection
-        cookies = await connection.send(cdp.storage.get_cookies())
-        # if not connection:
-        #     return
-        # if not connection.websocket:
-        #     return
-        # if connection.websocket.closed:
-        #     return
+
         cookies = await self.get_all(requests_cookie_format=False)
         included_cookies = []
         for cookie in cookies:
@@ -897,7 +891,7 @@ class CookieJar:
             break
         else:
             connection = self._browser.connection
-        cookies = await connection.send(cdp.storage.get_cookies())
+
         await connection.send(cdp.storage.clear_cookies())
 
 
@@ -936,178 +930,6 @@ class HTTPApi:
             None, lambda: urllib.request.urlopen(request, timeout=10)
         )
         return json.loads(response.read())
-
-
-from urllib.parse import urlparse
-
-
-class ProxyForwarder:
-    server: asyncio.Server = None
-    host: str = None
-    port: int = None
-    scheme: str = None
-    fw_host: str = None
-    fw_port: int = None
-    fw_scheme: str = None
-
-    @property
-    def proxy_server(self):
-        return self._proxy_server
-
-    def __init__(self, proxy_server):
-        self._proxy_server = None
-
-        url = urlparse(proxy_server)
-        if not url.scheme:
-            # check if ip:port is passed, in which case no forwarder is needed
-            if url.path.find(":") != -1:
-                self._proxy_server = url.path
-        else:
-            if not url.username and not url.password:
-                # if no username and password are provided in the proxy url,
-                # we are not needed either
-                self.scheme = url.scheme
-                self._proxy_server = url.geturl()
-            else:
-                self.port = util.free_port()
-                self.host = "127.0.0.1"
-                self.scheme = url.scheme
-                self.fw_port = url.port
-                self.fw_host = url.hostname
-                self.fw_scheme = url.scheme
-                self.username = url.username
-                self.password = url.password
-                # report back ourselves as the proxy server
-                self._proxy_server = f"{self.scheme}://{self.host}:{self.port}"
-
-                logger.info(
-                    "socks proxy with authentication is requested : %s" % proxy_server
-                )
-                logger.info("starting forward proxy on %s:%d" % (self.host, self.port))
-                logger.info("which forwards to %s" % proxy_server)
-                asyncio.ensure_future(self.listen())
-
-    async def listen(self):
-        self.server = await asyncio.start_server(
-            self.handle_request, host=self.host, port=self.port
-        )
-        await self.server.start_serving()
-
-    async def handle_request(
-        self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter
-    ):
-        if self.scheme.startswith("socks"):
-            return await self.handle_socks_request(reader, writer)
-
-    async def handle_socks_request(
-        self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter
-    ):
-        import socket
-        from struct import calcsize, pack, unpack
-
-        NO_ADDR = "0.0.0.0"
-        ATYP_IPv4 = 0x01
-        ATYP_DNS = 0x03
-        ATYP_IPv6 = 0x04
-
-        # import aiosocks2
-        async def read(fmt):
-            """
-            Read from the byte stream
-            :param str fmt: struct format specifier
-            :return tuple:
-            """
-            data = await reader.read(calcsize(fmt))
-            return unpack(fmt, data)
-
-        version, num_methods = await read(">BB")
-        methods = await read("!" + "B" * num_methods)
-
-        # signal to the client there is no username, password required
-        # meanwhile, we do need auth to the upstream server
-        writer.write(pack("!BB", version, 0))
-
-        # read command from the client
-        version, cmd, resv, atyp = await read(">BBBB")
-
-        if atyp == ATYP_IPv4:
-            ip_packed = await reader.read(4)
-            port = (await read("!H"))[0]
-            ip_addr = socket.inet_ntop(socket.AF_INET, ip_packed)
-            hostname = None
-        elif atyp == ATYP_IPv6:
-            ip_packed = await reader.read(16)
-            port = (await read("!H"))[0]
-            ip_addr = socket.inet_ntop(socket.AF_INET6, ip_packed)
-            hostname = None
-        elif atyp == ATYP_DNS:
-            hostname_len = (await read("!B"))[0]
-            hostname = (await read("!{}s".format(hostname_len)))[0]
-            port = (await read("!H"))[0]
-            ip_addr = None
-
-        if hostname:  # noqa
-            if not ip_addr:  # noqa
-                ip_addr = socket.gethostbyname(hostname)  # noqa
-        else:
-            hostname = socket.gethostbyaddr(ip_addr)  # noqa
-
-        # connect to the upstream proxy
-        remote_reader, remote_writer = await asyncio.open_connection(
-            host=self.fw_host, port=self.fw_port
-        )
-
-        # handshake with upstream proxy
-        remote_writer.write(pack(">BBB", version, 1, 2))
-        server_version, server_auth_method = await remote_reader.read(calcsize(">BB"))
-
-        #  authenticate to upstream proxy
-        if server_auth_method == 2:
-            auth_ticket = pack(
-                f">BB{len(self.username)}sB{len(self.password)}s",
-                1,
-                len(self.username),
-                self.username.encode(),
-                len(self.password),
-                self.password.encode(),
-            )
-
-            remote_writer.write(auth_ticket)
-            await remote_writer.drain()
-            ver, result = await remote_reader.read(calcsize("!BB"))
-
-            if result != 0:
-                raise Exception("socks authentication error: %s" % result)
-
-        # forward client socks5 message to upstream proxy
-        remote_writer.write(pack(">BBBB", version, cmd, resv, atyp))
-        remote_writer.write(pack(">B", hostname_len))
-        remote_writer.write(pack(f"!{hostname_len}s", hostname))
-        remote_writer.write(pack("!H", port))
-
-        # create a tunnel between client and upstream proxy
-        event = asyncio.Event()
-        tasks = self.pipe(remote_reader, writer, event), self.pipe(
-            reader, remote_writer, event
-        )
-        await asyncio.gather(*tasks)
-
-    @staticmethod
-    async def pipe(
-        reader: asyncio.StreamReader, writer: asyncio.StreamWriter, event: asyncio.Event
-    ):
-        logger.debug("client proxy to authenticated proxy pipe")
-        while not event.is_set():
-            try:
-                data = await asyncio.wait_for(reader.read(2**16), 1)
-                if not data:
-                    break
-                # simply forward
-
-                writer.write(data)
-            except asyncio.TimeoutError:
-                continue
-        event.set()
 
 
 atexit.register(util.deconstruct_browser)
