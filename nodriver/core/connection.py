@@ -15,6 +15,7 @@ import websockets.asyncio.client
 
 from .. import cdp
 from . import util
+from . import browser
 
 T = TypeVar("T")
 
@@ -190,7 +191,7 @@ class Connection(metaclass=CantTouchThis):
         self,
         websocket_url: str,
         target: cdp.target.TargetInfo = None,
-        _owner: "Browser" = None,
+        _owner: browser.Browser = None,
         **kwargs,
     ):
         super().__init__()
