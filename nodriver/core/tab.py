@@ -1344,7 +1344,7 @@ class Tab(Connection):
         path.write_bytes(data_bytes)
         return str(path)
 
-    async def set_download_path(self, path: PathLike):
+    async def set_download_path(self, path: Union[str, PathLike]):
         """
         sets the download path and allows downloads
         this is required for any download function to work (well not entirely, since when unset we set a default folder)
@@ -1354,6 +1354,8 @@ class Tab(Connection):
         :return:
         :rtype:
         """
+        path = Path(path)
+        path.mkdir(parents=True, exist_ok=True)
         await self.send(
             cdp.browser.set_download_behavior(
                 behavior="allow", download_path=str(path.resolve())

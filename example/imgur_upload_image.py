@@ -72,7 +72,7 @@ async def main():
     print(title_field)
     await title_field.send_keys("undetected nodriver")
 
-    grab_link = await tab.find("grab link", best_match=True)
+    grab_link = await tab.find("grab a link", best_match=True)
     await grab_link.click()
 
     # there is a delay for the link sharing popup.
