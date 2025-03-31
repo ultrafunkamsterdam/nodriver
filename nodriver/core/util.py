@@ -157,6 +157,7 @@ def deconstruct_browser():
             try:
                 if _.config and not _.config.uses_custom_data_dir:
                     shutil.rmtree(_.config.user_data_dir, ignore_errors=False)
+                    print("successfully removed temp profile %s" % _.config.user_data_dir)
             except FileNotFoundError as e:
                 break
             except (PermissionError, OSError) as e:
@@ -169,7 +170,6 @@ def deconstruct_browser():
                     break
                 time.sleep(0.15)
                 continue
-        print("successfully removed temp profile %s" % _.config.user_data_dir)
 
 
 def filter_recurse_all(
