@@ -384,7 +384,8 @@ def cdp_get_module(domain: Union[str, types.ModuleType]):
 
 def get_cf_template() -> bytearray:
     """
-    this returns a template image (in this case a verify box) used by some anti-bot solutions
+    this returns a template image (of a checkbox)
+    like this: https://ultrafunkamsterdam.github.io/nodriver/_images/template_example.png
     didn't bother the hassle to include image files in my package.
     :return:
     :rtype:
@@ -4586,7 +4587,7 @@ class ProxyForwarder:
                 self.scheme = url.scheme
                 self._proxy_server = url.geturl()
             else:
-                self.port = util.free_port()
+                self.port = free_port()
                 self.host = "127.0.0.1"
                 self.scheme = url.scheme
                 self.fw_port = url.port
