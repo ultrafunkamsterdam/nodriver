@@ -11,12 +11,18 @@ except (ModuleNotFoundError, ImportError):
 
 
 async def response_received_handler(ev: cdp.network.ResponseReceived, tab=None):
-    body, base64encoded = await tab.send(cdp.network.get_response_body(
-        ev.request_id))
-    if base64encoded:
-        import base64
-        body = base64.b64decode(body)
-    print(ev.response.url, '\n', 'body[:100]:', '\n', body[:100])
+    try:
+        body, base64encoded = await tab.send(cdp.network.get_response_body(
+            ev.request_id))
+        if base64encoded:
+            import base64
+            body = base64.b64decode(body)
+        print(ev.response.url, '\n', 'body[:100]:', '\n', body[:100])
+    except TypeError:
+        pass
+    except ProtocolException:
+        return
+
 
 
 async def main():

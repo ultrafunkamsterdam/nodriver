@@ -224,6 +224,8 @@ class Browser:
             )
             self.targets.remove(current_tab)
 
+        asyncio.create_task(self.update_targets())
+
     async def get(
         self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
     ) -> tab.Tab:

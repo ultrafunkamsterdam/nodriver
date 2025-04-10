@@ -111,7 +111,7 @@ class Transaction(asyncio.Future):
         """
         if "error" in response:
             # set exception and bail out
-            return self.set_result(ProtocolException(response["error"]))
+            return self.set_exception(ProtocolException(response["error"]))
         try:
             # try to parse the result according to the py cdp docs.
             self.__cdp_obj__.send(response["result"])

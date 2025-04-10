@@ -128,7 +128,7 @@ async def main():
 
         except:
             pass
-    print("TBCI=", driver.connection.listener.time_before_considered_idle)
+
     driver.stop()
 
 
@@ -156,6 +156,9 @@ async def mouse_move(tab):
     boxes = await tab.select_all(".box")
     for box in boxes:
         await box.mouse_move()
+
+    for box in boxes:
+        await box.mouse_drag([250, 250],relative=True)
 
 
 async def move_circle(tab, x=0):
