@@ -167,6 +167,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="browser.html">Browser class</a></li>
@@ -187,7 +189,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -371,12 +372,6 @@ cdp section.</p>
 <p>when you import * from this package, cdp will be in your namespace, and contains all domains/actions/events
 you can act upon.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="nodriver.Tab.aclose">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aclose</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Tab.aclose" title="Link to this definition">#</a></dt>
-<dd><p>closes the websocket connection. should not be called manually by users.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.activate">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">activate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.activate" title="Link to this definition">#</a></dt>
 <dd><p>active this target (ie: tab,window,page)</p>
@@ -398,7 +393,7 @@ for example, you want to check the network traffic:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>event_type_or_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModuleType</span></code></a>]</span>) – </p></li>
+<li><p><strong>event_type_or_domain</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModuleType</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></a>]]</span>) – </p></li>
 <li><p><strong>handler</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Awaitable" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Awaitable</span></code></a>]</span>) – </p></li>
 </ul>
 </dd>
@@ -411,18 +406,9 @@ for example, you want to check the network traffic:</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="nodriver.Tab.aopen">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aopen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Tab.aopen" title="Link to this definition">#</a></dt>
-<dd><p>opens the websocket connection. should not be called manually by users
-:type kw: 
-:param kw:
-:return:</p>
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.Tab.attached">
-<span class="sig-name descname"><span class="pre">attached</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.Tab.attached" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">attached</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.Tab.attached" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -437,9 +423,9 @@ for example, you want to check the network traffic:</p>
 <dd><p>alias to self.activate</p>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="py property">
 <dt class="sig sig-object py" id="nodriver.Tab.browser">
-<span class="sig-name descname"><span class="pre">browser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">nodriver.core.browser.Browser</span></em><a class="headerlink" href="#nodriver.Tab.browser" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">browser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="browser.html#nodriver.Browser" title="nodriver.core.browser.Browser"><span class="pre">Browser</span></a></em><a class="headerlink" href="#nodriver.Tab.browser" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -465,6 +451,21 @@ you get a warning. call this function to “proceed”
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.connect">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Tab.connect" title="Link to this definition">#</a></dt>
+<dd><p>opens the websocket connection. should not be called manually by users
+:type kw: 
+:param kw:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.disconnect">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Tab.disconnect" title="Link to this definition">#</a></dt>
+<dd><p>closes the websocket connection. should not be called manually by users.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.download_file">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">download_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.download_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.download_file" title="Link to this definition">#</a></dt>
 <dd><p>downloads file by given url.</p>
@@ -480,31 +481,20 @@ you get a warning. call this function to “proceed”
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.evaluate">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">await_promise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_by_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.evaluate" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="nodriver.Tab.execution_contexts_list">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">execution_contexts_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ExecutionContext</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#nodriver.Tab.execution_contexts_list" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">await_promise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_by_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.evaluate" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference internal" href="../cdp/runtime.html#nodriver.cdp.runtime.RemoteObject" title="nodriver.cdp.runtime.RemoteObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoteObject</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="../cdp/runtime.html#nodriver.cdp.runtime.ExceptionDetails" title="nodriver.cdp.runtime.ExceptionDetails"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExceptionDetails</span></code></a>]]]</span></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.feed_cdp">
-<span class="sig-name descname"><span class="pre">feed_cdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cdp_obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Tab.feed_cdp" title="Link to this definition">#</a></dt>
-<dd><p>used in specific cases, mostly during cdp.fetch.RequestPaused events,
-in which the browser literally blocks. using feed_cdp you can issue
-a response without a blocking “await”.</p>
-<p>note: this method won’t cause a response.
-note: this is not an async method, just a regular method!</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cdp_obj</strong> – </p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p></p>
-</dd>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feed_cdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.feed_cdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.feed_cdp" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Future</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -583,6 +573,7 @@ and not thousands of scripts,meta,headings containing a string of “login”.</
 <dt class="sig sig-object py" id="nodriver.Tab.find_elements_by_text">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_elements_by_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag_hint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.find_elements_by_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.find_elements_by_text" title="Link to this definition">#</a></dt>
 <dd><p>returns element which match the given text.
+returns element which match the given text.
 please note: this may (or will) also return any other element (like inline scripts),
 which happen to contain that text.</p>
 <dl class="field-list simple">
@@ -611,11 +602,6 @@ which happen to contain that text.</p>
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.forward" title="Link to this definition">#</a></dt>
 <dd><p>history forward</p>
 </dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="nodriver.Tab.frames_list">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">frames_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Frame</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#nodriver.Tab.frames_list" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.fullscreen">
@@ -697,8 +683,6 @@ but still it returns a different object
 <dt class="sig sig-object py" id="nodriver.Tab.get_frame_resource_urls">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_frame_resource_urls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.get_frame_resource_urls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.get_frame_resource_urls" title="Link to this definition">#</a></dt>
 <dd><p>gets the urls of resources
-:param urls_only:
-:type urls_only:
 :return:
 :rtype:</p>
 </dd></dl>
@@ -934,6 +918,18 @@ this is considered one of the main methods to use in this package.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.remove_handler">
+<span class="sig-name descname"><span class="pre">remove_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_type_or_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Tab.remove_handler" title="Link to this definition">#</a></dt>
+<dd><p>remove a handler for given event
+:type event_type_or_domain: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModuleType</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></a>]]</span>
+:param event_type_or_domain:
+:type event_type_or_domain:
+:type handler: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Awaitable" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Awaitable</span></code></a>]</span>
+:param handler:
+:type handler:</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.save_screenshot">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save_screenshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jpeg'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_page</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.save_screenshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.save_screenshot" title="Link to this definition">#</a></dt>
 <dd><p>Saves a screenshot of the page.
@@ -953,6 +949,15 @@ This is not the same as <a class="reference internal" href="element.html#nodrive
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.scroll_bottom_reached">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scroll_bottom_reached</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.scroll_bottom_reached"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.scroll_bottom_reached" title="Link to this definition">#</a></dt>
+<dd><p>returns True if scroll is at the bottom of the page
+handy when you need to scroll over paginated pages of different lengths
+:return:
+:rtype:</p>
 </dd></dl>
 
 <dl class="py method">
@@ -994,7 +999,7 @@ This is not the same as <a class="reference internal" href="element.html#nodrive
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">search_frame_resources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.search_frame_resources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.search_frame_resources" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">Dict[str, List[cdp.debugger.SearchMatch]]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference internal" href="../cdp/debugger.html#nodriver.cdp.debugger.SearchMatch" title="nodriver.cdp.debugger.SearchMatch"><code class="xref py py-class docutils literal notranslate"><span class="pre">SearchMatch</span></code></a>]]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1038,7 +1043,7 @@ can also be used to wait for such element to appear.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.send">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cdp_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_is_update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Tab.send" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cdp_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_is_update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.send" title="Link to this definition">#</a></dt>
 <dd><p>send a protocol command. the commands are made using any of the cdp.&lt;domain&gt;.&lt;method&gt;()’s
 and is used to send custom cdp commands as well.</p>
 <dl class="field-list simple">
@@ -1066,7 +1071,7 @@ when multiple calls to connection.send() are made</p></li>
 this is required for any download function to work (well not entirely, since when unset we set a default folder)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">PathLike</span></code>, bound= <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>)</span>) – </p>
+<dd class="field-odd"><p><strong>path</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">PathLike</span></code>, bound= <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>)]</span>) – </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
@@ -1148,7 +1153,7 @@ in case state is set other than “normal”, the left, top, width, and height a
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.sleep">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sleep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Tab.sleep" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sleep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.sleep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.sleep" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -1158,7 +1163,7 @@ in case state is set other than “normal”, the left, top, width, and height a
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.template_location">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">template_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.template_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.template_location" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">template_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.template_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.template_location" title="Link to this definition">#</a></dt>
 <dd><p>attempts to find the location of given template image in the current viewport
 the only real use case for this is bot-detection systems.
 you can find for example the location of a ‘verify’-checkbox,
@@ -1173,12 +1178,12 @@ create the template image yourself, where the target is exactly in the center.</
 <p>this includes the white space on the left, to make the box center</p>
 <a class="reference internal image-reference" href="../../_images/template_example.png"><img alt="example template image" src="../../_images/template_example.png" style="width: 111px;" /></a>
 <dl class="field-list simple">
-<dt class="field-odd">type template_img<span class="colon">:</span></dt>
+<dt class="field-odd">type template_image<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">PathLike</span></code>, bound= <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>)</span></p>
 </dd>
-<dt class="field-even">param template_img<span class="colon">:</span></dt>
+<dt class="field-even">param template_image<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
-<dt class="field-odd">type template_img<span class="colon">:</span></dt>
+<dt class="field-odd">type template_image<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p></dd>
 <dt class="field-even">return<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
@@ -1187,11 +1192,6 @@ create the template image yourself, where the target is exactly in the center.</
 </dl>
 </section>
 </dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="nodriver.Tab.update_target">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_target</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nodriver.Tab.update_target" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.verify_cf">
@@ -1234,20 +1234,7 @@ image of the area, where the target is exactly in the center. see example on
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.wait">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.wait" title="Link to this definition">#</a></dt>
-<dd><p>waits until the event listener reports idle (no new events received in certain timespan).
-when <cite>t</cite> is provided, ensures waiting for <cite>t</cite> seconds, no matter what.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>t</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – </p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p>
-</dd>
-</dl>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nodriver.Tab.wait_for">
@@ -1277,9 +1264,9 @@ an TimeoutError will be raised</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="py property">
 <dt class="sig sig-object py" id="nodriver.Tab.websocket">
-<span class="sig-name descname"><span class="pre">websocket</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">websockets.asyncio.client.ClientConnection</span></em><a class="headerlink" href="#nodriver.Tab.websocket" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">websocket</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClientConnection</span></em><a class="headerlink" href="#nodriver.Tab.websocket" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1344,10 +1331,8 @@ an TimeoutError will be raised</p>
             <ul>
 <li><a class="reference internal" href="#">Tab class</a><ul>
 <li><a class="reference internal" href="#nodriver.Tab"><code class="docutils literal notranslate"><span class="pre">Tab</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.Tab.aclose"><code class="docutils literal notranslate"><span class="pre">Tab.aclose()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.activate"><code class="docutils literal notranslate"><span class="pre">Tab.activate()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.add_handler"><code class="docutils literal notranslate"><span class="pre">Tab.add_handler()</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Tab.aopen"><code class="docutils literal notranslate"><span class="pre">Tab.aopen()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.attached"><code class="docutils literal notranslate"><span class="pre">Tab.attached</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.back"><code class="docutils literal notranslate"><span class="pre">Tab.back()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.bring_to_front"><code class="docutils literal notranslate"><span class="pre">Tab.bring_to_front()</span></code></a></li>
@@ -1355,9 +1340,10 @@ an TimeoutError will be raised</p>
 <li><a class="reference internal" href="#nodriver.Tab.bypass_insecure_connection_warning"><code class="docutils literal notranslate"><span class="pre">Tab.bypass_insecure_connection_warning()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.close"><code class="docutils literal notranslate"><span class="pre">Tab.close()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.closed"><code class="docutils literal notranslate"><span class="pre">Tab.closed</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.connect"><code class="docutils literal notranslate"><span class="pre">Tab.connect()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.disconnect"><code class="docutils literal notranslate"><span class="pre">Tab.disconnect()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.download_file"><code class="docutils literal notranslate"><span class="pre">Tab.download_file()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.evaluate"><code class="docutils literal notranslate"><span class="pre">Tab.evaluate()</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Tab.execution_contexts_list"><code class="docutils literal notranslate"><span class="pre">Tab.execution_contexts_list</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.feed_cdp"><code class="docutils literal notranslate"><span class="pre">Tab.feed_cdp()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.find"><code class="docutils literal notranslate"><span class="pre">Tab.find()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.find_all"><code class="docutils literal notranslate"><span class="pre">Tab.find_all()</span></code></a></li>
@@ -1365,7 +1351,6 @@ an TimeoutError will be raised</p>
 <li><a class="reference internal" href="#nodriver.Tab.find_elements_by_text"><code class="docutils literal notranslate"><span class="pre">Tab.find_elements_by_text()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.flash_point"><code class="docutils literal notranslate"><span class="pre">Tab.flash_point()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.forward"><code class="docutils literal notranslate"><span class="pre">Tab.forward()</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Tab.frames_list"><code class="docutils literal notranslate"><span class="pre">Tab.frames_list</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.fullscreen"><code class="docutils literal notranslate"><span class="pre">Tab.fullscreen()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.get"><code class="docutils literal notranslate"><span class="pre">Tab.get()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.get_all_linked_sources"><code class="docutils literal notranslate"><span class="pre">Tab.get_all_linked_sources()</span></code></a></li>
@@ -1389,7 +1374,9 @@ an TimeoutError will be raised</p>
 <li><a class="reference internal" href="#nodriver.Tab.query_selector"><code class="docutils literal notranslate"><span class="pre">Tab.query_selector()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.query_selector_all"><code class="docutils literal notranslate"><span class="pre">Tab.query_selector_all()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.reload"><code class="docutils literal notranslate"><span class="pre">Tab.reload()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.remove_handler"><code class="docutils literal notranslate"><span class="pre">Tab.remove_handler()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.save_screenshot"><code class="docutils literal notranslate"><span class="pre">Tab.save_screenshot()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.scroll_bottom_reached"><code class="docutils literal notranslate"><span class="pre">Tab.scroll_bottom_reached()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.scroll_down"><code class="docutils literal notranslate"><span class="pre">Tab.scroll_down()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.scroll_up"><code class="docutils literal notranslate"><span class="pre">Tab.scroll_up()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.search_frame_resources"><code class="docutils literal notranslate"><span class="pre">Tab.search_frame_resources()</span></code></a></li>
@@ -1403,7 +1390,6 @@ an TimeoutError will be raised</p>
 <li><a class="reference internal" href="#nodriver.Tab.sleep"><code class="docutils literal notranslate"><span class="pre">Tab.sleep()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.target"><code class="docutils literal notranslate"><span class="pre">Tab.target</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.template_location"><code class="docutils literal notranslate"><span class="pre">Tab.template_location()</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.Tab.update_target"><code class="docutils literal notranslate"><span class="pre">Tab.update_target()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.verify_cf"><code class="docutils literal notranslate"><span class="pre">Tab.verify_cf()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.wait"><code class="docutils literal notranslate"><span class="pre">Tab.wait()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.wait_for"><code class="docutils literal notranslate"><span class="pre">Tab.wait_for()</span></code></a></li>

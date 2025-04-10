@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.core.browser - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -273,7 +274,6 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">import</span> <span class="nn">urllib.parse</span>
 <span class="kn">import</span> <span class="nn">urllib.request</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -422,13 +422,16 @@
 
 <div class="viewcode-block" id="Browser.wait">
 <a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.wait">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Browser</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;wait for &lt;time&gt; seconds. important to use, especially in between page navigation</span>
 
 <span class="sd">        :param time:</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
 
 
     <span class="n">sleep</span> <span class="o">=</span> <span class="n">wait</span>
@@ -466,7 +469,7 @@
                     <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">current_tab</span><span class="p">),</span> <span class="n">changes_string</span><span class="p">)</span>
                 <span class="p">)</span>
 
-                <span class="n">current_tab</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target_info</span>
+                <span class="n">current_tab</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="n">target_info</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetCreated</span><span class="p">):</span>
             <span class="n">target_info</span><span class="p">:</span> <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfo</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">target_info</span>
@@ -480,6 +483,7 @@
                 <span class="p">),</span>
                 <span class="n">target</span><span class="o">=</span><span class="n">target_info</span><span class="p">,</span>
                 <span class="n">browser</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+
             <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_target</span><span class="p">)</span>
@@ -526,7 +530,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-            <span class="n">connection</span><span class="o">.</span><span class="n">browser</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="n">connection</span><span class="o">.</span><span class="n">_browser</span> <span class="o">=</span> <span class="bp">self</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># first tab from browser.tabs</span>
@@ -537,9 +541,76 @@
             <span class="n">frame_id</span><span class="p">,</span> <span class="n">loader_id</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">navigate</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
             <span class="c1"># update the frame_id on the tab</span>
             <span class="n">connection</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="n">frame_id</span>
-            <span class="n">connection</span><span class="o">.</span><span class="n">browser</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="n">connection</span><span class="o">.</span><span class="n">_browser</span> <span class="o">=</span> <span class="bp">self</span>
 
-        <span class="k">await</span> <span class="n">connection</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="n">connection</span></div>
+
+
+<div class="viewcode-block" id="Browser.create_context">
+<a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.create_context">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">create_context</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;chrome://welcome&quot;</span><span class="p">,</span>
+        <span class="n">new_tab</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">new_window</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">dispose_on_detach</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">proxy_server</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">proxy_bypass_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">origins_with_universal_network_access</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tab</span><span class="o">.</span><span class="n">Tab</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        creates a new browser context - mostly useful if you want to use proxies for different browser instances</span>
+<span class="sd">        since chrome usually can only use 1 proxy per browser.</span>
+<span class="sd">        socks5 with authentication is supported by using a forwarder proxy, the</span>
+<span class="sd">        correct string to use socks proxy with username/password auth is socks://USERNAME:PASSWORD@SERVER:PORT</span>
+
+<span class="sd">        dispose_on_detach – (EXPERIMENTAL) (Optional) If specified, disposes this context when debugging session disconnects.</span>
+<span class="sd">        proxy_server – (EXPERIMENTAL) (Optional) Proxy server, similar to the one passed to –proxy-server</span>
+<span class="sd">        proxy_bypass_list – (EXPERIMENTAL) (Optional) Proxy bypass list, similar to the one passed to –proxy-bypass-list</span>
+<span class="sd">        origins_with_universal_network_access – (EXPERIMENTAL) (Optional) An optional list of origins to grant unlimited cross-origin access to. Parts of the URL other than those constituting origin are ignored.</span>
+
+<span class="sd">        :param new_window:</span>
+<span class="sd">        :type new_window:</span>
+<span class="sd">        :param new_tab:</span>
+<span class="sd">        :type new_tab:</span>
+<span class="sd">        :param url:</span>
+<span class="sd">        :type url:</span>
+<span class="sd">        :param dispose_on_detach:</span>
+<span class="sd">        :type dispose_on_detach:</span>
+<span class="sd">        :param proxy_server:</span>
+<span class="sd">        :type proxy_server:</span>
+<span class="sd">        :param proxy_bypass_list:</span>
+<span class="sd">        :type proxy_bypass_list:</span>
+<span class="sd">        :param origins_with_universal_network_access:</span>
+<span class="sd">        :type origins_with_universal_network_access:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">proxy_server</span><span class="p">:</span>
+            <span class="n">fw</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ProxyForwarder</span><span class="p">(</span><span class="n">proxy_server</span><span class="o">=</span><span class="n">proxy_server</span><span class="p">)</span>
+            <span class="n">proxy_server</span> <span class="o">=</span> <span class="n">fw</span><span class="o">.</span><span class="n">proxy_server</span>
+
+        <span class="n">ctx</span><span class="p">:</span> <span class="n">cdp</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">BrowserContextID</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+            <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">create_browser_context</span><span class="p">(</span>
+                <span class="n">dispose_on_detach</span><span class="o">=</span><span class="n">dispose_on_detach</span><span class="p">,</span>
+                <span class="n">proxy_server</span><span class="o">=</span><span class="n">proxy_server</span><span class="p">,</span>
+                <span class="n">proxy_bypass_list</span><span class="o">=</span><span class="n">proxy_bypass_list</span><span class="p">,</span>
+                <span class="n">origins_with_universal_network_access</span><span class="o">=</span><span class="n">origins_with_universal_network_access</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">target_id</span><span class="p">:</span> <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetID</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+            <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">create_target</span><span class="p">(</span>
+                <span class="n">url</span><span class="p">,</span> <span class="n">browser_context_id</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">new_window</span><span class="o">=</span><span class="n">new_window</span><span class="p">,</span> <span class="n">for_tab</span><span class="o">=</span><span class="n">new_tab</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">connection</span><span class="p">:</span> <span class="n">tab</span><span class="o">.</span><span class="n">Tab</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="nb">filter</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s2">&quot;page&quot;</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">target_id</span> <span class="o">==</span> <span class="n">target_id</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">connection</span></div>
 
 
@@ -639,24 +710,11 @@
                 <span class="p">)</span>
             <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">webSocketDebuggerUrl</span><span class="p">,</span> <span class="n">_owner</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">webSocketDebuggerUrl</span><span class="p">,</span> <span class="n">browser</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">autodiscover_targets</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;enabling autodiscover targets&quot;</span><span class="p">)</span>
 
-            <span class="c1"># self.connection.add_handler(</span>
-            <span class="c1">#     cdp.target.TargetInfoChanged, self._handle_target_update</span>
-            <span class="c1"># )</span>
-            <span class="c1"># self.connection.add_handler(</span>
-            <span class="c1">#     cdp.target.TargetCreated, self._handle_target_update</span>
-            <span class="c1"># )</span>
-            <span class="c1"># self.connection.add_handler(</span>
-            <span class="c1">#     cdp.target.TargetDestroyed, self._handle_target_update</span>
-            <span class="c1"># )</span>
-            <span class="c1"># self.connection.add_handler(</span>
-            <span class="c1">#     cdp.target.TargetCreated, self._handle_target_update</span>
-            <span class="c1"># )</span>
-            <span class="c1">#</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfoChanged</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_handle_target_update</span>
             <span class="p">]</span>
@@ -670,7 +728,11 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_handle_target_update</span>
             <span class="p">]</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">set_discover_targets</span><span class="p">(</span><span class="n">discover</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-        <span class="k">await</span> <span class="bp">self</span></div>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_targets</span><span class="p">()</span></div>
+
+
+        <span class="c1"># await self</span>
 
         <span class="c1"># self.connection.handlers[cdp.inspector.Detached] = [self.stop]</span>
         <span class="c1"># return self</span>
@@ -782,6 +844,7 @@
 <div class="viewcode-block" id="Browser.update_targets">
 <a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.update_targets">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">update_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
         <span class="n">targets</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfo</span><span class="p">]</span>
         <span class="n">targets</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_targets</span><span class="p">()</span>
         <span class="n">target_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">target_id</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">]</span>
@@ -801,7 +864,7 @@
                             <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">target_id</span><span class="si">}</span><span class="s2">&quot;</span>
                         <span class="p">),</span>
                         <span class="n">target</span><span class="o">=</span><span class="n">t</span><span class="p">,</span>
-                        <span class="n">_owner</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">browser</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
 
@@ -809,7 +872,6 @@
 
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
@@ -820,7 +882,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_tab</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">slice</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">tab</span><span class="o">.</span><span class="n">Tab</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">tab</span><span class="o">.</span><span class="n">Tab</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        allows to get py:obj:`tab.Tab` instances by using browser[0], browser[1], etc.</span>
 <span class="sd">        a string is also allowed. it will then return the first tab where the py:obj:`cdp.target.TargetInfo` object</span>
@@ -834,7 +898,31 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+            <span class="n">tabs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">tab</span><span class="o">.</span><span class="n">Tab</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">sta</span><span class="p">,</span> <span class="n">sto</span><span class="p">,</span> <span class="n">ste</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">step</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ste</span><span class="p">:</span>
+                <span class="n">ste</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">sto</span><span class="p">:</span>
+                <span class="n">sto</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">sta</span><span class="p">:</span>
+                <span class="n">sta</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sta</span><span class="p">,</span> <span class="n">sto</span><span class="p">,</span> <span class="n">ste</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">tabs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+                <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+            <span class="k">return</span> <span class="n">tabs</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="o">*</span><span class="n">item</span><span class="p">)</span>
+            <span class="n">tabs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">tab</span><span class="o">.</span><span class="n">Tab</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">tabs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+            <span class="k">return</span> <span class="n">tabs</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
                     <span class="k">return</span> <span class="n">t</span>
@@ -866,13 +954,13 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># asyncio.get_running_loop().create_task(self.connection.send(cdp.browser.close()))</span>
 
-            <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">aclose</span><span class="p">())</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">disconnect</span><span class="p">())</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;closed the connection using get_event_loop().create_task()&quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="c1"># asyncio.run(self.connection.send(cdp.browser.close()))</span>
-                    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">aclose</span><span class="p">())</span>
+                    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">disconnect</span><span class="p">())</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;closed the connection using asyncio.run()&quot;</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                     <span class="k">pass</span>
@@ -1018,13 +1106,7 @@
             <span class="k">break</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span><span class="o">.</span><span class="n">connection</span>
-        <span class="n">cookies</span> <span class="o">=</span> <span class="k">await</span> <span class="n">connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get_cookies</span><span class="p">())</span>
-        <span class="c1"># if not connection:</span>
-        <span class="c1">#     return</span>
-        <span class="c1"># if not connection.websocket:</span>
-        <span class="c1">#     return</span>
-        <span class="c1"># if connection.websocket.closed:</span>
-        <span class="c1">#     return</span>
+
         <span class="n">cookies</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span><span class="n">requests_cookie_format</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">included_cookies</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">cookie</span> <span class="ow">in</span> <span class="n">cookies</span><span class="p">:</span>
@@ -1100,7 +1182,7 @@
             <span class="k">break</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span><span class="o">.</span><span class="n">connection</span>
-        <span class="n">cookies</span> <span class="o">=</span> <span class="k">await</span> <span class="n">connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get_cookies</span><span class="p">())</span>
+
         <span class="k">await</span> <span class="n">connection</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">cdp</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">clear_cookies</span><span class="p">())</span>
 
 

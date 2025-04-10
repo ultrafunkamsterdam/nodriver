@@ -148,13 +148,16 @@ class Browser:
         return True
         # return (self._process and self._process.returncode) or False
 
-    async def wait(self, time: Union[float, int] = 1) -> Browser:
+    async def wait(self, time: Union[float, int] = 0.1):
         """wait for <time> seconds. important to use, especially in between page navigation
 
         :param time:
         :return:
         """
-        return await asyncio.sleep(time, result=self)
+        try:
+            await asyncio.sleep(time)
+        except asyncio.TimeoutError:
+            pass
 
     sleep = wait
     """alias for wait"""
@@ -191,7 +194,7 @@ class Browser:
                     % (self.targets.index(current_tab), changes_string)
                 )
 
-                current_tab.target = target_info
+                current_tab._target = target_info
 
         elif isinstance(event, cdp.target.TargetCreated):
             target_info: cdp.target.TargetInfo = event.target_info
@@ -249,7 +252,7 @@ class Browser:
                     self.targets,
                 )
             )
-            connection.browser = self
+            connection._browser = self
 
         else:
             # first tab from browser.tabs
@@ -260,9 +263,9 @@ class Browser:
             frame_id, loader_id, *_ = await connection.send(cdp.page.navigate(url))
             # update the frame_id on the tab
             connection.frame_id = frame_id
-            connection.browser = self
+            connection._browser = self
 
-        await connection.sleep(0.25)
+        await self
         return connection
 
     async def create_context(
@@ -423,24 +426,11 @@ class Browser:
                 )
             )
 
-        self.connection = Connection(self.info.webSocketDebuggerUrl, _owner=self)
+        self.connection = Connection(self.info.webSocketDebuggerUrl, browser=self)
 
         if self.config.autodiscover_targets:
             logger.info("enabling autodiscover targets")
 
-            # self.connection.add_handler(
-            #     cdp.target.TargetInfoChanged, self._handle_target_update
-            # )
-            # self.connection.add_handler(
-            #     cdp.target.TargetCreated, self._handle_target_update
-            # )
-            # self.connection.add_handler(
-            #     cdp.target.TargetDestroyed, self._handle_target_update
-            # )
-            # self.connection.add_handler(
-            #     cdp.target.TargetCreated, self._handle_target_update
-            # )
-            #
             self.connection.handlers[cdp.target.TargetInfoChanged] = [
                 self._handle_target_update
             ]
@@ -455,7 +445,9 @@ class Browser:
             ]
             await self.connection.send(cdp.target.set_discover_targets(discover=True))
 
-        await self
+        await self.update_targets()
+
+        # await self
 
         # self.connection.handlers[cdp.inspector.Detached] = [self.stop]
         # return self
@@ -559,6 +551,7 @@ class Browser:
         return info
 
     async def update_targets(self):
+
         targets: List[cdp.target.TargetInfo]
         targets = await self._get_targets()
         target_ids = [t.target_id for t in targets]
@@ -578,7 +571,7 @@ class Browser:
                             f"/{t.target_id}"
                         ),
                         target=t,
-                        _owner=self,
+                        browser=self,
                     )
                 )
 
@@ -665,13 +658,13 @@ class Browser:
         try:
             # asyncio.get_running_loop().create_task(self.connection.send(cdp.browser.close()))
 
-            asyncio.get_event_loop().create_task(self.connection.aclose())
+            asyncio.get_event_loop().create_task(self.connection.disconnect())
             logger.debug("closed the connection using get_event_loop().create_task()")
         except RuntimeError:
             if self.connection:
                 try:
                     # asyncio.run(self.connection.send(cdp.browser.close()))
-                    asyncio.run(self.connection.aclose())
+                    asyncio.run(self.connection.disconnect())
                     logger.debug("closed the connection using asyncio.run()")
                 except Exception:
                     pass

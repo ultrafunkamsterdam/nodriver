@@ -93,7 +93,7 @@ cdp section.
 when you import \* from this package, cdp will be in your namespace, and contains all domains/actions/events
 you can act upon.
 
-#### *async* aclose()
+#### *async* disconnect()
 
 closes the websocket connection. should not be called manually by users.
 
@@ -124,7 +124,7 @@ the next time you make network traffic you will see your console print like craz
 * **Returns:**
 * **Return type:**
 
-#### *async* aopen(\*\*kw)
+#### *async* connect(\*\*kw)
 
 opens the websocket connection. should not be called manually by users
 :type kw: 

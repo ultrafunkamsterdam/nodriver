@@ -98,7 +98,7 @@ to fully customizable everything using the entire array of
     * [`Tab.aclose()`](nodriver/classes/tab.md#nodriver.Tab.aclose)
     * [`Tab.activate()`](nodriver/classes/tab.md#nodriver.Tab.activate)
     * [`Tab.add_handler()`](nodriver/classes/tab.md#nodriver.Tab.add_handler)
-    * [`Tab.aopen()`](nodriver/classes/tab.md#nodriver.Tab.aopen)
+    * [`Tab.connect()`](nodriver/classes/tab.md#nodriver.Tab.aopen)
     * [`Tab.attached`](nodriver/classes/tab.md#nodriver.Tab.attached)
     * [`Tab.back()`](nodriver/classes/tab.md#nodriver.Tab.back)
     * [`Tab.bring_to_front()`](nodriver/classes/tab.md#nodriver.Tab.bring_to_front)
