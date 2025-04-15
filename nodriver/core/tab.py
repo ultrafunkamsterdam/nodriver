@@ -633,36 +633,7 @@ class Tab(Connection):
         await self.send(cdp.dom.disable())
         return items or []
 
-    # async def find_xpath(self, path: str):
-    #     """
-    #     this is not ready
-    #     :return:
-    #     :rtype:
-    #     """
-    #     js_impl = (
-    #         """
-    #
-    #     function xPath(path){
-    #       var result = [];
-    #       var nodesSnapshot = document.evaluate(path, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
-    #       for ( var i=0 ; i < nodesSnapshot.snapshotLength; i++ ){
-    #         result.push( nodesSnapshot.snapshotItem(i) );
-    #       }
-    #       return result;
-    #     }
-    #     ;
-    #     xPath(`%s`)
-    #     """
-    #         % path
-    #     )
-    #     return await self.evaluate(js_impl, return_by_value=False)
-
-    # async def find_element_by_regex(self, regex: str | re.Pattern):
-    #     if isinstance(regex, str):
-    #         regex = re.compile(regex)
-    #
-    #     items = await self.select_all("*")
-    #     return [item for item in items if item and regex.search(str(item))]
+   
 
     async def find_element_by_text(
         self,
@@ -693,9 +664,7 @@ class Tab(Connection):
             node_ids = await self.send(cdp.dom.get_search_results(search_id, 0, nresult))
         else:
             node_ids = None
-        finally:
-            await self.send(cdp.dom.discard_search_results(search_id))
-
+        await self.send(cdp.dom.discard_search_results(search_id))
         if not node_ids:
             node_ids = []
         items = []
@@ -833,39 +802,7 @@ class Tab(Connection):
 
         return remote_object
 
-    # async def _enable_shadow_root_visibility(self):
-    #     await self.send(cdp.page.enable())
-    #     return await self.send(
-    #         cdp.page.add_script_to_evaluate_on_new_document(
-    #             """
-    #         const shadowHosts = new WeakSet()
-    #         const original = Element.prototype.attachShadow
-    #         Element.prototype.attachShadow = function attachShadow(...args) {
-    #             const result = original.apply(this, args)
-    #             shadowHosts.add(this)
-    #             return result
-    #         }
-    #         window.$hasShadow = (el) => {
-    #             return shadowHosts.has(el)
-    #         }
-    #         """
-    #         )
-    #     )
-    #
-    # async def get_shadow_roots(self):
-    #     return await self.send(
-    #         cdp.runtime.evaluate(
-    #             """[...document.querySelectorAll('*')].filter( _ => $hasShadow(_))""",
-    #             serialization_options=cdp.runtime.SerializationOptions(
-    #                 serialization="deep",
-    #                 max_depth=10,
-    #                 additional_parameters={
-    #                     "maxNodeDepth": 10,
-    #                     "includeShadowTree": "all",
-    #                 },
-    #             ),
-    #         )
-    #     )
+
 
     async def js_dumps(
         self, obj_name: str, return_by_value: Optional[bool] = True
