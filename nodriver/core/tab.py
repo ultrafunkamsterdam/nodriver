@@ -689,9 +689,12 @@ class Tab(Connection):
         doc = await self.send(cdp.dom.get_document(-1, True))
         text = text.strip()
         search_id, nresult = await self.send(cdp.dom.perform_search(text, True))
-
-        node_ids = await self.send(cdp.dom.get_search_results(search_id, 0, nresult))
-        await self.send(cdp.dom.discard_search_results(search_id))
+        if nresult:
+            node_ids = await self.send(cdp.dom.get_search_results(search_id, 0, nresult))
+        else:
+            node_ids = None
+        finally:
+            await self.send(cdp.dom.discard_search_results(search_id))
 
         if not node_ids:
             node_ids = []
