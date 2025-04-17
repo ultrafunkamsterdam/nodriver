@@ -1,12 +1,13 @@
-# NODRIVER
+NODRIVER
+=======================
 
-## for docs click [here](https://ultrafunkamsterdam.github.io/nodriver)
+### nodriver provides next level async webscraping and browser automation library for python with an easy interface which Just Makes Sense ™
 
-**This package provides next level webscraping and browser automation
-using a relatively simple interface.**
 
 * **This is the official successor of the** [Undetected-Chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver/) **python package.**
 * **No more webdriver, no more selenium**
+
+### for docs click [here](https://ultrafunkamsterdam.github.io/nodriver)
 
 Direct communication provides even better resistance against web applicatinon firewalls (WAF’s), while
 performance gets a massive boost.
@@ -18,111 +19,188 @@ is the optimization to stay undetected for most anti-bot solutions.
 Another focus point is usability and quick prototyping, so expect a lot to work `-as is-` ,
 with most method parameters having `best practice` defaults.
 Using 1 or 2 lines, this is up and running, providing best practice config
-by default.
+by default. It cleans up created files (profile) afterwards.
+
+known to work with 
+- chromium
+- chrome
+- edge
+- brave 
+
 
 While usability and convenience is important. It’s also easy
 to fully customizable everything using the entire array of
 [CDP](https://chromedevtools.github.io/devtools-protocol/) domains, methods and events available.
 
 ### Some features
-
-* A blazing fast undetected chrome (-ish) automation library
 * No chromedriver binary or Selenium dependency
-* This equals bizarre performance increase and less detections!
 * Up and running in 1 line of code\*
 * uses fresh profile on each run, cleans up on exit
 * save and load cookies to file to not repeat tedious login steps
-* smart element lookup, by selector or text, including iframe content.
+* ```tab.find("sometext")```
+
+  ```tab.find_all("sometext")```
+
+  ```tab.select("a[class*=something]")```
+
+  ```tab.select_all("a[href] > div > img")```
+
+  smart and performant element lookup, by selector or text, including iframe content.
   this could also be used as wait condition for a element to appear, since it will retry
-  for the duration of <timeout> until found.
-  single element lookup by text using tab.find(), accepts a  best_match flag, which will not
-  naively return the first match, but will match candidates by closest matching text length.
+  for the duration of <timeout> until found. so an ```await tab.select('body')``` could be used
+  as an indicator whether a page is loaded.
+  the find method searches by text, but will not naively return the first 
+  matching element, but will match candidates by closest matching text length (shortest wins),
+  this makes lookups like tab.find('accept all') return the actual cookie button instead of
+  a script in the headers
+
+* can connect to a running chrome debug session
 * descriptive \_\_repr_\_ for elements, which represent the element as html
 * utility function to convert a running undetected_chromedriver.Chrome instance
   to a nodriver.Browser instance and contintue from there
 * packed with helpers and utility methods for most used and important operations
 
-### what is new
+what is new
+--------------------
 
-**tab.cf_verify()**
 
+### ```tab.cf_verify()```
 finds the checkbox and click it successfully
 this only works when NOT in expert mode.
 currently built-in english only
 requires opencv-python package to be installed
 
+<video autoplay loop muted playsInline src="https://github.com/user-attachments/assets/288c5e01-39c5-4453-9e64-2b40c3a8548d"></video>
 
 
-**tab.bypass_insecure_connection_warning()**
-
+### ```tab.bypass_insecure_connection_warning()```
 convenience method, for insecure page warning.
 for example when a certificate is invalid.
 
-**tab.open_external_debugger()**
-
+### ```tab.open_external_debugger()```
 lets you inspect the tab without breaking your connection
 
-**tab.get_local_storage()**
-
+### ```tab.get_local_storage()```
 get localstorage content
 
-**tab.set_local_storage(dict)**
 
+### ```tab.set_local_storage(dict)```
 set localstorage content
 
-**tab.add_handler(someEvent, callback)**
-
+### ```tab.add_handler(someEvent, callback)```
 callback may accept a single argument (event), or 2 arguments (event, tab).
 
-**start(expert=True)**
 
-does some hacking for more experienced users. It disables web security and origin-trials, as well as ensures shadow-roots are always  open.
+### ```start(expert=True)```
+does some hacking for more experienced users. It disables 
+web security and origin-trials, as well as ensures 
+shadow-roots are always open. This makes you more detectable though!
 
-### Some examples of what the api looks like
 
-> * ``elem.text``
-> * ``elem.text_all``
-> * ``elem.parent.parent.parent.attrs``
-> * ``anchor_elem.href and anchor_elem['href']``
-> * ``anchor_elem.href = 'someotherthing'; await anchor_elem.save()``
-> * ``elem.children[-1].children[0].children[4].parent.parent``
-> * ``await html5video_element.record_video()``
-> * ``await html5video_element('pause')``
-> * ``await html5video_element.apply('''(el) => el.currentTime = 0''')``
-> * ``tab = await browser.get(url, new_tab=True)``
-> * ``tab_win = await browser.get(url, new_window=True)``
-> * ``first = await tab.find('search text')``
-> * ``best = await tab.find('search text', best_match=True)``
-> * ``all_results = await tab.find_all('search text')``
-> * ``first_submit_button = await tab.select(selector='button[type=submit]')``
-> * ``inputs_in_form = await tab.select_all('form input')``
+Installation
+=================
 
-### Installation
+**you need chrome (or some chromium based browser) installed
+ preferably in the default location
+ on the machine where you use this package.**
+
+when running on a headless machine, like AWS or any other environment where
+no display is present, it's best to use some **Xvfb** tool, to emulate a **screen**. 
+alternatively this package can be used in headless mode.
+
+
+
+#### you can use pip to install nodriver
 
 ```default
 pip install nodriver
 ```
 
+To update
+---------
+
+```default
+pip install -U nodriver
+```
+
+
 <a id="getting-started-commands"></a>
 
-### usage example
+usage examples
+=======================
 
 The aim of this project (just like undetected-chromedriver, somewhere long ago)
 is to keep it short and simple, so you can quickly open an editor or interactive session,
 type or paste a few lines and off you go.
 
+simple 
+--------------
+
 ```python
-import asyncio
 import nodriver as uc
 
 async def main():
+
     browser = await uc.start()
+    page = await browser.get('https://www.nowsecure.nl')
+
+    ... further code ...
+
+if __name__ == '__main__':
+    # since asyncio.run never worked (for me)
+    uc.loop().run_until_complete(main())
+```
+
+
+Custom starting options
+---------------------
+I’ll leave out the async boilerplate here
+
+```python
+from nodriver import *
+
+browser = await start(
+    headless=False,
+    user_data_dir="/path/to/existing/profile",  # by specifying it, it won't be automatically cleaned up when finished
+    browser_executable_path="/path/to/some/other/browser",
+    browser_args=['--some-browser-arg=true', '--some-other-option'],
+    lang="en-US"   # this could set iso-language-code in navigator, not recommended to change
+)
+tab = await browser.get('https://somewebsite.com')
+```
+
+Custom options using the Config object
+---------------------------
+
+I’ll leave out the async boilerplate here
+
+```python 
+from nodriver import *
+
+config = Config()
+config.headless = False
+config.user_data_dir="/path/to/existing/profile",  # by specifying it, it won't be automatically cleaned up when finished
+config.browser_executable_path="/path/to/some/other/browser",
+config.browser_args=['--some-browser-arg=true', '--some-other-option'],
+config.lang="en-US"   # this could set iso-language-code in navigator, not recommended to change
+)
+```
+
+some impression
+----
+```python 
+import nodriver
+
+async def main():
+
+    browser = await nodriver.start()
     page = await browser.get('https://www.nowsecure.nl')
 
     await page.save_screenshot()
     await page.get_content()
     await page.scroll_down(150)
     elems = await page.select_all('*[src]')
+
     for elem in elems:
         await elem.flash()
 
@@ -137,12 +215,19 @@ async def main():
        if p != page3:
            await p.close()
 
-
 if __name__ == '__main__':
 
     # since asyncio.run never worked (for me)
     uc.loop().run_until_complete(main())
 ```
+
+
+
+complete code example
+-----------------------------
+automating Twitter/X account creation
+
+```python
 
 A more concrete example, which can be found in the ./example/ folder,
 shows a script to create a twitter account
@@ -273,4 +358,7 @@ if __name__ == "__main__":
     # since asyncio.run never worked (for me)
     # i use
     uc.loop().run_until_complete(main())
+
 ```
+
+### more examples in the ./example/ folder
