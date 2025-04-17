@@ -9,9 +9,8 @@ from __future__ import annotations
 
 import enum
 import typing
-from dataclasses import dataclass
 
-from .util import T_JSON_DICT, event_class
+from .util import T_JSON_DICT
 
 
 class StorageArea(enum.Enum):
@@ -71,7 +70,7 @@ def uninstall(id_: str) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def get_storage_items(
-    id_: str, storage_area: StorageArea, keys: typing.Optional[typing.List[str]] = None
+        id_: str, storage_area: StorageArea, keys: typing.Optional[typing.List[str]] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, dict]:
     """
     Gets data from extension storage in the given ``storageArea``. If ``keys`` is
@@ -96,7 +95,7 @@ def get_storage_items(
 
 
 def remove_storage_items(
-    id_: str, storage_area: StorageArea, keys: typing.List[str]
+        id_: str, storage_area: StorageArea, keys: typing.List[str]
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Removes ``keys`` from extension storage in the given ``storageArea``.
@@ -117,7 +116,7 @@ def remove_storage_items(
 
 
 def clear_storage_items(
-    id_: str, storage_area: StorageArea
+        id_: str, storage_area: StorageArea
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Clears extension storage in the given ``storageArea``.
@@ -136,7 +135,7 @@ def clear_storage_items(
 
 
 def set_storage_items(
-    id_: str, storage_area: StorageArea, values: dict
+        id_: str, storage_area: StorageArea, values: dict
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets ``values`` in extension storage in the given ``storageArea``. The provided ``values``

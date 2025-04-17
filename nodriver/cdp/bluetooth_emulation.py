@@ -163,7 +163,7 @@ class ScanEntry:
 
 
 def enable(
-    state: CentralState, le_supported: bool
+        state: CentralState, le_supported: bool
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enable the BluetoothEmulation domain.
@@ -182,7 +182,7 @@ def enable(
 
 
 def set_simulated_central_state(
-    state: CentralState,
+        state: CentralState,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Set the state of the simulated central.
@@ -209,10 +209,10 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def simulate_preconnected_peripheral(
-    address: str,
-    name: str,
-    manufacturer_data: typing.List[ManufacturerData],
-    known_service_uuids: typing.List[str],
+        address: str,
+        name: str,
+        manufacturer_data: typing.List[ManufacturerData],
+        known_service_uuids: typing.List[str],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Simulates a peripheral with ``address``, ``name`` and ``knownServiceUuids``
@@ -236,7 +236,7 @@ def simulate_preconnected_peripheral(
 
 
 def simulate_advertisement(
-    entry: ScanEntry,
+        entry: ScanEntry,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Simulates an advertisement packet described in ``entry`` being received by
@@ -254,7 +254,7 @@ def simulate_advertisement(
 
 
 def simulate_gatt_operation_response(
-    address: str, type_: GATTOperationType, code: int
+        address: str, type_: GATTOperationType, code: int
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Simulates the response code from the peripheral with ``address`` for a

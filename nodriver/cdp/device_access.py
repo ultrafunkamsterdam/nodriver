@@ -7,7 +7,6 @@
 
 from __future__ import annotations
 
-import enum
 import typing
 from dataclasses import dataclass
 
@@ -92,7 +91,7 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def select_prompt(
-    id_: RequestId, device_id: DeviceId
+        id_: RequestId, device_id: DeviceId
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Select a device in response to a DeviceAccess.deviceRequestPrompted event.

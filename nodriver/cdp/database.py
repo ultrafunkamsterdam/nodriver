@@ -7,7 +7,6 @@
 
 from __future__ import annotations
 
-import enum
 import typing
 from dataclasses import dataclass
 
@@ -154,7 +153,7 @@ def execute_sql(database_id: DatabaseId, query: str) -> typing.Generator[
 
 
 def get_database_table_names(
-    database_id: DatabaseId,
+        database_id: DatabaseId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[str]]:
     """
     :param database_id:

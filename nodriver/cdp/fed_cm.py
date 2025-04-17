@@ -150,7 +150,7 @@ class Account:
 
 
 def enable(
-    disable_rejection_delay: typing.Optional[bool] = None,
+        disable_rejection_delay: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param disable_rejection_delay: *(Optional)* Allows callers to disable the promise rejection delay that would normally happen, if this is unimportant to what's being tested. (step 4 of https://fedidcg.github.io/FedCM/#browser-api-rp-sign-in)
@@ -166,7 +166,6 @@ def enable(
 
 
 def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-
     cmd_dict: T_JSON_DICT = {
         "method": "FedCm.disable",
     }
@@ -174,7 +173,7 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def select_account(
-    dialog_id: str, account_index: int
+        dialog_id: str, account_index: int
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param dialog_id:
@@ -191,7 +190,7 @@ def select_account(
 
 
 def click_dialog_button(
-    dialog_id: str, dialog_button: DialogButton
+        dialog_id: str, dialog_button: DialogButton
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param dialog_id:
@@ -208,7 +207,7 @@ def click_dialog_button(
 
 
 def open_url(
-    dialog_id: str, account_index: int, account_url_type: AccountUrlType
+        dialog_id: str, account_index: int, account_url_type: AccountUrlType
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param dialog_id:
@@ -227,7 +226,7 @@ def open_url(
 
 
 def dismiss_dialog(
-    dialog_id: str, trigger_cooldown: typing.Optional[bool] = None
+        dialog_id: str, trigger_cooldown: typing.Optional[bool] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param dialog_id:

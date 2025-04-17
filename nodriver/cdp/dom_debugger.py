@@ -14,7 +14,7 @@ from dataclasses import dataclass
 from deprecated.sphinx import deprecated  # type: ignore
 
 from . import dom, runtime
-from .util import T_JSON_DICT, event_class
+from .util import T_JSON_DICT
 
 
 class DOMBreakpointType(enum.Enum):
@@ -132,9 +132,9 @@ class EventListener:
 
 
 def get_event_listeners(
-    object_id: runtime.RemoteObjectId,
-    depth: typing.Optional[int] = None,
-    pierce: typing.Optional[bool] = None,
+        object_id: runtime.RemoteObjectId,
+        depth: typing.Optional[int] = None,
+        pierce: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[EventListener]]:
     """
     Returns event listeners of the given object.
@@ -159,7 +159,7 @@ def get_event_listeners(
 
 
 def remove_dom_breakpoint(
-    node_id: dom.NodeId, type_: DOMBreakpointType
+        node_id: dom.NodeId, type_: DOMBreakpointType
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Removes DOM breakpoint that was set using ``setDOMBreakpoint``.
@@ -178,7 +178,7 @@ def remove_dom_breakpoint(
 
 
 def remove_event_listener_breakpoint(
-    event_name: str, target_name: typing.Optional[str] = None
+        event_name: str, target_name: typing.Optional[str] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Removes breakpoint on particular DOM event.
@@ -199,7 +199,7 @@ def remove_event_listener_breakpoint(
 
 @deprecated(version="1.3")
 def remove_instrumentation_breakpoint(
-    event_name: str,
+        event_name: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Removes breakpoint on particular native event.
@@ -235,7 +235,7 @@ def remove_xhr_breakpoint(url: str) -> typing.Generator[T_JSON_DICT, T_JSON_DICT
 
 
 def set_break_on_csp_violation(
-    violation_types: typing.List[CSPViolationType],
+        violation_types: typing.List[CSPViolationType],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets breakpoint on particular CSP violations.
@@ -254,7 +254,7 @@ def set_break_on_csp_violation(
 
 
 def set_dom_breakpoint(
-    node_id: dom.NodeId, type_: DOMBreakpointType
+        node_id: dom.NodeId, type_: DOMBreakpointType
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets breakpoint on particular operation with DOM.
@@ -273,7 +273,7 @@ def set_dom_breakpoint(
 
 
 def set_event_listener_breakpoint(
-    event_name: str, target_name: typing.Optional[str] = None
+        event_name: str, target_name: typing.Optional[str] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets breakpoint on particular DOM event.
@@ -294,7 +294,7 @@ def set_event_listener_breakpoint(
 
 @deprecated(version="1.3")
 def set_instrumentation_breakpoint(
-    event_name: str,
+        event_name: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets breakpoint on particular native event.

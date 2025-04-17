@@ -7,14 +7,13 @@
 
 from __future__ import annotations
 
-import enum
 import typing
 from dataclasses import dataclass
 
 from deprecated.sphinx import deprecated  # type: ignore
 
 from . import dom, dom_debugger, page
-from .util import T_JSON_DICT, event_class
+from .util import T_JSON_DICT
 
 
 @dataclass
@@ -1028,10 +1027,10 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 @deprecated(version="1.3")
 def get_snapshot(
-    computed_style_whitelist: typing.List[str],
-    include_event_listeners: typing.Optional[bool] = None,
-    include_paint_order: typing.Optional[bool] = None,
-    include_user_agent_shadow_tree: typing.Optional[bool] = None,
+        computed_style_whitelist: typing.List[str],
+        include_event_listeners: typing.Optional[bool] = None,
+        include_paint_order: typing.Optional[bool] = None,
+        include_user_agent_shadow_tree: typing.Optional[bool] = None,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -1078,11 +1077,11 @@ def get_snapshot(
 
 
 def capture_snapshot(
-    computed_styles: typing.List[str],
-    include_paint_order: typing.Optional[bool] = None,
-    include_dom_rects: typing.Optional[bool] = None,
-    include_blended_background_colors: typing.Optional[bool] = None,
-    include_text_color_opacities: typing.Optional[bool] = None,
+        computed_styles: typing.List[str],
+        include_paint_order: typing.Optional[bool] = None,
+        include_dom_rects: typing.Optional[bool] = None,
+        include_blended_background_colors: typing.Optional[bool] = None,
+        include_text_color_opacities: typing.Optional[bool] = None,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,

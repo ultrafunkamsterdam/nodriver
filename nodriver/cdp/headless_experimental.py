@@ -7,13 +7,12 @@
 
 from __future__ import annotations
 
-import enum
 import typing
 from dataclasses import dataclass
 
 from deprecated.sphinx import deprecated  # type: ignore
 
-from .util import T_JSON_DICT, event_class
+from .util import T_JSON_DICT
 
 
 @dataclass
@@ -59,10 +58,10 @@ class ScreenshotParams:
 
 
 def begin_frame(
-    frame_time_ticks: typing.Optional[float] = None,
-    interval: typing.Optional[float] = None,
-    no_display_updates: typing.Optional[bool] = None,
-    screenshot: typing.Optional[ScreenshotParams] = None,
+        frame_time_ticks: typing.Optional[float] = None,
+        interval: typing.Optional[float] = None,
+        no_display_updates: typing.Optional[bool] = None,
+        screenshot: typing.Optional[ScreenshotParams] = None,
 ) -> typing.Generator[
     T_JSON_DICT, T_JSON_DICT, typing.Tuple[bool, typing.Optional[str]]
 ]:

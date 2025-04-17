@@ -7,7 +7,6 @@
 
 from __future__ import annotations
 
-import enum
 import typing
 from dataclasses import dataclass
 
@@ -313,7 +312,7 @@ class PaintProfile(list):
 
 
 def compositing_reasons(
-    layer_id: LayerId,
+        layer_id: LayerId,
 ) -> typing.Generator[
     T_JSON_DICT, T_JSON_DICT, typing.Tuple[typing.List[str], typing.List[str]]
 ]:
@@ -360,7 +359,7 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def load_snapshot(
-    tiles: typing.List[PictureTile],
+        tiles: typing.List[PictureTile],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, SnapshotId]:
     """
     Returns the snapshot identifier.
@@ -379,7 +378,7 @@ def load_snapshot(
 
 
 def make_snapshot(
-    layer_id: LayerId,
+        layer_id: LayerId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, SnapshotId]:
     """
     Returns the layer snapshot identifier.
@@ -398,10 +397,10 @@ def make_snapshot(
 
 
 def profile_snapshot(
-    snapshot_id: SnapshotId,
-    min_repeat_count: typing.Optional[int] = None,
-    min_duration: typing.Optional[float] = None,
-    clip_rect: typing.Optional[dom.Rect] = None,
+        snapshot_id: SnapshotId,
+        min_repeat_count: typing.Optional[int] = None,
+        min_duration: typing.Optional[float] = None,
+        clip_rect: typing.Optional[dom.Rect] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[PaintProfile]]:
     """
     :param snapshot_id: The id of the layer snapshot.
@@ -427,7 +426,7 @@ def profile_snapshot(
 
 
 def release_snapshot(
-    snapshot_id: SnapshotId,
+        snapshot_id: SnapshotId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Releases layer snapshot captured by the back-end.
@@ -444,10 +443,10 @@ def release_snapshot(
 
 
 def replay_snapshot(
-    snapshot_id: SnapshotId,
-    from_step: typing.Optional[int] = None,
-    to_step: typing.Optional[int] = None,
-    scale: typing.Optional[float] = None,
+        snapshot_id: SnapshotId,
+        from_step: typing.Optional[int] = None,
+        to_step: typing.Optional[int] = None,
+        scale: typing.Optional[float] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
     """
     Replays the layer snapshot and returns the resulting bitmap.
@@ -475,7 +474,7 @@ def replay_snapshot(
 
 
 def snapshot_command_log(
-    snapshot_id: SnapshotId,
+        snapshot_id: SnapshotId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[dict]]:
     """
     Replays the layer snapshot and returns canvas log.

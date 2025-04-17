@@ -11,7 +11,7 @@ import enum
 import typing
 from dataclasses import dataclass
 
-from .util import T_JSON_DICT, event_class
+from .util import T_JSON_DICT
 
 
 @dataclass
@@ -350,7 +350,7 @@ class ProcessInfo:
 
 
 def get_info() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[GPUInfo, str, str, str]]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[GPUInfo, str, str, str]]
 ):
     """
     Returns information about the system.
@@ -375,7 +375,7 @@ def get_info() -> (
 
 
 def get_feature_state(
-    feature_state: str,
+        feature_state: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, bool]:
     """
     Returns information about the feature state.
@@ -394,7 +394,7 @@ def get_feature_state(
 
 
 def get_process_info() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[ProcessInfo]]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[ProcessInfo]]
 ):
     """
     Returns information about all running processes.

@@ -1,3 +1,10 @@
+# Copyright 2024 by UltrafunkAmsterdam (https://github.com/UltrafunkAmsterdam)
+# All rights reserved.
+# This file is part of the nodriver package.
+# and is released under the "GNU AFFERO GENERAL PUBLIC LICENSE".
+# Please see the LICENSE.txt file that should have been included as part of this package.
+
+
 from __future__ import annotations
 
 import asyncio
@@ -8,7 +15,6 @@ from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
-    Dict,
     Generator,
     List,
     Optional,
@@ -33,18 +39,18 @@ T = TypeVar("T")
 
 
 async def start(
-    config: Optional[Config] = None,
-    *,
-    user_data_dir: Optional[PathLike] = None,
-    headless: Optional[bool] = False,
-    browser_executable_path: Optional[PathLike] = None,
-    browser_args: Optional[List[str]] = None,
-    sandbox: Optional[bool] = True,
-    lang: Optional[str] = None,
-    host: Optional[str] = None,
-    port: Optional[int] = None,
-    expert: Optional[bool] = None,
-    **kwargs: Optional[dict],
+        config: Optional[Config] = None,
+        *,
+        user_data_dir: Optional[PathLike] = None,
+        headless: Optional[bool] = False,
+        browser_executable_path: Optional[PathLike] = None,
+        browser_args: Optional[List[str]] = None,
+        sandbox: Optional[bool] = True,
+        lang: Optional[str] = None,
+        host: Optional[str] = None,
+        port: Optional[int] = None,
+        expert: Optional[bool] = None,
+        **kwargs: Optional[dict],
 ) -> Browser:
     """
     helper function to launch a browser. it accepts several keyword parameters.
@@ -106,7 +112,7 @@ async def start(
 
 
 async def create_from_undetected_chromedriver(
-    driver: "undetected_chromedriver.Chrome",
+        driver: "undetected_chromedriver.Chrome",
 ) -> Browser:
     """
     create a nodriver.Browser instance from a running undetected_chromedriver.Chrome instance.
@@ -175,7 +181,7 @@ def deconstruct_browser():
 
 
 def filter_recurse_all(
-    doc: T, predicate: Callable[[cdp.dom.Node, Element], bool]
+        doc: T, predicate: Callable[[cdp.dom.Node, Element], bool]
 ) -> List[T]:
     """
     test each child using predicate(child), and return all children for which predicate(child) == True
@@ -226,7 +232,7 @@ def filter_recurse(doc: T, predicate: Callable[[cdp.dom.Node, Element], bool]) -
 
 
 def flatten_frame_tree(
-    tree: Union[cdp.page.FrameResourceTree, cdp.page.FrameTree]
+        tree: Union[cdp.page.FrameResourceTree, cdp.page.FrameTree]
 ) -> Generator[cdp.page.Frame, None, None]:
     yield tree.frame
     if tree.child_frames:
@@ -235,7 +241,7 @@ def flatten_frame_tree(
 
 
 def flatten_frame_tree_resources(
-    tree: cdp.page.FrameResourceTree,
+        tree: cdp.page.FrameResourceTree,
 ) -> Generator[Tuple[cdp.page.Frame, cdp.page.FrameResource], None, None]:
     for res in tree.resources:
         yield tree.frame, res
@@ -257,7 +263,7 @@ def get_all_param_names(cls):
 
 
 def circle(
-    x, y=None, radius=10, num=10, dir=0
+        x, y=None, radius=10, num=10, dir=0
 ) -> Generator[Tuple[float, float], None, None]:
     """
     a generator will calculate coordinates around a circle.
@@ -325,7 +331,7 @@ async def html_from_tree(tree: Union[cdp.dom.Node, Element], target: "nodriver.T
 
 
 def compare_target_info(
-    info1: cdp.target.TargetInfo, info2: cdp.target.TargetInfo
+        info1: cdp.target.TargetInfo, info2: cdp.target.TargetInfo
 ) -> List[Tuple[str, Any, Any]]:
     """
     when logging mode is set to debug, browser object will log when target info
@@ -4614,13 +4620,13 @@ class ProxyForwarder:
         await self.server.start_serving()
 
     async def handle_request(
-        self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter
+            self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter
     ):
         if self.scheme.startswith("socks"):
             return await self.handle_socks_request(reader, writer)
 
     async def handle_socks_request(
-        self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter
+            self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter
     ):
         import socket
         from struct import calcsize, pack, unpack
@@ -4714,12 +4720,12 @@ class ProxyForwarder:
 
     @staticmethod
     async def pipe(
-        reader: asyncio.StreamReader, writer: asyncio.StreamWriter, event: asyncio.Event
+            reader: asyncio.StreamReader, writer: asyncio.StreamWriter, event: asyncio.Event
     ):
         logger.debug("client proxy to authenticated proxy pipe")
         while not event.is_set():
             try:
-                data = await asyncio.wait_for(reader.read(2**16), 1)
+                data = await asyncio.wait_for(reader.read(2 ** 16), 1)
                 if not data:
                     break
                 # simply forward

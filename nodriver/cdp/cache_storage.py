@@ -12,7 +12,7 @@ import typing
 from dataclasses import dataclass
 
 from . import storage
-from .util import T_JSON_DICT, event_class
+from .util import T_JSON_DICT
 
 
 class CacheId(str):
@@ -210,7 +210,7 @@ def delete_cache(cache_id: CacheId) -> typing.Generator[T_JSON_DICT, T_JSON_DICT
 
 
 def delete_entry(
-    cache_id: CacheId, request: str
+        cache_id: CacheId, request: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Deletes a cache entry.
@@ -229,9 +229,9 @@ def delete_entry(
 
 
 def request_cache_names(
-    security_origin: typing.Optional[str] = None,
-    storage_key: typing.Optional[str] = None,
-    storage_bucket: typing.Optional[storage.StorageBucket] = None,
+        security_origin: typing.Optional[str] = None,
+        storage_key: typing.Optional[str] = None,
+        storage_bucket: typing.Optional[storage.StorageBucket] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[Cache]]:
     """
     Requests cache names.
@@ -257,7 +257,7 @@ def request_cache_names(
 
 
 def request_cached_response(
-    cache_id: CacheId, request_url: str, request_headers: typing.List[Header]
+        cache_id: CacheId, request_url: str, request_headers: typing.List[Header]
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, CachedResponse]:
     """
     Fetches cache entry.
@@ -280,10 +280,10 @@ def request_cached_response(
 
 
 def request_entries(
-    cache_id: CacheId,
-    skip_count: typing.Optional[int] = None,
-    page_size: typing.Optional[int] = None,
-    path_filter: typing.Optional[str] = None,
+        cache_id: CacheId,
+        skip_count: typing.Optional[int] = None,
+        page_size: typing.Optional[int] = None,
+        path_filter: typing.Optional[str] = None,
 ) -> typing.Generator[
     T_JSON_DICT, T_JSON_DICT, typing.Tuple[typing.List[DataEntry], float]
 ]:

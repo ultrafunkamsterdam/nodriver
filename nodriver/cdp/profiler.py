@@ -7,7 +7,6 @@
 
 from __future__ import annotations
 
-import enum
 import typing
 from dataclasses import dataclass
 
@@ -254,7 +253,6 @@ class ScriptCoverage:
 
 
 def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-
     cmd_dict: T_JSON_DICT = {
         "method": "Profiler.disable",
     }
@@ -262,7 +260,6 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-
     cmd_dict: T_JSON_DICT = {
         "method": "Profiler.enable",
     }
@@ -270,7 +267,7 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def get_best_effort_coverage() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[ScriptCoverage]]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[ScriptCoverage]]
 ):
     """
     Collect coverage data for the current isolate. The coverage data may be incomplete due to
@@ -286,7 +283,7 @@ def get_best_effort_coverage() -> (
 
 
 def set_sampling_interval(
-    interval: int,
+        interval: int,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Changes CPU profiler sampling interval. Must be called before CPU profiles recording started.
@@ -303,7 +300,6 @@ def set_sampling_interval(
 
 
 def start() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
-
     cmd_dict: T_JSON_DICT = {
         "method": "Profiler.start",
     }
@@ -311,9 +307,9 @@ def start() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def start_precise_coverage(
-    call_count: typing.Optional[bool] = None,
-    detailed: typing.Optional[bool] = None,
-    allow_triggered_updates: typing.Optional[bool] = None,
+        call_count: typing.Optional[bool] = None,
+        detailed: typing.Optional[bool] = None,
+        allow_triggered_updates: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, float]:
     """
     Enable precise code coverage. Coverage data for JavaScript executed before enabling precise code
@@ -365,9 +361,9 @@ def stop_precise_coverage() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def take_precise_coverage() -> (
-    typing.Generator[
-        T_JSON_DICT, T_JSON_DICT, typing.Tuple[typing.List[ScriptCoverage], float]
-    ]
+        typing.Generator[
+            T_JSON_DICT, T_JSON_DICT, typing.Tuple[typing.List[ScriptCoverage], float]
+        ]
 ):
     """
     Collect coverage data for the current isolate, and resets execution counters. Precise code

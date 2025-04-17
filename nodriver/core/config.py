@@ -1,3 +1,9 @@
+# Copyright 2024 by UltrafunkAmsterdam (https://github.com/UltrafunkAmsterdam)
+# All rights reserved.
+# This file is part of the nodriver package.
+# and is released under the "GNU AFFERO GENERAL PUBLIC LICENSE".
+# Please see the LICENSE.txt file that should have been included as part of this package.
+
 import logging
 import os
 import pathlib
@@ -5,10 +11,7 @@ import secrets
 import sys
 import tempfile
 import zipfile
-from types import MethodType
-from typing import List, Optional, TypeVar, Union
-
-from ._contradict import ContraDict
+from typing import List, Optional, TypeVar
 
 __all__ = [
     "Config",
@@ -32,17 +35,17 @@ class Config:
     """
 
     def __init__(
-        self,
-        user_data_dir: Optional[PathLike] = AUTO,
-        headless: Optional[bool] = False,
-        browser_executable_path: Optional[PathLike] = AUTO,
-        browser_args: Optional[List[str]] = AUTO,
-        sandbox: Optional[bool] = True,
-        lang: Optional[str] = "en-US",
-        host: str = AUTO,
-        port: int = AUTO,
-        expert: bool = AUTO,
-        **kwargs: dict,
+            self,
+            user_data_dir: Optional[PathLike] = AUTO,
+            headless: Optional[bool] = False,
+            browser_executable_path: Optional[PathLike] = AUTO,
+            browser_args: Optional[List[str]] = AUTO,
+            sandbox: Optional[bool] = True,
+            lang: Optional[str] = "en-US",
+            host: str = AUTO,
+            port: int = AUTO,
+            expert: bool = AUTO,
+            **kwargs: dict,
     ):
         """
         creates a config object.
@@ -192,15 +195,15 @@ class Config:
 
     def add_argument(self, arg: str):
         if any(
-            x in arg.lower()
-            for x in [
-                "headless",
-                "data-dir",
-                "data_dir",
-                "no-sandbox",
-                "no_sandbox",
-                "lang",
-            ]
+                x in arg.lower()
+                for x in [
+                    "headless",
+                    "data-dir",
+                    "data_dir",
+                    "no-sandbox",
+                    "no_sandbox",
+                    "lang",
+                ]
         ):
             raise ValueError(
                 '"%s" not allowed. please use one of the attributes of the Config object to set it'
@@ -254,11 +257,11 @@ def find_chrome_executable(return_all=False):
     if is_posix:
         for item in os.environ.get("PATH").split(os.pathsep):
             for subitem in (
-                "google-chrome",
-                "chromium",
-                "chromium-browser",
-                "chrome",
-                "google-chrome-stable",
+                    "google-chrome",
+                    "chromium",
+                    "chromium-browser",
+                    "chrome",
+                    "google-chrome-stable",
             ):
                 candidates.append(os.sep.join((item, subitem)))
         if "darwin" in sys.platform:
@@ -269,14 +272,14 @@ def find_chrome_executable(return_all=False):
 
     else:
         for item in map(
-            os.environ.get,
-            ("PROGRAMFILES", "PROGRAMFILES(X86)", "LOCALAPPDATA", "PROGRAMW6432"),
+                os.environ.get,
+                ("PROGRAMFILES", "PROGRAMFILES(X86)", "LOCALAPPDATA", "PROGRAMW6432"),
         ):
             if item is not None:
                 for subitem in (
-                    "Google/Chrome/Application",
-                    "Google/Chrome Beta/Application",
-                    "Google/Chrome Canary/Application",
+                        "Google/Chrome/Application",
+                        "Google/Chrome Beta/Application",
+                        "Google/Chrome Canary/Application",
                 ):
                     candidates.append(os.sep.join((item, subitem, "chrome.exe")))
     rv = []

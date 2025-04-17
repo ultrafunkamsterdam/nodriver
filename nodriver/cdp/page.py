@@ -2229,7 +2229,7 @@ class BackForwardCacheNotRestoredExplanationTree:
 
 @deprecated(version="1.3")
 def add_script_to_evaluate_on_load(
-    script_source: str,
+        script_source: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, ScriptIdentifier]:
     """
     Deprecated, please use addScriptToEvaluateOnNewDocument instead.
@@ -2252,10 +2252,10 @@ def add_script_to_evaluate_on_load(
 
 
 def add_script_to_evaluate_on_new_document(
-    source: str,
-    world_name: typing.Optional[str] = None,
-    include_command_line_api: typing.Optional[bool] = None,
-    run_immediately: typing.Optional[bool] = None,
+        source: str,
+        world_name: typing.Optional[str] = None,
+        include_command_line_api: typing.Optional[bool] = None,
+        run_immediately: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, ScriptIdentifier]:
     """
     Evaluates given script in every frame upon creation (before loading frame's scripts).
@@ -2293,12 +2293,12 @@ def bring_to_front() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def capture_screenshot(
-    format_: typing.Optional[str] = None,
-    quality: typing.Optional[int] = None,
-    clip: typing.Optional[Viewport] = None,
-    from_surface: typing.Optional[bool] = None,
-    capture_beyond_viewport: typing.Optional[bool] = None,
-    optimize_for_speed: typing.Optional[bool] = None,
+        format_: typing.Optional[str] = None,
+        quality: typing.Optional[int] = None,
+        clip: typing.Optional[Viewport] = None,
+        from_surface: typing.Optional[bool] = None,
+        capture_beyond_viewport: typing.Optional[bool] = None,
+        optimize_for_speed: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
     """
     Capture page screenshot.
@@ -2333,7 +2333,7 @@ def capture_screenshot(
 
 
 def capture_snapshot(
-    format_: typing.Optional[str] = None,
+        format_: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
     """
     Returns a snapshot of the page as a string. For MHTML format, the serialization includes
@@ -2372,7 +2372,7 @@ def clear_device_metrics_override() -> typing.Generator[T_JSON_DICT, T_JSON_DICT
 
 @deprecated(version="1.3")
 def clear_device_orientation_override() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, None]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, None]
 ):
     """
     Clears the overridden Device Orientation.
@@ -2401,9 +2401,9 @@ def clear_geolocation_override() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, N
 
 
 def create_isolated_world(
-    frame_id: FrameId,
-    world_name: typing.Optional[str] = None,
-    grant_univeral_access: typing.Optional[bool] = None,
+        frame_id: FrameId,
+        world_name: typing.Optional[str] = None,
+        grant_univeral_access: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, runtime.ExecutionContextId]:
     """
     Creates an isolated world for the given frame.
@@ -2429,7 +2429,7 @@ def create_isolated_world(
 
 @deprecated(version="1.3")
 def delete_cookie(
-    cookie_name: str, url: str
+        cookie_name: str, url: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Deletes browser cookie with given name, domain and path.
@@ -2462,7 +2462,7 @@ def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def enable(
-    enable_file_chooser_opened_event: typing.Optional[bool] = None,
+        enable_file_chooser_opened_event: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enables page domain notifications.
@@ -2480,7 +2480,7 @@ def enable(
 
 
 def get_app_manifest(
-    manifest_id: typing.Optional[str] = None,
+        manifest_id: typing.Optional[str] = None,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -2530,7 +2530,7 @@ def get_app_manifest(
 
 
 def get_installability_errors() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[InstallabilityError]]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[InstallabilityError]]
 ):
     """
 
@@ -2548,7 +2548,7 @@ def get_installability_errors() -> (
 
 @deprecated(version="1.3")
 def get_manifest_icons() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Optional[str]]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Optional[str]]
 ):
     """
     Deprecated because it's not guaranteed that the returned icon is in fact the one used for PWA installation.
@@ -2599,7 +2599,7 @@ def get_app_id() -> typing.Generator[
 
 
 def get_ad_script_id(
-    frame_id: FrameId,
+        frame_id: FrameId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Optional[AdScriptId]]:
     """
 
@@ -2675,9 +2675,9 @@ def get_layout_metrics() -> typing.Generator[
 
 
 def get_navigation_history() -> (
-    typing.Generator[
-        T_JSON_DICT, T_JSON_DICT, typing.Tuple[int, typing.List[NavigationEntry]]
-    ]
+        typing.Generator[
+            T_JSON_DICT, T_JSON_DICT, typing.Tuple[int, typing.List[NavigationEntry]]
+        ]
 ):
     """
     Returns navigation history for the current page.
@@ -2708,7 +2708,7 @@ def reset_navigation_history() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, Non
 
 
 def get_resource_content(
-    frame_id: FrameId, url: str
+        frame_id: FrameId, url: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Tuple[str, bool]]:
     """
     Returns content of the given resource.
@@ -2734,7 +2734,7 @@ def get_resource_content(
 
 
 def get_resource_tree() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, FrameResourceTree]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, FrameResourceTree]
 ):
     """
     Returns present frame / resource tree structure.
@@ -2751,7 +2751,7 @@ def get_resource_tree() -> (
 
 
 def handle_java_script_dialog(
-    accept: bool, prompt_text: typing.Optional[str] = None
+        accept: bool, prompt_text: typing.Optional[str] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Accepts or dismisses a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload).
@@ -2771,11 +2771,11 @@ def handle_java_script_dialog(
 
 
 def navigate(
-    url: str,
-    referrer: typing.Optional[str] = None,
-    transition_type: typing.Optional[TransitionType] = None,
-    frame_id: typing.Optional[FrameId] = None,
-    referrer_policy: typing.Optional[ReferrerPolicy] = None,
+        url: str,
+        referrer: typing.Optional[str] = None,
+        transition_type: typing.Optional[TransitionType] = None,
+        frame_id: typing.Optional[FrameId] = None,
+        referrer_policy: typing.Optional[ReferrerPolicy] = None,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -2822,7 +2822,7 @@ def navigate(
 
 
 def navigate_to_history_entry(
-    entry_id: int,
+        entry_id: int,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Navigates current page to the given history entry.
@@ -2839,23 +2839,23 @@ def navigate_to_history_entry(
 
 
 def print_to_pdf(
-    landscape: typing.Optional[bool] = None,
-    display_header_footer: typing.Optional[bool] = None,
-    print_background: typing.Optional[bool] = None,
-    scale: typing.Optional[float] = None,
-    paper_width: typing.Optional[float] = None,
-    paper_height: typing.Optional[float] = None,
-    margin_top: typing.Optional[float] = None,
-    margin_bottom: typing.Optional[float] = None,
-    margin_left: typing.Optional[float] = None,
-    margin_right: typing.Optional[float] = None,
-    page_ranges: typing.Optional[str] = None,
-    header_template: typing.Optional[str] = None,
-    footer_template: typing.Optional[str] = None,
-    prefer_css_page_size: typing.Optional[bool] = None,
-    transfer_mode: typing.Optional[str] = None,
-    generate_tagged_pdf: typing.Optional[bool] = None,
-    generate_document_outline: typing.Optional[bool] = None,
+        landscape: typing.Optional[bool] = None,
+        display_header_footer: typing.Optional[bool] = None,
+        print_background: typing.Optional[bool] = None,
+        scale: typing.Optional[float] = None,
+        paper_width: typing.Optional[float] = None,
+        paper_height: typing.Optional[float] = None,
+        margin_top: typing.Optional[float] = None,
+        margin_bottom: typing.Optional[float] = None,
+        margin_left: typing.Optional[float] = None,
+        margin_right: typing.Optional[float] = None,
+        page_ranges: typing.Optional[str] = None,
+        header_template: typing.Optional[str] = None,
+        footer_template: typing.Optional[str] = None,
+        prefer_css_page_size: typing.Optional[bool] = None,
+        transfer_mode: typing.Optional[str] = None,
+        generate_tagged_pdf: typing.Optional[bool] = None,
+        generate_document_outline: typing.Optional[bool] = None,
 ) -> typing.Generator[
     T_JSON_DICT, T_JSON_DICT, typing.Tuple[str, typing.Optional[io.StreamHandle]]
 ]:
@@ -2935,9 +2935,9 @@ def print_to_pdf(
 
 
 def reload(
-    ignore_cache: typing.Optional[bool] = None,
-    script_to_evaluate_on_load: typing.Optional[str] = None,
-    loader_id: typing.Optional[network.LoaderId] = None,
+        ignore_cache: typing.Optional[bool] = None,
+        script_to_evaluate_on_load: typing.Optional[str] = None,
+        loader_id: typing.Optional[network.LoaderId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Reloads given page optionally ignoring the cache.
@@ -2962,7 +2962,7 @@ def reload(
 
 @deprecated(version="1.3")
 def remove_script_to_evaluate_on_load(
-    identifier: ScriptIdentifier,
+        identifier: ScriptIdentifier,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Deprecated, please use removeScriptToEvaluateOnNewDocument instead.
@@ -2983,7 +2983,7 @@ def remove_script_to_evaluate_on_load(
 
 
 def remove_script_to_evaluate_on_new_document(
-    identifier: ScriptIdentifier,
+        identifier: ScriptIdentifier,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Removes given script from the list.
@@ -3000,7 +3000,7 @@ def remove_script_to_evaluate_on_new_document(
 
 
 def screencast_frame_ack(
-    session_id: int,
+        session_id: int,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Acknowledges that a screencast frame has been received by the frontend.
@@ -3019,11 +3019,11 @@ def screencast_frame_ack(
 
 
 def search_in_resource(
-    frame_id: FrameId,
-    url: str,
-    query: str,
-    case_sensitive: typing.Optional[bool] = None,
-    is_regex: typing.Optional[bool] = None,
+        frame_id: FrameId,
+        url: str,
+        query: str,
+        case_sensitive: typing.Optional[bool] = None,
+        is_regex: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[debugger.SearchMatch]]:
     """
     Searches for given string in resource content.
@@ -3054,7 +3054,7 @@ def search_in_resource(
 
 
 def set_ad_blocking_enabled(
-    enabled: bool,
+        enabled: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enable Chrome's experimental ad filter on all sites.
@@ -3088,7 +3088,7 @@ def set_bypass_csp(enabled: bool) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, 
 
 
 def get_permissions_policy_state(
-    frame_id: FrameId,
+        frame_id: FrameId,
 ) -> typing.Generator[
     T_JSON_DICT, T_JSON_DICT, typing.List[PermissionsPolicyFeatureState]
 ]:
@@ -3111,7 +3111,7 @@ def get_permissions_policy_state(
 
 
 def get_origin_trials(
-    frame_id: FrameId,
+        frame_id: FrameId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[OriginTrial]]:
     """
     Get Origin Trials on given frame.
@@ -3133,18 +3133,18 @@ def get_origin_trials(
 
 @deprecated(version="1.3")
 def set_device_metrics_override(
-    width: int,
-    height: int,
-    device_scale_factor: float,
-    mobile: bool,
-    scale: typing.Optional[float] = None,
-    screen_width: typing.Optional[int] = None,
-    screen_height: typing.Optional[int] = None,
-    position_x: typing.Optional[int] = None,
-    position_y: typing.Optional[int] = None,
-    dont_set_visible_size: typing.Optional[bool] = None,
-    screen_orientation: typing.Optional[emulation.ScreenOrientation] = None,
-    viewport: typing.Optional[Viewport] = None,
+        width: int,
+        height: int,
+        device_scale_factor: float,
+        mobile: bool,
+        scale: typing.Optional[float] = None,
+        screen_width: typing.Optional[int] = None,
+        screen_height: typing.Optional[int] = None,
+        position_x: typing.Optional[int] = None,
+        position_y: typing.Optional[int] = None,
+        dont_set_visible_size: typing.Optional[bool] = None,
+        screen_orientation: typing.Optional[emulation.ScreenOrientation] = None,
+        viewport: typing.Optional[Viewport] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Overrides the values of device screen dimensions (window.screen.width, window.screen.height,
@@ -3198,7 +3198,7 @@ def set_device_metrics_override(
 
 @deprecated(version="1.3")
 def set_device_orientation_override(
-    alpha: float, beta: float, gamma: float
+        alpha: float, beta: float, gamma: float
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Overrides the Device Orientation.
@@ -3223,8 +3223,8 @@ def set_device_orientation_override(
 
 
 def set_font_families(
-    font_families: FontFamilies,
-    for_scripts: typing.Optional[typing.List[ScriptFontFamilies]] = None,
+        font_families: FontFamilies,
+        for_scripts: typing.Optional[typing.List[ScriptFontFamilies]] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Set generic font families.
@@ -3246,7 +3246,7 @@ def set_font_families(
 
 
 def set_font_sizes(
-    font_sizes: FontSizes,
+        font_sizes: FontSizes,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Set default font sizes.
@@ -3265,7 +3265,7 @@ def set_font_sizes(
 
 
 def set_document_content(
-    frame_id: FrameId, html: str
+        frame_id: FrameId, html: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets given markup as the document's HTML.
@@ -3285,7 +3285,7 @@ def set_document_content(
 
 @deprecated(version="1.3")
 def set_download_behavior(
-    behavior: str, download_path: typing.Optional[str] = None
+        behavior: str, download_path: typing.Optional[str] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Set the behavior when downloading a file.
@@ -3310,9 +3310,9 @@ def set_download_behavior(
 
 @deprecated(version="1.3")
 def set_geolocation_override(
-    latitude: typing.Optional[float] = None,
-    longitude: typing.Optional[float] = None,
-    accuracy: typing.Optional[float] = None,
+        latitude: typing.Optional[float] = None,
+        longitude: typing.Optional[float] = None,
+        accuracy: typing.Optional[float] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position
@@ -3339,7 +3339,7 @@ def set_geolocation_override(
 
 
 def set_lifecycle_events_enabled(
-    enabled: bool,
+        enabled: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Controls whether page will emit lifecycle events.
@@ -3357,7 +3357,7 @@ def set_lifecycle_events_enabled(
 
 @deprecated(version="1.3")
 def set_touch_emulation_enabled(
-    enabled: bool, configuration: typing.Optional[str] = None
+        enabled: bool, configuration: typing.Optional[str] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Toggles mouse event-based touch event emulation.
@@ -3381,11 +3381,11 @@ def set_touch_emulation_enabled(
 
 
 def start_screencast(
-    format_: typing.Optional[str] = None,
-    quality: typing.Optional[int] = None,
-    max_width: typing.Optional[int] = None,
-    max_height: typing.Optional[int] = None,
-    every_nth_frame: typing.Optional[int] = None,
+        format_: typing.Optional[str] = None,
+        quality: typing.Optional[int] = None,
+        max_width: typing.Optional[int] = None,
+        max_height: typing.Optional[int] = None,
+        every_nth_frame: typing.Optional[int] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Starts sending each frame using the ``screencastFrame`` event.
@@ -3449,7 +3449,7 @@ def close() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def set_web_lifecycle_state(
-    state: str,
+        state: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Tries to update the web lifecycle state of the page.
@@ -3482,7 +3482,7 @@ def stop_screencast() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def produce_compilation_cache(
-    scripts: typing.List[CompilationCacheParams],
+        scripts: typing.List[CompilationCacheParams],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Requests backend to produce compilation cache for the specified scripts.
@@ -3506,7 +3506,7 @@ def produce_compilation_cache(
 
 
 def add_compilation_cache(
-    url: str, data: str
+        url: str, data: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Seeds compilation cache for given url. Compilation cache does not survive
@@ -3540,7 +3540,7 @@ def clear_compilation_cache() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None
 
 
 def set_spc_transaction_mode(
-    mode: AutoResponseMode,
+        mode: AutoResponseMode,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Sets the Secure Payment Confirmation transaction mode.
@@ -3560,7 +3560,7 @@ def set_spc_transaction_mode(
 
 
 def set_rph_registration_mode(
-    mode: AutoResponseMode,
+        mode: AutoResponseMode,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Extensions for Custom Handlers API:
@@ -3580,7 +3580,7 @@ def set_rph_registration_mode(
 
 
 def generate_test_report(
-    message: str, group: typing.Optional[str] = None
+        message: str, group: typing.Optional[str] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Generates a report for testing.
@@ -3614,7 +3614,7 @@ def wait_for_debugger() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def set_intercept_file_chooser_dialog(
-    enabled: bool, cancel: typing.Optional[bool] = None
+        enabled: bool, cancel: typing.Optional[bool] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Intercept file chooser requests and transfer control to protocol clients.
@@ -3636,7 +3636,7 @@ def set_intercept_file_chooser_dialog(
 
 
 def set_prerendering_allowed(
-    is_allowed: bool,
+        is_allowed: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enable/disable prerendering manually.

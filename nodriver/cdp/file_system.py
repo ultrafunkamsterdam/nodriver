@@ -7,12 +7,11 @@
 
 from __future__ import annotations
 
-import enum
 import typing
 from dataclasses import dataclass
 
 from . import network, storage
-from .util import T_JSON_DICT, event_class
+from .util import T_JSON_DICT
 
 
 @dataclass
@@ -103,7 +102,7 @@ class BucketFileSystemLocator:
 
 
 def get_directory(
-    bucket_file_system_locator: BucketFileSystemLocator,
+        bucket_file_system_locator: BucketFileSystemLocator,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, Directory]:
     """
     :param bucket_file_system_locator:

@@ -12,7 +12,7 @@ import typing
 from dataclasses import dataclass
 
 from . import target
-from .util import T_JSON_DICT, event_class
+from .util import T_JSON_DICT
 
 
 @dataclass
@@ -83,7 +83,7 @@ class DisplayMode(enum.Enum):
 
 
 def get_os_app_state(
-    manifest_id: str,
+        manifest_id: str,
 ) -> typing.Generator[
     T_JSON_DICT, T_JSON_DICT, typing.Tuple[int, typing.List[FileHandler]]
 ]:
@@ -110,7 +110,7 @@ def get_os_app_state(
 
 
 def install(
-    manifest_id: str, install_url_or_bundle_url: typing.Optional[str] = None
+        manifest_id: str, install_url_or_bundle_url: typing.Optional[str] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Installs the given manifest identity, optionally using the given install_url
@@ -154,7 +154,7 @@ def uninstall(manifest_id: str) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, No
 
 
 def launch(
-    manifest_id: str, url: typing.Optional[str] = None
+        manifest_id: str, url: typing.Optional[str] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, target.TargetID]:
     """
     Launches the installed web app, or an url in the same web app instead of the
@@ -178,7 +178,7 @@ def launch(
 
 
 def launch_files_in_app(
-    manifest_id: str, files: typing.List[str]
+        manifest_id: str, files: typing.List[str]
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[target.TargetID]]:
     """
     Opens one or more local files from an installed web app identified by its
@@ -211,7 +211,7 @@ def launch_files_in_app(
 
 
 def open_current_page_in_app(
-    manifest_id: str,
+        manifest_id: str,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Opens the current page in its web app identified by the manifest id, needs
@@ -230,9 +230,9 @@ def open_current_page_in_app(
 
 
 def change_app_user_settings(
-    manifest_id: str,
-    link_capturing: typing.Optional[bool] = None,
-    display_mode: typing.Optional[DisplayMode] = None,
+        manifest_id: str,
+        link_capturing: typing.Optional[bool] = None,
+        display_mode: typing.Optional[DisplayMode] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Changes user settings of the web app identified by its manifestId. If the

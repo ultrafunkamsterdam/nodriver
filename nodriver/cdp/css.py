@@ -1936,10 +1936,10 @@ class StyleDeclarationEdit:
 
 
 def add_rule(
-    style_sheet_id: StyleSheetId,
-    rule_text: str,
-    location: SourceRange,
-    node_for_property_syntax_validation: typing.Optional[dom.NodeId] = None,
+        style_sheet_id: StyleSheetId,
+        rule_text: str,
+        location: SourceRange,
+        node_for_property_syntax_validation: typing.Optional[dom.NodeId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, CSSRule]:
     """
     Inserts a new rule with the given ``ruleText`` in a stylesheet with given ``styleSheetId``, at the
@@ -1968,7 +1968,7 @@ def add_rule(
 
 
 def collect_class_names(
-    style_sheet_id: StyleSheetId,
+        style_sheet_id: StyleSheetId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[str]]:
     """
     Returns all class names from specified stylesheet.
@@ -1987,7 +1987,7 @@ def collect_class_names(
 
 
 def create_style_sheet(
-    frame_id: page.FrameId, force: typing.Optional[bool] = None
+        frame_id: page.FrameId, force: typing.Optional[bool] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, StyleSheetId]:
     """
     Creates a new special "via-inspector" stylesheet in the frame with given ``frameId``.
@@ -2030,7 +2030,7 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def force_pseudo_state(
-    node_id: dom.NodeId, forced_pseudo_classes: typing.List[str]
+        node_id: dom.NodeId, forced_pseudo_classes: typing.List[str]
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Ensures that the given node will have specified pseudo-classes whenever its style is computed by
@@ -2050,7 +2050,7 @@ def force_pseudo_state(
 
 
 def force_starting_style(
-    node_id: dom.NodeId, forced: bool
+        node_id: dom.NodeId, forced: bool
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Ensures that the given node is in its starting-style state.
@@ -2069,7 +2069,7 @@ def force_starting_style(
 
 
 def get_background_colors(
-    node_id: dom.NodeId,
+        node_id: dom.NodeId,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -2112,7 +2112,7 @@ def get_background_colors(
 
 
 def get_computed_style_for_node(
-    node_id: dom.NodeId,
+        node_id: dom.NodeId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[CSSComputedStyleProperty]]:
     """
     Returns the computed style for a DOM node identified by ``nodeId``.
@@ -2131,11 +2131,11 @@ def get_computed_style_for_node(
 
 
 def resolve_values(
-    values: typing.List[str],
-    node_id: dom.NodeId,
-    property_name: typing.Optional[str] = None,
-    pseudo_type: typing.Optional[dom.PseudoType] = None,
-    pseudo_identifier: typing.Optional[str] = None,
+        values: typing.List[str],
+        node_id: dom.NodeId,
+        property_name: typing.Optional[str] = None,
+        pseudo_type: typing.Optional[dom.PseudoType] = None,
+        pseudo_identifier: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[str]]:
     """
     Resolve the specified values in the context of the provided element.
@@ -2168,7 +2168,7 @@ def resolve_values(
 
 
 def get_longhand_properties(
-    shorthand_name: str, value: str
+        shorthand_name: str, value: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[CSSProperty]]:
     """
 
@@ -2191,7 +2191,7 @@ def get_longhand_properties(
 
 
 def get_inline_styles_for_node(
-    node_id: dom.NodeId,
+        node_id: dom.NodeId,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -2229,7 +2229,7 @@ def get_inline_styles_for_node(
 
 
 def get_animated_styles_for_node(
-    node_id: dom.NodeId,
+        node_id: dom.NodeId,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -2279,7 +2279,7 @@ def get_animated_styles_for_node(
 
 
 def get_matched_styles_for_node(
-    node_id: dom.NodeId,
+        node_id: dom.NodeId,
 ) -> typing.Generator[
     T_JSON_DICT,
     T_JSON_DICT,
@@ -2409,7 +2409,7 @@ def get_matched_styles_for_node(
 
 
 def get_media_queries() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[CSSMedia]]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[CSSMedia]]
 ):
     """
     Returns all media queries parsed by the rendering engine.
@@ -2424,7 +2424,7 @@ def get_media_queries() -> (
 
 
 def get_platform_fonts_for_node(
-    node_id: dom.NodeId,
+        node_id: dom.NodeId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[PlatformFontUsage]]:
     """
     Requests information about platform fonts which we used to render child TextNodes in the given
@@ -2444,7 +2444,7 @@ def get_platform_fonts_for_node(
 
 
 def get_style_sheet_text(
-    style_sheet_id: StyleSheetId,
+        style_sheet_id: StyleSheetId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, str]:
     """
     Returns the current textual content for a stylesheet.
@@ -2463,7 +2463,7 @@ def get_style_sheet_text(
 
 
 def get_layers_for_node(
-    node_id: dom.NodeId,
+        node_id: dom.NodeId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, CSSLayerData]:
     """
     Returns all layers parsed by the rendering engine for the tree scope of a node.
@@ -2487,7 +2487,7 @@ def get_layers_for_node(
 
 
 def get_location_for_selector(
-    style_sheet_id: StyleSheetId, selector_text: str
+        style_sheet_id: StyleSheetId, selector_text: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[SourceRange]]:
     """
     Given a CSS selector text and a style sheet ID, getLocationForSelector
@@ -2511,7 +2511,7 @@ def get_location_for_selector(
 
 
 def track_computed_style_updates_for_node(
-    node_id: typing.Optional[dom.NodeId] = None,
+        node_id: typing.Optional[dom.NodeId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Starts tracking the given node for the computed style updates
@@ -2536,7 +2536,7 @@ def track_computed_style_updates_for_node(
 
 
 def track_computed_style_updates(
-    properties_to_track: typing.List[CSSComputedStyleProperty],
+        properties_to_track: typing.List[CSSComputedStyleProperty],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Starts tracking the given computed styles for updates. The specified array of properties
@@ -2560,7 +2560,7 @@ def track_computed_style_updates(
 
 
 def take_computed_style_updates() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[dom.NodeId]]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[dom.NodeId]]
 ):
     """
     Polls the next batch of computed style updates.
@@ -2577,7 +2577,7 @@ def take_computed_style_updates() -> (
 
 
 def set_effective_property_value_for_node(
-    node_id: dom.NodeId, property_name: str, value: str
+        node_id: dom.NodeId, property_name: str, value: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Find a rule with the given active property for the given node and set the new value for this
@@ -2599,7 +2599,7 @@ def set_effective_property_value_for_node(
 
 
 def set_property_rule_property_name(
-    style_sheet_id: StyleSheetId, range_: SourceRange, property_name: str
+        style_sheet_id: StyleSheetId, range_: SourceRange, property_name: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, Value]:
     """
     Modifies the property rule property name.
@@ -2622,7 +2622,7 @@ def set_property_rule_property_name(
 
 
 def set_keyframe_key(
-    style_sheet_id: StyleSheetId, range_: SourceRange, key_text: str
+        style_sheet_id: StyleSheetId, range_: SourceRange, key_text: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, Value]:
     """
     Modifies the keyframe rule key text.
@@ -2645,7 +2645,7 @@ def set_keyframe_key(
 
 
 def set_media_text(
-    style_sheet_id: StyleSheetId, range_: SourceRange, text: str
+        style_sheet_id: StyleSheetId, range_: SourceRange, text: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, CSSMedia]:
     """
     Modifies the rule selector.
@@ -2668,7 +2668,7 @@ def set_media_text(
 
 
 def set_container_query_text(
-    style_sheet_id: StyleSheetId, range_: SourceRange, text: str
+        style_sheet_id: StyleSheetId, range_: SourceRange, text: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, CSSContainerQuery]:
     """
     Modifies the expression of a container query.
@@ -2693,7 +2693,7 @@ def set_container_query_text(
 
 
 def set_supports_text(
-    style_sheet_id: StyleSheetId, range_: SourceRange, text: str
+        style_sheet_id: StyleSheetId, range_: SourceRange, text: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, CSSSupports]:
     """
     Modifies the expression of a supports at-rule.
@@ -2718,7 +2718,7 @@ def set_supports_text(
 
 
 def set_scope_text(
-    style_sheet_id: StyleSheetId, range_: SourceRange, text: str
+        style_sheet_id: StyleSheetId, range_: SourceRange, text: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, CSSScope]:
     """
     Modifies the expression of a scope at-rule.
@@ -2743,7 +2743,7 @@ def set_scope_text(
 
 
 def set_rule_selector(
-    style_sheet_id: StyleSheetId, range_: SourceRange, selector: str
+        style_sheet_id: StyleSheetId, range_: SourceRange, selector: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, SelectorList]:
     """
     Modifies the rule selector.
@@ -2766,7 +2766,7 @@ def set_rule_selector(
 
 
 def set_style_sheet_text(
-    style_sheet_id: StyleSheetId, text: str
+        style_sheet_id: StyleSheetId, text: str
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.Optional[str]]:
     """
     Sets the new stylesheet text.
@@ -2791,8 +2791,8 @@ def set_style_sheet_text(
 
 
 def set_style_texts(
-    edits: typing.List[StyleDeclarationEdit],
-    node_for_property_syntax_validation: typing.Optional[dom.NodeId] = None,
+        edits: typing.List[StyleDeclarationEdit],
+        node_for_property_syntax_validation: typing.Optional[dom.NodeId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[CSSStyle]]:
     """
     Applies specified style edits one after another in the given order.
@@ -2826,7 +2826,7 @@ def start_rule_usage_tracking() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, No
 
 
 def stop_rule_usage_tracking() -> (
-    typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[RuleUsage]]
+        typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[RuleUsage]]
 ):
     """
     Stop tracking rule usage and return the list of rules that were used since last call to
@@ -2842,9 +2842,9 @@ def stop_rule_usage_tracking() -> (
 
 
 def take_coverage_delta() -> (
-    typing.Generator[
-        T_JSON_DICT, T_JSON_DICT, typing.Tuple[typing.List[RuleUsage], float]
-    ]
+        typing.Generator[
+            T_JSON_DICT, T_JSON_DICT, typing.Tuple[typing.List[RuleUsage], float]
+        ]
 ):
     """
     Obtain list of rules that became used since last call to this method (or since start of coverage
@@ -2866,7 +2866,7 @@ def take_coverage_delta() -> (
 
 
 def set_local_fonts_enabled(
-    enabled: bool,
+        enabled: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enables/disables rendering of local CSS fonts (enabled by default).

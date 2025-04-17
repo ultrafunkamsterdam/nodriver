@@ -1082,11 +1082,11 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def get_highlight_object_for_test(
-    node_id: dom.NodeId,
-    include_distance: typing.Optional[bool] = None,
-    include_style: typing.Optional[bool] = None,
-    color_format: typing.Optional[ColorFormat] = None,
-    show_accessibility_info: typing.Optional[bool] = None,
+        node_id: dom.NodeId,
+        include_distance: typing.Optional[bool] = None,
+        include_style: typing.Optional[bool] = None,
+        color_format: typing.Optional[ColorFormat] = None,
+        show_accessibility_info: typing.Optional[bool] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, dict]:
     """
     For testing.
@@ -1117,7 +1117,7 @@ def get_highlight_object_for_test(
 
 
 def get_grid_highlight_objects_for_test(
-    node_ids: typing.List[dom.NodeId],
+        node_ids: typing.List[dom.NodeId],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, dict]:
     """
     For Persistent Grid testing.
@@ -1136,7 +1136,7 @@ def get_grid_highlight_objects_for_test(
 
 
 def get_source_order_highlight_object_for_test(
-    node_id: dom.NodeId,
+        node_id: dom.NodeId,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, dict]:
     """
     For Source Order Viewer testing.
@@ -1166,9 +1166,9 @@ def hide_highlight() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 @deprecated(version="1.3")
 def highlight_frame(
-    frame_id: page.FrameId,
-    content_color: typing.Optional[dom.RGBA] = None,
-    content_outline_color: typing.Optional[dom.RGBA] = None,
+        frame_id: page.FrameId,
+        content_color: typing.Optional[dom.RGBA] = None,
+        content_outline_color: typing.Optional[dom.RGBA] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Highlights owner element of the frame with given id.
@@ -1196,11 +1196,11 @@ def highlight_frame(
 
 
 def highlight_node(
-    highlight_config: HighlightConfig,
-    node_id: typing.Optional[dom.NodeId] = None,
-    backend_node_id: typing.Optional[dom.BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
-    selector: typing.Optional[str] = None,
+        highlight_config: HighlightConfig,
+        node_id: typing.Optional[dom.NodeId] = None,
+        backend_node_id: typing.Optional[dom.BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        selector: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Highlights DOM node with given id or with the given JavaScript object wrapper. Either nodeId or
@@ -1230,9 +1230,9 @@ def highlight_node(
 
 
 def highlight_quad(
-    quad: dom.Quad,
-    color: typing.Optional[dom.RGBA] = None,
-    outline_color: typing.Optional[dom.RGBA] = None,
+        quad: dom.Quad,
+        color: typing.Optional[dom.RGBA] = None,
+        outline_color: typing.Optional[dom.RGBA] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Highlights given quad. Coordinates are absolute with respect to the main frame viewport.
@@ -1255,12 +1255,12 @@ def highlight_quad(
 
 
 def highlight_rect(
-    x: int,
-    y: int,
-    width: int,
-    height: int,
-    color: typing.Optional[dom.RGBA] = None,
-    outline_color: typing.Optional[dom.RGBA] = None,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        color: typing.Optional[dom.RGBA] = None,
+        outline_color: typing.Optional[dom.RGBA] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Highlights given rectangle. Coordinates are absolute with respect to the main frame viewport.
@@ -1289,10 +1289,10 @@ def highlight_rect(
 
 
 def highlight_source_order(
-    source_order_config: SourceOrderConfig,
-    node_id: typing.Optional[dom.NodeId] = None,
-    backend_node_id: typing.Optional[dom.BackendNodeId] = None,
-    object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        source_order_config: SourceOrderConfig,
+        node_id: typing.Optional[dom.NodeId] = None,
+        backend_node_id: typing.Optional[dom.BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Highlights the source order of the children of the DOM node with given id or with the given
@@ -1319,7 +1319,7 @@ def highlight_source_order(
 
 
 def set_inspect_mode(
-    mode: InspectMode, highlight_config: typing.Optional[HighlightConfig] = None
+        mode: InspectMode, highlight_config: typing.Optional[HighlightConfig] = None
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Enters the 'inspect' mode. In this mode, elements that user is hovering over are highlighted.
@@ -1340,7 +1340,7 @@ def set_inspect_mode(
 
 
 def set_show_ad_highlights(
-    show: bool,
+        show: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Highlights owner element of all frames detected to be ads.
@@ -1357,7 +1357,7 @@ def set_show_ad_highlights(
 
 
 def set_paused_in_debugger_message(
-    message: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param message: *(Optional)* The message to display, also triggers resume and step over controls.
@@ -1373,7 +1373,7 @@ def set_paused_in_debugger_message(
 
 
 def set_show_debug_borders(
-    show: bool,
+        show: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Requests that backend shows debug borders on layers
@@ -1390,7 +1390,7 @@ def set_show_debug_borders(
 
 
 def set_show_fps_counter(
-    show: bool,
+        show: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Requests that backend shows the FPS counter
@@ -1407,7 +1407,7 @@ def set_show_fps_counter(
 
 
 def set_show_grid_overlays(
-    grid_node_highlight_configs: typing.List[GridNodeHighlightConfig],
+        grid_node_highlight_configs: typing.List[GridNodeHighlightConfig],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Highlight multiple elements with the CSS Grid overlay.
@@ -1426,7 +1426,7 @@ def set_show_grid_overlays(
 
 
 def set_show_flex_overlays(
-    flex_node_highlight_configs: typing.List[FlexNodeHighlightConfig],
+        flex_node_highlight_configs: typing.List[FlexNodeHighlightConfig],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param flex_node_highlight_configs: An array of node identifiers and descriptors for the highlight appearance.
@@ -1443,7 +1443,7 @@ def set_show_flex_overlays(
 
 
 def set_show_scroll_snap_overlays(
-    scroll_snap_highlight_configs: typing.List[ScrollSnapHighlightConfig],
+        scroll_snap_highlight_configs: typing.List[ScrollSnapHighlightConfig],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param scroll_snap_highlight_configs: An array of node identifiers and descriptors for the highlight appearance.
@@ -1460,7 +1460,7 @@ def set_show_scroll_snap_overlays(
 
 
 def set_show_container_query_overlays(
-    container_query_highlight_configs: typing.List[ContainerQueryHighlightConfig],
+        container_query_highlight_configs: typing.List[ContainerQueryHighlightConfig],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     :param container_query_highlight_configs: An array of node identifiers and descriptors for the highlight appearance.
@@ -1477,7 +1477,7 @@ def set_show_container_query_overlays(
 
 
 def set_show_paint_rects(
-    result: bool,
+        result: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Requests that backend shows paint rectangles
@@ -1494,7 +1494,7 @@ def set_show_paint_rects(
 
 
 def set_show_layout_shift_regions(
-    result: bool,
+        result: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Requests that backend shows layout shift regions
@@ -1511,7 +1511,7 @@ def set_show_layout_shift_regions(
 
 
 def set_show_scroll_bottleneck_rects(
-    show: bool,
+        show: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Requests that backend shows scroll bottleneck rects
@@ -1529,7 +1529,7 @@ def set_show_scroll_bottleneck_rects(
 
 @deprecated(version="1.3")
 def set_show_hit_test_borders(
-    show: bool,
+        show: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Deprecated, no longer has any effect.
@@ -1566,7 +1566,7 @@ def set_show_web_vitals(show: bool) -> typing.Generator[T_JSON_DICT, T_JSON_DICT
 
 
 def set_show_viewport_size_on_resize(
-    show: bool,
+        show: bool,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Paints viewport size upon main frame resize.
@@ -1583,7 +1583,7 @@ def set_show_viewport_size_on_resize(
 
 
 def set_show_hinge(
-    hinge_config: typing.Optional[HingeConfig] = None,
+        hinge_config: typing.Optional[HingeConfig] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Add a dual screen device hinge
@@ -1601,7 +1601,7 @@ def set_show_hinge(
 
 
 def set_show_isolated_elements(
-    isolated_element_highlight_configs: typing.List[IsolatedElementHighlightConfig],
+        isolated_element_highlight_configs: typing.List[IsolatedElementHighlightConfig],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Show elements in isolation mode with overlays.
@@ -1620,7 +1620,7 @@ def set_show_isolated_elements(
 
 
 def set_show_window_controls_overlay(
-    window_controls_overlay_config: typing.Optional[WindowControlsOverlayConfig] = None,
+        window_controls_overlay_config: typing.Optional[WindowControlsOverlayConfig] = None,
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     Show Window Controls Overlay for PWA

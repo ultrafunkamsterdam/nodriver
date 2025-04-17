@@ -7,7 +7,6 @@
 
 from __future__ import annotations
 
-import enum
 import typing
 from dataclasses import dataclass
 
@@ -174,7 +173,7 @@ def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
 
 
 def start_violations_report(
-    config: typing.List[ViolationSetting],
+        config: typing.List[ViolationSetting],
 ) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     """
     start violation reporting.
