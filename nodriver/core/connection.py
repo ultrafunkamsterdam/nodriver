@@ -14,12 +14,13 @@ import json
 import logging
 import types
 from asyncio import iscoroutine, iscoroutinefunction
-from typing import Any, Awaitable, Callable, Generator, TypeVar, Union, List
+from typing import Any, Awaitable, Callable, Generator, List, TypeVar, Union
 
 import websockets.asyncio.client
 
-from . import browser as _browser, util
 from .. import cdp
+from . import browser as _browser
+from . import util
 
 T = TypeVar("T")
 

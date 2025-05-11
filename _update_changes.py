@@ -75,9 +75,10 @@ project_file = find_file("pyproject.toml")
 
 subprocess.run("make.bat html", shell=True, cwd="./docs")
 subprocess.run("make.bat markdown", shell=True, cwd="./docs")
-subprocess.run("copy docs\\_build\\markdown\\README.md .", shell=True)
+# subprocess.run("copy docs\\_build\\markdown\\README.md .", shell=True)
 
 subprocess.run("black nodriver/core/*.py")
+subprocess.run("isort nodriver/core")
 change_version()
 modified_files = list(
     m[1] for m in re.finditer("modified:\s+(.+)", subprocess.getoutput("git status"))

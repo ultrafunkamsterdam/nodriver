@@ -19,11 +19,11 @@ import warnings
 from collections import defaultdict
 from typing import List, Tuple, Union
 
+from .. import cdp
 from . import tab, util
 from ._contradict import ContraDict
 from .config import Config, PathLike, is_posix
 from .connection import Connection
-from .. import cdp
 
 logger = logging.getLogger(__name__)
 

@@ -12,10 +12,10 @@ import pathlib
 import secrets
 import typing
 
+from .. import cdp
 from . import util
 from ._contradict import ContraDict
 from .config import PathLike
-from .. import cdp
 
 logger = logging.getLogger(__name__)
 

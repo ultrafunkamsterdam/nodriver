@@ -11,18 +11,8 @@ import asyncio
 import logging
 import shutil
 import types
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Callable,
-    Generator,
-    List,
-    Optional,
-    Set,
-    Tuple,
-    TypeVar,
-    Union,
-)
+from typing import (TYPE_CHECKING, Any, Callable, Generator, List, Optional,
+                    Set, Tuple, TypeVar, Union)
 
 from .element import Element
 

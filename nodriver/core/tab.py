@@ -18,10 +18,11 @@ from pathlib import Path
 from typing import Any, Generator, List, Optional, Tuple, Union
 
 import nodriver.core.browser
+
+from .. import cdp
 from . import element, util
 from .config import PathLike
 from .connection import Connection, ProtocolException
-from .. import cdp
 
 logger = logging.getLogger(__name__)
 
