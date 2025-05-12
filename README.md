@@ -63,6 +63,10 @@ to fully customizable everything using the entire array of
 what is new
 --------------------
 
+### ```tab.xpath(selector, timeout=2.5)```
+find nodes using xpath selector!
+see [tab xpath in the api docs](https://ultrafunkamsterdam.github.io/nodriver/nodriver/classes/tab.html#nodriver.Tab.xpath)
+
 
 ### ```tab.cf_verify()```
 finds the checkbox and click it successfully

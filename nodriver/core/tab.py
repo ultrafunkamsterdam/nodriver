@@ -410,6 +410,41 @@ class Tab(Connection):
                 return_when=asyncio.FIRST_COMPLETED,
             )
 
+    async def xpath(self, xpath: str, timeout: float = 2.5) -> List[Optional[nodriver.Element]]:  # noqa
+        """
+        find elements by xpath.
+        if not found, it will retry it until timeout reached.
+        in case nothing is found, it returns an empty list. It will not raise.
+        this timeout mechanism helps when relying on some element to appear before continuing your script
+
+        :param xpath:
+        :type xpath: str
+        :param timeout: 2.5
+        :type timeout: float
+        :return:List[nodriver.Element] or []
+        :rtype:
+        """
+        items: List[Optional[nodriver.Element]] = []
+        try:
+            await self.send(cdp.dom.enable(), True)
+            items = await self.find_all(xpath, timeout=0)
+            if not items:
+                loop = asyncio.get_running_loop()
+                start_time = loop.time()
+                while not items:
+                    items = await self.find_all(xpath, timeout=0)
+                    await self.sleep(.1)
+                    if loop.time() - start_time > timeout:
+                        break
+        finally:
+            try:
+                await self.send(cdp.dom.disable(), True)
+            except ProtocolException:
+                # for some strange reason, the call to dom.disable
+                # sometimes raises an exception that dom is not enabled.
+                pass
+        return items
+
     async def get(
             self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
     ):
