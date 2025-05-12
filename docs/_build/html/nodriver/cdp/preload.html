@@ -167,6 +167,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../classes/browser.html">Browser class</a></li>
@@ -187,7 +189,6 @@
 <li class="toctree-l2"><a class="reference internal" href="cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="device_orientation.html">DeviceOrientation</a></li>
@@ -461,6 +462,17 @@ possible for multiple rule sets and links to trigger a single attempt.</p>
 <span class="sig-name descname"><span class="pre">node_ids</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="dom.html#nodriver.cdp.dom.BackendNodeId" title="nodriver.cdp.dom.BackendNodeId"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendNodeId</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.preload.PreloadingAttemptSource.node_ids" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PreloadPipelineId">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreloadPipelineId</span></span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PreloadPipelineId"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PreloadPipelineId" title="Link to this definition">#</a></dt>
+<dd><p>Chrome manages different types of preloads together using a
+concept of preloading pipeline. For example, if a site uses a
+SpeculationRules for prerender, Chrome first starts a prefetch and
+then upgrades it to prerender.</p>
+<p>CDP events for them are emitted separately but they share
+<code class="docutils literal notranslate"><span class="pre">PreloadPipelineId</span></code>.</p>
 </dd></dl>
 
 <dl class="py class">
@@ -832,6 +844,11 @@ possible for multiple rule sets and links to trigger a single attempt.</p>
 <span class="sig-name descname"><span class="pre">PRERENDER_FAILED_DURING_PREFETCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrerenderFailedDuringPrefetch'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.PRERENDER_FAILED_DURING_PREFETCH" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderFinalStatus.BROWSING_DATA_REMOVED">
+<span class="sig-name descname"><span class="pre">BROWSING_DATA_REMOVED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'BrowsingDataRemoved'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderFinalStatus.BROWSING_DATA_REMOVED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -907,6 +924,11 @@ filter out the ones that aren’t necessary to the developers.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_EVICTED_AFTER_BROWSING_DATA_REMOVED">
+<span class="sig-name descname"><span class="pre">PREFETCH_EVICTED_AFTER_BROWSING_DATA_REMOVED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchEvictedAfterBrowsingDataRemoved'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_EVICTED_AFTER_BROWSING_DATA_REMOVED" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED">
 <span class="sig-name descname"><span class="pre">PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchEvictedAfterCandidateRemoved'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -979,6 +1001,21 @@ filter out the ones that aren’t necessary to the developers.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER">
 <span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligibleUserHasServiceWorker'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER_NO_FETCH_HANDLER">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER_NO_FETCH_HANDLER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligibleUserHasServiceWorkerNoFetchHandler'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER_NO_FETCH_HANDLER" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_REDIRECT_FROM_SERVICE_WORKER">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_REDIRECT_FROM_SERVICE_WORKER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligibleRedirectFromServiceWorker'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_REDIRECT_FROM_SERVICE_WORKER" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_REDIRECT_TO_SERVICE_WORKER">
+<span class="sig-name descname"><span class="pre">PREFETCH_NOT_ELIGIBLE_REDIRECT_TO_SERVICE_WORKER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PrefetchNotEligibleRedirectToServiceWorker'</span></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_REDIRECT_TO_SERVICE_WORKER" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1140,11 +1177,16 @@ you use the event’s attributes.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatusUpdated">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrefetchStatusUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initiating_frame_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefetch_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefetch_status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PrefetchStatusUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatusUpdated" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrefetchStatusUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipeline_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initiating_frame_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefetch_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefetch_status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PrefetchStatusUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatusUpdated" title="Link to this definition">#</a></dt>
 <dd><p>Fired when a prefetch attempt is updated.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatusUpdated.key">
 <span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptKey" title="nodriver.cdp.preload.PreloadingAttemptKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreloadingAttemptKey</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatusUpdated.key" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrefetchStatusUpdated.pipeline_id">
+<span class="sig-name descname"><span class="pre">pipeline_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.preload.PreloadPipelineId" title="nodriver.cdp.preload.PreloadPipelineId"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreloadPipelineId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PrefetchStatusUpdated.pipeline_id" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1177,11 +1219,16 @@ you use the event’s attributes.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderStatusUpdated">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrerenderStatusUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prerender_status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disallowed_mojo_interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mismatched_headers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PrerenderStatusUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PrerenderStatusUpdated" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrerenderStatusUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipeline_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prerender_status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disallowed_mojo_interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mismatched_headers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/preload.html#PrerenderStatusUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.preload.PrerenderStatusUpdated" title="Link to this definition">#</a></dt>
 <dd><p>Fired when a prerender attempt is updated.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderStatusUpdated.key">
 <span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptKey" title="nodriver.cdp.preload.PreloadingAttemptKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreloadingAttemptKey</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderStatusUpdated.key" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.preload.PrerenderStatusUpdated.pipeline_id">
+<span class="sig-name descname"><span class="pre">pipeline_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.preload.PreloadPipelineId" title="nodriver.cdp.preload.PreloadPipelineId"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreloadPipelineId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.preload.PrerenderStatusUpdated.pipeline_id" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1324,6 +1371,7 @@ that is incompatible with prerender and has caused the cancellation of the attem
 <li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingAttemptSource.node_ids"><code class="docutils literal notranslate"><span class="pre">PreloadingAttemptSource.node_ids</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PreloadPipelineId"><code class="docutils literal notranslate"><span class="pre">PreloadPipelineId</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus</span></code></a><ul>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.ACTIVATED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.ACTIVATED</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.DESTROYED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.DESTROYED</span></code></a></li>
@@ -1398,6 +1446,7 @@ that is incompatible with prerender and has caused the cancellation of the attem
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.OTHER_PRERENDERED_PAGE_ACTIVATED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.OTHER_PRERENDERED_PAGE_ACTIVATED</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.V8_OPTIMIZER_DISABLED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.V8_OPTIMIZER_DISABLED</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.PRERENDER_FAILED_DURING_PREFETCH"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.PRERENDER_FAILED_DURING_PREFETCH</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderFinalStatus.BROWSING_DATA_REMOVED"><code class="docutils literal notranslate"><span class="pre">PrerenderFinalStatus.BROWSING_DATA_REMOVED</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PreloadingStatus"><code class="docutils literal notranslate"><span class="pre">PreloadingStatus</span></code></a><ul>
@@ -1416,6 +1465,7 @@ that is incompatible with prerender and has caused the cancellation of the attem
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_MIME_NOT_SUPPORTED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_FAILED_MIME_NOT_SUPPORTED</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_NET_ERROR"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_FAILED_NET_ERROR</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_FAILED_NON2_XX"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_FAILED_NON2_XX</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_EVICTED_AFTER_BROWSING_DATA_REMOVED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_EVICTED_AFTER_BROWSING_DATA_REMOVED</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_EVICTED_FOR_NEWER_PREFETCH"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_EVICTED_FOR_NEWER_PREFETCH</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_HELDBACK"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_HELDBACK</span></code></a></li>
@@ -1431,6 +1481,9 @@ that is incompatible with prerender and has caused the cancellation of the attem
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_SCHEME_IS_NOT_HTTPS"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_SCHEME_IS_NOT_HTTPS</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_COOKIES"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_COOKIES</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER_NO_FETCH_HANDLER"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER_NO_FETCH_HANDLER</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_REDIRECT_FROM_SERVICE_WORKER"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_REDIRECT_FROM_SERVICE_WORKER</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_REDIRECT_TO_SERVICE_WORKER"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_REDIRECT_TO_SERVICE_WORKER</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_BATTERY_SAVER_ENABLED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_BATTERY_SAVER_ENABLED</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_ELIGIBLE_PRELOADING_DISABLED"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_ELIGIBLE_PRELOADING_DISABLED</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatus.PREFETCH_NOT_FINISHED_IN_TIME"><code class="docutils literal notranslate"><span class="pre">PrefetchStatus.PREFETCH_NOT_FINISHED_IN_TIME</span></code></a></li>
@@ -1474,6 +1527,7 @@ that is incompatible with prerender and has caused the cancellation of the attem
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatusUpdated"><code class="docutils literal notranslate"><span class="pre">PrefetchStatusUpdated</span></code></a><ul>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatusUpdated.key"><code class="docutils literal notranslate"><span class="pre">PrefetchStatusUpdated.key</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatusUpdated.pipeline_id"><code class="docutils literal notranslate"><span class="pre">PrefetchStatusUpdated.pipeline_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatusUpdated.initiating_frame_id"><code class="docutils literal notranslate"><span class="pre">PrefetchStatusUpdated.initiating_frame_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatusUpdated.prefetch_url"><code class="docutils literal notranslate"><span class="pre">PrefetchStatusUpdated.prefetch_url</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrefetchStatusUpdated.status"><code class="docutils literal notranslate"><span class="pre">PrefetchStatusUpdated.status</span></code></a></li>
@@ -1483,6 +1537,7 @@ that is incompatible with prerender and has caused the cancellation of the attem
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderStatusUpdated"><code class="docutils literal notranslate"><span class="pre">PrerenderStatusUpdated</span></code></a><ul>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderStatusUpdated.key"><code class="docutils literal notranslate"><span class="pre">PrerenderStatusUpdated.key</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderStatusUpdated.pipeline_id"><code class="docutils literal notranslate"><span class="pre">PrerenderStatusUpdated.pipeline_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderStatusUpdated.status"><code class="docutils literal notranslate"><span class="pre">PrerenderStatusUpdated.status</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderStatusUpdated.prerender_status"><code class="docutils literal notranslate"><span class="pre">PrerenderStatusUpdated.prerender_status</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.preload.PrerenderStatusUpdated.disallowed_mojo_interface"><code class="docutils literal notranslate"><span class="pre">PrerenderStatusUpdated.disallowed_mojo_interface</span></code></a></li>

@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.audits - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -321,23 +322,27 @@
 <span class="sd">    Information about a request that is affected by an inspector issue.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1">#: The unique request id.</span>
-    <span class="n">request_id</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">RequestId</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
 
-    <span class="n">url</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: The unique request id.</span>
+    <span class="n">request_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">RequestId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AffectedRequest</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">request_id</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]),</span>
-            <span class="n">url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]),</span>
+            <span class="n">request_id</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">network</span><span class="o">.</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requestId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -443,6 +448,59 @@
 
 
 
+<div class="viewcode-block" id="InsightType">
+<a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.InsightType">[docs]</a>
+<span class="k">class</span> <span class="nc">InsightType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents the category of insight that a cookie issue falls under.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">GIT_HUB_RESOURCE</span> <span class="o">=</span> <span class="s2">&quot;GitHubResource&quot;</span>
+    <span class="n">GRACE_PERIOD</span> <span class="o">=</span> <span class="s2">&quot;GracePeriod&quot;</span>
+    <span class="n">HEURISTICS</span> <span class="o">=</span> <span class="s2">&quot;Heuristics&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InsightType</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CookieIssueInsight">
+<a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.CookieIssueInsight">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CookieIssueInsight</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Information about the suggested solution to a cookie issue.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">type_</span><span class="p">:</span> <span class="n">InsightType</span>
+
+    <span class="c1">#: Link to table entry in third-party cookie migration readiness list.</span>
+    <span class="n">table_entry_url</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_entry_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;tableEntryUrl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_entry_url</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CookieIssueInsight</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">type_</span><span class="o">=</span><span class="n">InsightType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]),</span>
+            <span class="n">table_entry_url</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;tableEntryUrl&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tableEntryUrl&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="CookieIssueDetails">
 <a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.CookieIssueDetails">[docs]</a>
 <span class="nd">@dataclass</span>
@@ -475,6 +533,9 @@
 
     <span class="n">request</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">AffectedRequest</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="c1">#: The recommended solution to the issue.</span>
+    <span class="n">insight</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CookieIssueInsight</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookieWarningReasons&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
@@ -494,6 +555,8 @@
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;cookieUrl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cookie_url</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">insight</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;insight&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">insight</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
@@ -530,6 +593,11 @@
             <span class="n">request</span><span class="o">=</span><span class="p">(</span>
                 <span class="n">AffectedRequest</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">insight</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">CookieIssueInsight</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;insight&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;insight&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
         <span class="p">)</span></div>
@@ -683,6 +751,7 @@
         <span class="s2">&quot;CorpNotSameOriginAfterDefaultedToSameOriginByCoepAndDip&quot;</span>
     <span class="p">)</span>
     <span class="n">CORP_NOT_SAME_SITE</span> <span class="o">=</span> <span class="s2">&quot;CorpNotSameSite&quot;</span>
+    <span class="n">SRI_MESSAGE_SIGNATURE_MISMATCH</span> <span class="o">=</span> <span class="s2">&quot;SRIMessageSignatureMismatch&quot;</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
@@ -807,6 +876,7 @@
     <span class="n">K_INLINE_VIOLATION</span> <span class="o">=</span> <span class="s2">&quot;kInlineViolation&quot;</span>
     <span class="n">K_EVAL_VIOLATION</span> <span class="o">=</span> <span class="s2">&quot;kEvalViolation&quot;</span>
     <span class="n">K_URL_VIOLATION</span> <span class="o">=</span> <span class="s2">&quot;kURLViolation&quot;</span>
+    <span class="n">K_SRI_VIOLATION</span> <span class="o">=</span> <span class="s2">&quot;kSRIViolation&quot;</span>
     <span class="n">K_TRUSTED_TYPES_SINK_VIOLATION</span> <span class="o">=</span> <span class="s2">&quot;kTrustedTypesSinkViolation&quot;</span>
     <span class="n">K_TRUSTED_TYPES_POLICY_VIOLATION</span> <span class="o">=</span> <span class="s2">&quot;kTrustedTypesPolicyViolation&quot;</span>
     <span class="n">K_WASM_EVAL_VIOLATION</span> <span class="o">=</span> <span class="s2">&quot;kWasmEvalViolation&quot;</span>
@@ -1163,6 +1233,55 @@
 
 
 
+<div class="viewcode-block" id="SRIMessageSignatureError">
+<a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.SRIMessageSignatureError">[docs]</a>
+<span class="k">class</span> <span class="nc">SRIMessageSignatureError</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">MISSING_SIGNATURE_HEADER</span> <span class="o">=</span> <span class="s2">&quot;MissingSignatureHeader&quot;</span>
+    <span class="n">MISSING_SIGNATURE_INPUT_HEADER</span> <span class="o">=</span> <span class="s2">&quot;MissingSignatureInputHeader&quot;</span>
+    <span class="n">INVALID_SIGNATURE_HEADER</span> <span class="o">=</span> <span class="s2">&quot;InvalidSignatureHeader&quot;</span>
+    <span class="n">INVALID_SIGNATURE_INPUT_HEADER</span> <span class="o">=</span> <span class="s2">&quot;InvalidSignatureInputHeader&quot;</span>
+    <span class="n">SIGNATURE_HEADER_VALUE_IS_NOT_BYTE_SEQUENCE</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;SignatureHeaderValueIsNotByteSequence&quot;</span>
+    <span class="p">)</span>
+    <span class="n">SIGNATURE_HEADER_VALUE_IS_PARAMETERIZED</span> <span class="o">=</span> <span class="s2">&quot;SignatureHeaderValueIsParameterized&quot;</span>
+    <span class="n">SIGNATURE_HEADER_VALUE_IS_INCORRECT_LENGTH</span> <span class="o">=</span> <span class="s2">&quot;SignatureHeaderValueIsIncorrectLength&quot;</span>
+    <span class="n">SIGNATURE_INPUT_HEADER_MISSING_LABEL</span> <span class="o">=</span> <span class="s2">&quot;SignatureInputHeaderMissingLabel&quot;</span>
+    <span class="n">SIGNATURE_INPUT_HEADER_VALUE_NOT_INNER_LIST</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;SignatureInputHeaderValueNotInnerList&quot;</span>
+    <span class="p">)</span>
+    <span class="n">SIGNATURE_INPUT_HEADER_VALUE_MISSING_COMPONENTS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;SignatureInputHeaderValueMissingComponents&quot;</span>
+    <span class="p">)</span>
+    <span class="n">SIGNATURE_INPUT_HEADER_INVALID_COMPONENT_TYPE</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;SignatureInputHeaderInvalidComponentType&quot;</span>
+    <span class="p">)</span>
+    <span class="n">SIGNATURE_INPUT_HEADER_INVALID_COMPONENT_NAME</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;SignatureInputHeaderInvalidComponentName&quot;</span>
+    <span class="p">)</span>
+    <span class="n">SIGNATURE_INPUT_HEADER_INVALID_HEADER_COMPONENT_PARAMETER</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;SignatureInputHeaderInvalidHeaderComponentParameter&quot;</span>
+    <span class="p">)</span>
+    <span class="n">SIGNATURE_INPUT_HEADER_INVALID_DERIVED_COMPONENT_PARAMETER</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;SignatureInputHeaderInvalidDerivedComponentParameter&quot;</span>
+    <span class="p">)</span>
+    <span class="n">SIGNATURE_INPUT_HEADER_KEY_ID_LENGTH</span> <span class="o">=</span> <span class="s2">&quot;SignatureInputHeaderKeyIdLength&quot;</span>
+    <span class="n">SIGNATURE_INPUT_HEADER_INVALID_PARAMETER</span> <span class="o">=</span> <span class="s2">&quot;SignatureInputHeaderInvalidParameter&quot;</span>
+    <span class="n">SIGNATURE_INPUT_HEADER_MISSING_REQUIRED_PARAMETERS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;SignatureInputHeaderMissingRequiredParameters&quot;</span>
+    <span class="p">)</span>
+    <span class="n">VALIDATION_FAILED_SIGNATURE_EXPIRED</span> <span class="o">=</span> <span class="s2">&quot;ValidationFailedSignatureExpired&quot;</span>
+    <span class="n">VALIDATION_FAILED_INVALID_LENGTH</span> <span class="o">=</span> <span class="s2">&quot;ValidationFailedInvalidLength&quot;</span>
+    <span class="n">VALIDATION_FAILED_SIGNATURE_MISMATCH</span> <span class="o">=</span> <span class="s2">&quot;ValidationFailedSignatureMismatch&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SRIMessageSignatureError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="AttributionReportingIssueDetails">
 <a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.AttributionReportingIssueDetails">[docs]</a>
 <span class="nd">@dataclass</span>
@@ -1306,6 +1425,33 @@
             <span class="n">shared_dictionary_error</span><span class="o">=</span><span class="n">SharedDictionaryError</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
                 <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sharedDictionaryError&quot;</span><span class="p">]</span>
             <span class="p">),</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">AffectedRequest</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">]),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SRIMessageSignatureIssueDetails">
+<a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.SRIMessageSignatureIssueDetails">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SRIMessageSignatureIssueDetails</span><span class="p">:</span>
+    <span class="n">error</span><span class="p">:</span> <span class="n">SRIMessageSignatureError</span>
+
+    <span class="n">signature_base</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="n">request</span><span class="p">:</span> <span class="n">AffectedRequest</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;signatureBase&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signature_base</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SRIMessageSignatureIssueDetails</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">error</span><span class="o">=</span><span class="n">SRIMessageSignatureError</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]),</span>
+            <span class="n">signature_base</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;signatureBase&quot;</span><span class="p">]),</span>
             <span class="n">request</span><span class="o">=</span><span class="n">AffectedRequest</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">]),</span>
         <span class="p">)</span></div>
 
@@ -1602,6 +1748,8 @@
     <span class="n">INVALID_FIELDS_SPECIFIED</span> <span class="o">=</span> <span class="s2">&quot;InvalidFieldsSpecified&quot;</span>
     <span class="n">RELYING_PARTY_ORIGIN_IS_OPAQUE</span> <span class="o">=</span> <span class="s2">&quot;RelyingPartyOriginIsOpaque&quot;</span>
     <span class="n">TYPE_NOT_MATCHING</span> <span class="o">=</span> <span class="s2">&quot;TypeNotMatching&quot;</span>
+    <span class="n">UI_DISMISSED_NO_EMBARGO</span> <span class="o">=</span> <span class="s2">&quot;UiDismissedNoEmbargo&quot;</span>
+    <span class="n">CORS_ERROR</span> <span class="o">=</span> <span class="s2">&quot;CorsError&quot;</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
@@ -1727,6 +1875,101 @@
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requestId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="PartitioningBlobURLInfo">
+<a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.PartitioningBlobURLInfo">[docs]</a>
+<span class="k">class</span> <span class="nc">PartitioningBlobURLInfo</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">BLOCKED_CROSS_PARTITION_FETCHING</span> <span class="o">=</span> <span class="s2">&quot;BlockedCrossPartitionFetching&quot;</span>
+    <span class="n">ENFORCE_NOOPENER_FOR_NAVIGATION</span> <span class="o">=</span> <span class="s2">&quot;EnforceNoopenerForNavigation&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PartitioningBlobURLInfo</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="PartitioningBlobURLIssueDetails">
+<a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.PartitioningBlobURLIssueDetails">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">PartitioningBlobURLIssueDetails</span><span class="p">:</span>
+    <span class="c1">#: The BlobURL that failed to load.</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="c1">#: Additional information about the Partitioning Blob URL issue.</span>
+    <span class="n">partitioning_blob_url_info</span><span class="p">:</span> <span class="n">PartitioningBlobURLInfo</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;partitioningBlobURLInfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partitioning_blob_url_info</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PartitioningBlobURLIssueDetails</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]),</span>
+            <span class="n">partitioning_blob_url_info</span><span class="o">=</span><span class="n">PartitioningBlobURLInfo</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;partitioningBlobURLInfo&quot;</span><span class="p">]</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SelectElementAccessibilityIssueReason">
+<a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.SelectElementAccessibilityIssueReason">[docs]</a>
+<span class="k">class</span> <span class="nc">SelectElementAccessibilityIssueReason</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">DISALLOWED_SELECT_CHILD</span> <span class="o">=</span> <span class="s2">&quot;DisallowedSelectChild&quot;</span>
+    <span class="n">DISALLOWED_OPT_GROUP_CHILD</span> <span class="o">=</span> <span class="s2">&quot;DisallowedOptGroupChild&quot;</span>
+    <span class="n">NON_PHRASING_CONTENT_OPTION_CHILD</span> <span class="o">=</span> <span class="s2">&quot;NonPhrasingContentOptionChild&quot;</span>
+    <span class="n">INTERACTIVE_CONTENT_OPTION_CHILD</span> <span class="o">=</span> <span class="s2">&quot;InteractiveContentOptionChild&quot;</span>
+    <span class="n">INTERACTIVE_CONTENT_LEGEND_CHILD</span> <span class="o">=</span> <span class="s2">&quot;InteractiveContentLegendChild&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SelectElementAccessibilityIssueReason</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SelectElementAccessibilityIssueDetails">
+<a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.SelectElementAccessibilityIssueDetails">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SelectElementAccessibilityIssueDetails</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This issue warns about errors in the select element content model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span>
+
+    <span class="n">select_element_accessibility_issue_reason</span><span class="p">:</span> <span class="n">SelectElementAccessibilityIssueReason</span>
+
+    <span class="n">has_disallowed_attributes</span><span class="p">:</span> <span class="nb">bool</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;nodeId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;selectElementAccessibilityIssueReason&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">select_element_accessibility_issue_reason</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;hasDisallowedAttributes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_disallowed_attributes</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SelectElementAccessibilityIssueDetails</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">node_id</span><span class="o">=</span><span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;nodeId&quot;</span><span class="p">]),</span>
+            <span class="n">select_element_accessibility_issue_reason</span><span class="o">=</span><span class="n">SelectElementAccessibilityIssueReason</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;selectElementAccessibilityIssueReason&quot;</span><span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">has_disallowed_attributes</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;hasDisallowedAttributes&quot;</span><span class="p">]),</span>
         <span class="p">)</span></div>
 
 
@@ -1871,6 +2114,7 @@
     <span class="n">CORS_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;CorsIssue&quot;</span>
     <span class="n">ATTRIBUTION_REPORTING_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;AttributionReportingIssue&quot;</span>
     <span class="n">QUIRKS_MODE_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;QuirksModeIssue&quot;</span>
+    <span class="n">PARTITIONING_BLOB_URL_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;PartitioningBlobURLIssue&quot;</span>
     <span class="n">NAVIGATOR_USER_AGENT_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;NavigatorUserAgentIssue&quot;</span>
     <span class="n">GENERIC_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;GenericIssue&quot;</span>
     <span class="n">DEPRECATION_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;DeprecationIssue&quot;</span>
@@ -1882,6 +2126,8 @@
     <span class="n">FEDERATED_AUTH_USER_INFO_REQUEST_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;FederatedAuthUserInfoRequestIssue&quot;</span>
     <span class="n">PROPERTY_RULE_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;PropertyRuleIssue&quot;</span>
     <span class="n">SHARED_DICTIONARY_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;SharedDictionaryIssue&quot;</span>
+    <span class="n">SELECT_ELEMENT_ACCESSIBILITY_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;SelectElementAccessibilityIssue&quot;</span>
+    <span class="n">SRI_MESSAGE_SIGNATURE_ISSUE</span> <span class="o">=</span> <span class="s2">&quot;SRIMessageSignatureIssue&quot;</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
@@ -1930,6 +2176,10 @@
 
     <span class="n">quirks_mode_issue_details</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">QuirksModeIssueDetails</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="n">partitioning_blob_url_issue_details</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span>
+        <span class="n">PartitioningBlobURLIssueDetails</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
     <span class="n">navigator_user_agent_issue_details</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span>
         <span class="n">NavigatorUserAgentIssueDetails</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1963,6 +2213,14 @@
     <span class="n">shared_dictionary_issue_details</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">SharedDictionaryIssueDetails</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
         <span class="kc">None</span>
     <span class="p">)</span>
+
+    <span class="n">select_element_accessibility_issue_details</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span>
+        <span class="n">SelectElementAccessibilityIssueDetails</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">sri_message_signature_issue_details</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span>
+        <span class="n">SRIMessageSignatureIssueDetails</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -1998,6 +2256,10 @@
             <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">quirks_mode_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;quirksModeIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quirks_mode_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">partitioning_blob_url_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;partitioningBlobURLIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">partitioning_blob_url_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">navigator_user_agent_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;navigatorUserAgentIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">navigator_user_agent_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
@@ -2035,6 +2297,14 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shared_dictionary_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sharedDictionaryIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">shared_dictionary_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_element_accessibility_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;selectElementAccessibilityIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">select_element_accessibility_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sri_message_signature_issue_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sriMessageSignatureIssueDetails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sri_message_signature_issue_details</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">json</span>
 
@@ -2101,6 +2371,13 @@
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;quirksModeIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
+            <span class="n">partitioning_blob_url_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">PartitioningBlobURLIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;partitioningBlobURLIssueDetails&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;partitioningBlobURLIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
             <span class="n">navigator_user_agent_issue_details</span><span class="o">=</span><span class="p">(</span>
                 <span class="n">NavigatorUserAgentIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
                     <span class="n">json</span><span class="p">[</span><span class="s2">&quot;navigatorUserAgentIssueDetails&quot;</span><span class="p">]</span>
@@ -2159,7 +2436,7 @@
                     <span class="n">json</span><span class="p">[</span><span class="s2">&quot;federatedAuthUserInfoRequestIssueDetails&quot;</span><span class="p">]</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;federatedAuthUserInfoRequestIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                   <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
             <span class="n">shared_dictionary_issue_details</span><span class="o">=</span><span class="p">(</span>
@@ -2167,6 +2444,20 @@
                     <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sharedDictionaryIssueDetails&quot;</span><span class="p">]</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sharedDictionaryIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">select_element_accessibility_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">SelectElementAccessibilityIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;selectElementAccessibilityIssueDetails&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;selectElementAccessibilityIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">sri_message_signature_issue_details</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">SRIMessageSignatureIssueDetails</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sriMessageSignatureIssueDetails&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sriMessageSignatureIssueDetails&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
         <span class="p">)</span></div>
@@ -2234,10 +2525,10 @@
 <div class="viewcode-block" id="get_encoded_response">
 <a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.get_encoded_response">[docs]</a>
 <span class="k">def</span> <span class="nf">get_encoded_response</span><span class="p">(</span>
-    <span class="n">request_id</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">RequestId</span><span class="p">,</span>
-    <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">quality</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">size_only</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">request_id</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">RequestId</span><span class="p">,</span>
+        <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">quality</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">size_only</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
 <span class="p">]:</span>
@@ -2305,7 +2596,7 @@
 <div class="viewcode-block" id="check_contrast">
 <a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.check_contrast">[docs]</a>
 <span class="k">def</span> <span class="nf">check_contrast</span><span class="p">(</span>
-    <span class="n">report_aaa</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">report_aaa</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Runs the contrast check for the target page. Found issues are reported</span>
@@ -2327,7 +2618,7 @@
 <div class="viewcode-block" id="check_forms_issues">
 <a class="viewcode-back" href="../../../nodriver/cdp/audits.html#nodriver.cdp.audits.check_forms_issues">[docs]</a>
 <span class="k">def</span> <span class="nf">check_forms_issues</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span>
-    <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">GenericIssueDetails</span><span class="p">]]</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">GenericIssueDetails</span><span class="p">]]</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Runs the form issues check for the target page. Found issues are reported</span>

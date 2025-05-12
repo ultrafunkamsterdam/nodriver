@@ -90,7 +90,7 @@ def _wrap(cls, v):
         v = cls(v)
 
     elif isinstance(v, _Sequence) and not isinstance(
-            v, (str, bytes, bytearray, set, tuple)
+        v, (str, bytes, bytearray, set, tuple)
     ):
         v = list([_wrap(cls, x) for x in v])
     return v

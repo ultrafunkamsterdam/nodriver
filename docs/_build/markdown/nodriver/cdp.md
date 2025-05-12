@@ -11,7 +11,6 @@
 * [Cast](cdp/cast.md)
 * [Console](cdp/console.md)
 * [CSS](cdp/css.md)
-* [Database](cdp/database.md)
 * [Debugger](cdp/debugger.md)
 * [DeviceAccess](cdp/device_access.md)
 * [DeviceOrientation](cdp/device_orientation.md)

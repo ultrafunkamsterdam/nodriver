@@ -65,17 +65,17 @@ class Browser:
 
     @classmethod
     async def create(
-            cls,
-            config: Config = None,
-            *,
-            user_data_dir: PathLike = None,
-            headless: bool = False,
-            browser_executable_path: PathLike = None,
-            browser_args: List[str] = None,
-            sandbox: bool = True,
-            host: str = None,
-            port: int = None,
-            **kwargs,
+        cls,
+        config: Config = None,
+        *,
+        user_data_dir: PathLike = None,
+        headless: bool = False,
+        browser_executable_path: PathLike = None,
+        browser_args: List[str] = None,
+        sandbox: bool = True,
+        host: str = None,
+        port: int = None,
+        **kwargs,
     ) -> Browser:
         """
         entry point for creating an instance
@@ -169,13 +169,13 @@ class Browser:
     """alias for wait"""
 
     def _handle_target_update(
-            self,
-            event: Union[
-                cdp.target.TargetInfoChanged,
-                cdp.target.TargetDestroyed,
-                cdp.target.TargetCreated,
-                cdp.target.TargetCrashed,
-            ],
+        self,
+        event: Union[
+            cdp.target.TargetInfoChanged,
+            cdp.target.TargetDestroyed,
+            cdp.target.TargetCreated,
+            cdp.target.TargetCrashed,
+        ],
     ):
         """this is an internal handler which updates the targets when chrome emits the corresponding event"""
 
@@ -233,7 +233,7 @@ class Browser:
         asyncio.create_task(self.update_targets())
 
     async def get(
-            self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
+        self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
     ) -> tab.Tab:
         """top level get. utilizes the first tab to retrieve given url.
 
@@ -277,14 +277,14 @@ class Browser:
         return connection
 
     async def create_context(
-            self,
-            url: str = "chrome://welcome",
-            new_tab: bool = False,
-            new_window: bool = True,
-            dispose_on_detach: bool = True,
-            proxy_server: str = None,
-            proxy_bypass_list: List[str] = None,
-            origins_with_universal_network_access: List[str] = None,
+        self,
+        url: str = "chrome://welcome",
+        new_tab: bool = False,
+        new_window: bool = True,
+        dispose_on_detach: bool = True,
+        proxy_server: str = None,
+        proxy_bypass_list: List[str] = None,
+        origins_with_universal_network_access: List[str] = None,
     ) -> tab.Tab:
         """
         creates a new browser context - mostly useful if you want to use proxies for different browser instances
@@ -597,7 +597,7 @@ class Browser:
         return self
 
     def __getitem__(
-            self, item: Union[str, int, slice]
+        self, item: Union[str, int, slice]
     ) -> Union[tab.Tab, List[tab.Tab]]:
         """
         allows to get py:obj:`tab.Tab` instances by using browser[0], browser[1], etc.
@@ -730,7 +730,7 @@ class CookieJar:
         # self._connection = connection
 
     async def get_all(
-            self, requests_cookie_format: bool = False
+        self, requests_cookie_format: bool = False
     ) -> List[Union[cdp.network.Cookie, "http.cookiejar.Cookie"]]:
         """
         get all cookies

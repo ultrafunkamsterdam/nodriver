@@ -25,7 +25,7 @@ from . import util
 T = TypeVar("T")
 
 GLOBAL_DELAY = 0.005
-MAX_SIZE: int = 2 ** 28
+MAX_SIZE: int = 2**28
 PING_TIMEOUT: int = 900  # 15 minutes
 
 TargetType = Union[cdp.target.TargetInfo, cdp.target.TargetID]
@@ -202,11 +202,11 @@ class Connection(metaclass=CantTouchThis):
         return self._target
 
     def __init__(
-            self,
-            websocket_url: str,
-            target: cdp.target.TargetInfo = None,
-            browser: _browser.Browser = None,
-            **kwargs,
+        self,
+        websocket_url: str,
+        target: cdp.target.TargetInfo = None,
+        browser: _browser.Browser = None,
+        **kwargs,
     ):
         super().__init__()
         self.websocket_url: str = websocket_url
@@ -229,9 +229,9 @@ class Connection(metaclass=CantTouchThis):
         return bool(self.websocket.close_code)
 
     def add_handler(
-            self,
-            event_type_or_domain: Union[type, types.ModuleType, List[type]],
-            handler: Union[Callable, Awaitable],
+        self,
+        event_type_or_domain: Union[type, types.ModuleType, List[type]],
+        handler: Union[Callable, Awaitable],
     ):
         """
         add a handler for given event
@@ -278,9 +278,9 @@ class Connection(metaclass=CantTouchThis):
                 self.handlers[evt_dom].append(handler)
 
     def remove_handler(
-            self,
-            event_type_or_domain: Union[type, types.ModuleType, List[type]],
-            handler: Union[Callable, Awaitable] = None,
+        self,
+        event_type_or_domain: Union[type, types.ModuleType, List[type]],
+        handler: Union[Callable, Awaitable] = None,
     ):
         """
         remove a handler for given event
@@ -467,7 +467,7 @@ class Connection(metaclass=CantTouchThis):
                         for callback in callbacks:
                             try:
                                 if iscoroutinefunction(callback) or iscoroutine(
-                                        callback
+                                    callback
                                 ):
                                     try:
 
@@ -493,7 +493,7 @@ class Connection(metaclass=CantTouchThis):
                         raise
 
     async def send(
-            self, cdp_obj: Generator[dict[str, Any], dict[str, Any], Any], _is_update=False
+        self, cdp_obj: Generator[dict[str, Any], dict[str, Any], Any], _is_update=False
     ) -> Any:
         """
         send a protocol command. the commands are made using any of the cdp.<domain>.<method>()'s

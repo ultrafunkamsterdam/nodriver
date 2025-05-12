@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.debugger - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -705,10 +706,35 @@
 
 
 
+<div class="viewcode-block" id="ResolvedBreakpoint">
+<a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.ResolvedBreakpoint">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ResolvedBreakpoint</span><span class="p">:</span>
+    <span class="c1">#: Breakpoint unique identifier.</span>
+    <span class="n">breakpoint_id</span><span class="p">:</span> <span class="n">BreakpointId</span>
+
+    <span class="c1">#: Actual breakpoint location.</span>
+    <span class="n">location</span><span class="p">:</span> <span class="n">Location</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;breakpointId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">breakpoint_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResolvedBreakpoint</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">breakpoint_id</span><span class="o">=</span><span class="n">BreakpointId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;breakpointId&quot;</span><span class="p">]),</span>
+            <span class="n">location</span><span class="o">=</span><span class="n">Location</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]),</span>
+        <span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="continue_to_location">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.continue_to_location">[docs]</a>
 <span class="k">def</span> <span class="nf">continue_to_location</span><span class="p">(</span>
-    <span class="n">location</span><span class="p">:</span> <span class="n">Location</span><span class="p">,</span> <span class="n">target_call_frames</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">location</span><span class="p">:</span> <span class="n">Location</span><span class="p">,</span> <span class="n">target_call_frames</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Continues execution until specific location is reached.</span>
@@ -744,7 +770,7 @@
 <div class="viewcode-block" id="enable">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.enable">[docs]</a>
 <span class="k">def</span> <span class="nf">enable</span><span class="p">(</span>
-    <span class="n">max_scripts_cache_size</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_scripts_cache_size</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">runtime</span><span class="o">.</span><span class="n">UniqueDebuggerId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enables debugger for the given page. Clients should not assume that the debugging has been</span>
@@ -768,15 +794,15 @@
 <div class="viewcode-block" id="evaluate_on_call_frame">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.evaluate_on_call_frame">[docs]</a>
 <span class="k">def</span> <span class="nf">evaluate_on_call_frame</span><span class="p">(</span>
-    <span class="n">call_frame_id</span><span class="p">:</span> <span class="n">CallFrameId</span><span class="p">,</span>
-    <span class="n">expression</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">object_group</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">include_command_line_api</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">silent</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">return_by_value</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">generate_preview</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">throw_on_side_effect</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">timeout</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">TimeDelta</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">call_frame_id</span><span class="p">:</span> <span class="n">CallFrameId</span><span class="p">,</span>
+        <span class="n">expression</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">object_group</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">include_command_line_api</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">silent</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">return_by_value</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">generate_preview</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">throw_on_side_effect</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">TimeDelta</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
@@ -835,9 +861,9 @@
 <div class="viewcode-block" id="get_possible_breakpoints">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.get_possible_breakpoints">[docs]</a>
 <span class="k">def</span> <span class="nf">get_possible_breakpoints</span><span class="p">(</span>
-    <span class="n">start</span><span class="p">:</span> <span class="n">Location</span><span class="p">,</span>
-    <span class="n">end</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Location</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">restrict_to_function</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">start</span><span class="p">:</span> <span class="n">Location</span><span class="p">,</span>
+        <span class="n">end</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Location</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">restrict_to_function</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">BreakLocation</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns possible locations for breakpoint. scriptId in start and end range locations should be</span>
@@ -866,7 +892,7 @@
 <div class="viewcode-block" id="get_script_source">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.get_script_source">[docs]</a>
 <span class="k">def</span> <span class="nf">get_script_source</span><span class="p">(</span>
-    <span class="n">script_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">ScriptId</span><span class="p">,</span>
+        <span class="n">script_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">ScriptId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
 <span class="p">]:</span>
@@ -896,7 +922,7 @@
 <div class="viewcode-block" id="disassemble_wasm_module">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.disassemble_wasm_module">[docs]</a>
 <span class="k">def</span> <span class="nf">disassemble_wasm_module</span><span class="p">(</span>
-    <span class="n">script_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">ScriptId</span><span class="p">,</span>
+        <span class="n">script_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">ScriptId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
@@ -934,7 +960,7 @@
 <div class="viewcode-block" id="next_wasm_disassembly_chunk">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.next_wasm_disassembly_chunk">[docs]</a>
 <span class="k">def</span> <span class="nf">next_wasm_disassembly_chunk</span><span class="p">(</span>
-    <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">WasmDisassemblyChunk</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Disassemble the next chunk of lines for the module corresponding to the</span>
@@ -962,7 +988,7 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.get_wasm_bytecode">[docs]</a>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.3&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_wasm_bytecode</span><span class="p">(</span>
-    <span class="n">script_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">ScriptId</span><span class="p">,</span>
+        <span class="n">script_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">ScriptId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This command is deprecated. Use getScriptSource instead.</span>
@@ -986,7 +1012,7 @@
 <div class="viewcode-block" id="get_stack_trace">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.get_stack_trace">[docs]</a>
 <span class="k">def</span> <span class="nf">get_stack_trace</span><span class="p">(</span>
-    <span class="n">stack_trace_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">StackTraceId</span><span class="p">,</span>
+        <span class="n">stack_trace_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">StackTraceId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">runtime</span><span class="o">.</span><span class="n">StackTrace</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns stack trace with given ``stackTraceId``.</span>
@@ -1024,7 +1050,7 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.pause_on_async_call">[docs]</a>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.3&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">pause_on_async_call</span><span class="p">(</span>
-    <span class="n">parent_stack_trace_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">StackTraceId</span><span class="p">,</span>
+        <span class="n">parent_stack_trace_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">StackTraceId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
@@ -1048,7 +1074,7 @@
 <div class="viewcode-block" id="remove_breakpoint">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.remove_breakpoint">[docs]</a>
 <span class="k">def</span> <span class="nf">remove_breakpoint</span><span class="p">(</span>
-    <span class="n">breakpoint_id</span><span class="p">:</span> <span class="n">BreakpointId</span><span class="p">,</span>
+        <span class="n">breakpoint_id</span><span class="p">:</span> <span class="n">BreakpointId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Removes JavaScript breakpoint.</span>
@@ -1068,7 +1094,7 @@
 <div class="viewcode-block" id="restart_frame">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.restart_frame">[docs]</a>
 <span class="k">def</span> <span class="nf">restart_frame</span><span class="p">(</span>
-    <span class="n">call_frame_id</span><span class="p">:</span> <span class="n">CallFrameId</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">call_frame_id</span><span class="p">:</span> <span class="n">CallFrameId</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
@@ -1129,7 +1155,7 @@
 <div class="viewcode-block" id="resume">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.resume">[docs]</a>
 <span class="k">def</span> <span class="nf">resume</span><span class="p">(</span>
-    <span class="n">terminate_on_resume</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">terminate_on_resume</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Resumes JavaScript execution.</span>
@@ -1150,10 +1176,10 @@
 <div class="viewcode-block" id="search_in_content">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.search_in_content">[docs]</a>
 <span class="k">def</span> <span class="nf">search_in_content</span><span class="p">(</span>
-    <span class="n">script_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">ScriptId</span><span class="p">,</span>
-    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">case_sensitive</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">is_regex</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">script_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">ScriptId</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">case_sensitive</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_regex</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">SearchMatch</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Searches for given string in script content.</span>
@@ -1183,7 +1209,7 @@
 <div class="viewcode-block" id="set_async_call_stack_depth">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.set_async_call_stack_depth">[docs]</a>
 <span class="k">def</span> <span class="nf">set_async_call_stack_depth</span><span class="p">(</span>
-    <span class="n">max_depth</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">max_depth</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enables or disables async call stacks tracking.</span>
@@ -1203,7 +1229,7 @@
 <div class="viewcode-block" id="set_blackbox_execution_contexts">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.set_blackbox_execution_contexts">[docs]</a>
 <span class="k">def</span> <span class="nf">set_blackbox_execution_contexts</span><span class="p">(</span>
-    <span class="n">unique_ids</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">unique_ids</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replace previous blackbox execution contexts with passed ones. Forces backend to skip</span>
@@ -1227,7 +1253,7 @@
 <div class="viewcode-block" id="set_blackbox_patterns">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.set_blackbox_patterns">[docs]</a>
 <span class="k">def</span> <span class="nf">set_blackbox_patterns</span><span class="p">(</span>
-    <span class="n">patterns</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">skip_anonymous</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">patterns</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">skip_anonymous</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replace previous blackbox patterns with passed ones. Forces backend to skip stepping/pausing in</span>
@@ -1254,7 +1280,7 @@
 <div class="viewcode-block" id="set_blackboxed_ranges">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.set_blackboxed_ranges">[docs]</a>
 <span class="k">def</span> <span class="nf">set_blackboxed_ranges</span><span class="p">(</span>
-    <span class="n">script_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">ScriptId</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">ScriptPosition</span><span class="p">]</span>
+        <span class="n">script_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">ScriptId</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">ScriptPosition</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Makes backend skip steps in the script in blackboxed ranges. VM will try leave blacklisted</span>
@@ -1281,7 +1307,7 @@
 <div class="viewcode-block" id="set_breakpoint">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.set_breakpoint">[docs]</a>
 <span class="k">def</span> <span class="nf">set_breakpoint</span><span class="p">(</span>
-    <span class="n">location</span><span class="p">:</span> <span class="n">Location</span><span class="p">,</span> <span class="n">condition</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">location</span><span class="p">:</span> <span class="n">Location</span><span class="p">,</span> <span class="n">condition</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="n">BreakpointId</span><span class="p">,</span> <span class="n">Location</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets JavaScript breakpoint at a given location.</span>
@@ -1312,7 +1338,7 @@
 <div class="viewcode-block" id="set_instrumentation_breakpoint">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.set_instrumentation_breakpoint">[docs]</a>
 <span class="k">def</span> <span class="nf">set_instrumentation_breakpoint</span><span class="p">(</span>
-    <span class="n">instrumentation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">instrumentation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">BreakpointId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets instrumentation breakpoint.</span>
@@ -1334,12 +1360,12 @@
 <div class="viewcode-block" id="set_breakpoint_by_url">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.set_breakpoint_by_url">[docs]</a>
 <span class="k">def</span> <span class="nf">set_breakpoint_by_url</span><span class="p">(</span>
-    <span class="n">line_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">url</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">url_regex</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">script_hash</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">column_number</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">condition</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">line_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">url_regex</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">script_hash</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">column_number</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">condition</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="n">BreakpointId</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">Location</span><span class="p">]]</span>
 <span class="p">]:</span>
@@ -1387,7 +1413,7 @@
 <div class="viewcode-block" id="set_breakpoint_on_function_call">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.set_breakpoint_on_function_call">[docs]</a>
 <span class="k">def</span> <span class="nf">set_breakpoint_on_function_call</span><span class="p">(</span>
-    <span class="n">object_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">,</span> <span class="n">condition</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">object_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">,</span> <span class="n">condition</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">BreakpointId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets JavaScript breakpoint before each call to the given function.</span>
@@ -1416,7 +1442,7 @@
 <div class="viewcode-block" id="set_breakpoints_active">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.set_breakpoints_active">[docs]</a>
 <span class="k">def</span> <span class="nf">set_breakpoints_active</span><span class="p">(</span>
-    <span class="n">active</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">active</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Activates / deactivates all breakpoints on the page.</span>
@@ -1436,7 +1462,7 @@
 <div class="viewcode-block" id="set_pause_on_exceptions">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.set_pause_on_exceptions">[docs]</a>
 <span class="k">def</span> <span class="nf">set_pause_on_exceptions</span><span class="p">(</span>
-    <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines pause on exceptions state. Can be set to stop on all exceptions, uncaught exceptions,</span>
@@ -1457,7 +1483,7 @@
 <div class="viewcode-block" id="set_return_value">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.set_return_value">[docs]</a>
 <span class="k">def</span> <span class="nf">set_return_value</span><span class="p">(</span>
-    <span class="n">new_value</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">CallArgument</span><span class="p">,</span>
+        <span class="n">new_value</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">CallArgument</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Changes return value in top frame. Available only at return break position.</span>
@@ -1479,10 +1505,10 @@
 <div class="viewcode-block" id="set_script_source">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.set_script_source">[docs]</a>
 <span class="k">def</span> <span class="nf">set_script_source</span><span class="p">(</span>
-    <span class="n">script_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">ScriptId</span><span class="p">,</span>
-    <span class="n">script_source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">dry_run</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">allow_top_frame_editing</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">script_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">ScriptId</span><span class="p">,</span>
+        <span class="n">script_source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">dry_run</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">allow_top_frame_editing</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
@@ -1581,10 +1607,10 @@
 <div class="viewcode-block" id="set_variable_value">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.set_variable_value">[docs]</a>
 <span class="k">def</span> <span class="nf">set_variable_value</span><span class="p">(</span>
-    <span class="n">scope_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">new_value</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">CallArgument</span><span class="p">,</span>
-    <span class="n">call_frame_id</span><span class="p">:</span> <span class="n">CallFrameId</span><span class="p">,</span>
+        <span class="n">scope_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">new_value</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">CallArgument</span><span class="p">,</span>
+        <span class="n">call_frame_id</span><span class="p">:</span> <span class="n">CallFrameId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Changes value of variable in a callframe. Object-based scopes are not supported and must be</span>
@@ -1611,8 +1637,8 @@
 <div class="viewcode-block" id="step_into">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.step_into">[docs]</a>
 <span class="k">def</span> <span class="nf">step_into</span><span class="p">(</span>
-    <span class="n">break_on_async_call</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">skip_list</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">LocationRange</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">break_on_async_call</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">skip_list</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">LocationRange</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Steps into the function call.</span>
@@ -1649,7 +1675,7 @@
 <div class="viewcode-block" id="step_over">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.step_over">[docs]</a>
 <span class="k">def</span> <span class="nf">step_over</span><span class="p">(</span>
-    <span class="n">skip_list</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">LocationRange</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">skip_list</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">LocationRange</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Steps over the statement.</span>
@@ -1669,11 +1695,13 @@
 
 <div class="viewcode-block" id="BreakpointResolved">
 <a class="viewcode-back" href="../../../nodriver/cdp/debugger.html#nodriver.cdp.debugger.BreakpointResolved">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.3&quot;</span><span class="p">)</span>
 <span class="nd">@event_class</span><span class="p">(</span><span class="s2">&quot;Debugger.breakpointResolved&quot;</span><span class="p">)</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">BreakpointResolved</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fired when breakpoint is resolved to an actual script and location.</span>
+<span class="sd">    Deprecated in favor of ``resolvedBreakpoints`` in the ``scriptParsed`` event.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1">#: Breakpoint unique identifier.</span>
@@ -1784,6 +1812,8 @@
     <span class="n">execution_context_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">ExecutionContextId</span>
     <span class="c1">#: Content hash of the script, SHA-256.</span>
     <span class="n">hash_</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="c1">#: For Wasm modules, the content of the ``build_id`` custom section.</span>
+    <span class="n">build_id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="c1">#: Embedder-specific auxiliary data likely matching {isDefault: boolean, type: &#39;default&#39;``&#39;isolated&#39;``&#39;worker&#39;, frameId: string}</span>
     <span class="n">execution_context_aux_data</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span>
     <span class="c1">#: URL of source map associated with script (if any).</span>
@@ -1816,6 +1846,7 @@
                 <span class="n">json</span><span class="p">[</span><span class="s2">&quot;executionContextId&quot;</span><span class="p">]</span>
             <span class="p">),</span>
             <span class="n">hash_</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;hash&quot;</span><span class="p">]),</span>
+            <span class="n">build_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;buildId&quot;</span><span class="p">]),</span>
             <span class="n">execution_context_aux_data</span><span class="o">=</span><span class="p">(</span>
                 <span class="nb">dict</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;executionContextAuxData&quot;</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;executionContextAuxData&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -1889,6 +1920,8 @@
     <span class="n">execution_context_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">ExecutionContextId</span>
     <span class="c1">#: Content hash of the script, SHA-256.</span>
     <span class="n">hash_</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="c1">#: For Wasm modules, the content of the ``build_id`` custom section.</span>
+    <span class="n">build_id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="c1">#: Embedder-specific auxiliary data likely matching {isDefault: boolean, type: &#39;default&#39;``&#39;isolated&#39;``&#39;worker&#39;, frameId: string}</span>
     <span class="n">execution_context_aux_data</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span>
     <span class="c1">#: True, if this script is generated as a result of the live edit operation.</span>
@@ -1911,6 +1944,10 @@
     <span class="n">debug_symbols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">DebugSymbols</span><span class="p">]]</span>
     <span class="c1">#: The name the embedder supplied for this script.</span>
     <span class="n">embedder_name</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="c1">#: The list of set breakpoints in this script if calls to ``setBreakpointByUrl``</span>
+    <span class="c1">#: matches this script&#39;s URL or hash. Clients that use this list can ignore the</span>
+    <span class="c1">#: ``breakpointResolved`` event. They are equivalent.</span>
+    <span class="n">resolved_breakpoints</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">ResolvedBreakpoint</span><span class="p">]]</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScriptParsed</span><span class="p">:</span>
@@ -1925,6 +1962,7 @@
                 <span class="n">json</span><span class="p">[</span><span class="s2">&quot;executionContextId&quot;</span><span class="p">]</span>
             <span class="p">),</span>
             <span class="n">hash_</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;hash&quot;</span><span class="p">]),</span>
+            <span class="n">build_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;buildId&quot;</span><span class="p">]),</span>
             <span class="n">execution_context_aux_data</span><span class="o">=</span><span class="p">(</span>
                 <span class="nb">dict</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;executionContextAuxData&quot;</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;executionContextAuxData&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -1976,6 +2014,11 @@
             <span class="n">embedder_name</span><span class="o">=</span><span class="p">(</span>
                 <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;embedderName&quot;</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;embedderName&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">resolved_breakpoints</span><span class="o">=</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">ResolvedBreakpoint</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;resolvedBreakpoints&quot;</span><span class="p">]]</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resolvedBreakpoints&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
         <span class="p">)</span></div>

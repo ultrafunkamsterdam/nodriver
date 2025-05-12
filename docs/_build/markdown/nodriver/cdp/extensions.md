@@ -57,7 +57,7 @@ specified, these are used to filter the result.
 * **Parameters:**
   * **id** – ID of extension.
   * **storage_area** ([`StorageArea`](#nodriver.cdp.extensions.StorageArea)) – StorageArea to retrieve data from.
-  * **keys** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]) –  *(Optional)* Keys to retrieve.
+  * **keys** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]) – *(Optional)* Keys to retrieve.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]
 * **Returns:**
@@ -97,6 +97,17 @@ will be merged with existing values in the storage area.
   * **id** – ID of extension.
   * **storage_area** ([`StorageArea`](#nodriver.cdp.extensions.StorageArea)) – StorageArea to set data in.
   * **values** ([`dict`](https://docs.python.org/3/library/stdtypes.html#dict)) – Values to set.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### uninstall(id_)
+
+Uninstalls an unpacked extension (others not supported) from the profile.
+Available if the client is connected using the –remote-debugging-pipe flag
+and the –enable-unsafe-extension-debugging.
+
+* **Parameters:**
+  **id** – Extension id.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 

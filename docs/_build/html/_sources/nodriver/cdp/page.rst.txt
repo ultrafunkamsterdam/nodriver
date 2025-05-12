@@ -107,6 +107,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: SecurityOriginDetails
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: Frame
       :members:
       :undoc-members:
@@ -492,6 +497,11 @@ you use the event's attributes.
       :exclude-members: from_json, to_json
 
 .. autoclass:: FrameResized
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: FrameStartedNavigating
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

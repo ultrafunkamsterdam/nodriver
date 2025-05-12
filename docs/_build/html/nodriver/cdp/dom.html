@@ -167,6 +167,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../classes/browser.html">Browser class</a></li>
@@ -187,7 +189,6 @@
 <li class="toctree-l2"><a class="reference internal" href="cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="device_orientation.html">DeviceOrientation</a></li>
@@ -336,8 +337,8 @@ front-end.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.CHECK">
-<span class="sig-name descname"><span class="pre">CHECK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'check'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.CHECK" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.CHECKMARK">
+<span class="sig-name descname"><span class="pre">CHECKMARK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'checkmark'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.CHECKMARK" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -351,8 +352,8 @@ front-end.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.SELECT_ARROW">
-<span class="sig-name descname"><span class="pre">SELECT_ARROW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'select-arrow'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.SELECT_ARROW" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.PICKER_ICON">
+<span class="sig-name descname"><span class="pre">PICKER_ICON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'picker-icon'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.PICKER_ICON" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -416,13 +417,8 @@ front-end.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.SCROLL_NEXT_BUTTON">
-<span class="sig-name descname"><span class="pre">SCROLL_NEXT_BUTTON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'scroll-next-button'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.SCROLL_NEXT_BUTTON" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.SCROLL_PREV_BUTTON">
-<span class="sig-name descname"><span class="pre">SCROLL_PREV_BUTTON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'scroll-prev-button'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.SCROLL_PREV_BUTTON" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.dom.PseudoType.SCROLL_BUTTON">
+<span class="sig-name descname"><span class="pre">SCROLL_BUTTON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'scroll-button'</span></em><a class="headerlink" href="#nodriver.cdp.dom.PseudoType.SCROLL_BUTTON" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -2332,10 +2328,10 @@ most of the calls requesting node ids.</p>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType"><code class="docutils literal notranslate"><span class="pre">PseudoType</span></code></a><ul>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.FIRST_LINE"><code class="docutils literal notranslate"><span class="pre">PseudoType.FIRST_LINE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.FIRST_LETTER"><code class="docutils literal notranslate"><span class="pre">PseudoType.FIRST_LETTER</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.CHECK"><code class="docutils literal notranslate"><span class="pre">PseudoType.CHECK</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.CHECKMARK"><code class="docutils literal notranslate"><span class="pre">PseudoType.CHECKMARK</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.BEFORE"><code class="docutils literal notranslate"><span class="pre">PseudoType.BEFORE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.AFTER"><code class="docutils literal notranslate"><span class="pre">PseudoType.AFTER</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SELECT_ARROW"><code class="docutils literal notranslate"><span class="pre">PseudoType.SELECT_ARROW</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.PICKER_ICON"><code class="docutils literal notranslate"><span class="pre">PseudoType.PICKER_ICON</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.MARKER"><code class="docutils literal notranslate"><span class="pre">PseudoType.MARKER</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.BACKDROP"><code class="docutils literal notranslate"><span class="pre">PseudoType.BACKDROP</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.COLUMN"><code class="docutils literal notranslate"><span class="pre">PseudoType.COLUMN</span></code></a></li>
@@ -2348,8 +2344,7 @@ most of the calls requesting node ids.</p>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.FIRST_LINE_INHERITED"><code class="docutils literal notranslate"><span class="pre">PseudoType.FIRST_LINE_INHERITED</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLL_MARKER"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLL_MARKER</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLL_MARKER_GROUP"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLL_MARKER_GROUP</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLL_NEXT_BUTTON"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLL_NEXT_BUTTON</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLL_PREV_BUTTON"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLL_PREV_BUTTON</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLL_BUTTON"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLL_BUTTON</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLLBAR</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR_THUMB"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLLBAR_THUMB</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.dom.PseudoType.SCROLLBAR_BUTTON"><code class="docutils literal notranslate"><span class="pre">PseudoType.SCROLLBAR_BUTTON</span></code></a></li>

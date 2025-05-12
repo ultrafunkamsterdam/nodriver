@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.overlay - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -1416,11 +1417,11 @@
 <div class="viewcode-block" id="get_highlight_object_for_test">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.get_highlight_object_for_test">[docs]</a>
 <span class="k">def</span> <span class="nf">get_highlight_object_for_test</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
-    <span class="n">include_distance</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">include_style</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">color_format</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ColorFormat</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">show_accessibility_info</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">include_distance</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">include_style</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">color_format</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ColorFormat</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">show_accessibility_info</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    For testing.</span>
@@ -1454,7 +1455,7 @@
 <div class="viewcode-block" id="get_grid_highlight_objects_for_test">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.get_grid_highlight_objects_for_test">[docs]</a>
 <span class="k">def</span> <span class="nf">get_grid_highlight_objects_for_test</span><span class="p">(</span>
-    <span class="n">node_ids</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">],</span>
+        <span class="n">node_ids</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    For Persistent Grid testing.</span>
@@ -1476,7 +1477,7 @@
 <div class="viewcode-block" id="get_source_order_highlight_object_for_test">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.get_source_order_highlight_object_for_test">[docs]</a>
 <span class="k">def</span> <span class="nf">get_source_order_highlight_object_for_test</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    For Source Order Viewer testing.</span>
@@ -1512,9 +1513,9 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.highlight_frame">[docs]</a>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.3&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">highlight_frame</span><span class="p">(</span>
-    <span class="n">frame_id</span><span class="p">:</span> <span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="p">,</span>
-    <span class="n">content_color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">content_outline_color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">frame_id</span><span class="p">:</span> <span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="p">,</span>
+        <span class="n">content_color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">content_outline_color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Highlights owner element of the frame with given id.</span>
@@ -1545,11 +1546,11 @@
 <div class="viewcode-block" id="highlight_node">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.highlight_node">[docs]</a>
 <span class="k">def</span> <span class="nf">highlight_node</span><span class="p">(</span>
-    <span class="n">highlight_config</span><span class="p">:</span> <span class="n">HighlightConfig</span><span class="p">,</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">selector</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">highlight_config</span><span class="p">:</span> <span class="n">HighlightConfig</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">selector</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Highlights DOM node with given id or with the given JavaScript object wrapper. Either nodeId or</span>
@@ -1582,9 +1583,9 @@
 <div class="viewcode-block" id="highlight_quad">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.highlight_quad">[docs]</a>
 <span class="k">def</span> <span class="nf">highlight_quad</span><span class="p">(</span>
-    <span class="n">quad</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">Quad</span><span class="p">,</span>
-    <span class="n">color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">outline_color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">quad</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">Quad</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">outline_color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Highlights given quad. Coordinates are absolute with respect to the main frame viewport.</span>
@@ -1610,12 +1611,12 @@
 <div class="viewcode-block" id="highlight_rect">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.highlight_rect">[docs]</a>
 <span class="k">def</span> <span class="nf">highlight_rect</span><span class="p">(</span>
-    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">height</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">outline_color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">height</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">outline_color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Highlights given rectangle. Coordinates are absolute with respect to the main frame viewport.</span>
@@ -1647,10 +1648,10 @@
 <div class="viewcode-block" id="highlight_source_order">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.highlight_source_order">[docs]</a>
 <span class="k">def</span> <span class="nf">highlight_source_order</span><span class="p">(</span>
-    <span class="n">source_order_config</span><span class="p">:</span> <span class="n">SourceOrderConfig</span><span class="p">,</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">source_order_config</span><span class="p">:</span> <span class="n">SourceOrderConfig</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Highlights the source order of the children of the DOM node with given id or with the given</span>
@@ -1680,7 +1681,7 @@
 <div class="viewcode-block" id="set_inspect_mode">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_inspect_mode">[docs]</a>
 <span class="k">def</span> <span class="nf">set_inspect_mode</span><span class="p">(</span>
-    <span class="n">mode</span><span class="p">:</span> <span class="n">InspectMode</span><span class="p">,</span> <span class="n">highlight_config</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">HighlightConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">mode</span><span class="p">:</span> <span class="n">InspectMode</span><span class="p">,</span> <span class="n">highlight_config</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">HighlightConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enters the &#39;inspect&#39; mode. In this mode, elements that user is hovering over are highlighted.</span>
@@ -1704,7 +1705,7 @@
 <div class="viewcode-block" id="set_show_ad_highlights">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_ad_highlights">[docs]</a>
 <span class="k">def</span> <span class="nf">set_show_ad_highlights</span><span class="p">(</span>
-    <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Highlights owner element of all frames detected to be ads.</span>
@@ -1724,7 +1725,7 @@
 <div class="viewcode-block" id="set_paused_in_debugger_message">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_paused_in_debugger_message">[docs]</a>
 <span class="k">def</span> <span class="nf">set_paused_in_debugger_message</span><span class="p">(</span>
-    <span class="n">message</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">message</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param message: *(Optional)* The message to display, also triggers resume and step over controls.</span>
@@ -1743,7 +1744,7 @@
 <div class="viewcode-block" id="set_show_debug_borders">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_debug_borders">[docs]</a>
 <span class="k">def</span> <span class="nf">set_show_debug_borders</span><span class="p">(</span>
-    <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Requests that backend shows debug borders on layers</span>
@@ -1763,7 +1764,7 @@
 <div class="viewcode-block" id="set_show_fps_counter">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_fps_counter">[docs]</a>
 <span class="k">def</span> <span class="nf">set_show_fps_counter</span><span class="p">(</span>
-    <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Requests that backend shows the FPS counter</span>
@@ -1783,7 +1784,7 @@
 <div class="viewcode-block" id="set_show_grid_overlays">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_grid_overlays">[docs]</a>
 <span class="k">def</span> <span class="nf">set_show_grid_overlays</span><span class="p">(</span>
-    <span class="n">grid_node_highlight_configs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">GridNodeHighlightConfig</span><span class="p">],</span>
+        <span class="n">grid_node_highlight_configs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">GridNodeHighlightConfig</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Highlight multiple elements with the CSS Grid overlay.</span>
@@ -1805,7 +1806,7 @@
 <div class="viewcode-block" id="set_show_flex_overlays">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_flex_overlays">[docs]</a>
 <span class="k">def</span> <span class="nf">set_show_flex_overlays</span><span class="p">(</span>
-    <span class="n">flex_node_highlight_configs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">FlexNodeHighlightConfig</span><span class="p">],</span>
+        <span class="n">flex_node_highlight_configs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">FlexNodeHighlightConfig</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param flex_node_highlight_configs: An array of node identifiers and descriptors for the highlight appearance.</span>
@@ -1825,7 +1826,7 @@
 <div class="viewcode-block" id="set_show_scroll_snap_overlays">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_scroll_snap_overlays">[docs]</a>
 <span class="k">def</span> <span class="nf">set_show_scroll_snap_overlays</span><span class="p">(</span>
-    <span class="n">scroll_snap_highlight_configs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">ScrollSnapHighlightConfig</span><span class="p">],</span>
+        <span class="n">scroll_snap_highlight_configs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">ScrollSnapHighlightConfig</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param scroll_snap_highlight_configs: An array of node identifiers and descriptors for the highlight appearance.</span>
@@ -1845,7 +1846,7 @@
 <div class="viewcode-block" id="set_show_container_query_overlays">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_container_query_overlays">[docs]</a>
 <span class="k">def</span> <span class="nf">set_show_container_query_overlays</span><span class="p">(</span>
-    <span class="n">container_query_highlight_configs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">ContainerQueryHighlightConfig</span><span class="p">],</span>
+        <span class="n">container_query_highlight_configs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">ContainerQueryHighlightConfig</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param container_query_highlight_configs: An array of node identifiers and descriptors for the highlight appearance.</span>
@@ -1865,7 +1866,7 @@
 <div class="viewcode-block" id="set_show_paint_rects">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_paint_rects">[docs]</a>
 <span class="k">def</span> <span class="nf">set_show_paint_rects</span><span class="p">(</span>
-    <span class="n">result</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">result</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Requests that backend shows paint rectangles</span>
@@ -1885,7 +1886,7 @@
 <div class="viewcode-block" id="set_show_layout_shift_regions">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_layout_shift_regions">[docs]</a>
 <span class="k">def</span> <span class="nf">set_show_layout_shift_regions</span><span class="p">(</span>
-    <span class="n">result</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">result</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Requests that backend shows layout shift regions</span>
@@ -1905,7 +1906,7 @@
 <div class="viewcode-block" id="set_show_scroll_bottleneck_rects">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_scroll_bottleneck_rects">[docs]</a>
 <span class="k">def</span> <span class="nf">set_show_scroll_bottleneck_rects</span><span class="p">(</span>
-    <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Requests that backend shows scroll bottleneck rects</span>
@@ -1926,7 +1927,7 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_hit_test_borders">[docs]</a>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.3&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">set_show_hit_test_borders</span><span class="p">(</span>
-    <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Deprecated, no longer has any effect.</span>
@@ -1969,7 +1970,7 @@
 <div class="viewcode-block" id="set_show_viewport_size_on_resize">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_viewport_size_on_resize">[docs]</a>
 <span class="k">def</span> <span class="nf">set_show_viewport_size_on_resize</span><span class="p">(</span>
-    <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Paints viewport size upon main frame resize.</span>
@@ -1989,7 +1990,7 @@
 <div class="viewcode-block" id="set_show_hinge">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_hinge">[docs]</a>
 <span class="k">def</span> <span class="nf">set_show_hinge</span><span class="p">(</span>
-    <span class="n">hinge_config</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">HingeConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hinge_config</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">HingeConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add a dual screen device hinge</span>
@@ -2010,7 +2011,7 @@
 <div class="viewcode-block" id="set_show_isolated_elements">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_isolated_elements">[docs]</a>
 <span class="k">def</span> <span class="nf">set_show_isolated_elements</span><span class="p">(</span>
-    <span class="n">isolated_element_highlight_configs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">IsolatedElementHighlightConfig</span><span class="p">],</span>
+        <span class="n">isolated_element_highlight_configs</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">IsolatedElementHighlightConfig</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Show elements in isolation mode with overlays.</span>
@@ -2032,7 +2033,7 @@
 <div class="viewcode-block" id="set_show_window_controls_overlay">
 <a class="viewcode-back" href="../../../nodriver/cdp/overlay.html#nodriver.cdp.overlay.set_show_window_controls_overlay">[docs]</a>
 <span class="k">def</span> <span class="nf">set_show_window_controls_overlay</span><span class="p">(</span>
-    <span class="n">window_controls_overlay_config</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">WindowControlsOverlayConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">window_controls_overlay_config</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">WindowControlsOverlayConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Show Window Controls Overlay for PWA</span>

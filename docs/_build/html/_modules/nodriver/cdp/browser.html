@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.browser - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -390,35 +391,42 @@
 <div class="viewcode-block" id="PermissionType">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.PermissionType">[docs]</a>
 <span class="k">class</span> <span class="nc">PermissionType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="n">ACCESSIBILITY_EVENTS</span> <span class="o">=</span> <span class="s2">&quot;accessibilityEvents&quot;</span>
+    <span class="n">AR</span> <span class="o">=</span> <span class="s2">&quot;ar&quot;</span>
     <span class="n">AUDIO_CAPTURE</span> <span class="o">=</span> <span class="s2">&quot;audioCapture&quot;</span>
-    <span class="n">BACKGROUND_SYNC</span> <span class="o">=</span> <span class="s2">&quot;backgroundSync&quot;</span>
+    <span class="n">AUTOMATIC_FULLSCREEN</span> <span class="o">=</span> <span class="s2">&quot;automaticFullscreen&quot;</span>
     <span class="n">BACKGROUND_FETCH</span> <span class="o">=</span> <span class="s2">&quot;backgroundFetch&quot;</span>
+    <span class="n">BACKGROUND_SYNC</span> <span class="o">=</span> <span class="s2">&quot;backgroundSync&quot;</span>
+    <span class="n">CAMERA_PAN_TILT_ZOOM</span> <span class="o">=</span> <span class="s2">&quot;cameraPanTiltZoom&quot;</span>
     <span class="n">CAPTURED_SURFACE_CONTROL</span> <span class="o">=</span> <span class="s2">&quot;capturedSurfaceControl&quot;</span>
     <span class="n">CLIPBOARD_READ_WRITE</span> <span class="o">=</span> <span class="s2">&quot;clipboardReadWrite&quot;</span>
     <span class="n">CLIPBOARD_SANITIZED_WRITE</span> <span class="o">=</span> <span class="s2">&quot;clipboardSanitizedWrite&quot;</span>
     <span class="n">DISPLAY_CAPTURE</span> <span class="o">=</span> <span class="s2">&quot;displayCapture&quot;</span>
     <span class="n">DURABLE_STORAGE</span> <span class="o">=</span> <span class="s2">&quot;durableStorage&quot;</span>
-    <span class="n">FLASH</span> <span class="o">=</span> <span class="s2">&quot;flash&quot;</span>
     <span class="n">GEOLOCATION</span> <span class="o">=</span> <span class="s2">&quot;geolocation&quot;</span>
+    <span class="n">HAND_TRACKING</span> <span class="o">=</span> <span class="s2">&quot;handTracking&quot;</span>
     <span class="n">IDLE_DETECTION</span> <span class="o">=</span> <span class="s2">&quot;idleDetection&quot;</span>
+    <span class="n">KEYBOARD_LOCK</span> <span class="o">=</span> <span class="s2">&quot;keyboardLock&quot;</span>
     <span class="n">LOCAL_FONTS</span> <span class="o">=</span> <span class="s2">&quot;localFonts&quot;</span>
+    <span class="n">LOCAL_NETWORK_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;localNetworkAccess&quot;</span>
     <span class="n">MIDI</span> <span class="o">=</span> <span class="s2">&quot;midi&quot;</span>
     <span class="n">MIDI_SYSEX</span> <span class="o">=</span> <span class="s2">&quot;midiSysex&quot;</span>
     <span class="n">NFC</span> <span class="o">=</span> <span class="s2">&quot;nfc&quot;</span>
     <span class="n">NOTIFICATIONS</span> <span class="o">=</span> <span class="s2">&quot;notifications&quot;</span>
     <span class="n">PAYMENT_HANDLER</span> <span class="o">=</span> <span class="s2">&quot;paymentHandler&quot;</span>
     <span class="n">PERIODIC_BACKGROUND_SYNC</span> <span class="o">=</span> <span class="s2">&quot;periodicBackgroundSync&quot;</span>
+    <span class="n">POINTER_LOCK</span> <span class="o">=</span> <span class="s2">&quot;pointerLock&quot;</span>
     <span class="n">PROTECTED_MEDIA_IDENTIFIER</span> <span class="o">=</span> <span class="s2">&quot;protectedMediaIdentifier&quot;</span>
     <span class="n">SENSORS</span> <span class="o">=</span> <span class="s2">&quot;sensors&quot;</span>
-    <span class="n">STORAGE_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;storageAccess&quot;</span>
+    <span class="n">SMART_CARD</span> <span class="o">=</span> <span class="s2">&quot;smartCard&quot;</span>
     <span class="n">SPEAKER_SELECTION</span> <span class="o">=</span> <span class="s2">&quot;speakerSelection&quot;</span>
+    <span class="n">STORAGE_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;storageAccess&quot;</span>
     <span class="n">TOP_LEVEL_STORAGE_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;topLevelStorageAccess&quot;</span>
     <span class="n">VIDEO_CAPTURE</span> <span class="o">=</span> <span class="s2">&quot;videoCapture&quot;</span>
-    <span class="n">VIDEO_CAPTURE_PAN_TILT_ZOOM</span> <span class="o">=</span> <span class="s2">&quot;videoCapturePanTiltZoom&quot;</span>
+    <span class="n">VR</span> <span class="o">=</span> <span class="s2">&quot;vr&quot;</span>
     <span class="n">WAKE_LOCK_SCREEN</span> <span class="o">=</span> <span class="s2">&quot;wakeLockScreen&quot;</span>
     <span class="n">WAKE_LOCK_SYSTEM</span> <span class="o">=</span> <span class="s2">&quot;wakeLockSystem&quot;</span>
     <span class="n">WEB_APP_INSTALLATION</span> <span class="o">=</span> <span class="s2">&quot;webAppInstallation&quot;</span>
+    <span class="n">WEB_PRINTING</span> <span class="o">=</span> <span class="s2">&quot;webPrinting&quot;</span>
     <span class="n">WINDOW_MANAGEMENT</span> <span class="o">=</span> <span class="s2">&quot;windowManagement&quot;</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -611,13 +619,28 @@
 
 
 
+<div class="viewcode-block" id="PrivacySandboxAPI">
+<a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.PrivacySandboxAPI">[docs]</a>
+<span class="k">class</span> <span class="nc">PrivacySandboxAPI</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">BIDDING_AND_AUCTION_SERVICES</span> <span class="o">=</span> <span class="s2">&quot;BiddingAndAuctionServices&quot;</span>
+    <span class="n">TRUSTED_KEY_VALUE</span> <span class="o">=</span> <span class="s2">&quot;TrustedKeyValue&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PrivacySandboxAPI</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="set_permission">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.set_permission">[docs]</a>
 <span class="k">def</span> <span class="nf">set_permission</span><span class="p">(</span>
-    <span class="n">permission</span><span class="p">:</span> <span class="n">PermissionDescriptor</span><span class="p">,</span>
-    <span class="n">setting</span><span class="p">:</span> <span class="n">PermissionSetting</span><span class="p">,</span>
-    <span class="n">origin</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">browser_context_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BrowserContextID</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">permission</span><span class="p">:</span> <span class="n">PermissionDescriptor</span><span class="p">,</span>
+        <span class="n">setting</span><span class="p">:</span> <span class="n">PermissionSetting</span><span class="p">,</span>
+        <span class="n">origin</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">browser_context_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BrowserContextID</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set permission settings for given origin.</span>
@@ -647,9 +670,9 @@
 <div class="viewcode-block" id="grant_permissions">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.grant_permissions">[docs]</a>
 <span class="k">def</span> <span class="nf">grant_permissions</span><span class="p">(</span>
-    <span class="n">permissions</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">PermissionType</span><span class="p">],</span>
-    <span class="n">origin</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">browser_context_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BrowserContextID</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">permissions</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">PermissionType</span><span class="p">],</span>
+        <span class="n">origin</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">browser_context_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BrowserContextID</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Grant specific permissions to the given origin and reject all others.</span>
@@ -677,7 +700,7 @@
 <div class="viewcode-block" id="reset_permissions">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.reset_permissions">[docs]</a>
 <span class="k">def</span> <span class="nf">reset_permissions</span><span class="p">(</span>
-    <span class="n">browser_context_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BrowserContextID</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">browser_context_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BrowserContextID</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reset all permission management for all origins.</span>
@@ -698,10 +721,10 @@
 <div class="viewcode-block" id="set_download_behavior">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.set_download_behavior">[docs]</a>
 <span class="k">def</span> <span class="nf">set_download_behavior</span><span class="p">(</span>
-    <span class="n">behavior</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">browser_context_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BrowserContextID</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">download_path</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">events_enabled</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">behavior</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">browser_context_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BrowserContextID</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">download_path</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">events_enabled</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set the behavior when downloading a file.</span>
@@ -732,7 +755,7 @@
 <div class="viewcode-block" id="cancel_download">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.cancel_download">[docs]</a>
 <span class="k">def</span> <span class="nf">cancel_download</span><span class="p">(</span>
-    <span class="n">guid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">browser_context_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BrowserContextID</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">guid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">browser_context_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BrowserContextID</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Cancel a download if in progress</span>
@@ -800,7 +823,7 @@
 <div class="viewcode-block" id="get_version">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.get_version">[docs]</a>
 <span class="k">def</span> <span class="nf">get_version</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span>
-    <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns version information.</span>
@@ -830,7 +853,7 @@
 <div class="viewcode-block" id="get_browser_command_line">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.get_browser_command_line">[docs]</a>
 <span class="k">def</span> <span class="nf">get_browser_command_line</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span>
-    <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the command line switches for the browser process if, and only if</span>
@@ -851,7 +874,7 @@
 <div class="viewcode-block" id="get_histograms">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.get_histograms">[docs]</a>
 <span class="k">def</span> <span class="nf">get_histograms</span><span class="p">(</span>
-    <span class="n">query</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">delta</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">query</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">delta</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">Histogram</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get Chrome histograms.</span>
@@ -879,7 +902,7 @@
 <div class="viewcode-block" id="get_histogram">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.get_histogram">[docs]</a>
 <span class="k">def</span> <span class="nf">get_histogram</span><span class="p">(</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">delta</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">delta</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">Histogram</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get a Chrome histogram by name.</span>
@@ -906,7 +929,7 @@
 <div class="viewcode-block" id="get_window_bounds">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.get_window_bounds">[docs]</a>
 <span class="k">def</span> <span class="nf">get_window_bounds</span><span class="p">(</span>
-    <span class="n">window_id</span><span class="p">:</span> <span class="n">WindowID</span><span class="p">,</span>
+        <span class="n">window_id</span><span class="p">:</span> <span class="n">WindowID</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">Bounds</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get position and size of the browser window.</span>
@@ -930,7 +953,7 @@
 <div class="viewcode-block" id="get_window_for_target">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.get_window_for_target">[docs]</a>
 <span class="k">def</span> <span class="nf">get_window_for_target</span><span class="p">(</span>
-    <span class="n">target_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">target</span><span class="o">.</span><span class="n">TargetID</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">target_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">target</span><span class="o">.</span><span class="n">TargetID</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="n">WindowID</span><span class="p">,</span> <span class="n">Bounds</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the browser window that contains the devtools target.</span>
@@ -958,7 +981,7 @@
 <div class="viewcode-block" id="set_window_bounds">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.set_window_bounds">[docs]</a>
 <span class="k">def</span> <span class="nf">set_window_bounds</span><span class="p">(</span>
-    <span class="n">window_id</span><span class="p">:</span> <span class="n">WindowID</span><span class="p">,</span> <span class="n">bounds</span><span class="p">:</span> <span class="n">Bounds</span>
+        <span class="n">window_id</span><span class="p">:</span> <span class="n">WindowID</span><span class="p">,</span> <span class="n">bounds</span><span class="p">:</span> <span class="n">Bounds</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set position and/or size of the browser window.</span>
@@ -982,7 +1005,7 @@
 <div class="viewcode-block" id="set_dock_tile">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.set_dock_tile">[docs]</a>
 <span class="k">def</span> <span class="nf">set_dock_tile</span><span class="p">(</span>
-    <span class="n">badge_label</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">badge_label</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set dock tile details, platform-specific.</span>
@@ -1008,7 +1031,7 @@
 <div class="viewcode-block" id="execute_browser_command">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.execute_browser_command">[docs]</a>
 <span class="k">def</span> <span class="nf">execute_browser_command</span><span class="p">(</span>
-    <span class="n">command_id</span><span class="p">:</span> <span class="n">BrowserCommandId</span><span class="p">,</span>
+        <span class="n">command_id</span><span class="p">:</span> <span class="n">BrowserCommandId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Invoke custom browser commands used by telemetry.</span>
@@ -1030,7 +1053,7 @@
 <div class="viewcode-block" id="add_privacy_sandbox_enrollment_override">
 <a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.add_privacy_sandbox_enrollment_override">[docs]</a>
 <span class="k">def</span> <span class="nf">add_privacy_sandbox_enrollment_override</span><span class="p">(</span>
-    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Allows a site to use privacy sandbox features that require enrollment</span>
@@ -1042,6 +1065,39 @@
     <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Browser.addPrivacySandboxEnrollmentOverride&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="add_privacy_sandbox_coordinator_key_config">
+<a class="viewcode-back" href="../../../nodriver/cdp/browser.html#nodriver.cdp.browser.add_privacy_sandbox_coordinator_key_config">[docs]</a>
+<span class="k">def</span> <span class="nf">add_privacy_sandbox_coordinator_key_config</span><span class="p">(</span>
+        <span class="n">api</span><span class="p">:</span> <span class="n">PrivacySandboxAPI</span><span class="p">,</span>
+        <span class="n">coordinator_origin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">key_config</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">browser_context_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BrowserContextID</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configures encryption keys used with a given privacy sandbox API to talk</span>
+<span class="sd">    to a trusted coordinator.  Since this is intended for test automation only,</span>
+<span class="sd">    coordinatorOrigin must be a .test domain. No existing coordinator</span>
+<span class="sd">    configuration for the origin may exist.</span>
+
+<span class="sd">    :param api:</span>
+<span class="sd">    :param coordinator_origin:</span>
+<span class="sd">    :param key_config:</span>
+<span class="sd">    :param browser_context_id: *(Optional)* BrowserContext to perform the action in. When omitted, default browser context is used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;api&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;coordinatorOrigin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinator_origin</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;keyConfig&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_config</span>
+    <span class="k">if</span> <span class="n">browser_context_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;browserContextId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">browser_context_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Browser.addPrivacySandboxCoordinatorKeyConfig&quot;</span><span class="p">,</span>
         <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>

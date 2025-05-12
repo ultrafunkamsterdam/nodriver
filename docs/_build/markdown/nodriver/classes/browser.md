@@ -60,45 +60,40 @@ entry point for creating an instance
 * **Return type:**
   [`Browser`](#nodriver.Browser)
 
-#### config *: [`Config`](others_and_helpers.md#nodriver.Config)*
+#### config*: [`Config`](others_and_helpers.md#nodriver.Config)*
 
-#### targets *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)*
+#### targets*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)*
 
 current targets (all types
 
-#### connection *: `Connection`*
+#### connection*: `Connection`*
 
 #### *property* websocket_url
 
-#### *property* main_tab *: [Tab](tab.md#nodriver.Tab)*
+#### *property* main_tab*: [Tab](tab.md#nodriver.Tab)*
 
 returns the target which was launched with the browser
 
-#### *property* tabs *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[Tab](tab.md#nodriver.Tab)]*
+#### *property* tabs*: [List](https://docs.python.org/3/library/typing.html#typing.List)[[Tab](tab.md#nodriver.Tab)]*
 
 returns the current targets which are of type “page”
 :return:
 
-#### *property* cookies *: CookieJar*
+#### *property* cookies*: CookieJar*
 
 #### *property* stopped
 
-#### *async* wait(time=1)
+#### *async* wait(time=0.1)
 
 wait for <time> seconds. important to use, especially in between page navigation
 
 * **Parameters:**
   **time** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`float`](https://docs.python.org/3/library/functions.html#float), [`int`](https://docs.python.org/3/library/functions.html#int)]) – 
-* **Return type:**
-  [`Browser`](#nodriver.Browser)
 * **Returns:**
 
-#### *async* sleep(time=1)
+#### *async* sleep(time=0.1)
 
 alias for wait
-
-* **Return type:**
-  [`Browser`](#nodriver.Browser)
 
 #### *async* get(url='chrome://welcome', new_tab=False, new_window=False)
 
@@ -116,6 +111,29 @@ way of navigating.
   [`Tab`](tab.md#nodriver.Tab)
 * **Returns:**
   Page
+
+#### *async* create_context(url='chrome://welcome', new_tab=False, new_window=True, dispose_on_detach=True, proxy_server=None, proxy_bypass_list=None, origins_with_universal_network_access=None)
+
+creates a new browser context - mostly useful if you want to use proxies for different browser instances
+since chrome usually can only use 1 proxy per browser.
+socks5 with authentication is supported by using a forwarder proxy, the
+correct string to use socks proxy with username/password auth is socks://USERNAME:PASSWORD@SERVER:PORT
+
+dispose_on_detach – (EXPERIMENTAL) (Optional) If specified, disposes this context when debugging session disconnects.
+proxy_server – (EXPERIMENTAL) (Optional) Proxy server, similar to the one passed to –proxy-server
+proxy_bypass_list – (EXPERIMENTAL) (Optional) Proxy bypass list, similar to the one passed to –proxy-bypass-list
+origins_with_universal_network_access – (EXPERIMENTAL) (Optional) An optional list of origins to grant unlimited cross-origin access to. Parts of the URL other than those constituting origin are ignored.
+
+* **Parameters:**
+  * **new_window** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – 
+  * **new_tab** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – 
+  * **url** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **dispose_on_detach** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – 
+  * **proxy_server** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **proxy_bypass_list** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – 
+  * **origins_with_universal_network_access** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – 
+* **Returns:**
+* **Return type:**
 
 #### *async* start()
 

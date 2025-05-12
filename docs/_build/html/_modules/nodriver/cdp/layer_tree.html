@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.layer_tree - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -273,7 +274,6 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
@@ -602,7 +602,7 @@
 <div class="viewcode-block" id="compositing_reasons">
 <a class="viewcode-back" href="../../../nodriver/cdp/layer_tree.html#nodriver.cdp.layer_tree.compositing_reasons">[docs]</a>
 <span class="k">def</span> <span class="nf">compositing_reasons</span><span class="p">(</span>
-    <span class="n">layer_id</span><span class="p">:</span> <span class="n">LayerId</span><span class="p">,</span>
+        <span class="n">layer_id</span><span class="p">:</span> <span class="n">LayerId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
 <span class="p">]:</span>
@@ -658,7 +658,7 @@
 <div class="viewcode-block" id="load_snapshot">
 <a class="viewcode-back" href="../../../nodriver/cdp/layer_tree.html#nodriver.cdp.layer_tree.load_snapshot">[docs]</a>
 <span class="k">def</span> <span class="nf">load_snapshot</span><span class="p">(</span>
-    <span class="n">tiles</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">PictureTile</span><span class="p">],</span>
+        <span class="n">tiles</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">PictureTile</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">SnapshotId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the snapshot identifier.</span>
@@ -680,7 +680,7 @@
 <div class="viewcode-block" id="make_snapshot">
 <a class="viewcode-back" href="../../../nodriver/cdp/layer_tree.html#nodriver.cdp.layer_tree.make_snapshot">[docs]</a>
 <span class="k">def</span> <span class="nf">make_snapshot</span><span class="p">(</span>
-    <span class="n">layer_id</span><span class="p">:</span> <span class="n">LayerId</span><span class="p">,</span>
+        <span class="n">layer_id</span><span class="p">:</span> <span class="n">LayerId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">SnapshotId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the layer snapshot identifier.</span>
@@ -702,10 +702,10 @@
 <div class="viewcode-block" id="profile_snapshot">
 <a class="viewcode-back" href="../../../nodriver/cdp/layer_tree.html#nodriver.cdp.layer_tree.profile_snapshot">[docs]</a>
 <span class="k">def</span> <span class="nf">profile_snapshot</span><span class="p">(</span>
-    <span class="n">snapshot_id</span><span class="p">:</span> <span class="n">SnapshotId</span><span class="p">,</span>
-    <span class="n">min_repeat_count</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">min_duration</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">clip_rect</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">Rect</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">snapshot_id</span><span class="p">:</span> <span class="n">SnapshotId</span><span class="p">,</span>
+        <span class="n">min_repeat_count</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">min_duration</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">clip_rect</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">Rect</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">PaintProfile</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param snapshot_id: The id of the layer snapshot.</span>
@@ -734,7 +734,7 @@
 <div class="viewcode-block" id="release_snapshot">
 <a class="viewcode-back" href="../../../nodriver/cdp/layer_tree.html#nodriver.cdp.layer_tree.release_snapshot">[docs]</a>
 <span class="k">def</span> <span class="nf">release_snapshot</span><span class="p">(</span>
-    <span class="n">snapshot_id</span><span class="p">:</span> <span class="n">SnapshotId</span><span class="p">,</span>
+        <span class="n">snapshot_id</span><span class="p">:</span> <span class="n">SnapshotId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Releases layer snapshot captured by the back-end.</span>
@@ -754,10 +754,10 @@
 <div class="viewcode-block" id="replay_snapshot">
 <a class="viewcode-back" href="../../../nodriver/cdp/layer_tree.html#nodriver.cdp.layer_tree.replay_snapshot">[docs]</a>
 <span class="k">def</span> <span class="nf">replay_snapshot</span><span class="p">(</span>
-    <span class="n">snapshot_id</span><span class="p">:</span> <span class="n">SnapshotId</span><span class="p">,</span>
-    <span class="n">from_step</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">to_step</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">scale</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">snapshot_id</span><span class="p">:</span> <span class="n">SnapshotId</span><span class="p">,</span>
+        <span class="n">from_step</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">to_step</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">scale</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replays the layer snapshot and returns the resulting bitmap.</span>
@@ -788,7 +788,7 @@
 <div class="viewcode-block" id="snapshot_command_log">
 <a class="viewcode-back" href="../../../nodriver/cdp/layer_tree.html#nodriver.cdp.layer_tree.snapshot_command_log">[docs]</a>
 <span class="k">def</span> <span class="nf">snapshot_command_log</span><span class="p">(</span>
-    <span class="n">snapshot_id</span><span class="p">:</span> <span class="n">SnapshotId</span><span class="p">,</span>
+        <span class="n">snapshot_id</span><span class="p">:</span> <span class="n">SnapshotId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replays the layer snapshot and returns canvas log.</span>

@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -264,17 +265,20 @@
         </div>
         <article role="main">
           <h1>Source code for nodriver.core.config</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span></span><span class="c1"># Copyright 2024 by UltrafunkAmsterdam (https://github.com/UltrafunkAmsterdam)</span>
+<span class="c1"># All rights reserved.</span>
+<span class="c1"># This file is part of the nodriver package.</span>
+<span class="c1"># and is released under the &quot;GNU AFFERO GENERAL PUBLIC LICENSE&quot;.</span>
+<span class="c1"># Please see the LICENSE.txt file that should have been included as part of this package.</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">secrets</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">zipfile</span>
-<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">MethodType</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span>
-
-<span class="kn">from</span> <span class="nn">._contradict</span> <span class="kn">import</span> <span class="n">ContraDict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypeVar</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;Config&quot;</span><span class="p">,</span>
@@ -300,17 +304,17 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">user_data_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PathLike</span><span class="p">]</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
-        <span class="n">headless</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">browser_executable_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PathLike</span><span class="p">]</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
-        <span class="n">browser_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
-        <span class="n">sandbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">lang</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;en-US&quot;</span><span class="p">,</span>
-        <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
-        <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
-        <span class="n">expert</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">user_data_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PathLike</span><span class="p">]</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
+            <span class="n">headless</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">browser_executable_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PathLike</span><span class="p">]</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
+            <span class="n">browser_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
+            <span class="n">sandbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">lang</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;en-US&quot;</span><span class="p">,</span>
+            <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
+            <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
+            <span class="n">expert</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        creates a config object.</span>
@@ -465,15 +469,15 @@
 <a class="viewcode-back" href="../../../nodriver/classes/others_and_helpers.html#nodriver.Config.add_argument">[docs]</a>
     <span class="k">def</span> <span class="nf">add_argument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-            <span class="n">x</span> <span class="ow">in</span> <span class="n">arg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span>
-                <span class="s2">&quot;headless&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;data-dir&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;data_dir&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;no-sandbox&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;no_sandbox&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;lang&quot;</span><span class="p">,</span>
-            <span class="p">]</span>
+                <span class="n">x</span> <span class="ow">in</span> <span class="n">arg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span>
+                    <span class="s2">&quot;headless&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;data-dir&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;data_dir&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;no-sandbox&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;no_sandbox&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;lang&quot;</span><span class="p">,</span>
+                <span class="p">]</span>
         <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot; not allowed. please use one of the attributes of the Config object to set it&#39;</span>
@@ -529,11 +533,11 @@
     <span class="k">if</span> <span class="n">is_posix</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PATH&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">subitem</span> <span class="ow">in</span> <span class="p">(</span>
-                <span class="s2">&quot;google-chrome&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;chromium&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;chromium-browser&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;chrome&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;google-chrome-stable&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;google-chrome&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;chromium&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;chromium-browser&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;chrome&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;google-chrome-stable&quot;</span><span class="p">,</span>
             <span class="p">):</span>
                 <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">item</span><span class="p">,</span> <span class="n">subitem</span><span class="p">)))</span>
         <span class="k">if</span> <span class="s2">&quot;darwin&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="p">:</span>
@@ -544,14 +548,14 @@
 
     <span class="k">else</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
-            <span class="p">(</span><span class="s2">&quot;PROGRAMFILES&quot;</span><span class="p">,</span> <span class="s2">&quot;PROGRAMFILES(X86)&quot;</span><span class="p">,</span> <span class="s2">&quot;LOCALAPPDATA&quot;</span><span class="p">,</span> <span class="s2">&quot;PROGRAMW6432&quot;</span><span class="p">),</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+                <span class="p">(</span><span class="s2">&quot;PROGRAMFILES&quot;</span><span class="p">,</span> <span class="s2">&quot;PROGRAMFILES(X86)&quot;</span><span class="p">,</span> <span class="s2">&quot;LOCALAPPDATA&quot;</span><span class="p">,</span> <span class="s2">&quot;PROGRAMW6432&quot;</span><span class="p">),</span>
         <span class="p">):</span>
             <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">subitem</span> <span class="ow">in</span> <span class="p">(</span>
-                    <span class="s2">&quot;Google/Chrome/Application&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;Google/Chrome Beta/Application&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;Google/Chrome Canary/Application&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;Google/Chrome/Application&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;Google/Chrome Beta/Application&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;Google/Chrome Canary/Application&quot;</span><span class="p">,</span>
                 <span class="p">):</span>
                     <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">item</span><span class="p">,</span> <span class="n">subitem</span><span class="p">,</span> <span class="s2">&quot;chrome.exe&quot;</span><span class="p">)))</span>
     <span class="n">rv</span> <span class="o">=</span> <span class="p">[]</span>

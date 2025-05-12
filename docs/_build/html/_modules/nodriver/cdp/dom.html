@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.dom - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -364,10 +365,10 @@
 
     <span class="n">FIRST_LINE</span> <span class="o">=</span> <span class="s2">&quot;first-line&quot;</span>
     <span class="n">FIRST_LETTER</span> <span class="o">=</span> <span class="s2">&quot;first-letter&quot;</span>
-    <span class="n">CHECK</span> <span class="o">=</span> <span class="s2">&quot;check&quot;</span>
+    <span class="n">CHECKMARK</span> <span class="o">=</span> <span class="s2">&quot;checkmark&quot;</span>
     <span class="n">BEFORE</span> <span class="o">=</span> <span class="s2">&quot;before&quot;</span>
     <span class="n">AFTER</span> <span class="o">=</span> <span class="s2">&quot;after&quot;</span>
-    <span class="n">SELECT_ARROW</span> <span class="o">=</span> <span class="s2">&quot;select-arrow&quot;</span>
+    <span class="n">PICKER_ICON</span> <span class="o">=</span> <span class="s2">&quot;picker-icon&quot;</span>
     <span class="n">MARKER</span> <span class="o">=</span> <span class="s2">&quot;marker&quot;</span>
     <span class="n">BACKDROP</span> <span class="o">=</span> <span class="s2">&quot;backdrop&quot;</span>
     <span class="n">COLUMN</span> <span class="o">=</span> <span class="s2">&quot;column&quot;</span>
@@ -380,8 +381,7 @@
     <span class="n">FIRST_LINE_INHERITED</span> <span class="o">=</span> <span class="s2">&quot;first-line-inherited&quot;</span>
     <span class="n">SCROLL_MARKER</span> <span class="o">=</span> <span class="s2">&quot;scroll-marker&quot;</span>
     <span class="n">SCROLL_MARKER_GROUP</span> <span class="o">=</span> <span class="s2">&quot;scroll-marker-group&quot;</span>
-    <span class="n">SCROLL_NEXT_BUTTON</span> <span class="o">=</span> <span class="s2">&quot;scroll-next-button&quot;</span>
-    <span class="n">SCROLL_PREV_BUTTON</span> <span class="o">=</span> <span class="s2">&quot;scroll-prev-button&quot;</span>
+    <span class="n">SCROLL_BUTTON</span> <span class="o">=</span> <span class="s2">&quot;scroll-button&quot;</span>
     <span class="n">SCROLLBAR</span> <span class="o">=</span> <span class="s2">&quot;scrollbar&quot;</span>
     <span class="n">SCROLLBAR_THUMB</span> <span class="o">=</span> <span class="s2">&quot;scrollbar-thumb&quot;</span>
     <span class="n">SCROLLBAR_BUTTON</span> <span class="o">=</span> <span class="s2">&quot;scrollbar-button&quot;</span>
@@ -1052,7 +1052,7 @@
 <div class="viewcode-block" id="collect_class_names_from_subtree">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.collect_class_names_from_subtree">[docs]</a>
 <span class="k">def</span> <span class="nf">collect_class_names_from_subtree</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Collects class names for the node with given id and all of it&#39;s child nodes.</span>
@@ -1076,9 +1076,9 @@
 <div class="viewcode-block" id="copy_to">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.copy_to">[docs]</a>
 <span class="k">def</span> <span class="nf">copy_to</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
-    <span class="n">target_node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
-    <span class="n">insert_before_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">target_node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">insert_before_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">NodeId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a deep copy of the specified node and places it into the target container before the</span>
@@ -1108,11 +1108,11 @@
 <div class="viewcode-block" id="describe_node">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.describe_node">[docs]</a>
 <span class="k">def</span> <span class="nf">describe_node</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">depth</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">pierce</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">depth</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pierce</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">Node</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Describes node given its id, does not require domain to be enabled. Does not start tracking any</span>
@@ -1148,10 +1148,10 @@
 <div class="viewcode-block" id="scroll_into_view_if_needed">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.scroll_into_view_if_needed">[docs]</a>
 <span class="k">def</span> <span class="nf">scroll_into_view_if_needed</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">rect</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Rect</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">rect</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Rect</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Scrolls the specified rect of the given node into view if not already visible.</span>
@@ -1196,7 +1196,7 @@
 <div class="viewcode-block" id="discard_search_results">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.discard_search_results">[docs]</a>
 <span class="k">def</span> <span class="nf">discard_search_results</span><span class="p">(</span>
-    <span class="n">search_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">search_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Discards search results from the session with the given id. ``getSearchResults`` should no longer</span>
@@ -1219,7 +1219,7 @@
 <div class="viewcode-block" id="enable">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.enable">[docs]</a>
 <span class="k">def</span> <span class="nf">enable</span><span class="p">(</span>
-    <span class="n">include_whitespace</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">include_whitespace</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enables DOM agent for the given page.</span>
@@ -1240,9 +1240,9 @@
 <div class="viewcode-block" id="focus">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.focus">[docs]</a>
 <span class="k">def</span> <span class="nf">focus</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Focuses the given element.</span>
@@ -1269,7 +1269,7 @@
 <div class="viewcode-block" id="get_attributes">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_attributes">[docs]</a>
 <span class="k">def</span> <span class="nf">get_attributes</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns attributes for the specified node.</span>
@@ -1291,9 +1291,9 @@
 <div class="viewcode-block" id="get_box_model">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_box_model">[docs]</a>
 <span class="k">def</span> <span class="nf">get_box_model</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">BoxModel</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns boxes for the given node.</span>
@@ -1322,9 +1322,9 @@
 <div class="viewcode-block" id="get_content_quads">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_content_quads">[docs]</a>
 <span class="k">def</span> <span class="nf">get_content_quads</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">Quad</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns quads that describe node position on the page. This method</span>
@@ -1356,7 +1356,7 @@
 <div class="viewcode-block" id="get_document">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_document">[docs]</a>
 <span class="k">def</span> <span class="nf">get_document</span><span class="p">(</span>
-    <span class="n">depth</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pierce</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">depth</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pierce</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">Node</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the root DOM node (and optionally the subtree) to the caller.</span>
@@ -1384,7 +1384,7 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_flattened_document">[docs]</a>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.3&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_flattened_document</span><span class="p">(</span>
-    <span class="n">depth</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pierce</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">depth</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pierce</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the root DOM node (and optionally the subtree) to the caller.</span>
@@ -1414,9 +1414,9 @@
 <div class="viewcode-block" id="get_nodes_for_subtree_by_style">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_nodes_for_subtree_by_style">[docs]</a>
 <span class="k">def</span> <span class="nf">get_nodes_for_subtree_by_style</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
-    <span class="n">computed_styles</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSComputedStyleProperty</span><span class="p">],</span>
-    <span class="n">pierce</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">computed_styles</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSComputedStyleProperty</span><span class="p">],</span>
+        <span class="n">pierce</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Finds nodes with a given computed style in a subtree.</span>
@@ -1445,10 +1445,10 @@
 <div class="viewcode-block" id="get_node_for_location">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_node_for_location">[docs]</a>
 <span class="k">def</span> <span class="nf">get_node_for_location</span><span class="p">(</span>
-    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">include_user_agent_shadow_dom</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">ignore_pointer_events_none</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">include_user_agent_shadow_dom</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ignore_pointer_events_none</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
@@ -1495,9 +1495,9 @@
 <div class="viewcode-block" id="get_outer_html">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_outer_html">[docs]</a>
 <span class="k">def</span> <span class="nf">get_outer_html</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns node&#39;s HTML markup.</span>
@@ -1526,7 +1526,7 @@
 <div class="viewcode-block" id="get_relayout_boundary">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_relayout_boundary">[docs]</a>
 <span class="k">def</span> <span class="nf">get_relayout_boundary</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">NodeId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the id of the nearest ancestor that is a relayout boundary.</span>
@@ -1550,7 +1550,7 @@
 <div class="viewcode-block" id="get_search_results">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_search_results">[docs]</a>
 <span class="k">def</span> <span class="nf">get_search_results</span><span class="p">(</span>
-    <span class="n">search_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">from_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">to_index</span><span class="p">:</span> <span class="nb">int</span>
+        <span class="n">search_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">from_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">to_index</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns search results from given ``fromIndex`` to given ``toIndex`` from the search with the given</span>
@@ -1633,9 +1633,9 @@
 <div class="viewcode-block" id="move_to">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.move_to">[docs]</a>
 <span class="k">def</span> <span class="nf">move_to</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
-    <span class="n">target_node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
-    <span class="n">insert_before_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">target_node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">insert_before_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">NodeId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Moves node into the new container, places it before the given anchor.</span>
@@ -1662,7 +1662,7 @@
 <div class="viewcode-block" id="perform_search">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.perform_search">[docs]</a>
 <span class="k">def</span> <span class="nf">perform_search</span><span class="p">(</span>
-    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">include_user_agent_shadow_dom</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">include_user_agent_shadow_dom</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Searches for a given string in the DOM tree. Use ``getSearchResults`` to access search results or</span>
@@ -1693,7 +1693,7 @@
 <div class="viewcode-block" id="push_node_by_path_to_frontend">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.push_node_by_path_to_frontend">[docs]</a>
 <span class="k">def</span> <span class="nf">push_node_by_path_to_frontend</span><span class="p">(</span>
-    <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">NodeId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Requests that the node is sent to the caller given its path. // FIXME, use XPath</span>
@@ -1717,7 +1717,7 @@
 <div class="viewcode-block" id="push_nodes_by_backend_ids_to_frontend">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.push_nodes_by_backend_ids_to_frontend">[docs]</a>
 <span class="k">def</span> <span class="nf">push_nodes_by_backend_ids_to_frontend</span><span class="p">(</span>
-    <span class="n">backend_node_ids</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">],</span>
+        <span class="n">backend_node_ids</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Requests that a batch of nodes is sent to the caller given their backend node ids.</span>
@@ -1741,7 +1741,7 @@
 <div class="viewcode-block" id="query_selector">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.query_selector">[docs]</a>
 <span class="k">def</span> <span class="nf">query_selector</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">selector</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">selector</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">NodeId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Executes ``querySelector`` on a given node.</span>
@@ -1765,7 +1765,7 @@
 <div class="viewcode-block" id="query_selector_all">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.query_selector_all">[docs]</a>
 <span class="k">def</span> <span class="nf">query_selector_all</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">selector</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">selector</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Executes ``querySelectorAll`` on a given node.</span>
@@ -1789,7 +1789,7 @@
 <div class="viewcode-block" id="get_top_layer_elements">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_top_layer_elements">[docs]</a>
 <span class="k">def</span> <span class="nf">get_top_layer_elements</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span>
-    <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]]</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]]</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns NodeIds of current top layer elements.</span>
@@ -1811,7 +1811,7 @@
 <div class="viewcode-block" id="get_element_by_relation">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_element_by_relation">[docs]</a>
 <span class="k">def</span> <span class="nf">get_element_by_relation</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">relation</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">relation</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">NodeId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the NodeId of the matched element according to certain relations.</span>
@@ -1852,7 +1852,7 @@
 <div class="viewcode-block" id="remove_attribute">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.remove_attribute">[docs]</a>
 <span class="k">def</span> <span class="nf">remove_attribute</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Removes attribute with given name from an element with given id.</span>
@@ -1892,9 +1892,9 @@
 <div class="viewcode-block" id="request_child_nodes">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.request_child_nodes">[docs]</a>
 <span class="k">def</span> <span class="nf">request_child_nodes</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
-    <span class="n">depth</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">pierce</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">depth</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pierce</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Requests that children of the node with given id are returned to the caller in form of</span>
@@ -1922,7 +1922,7 @@
 <div class="viewcode-block" id="request_node">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.request_node">[docs]</a>
 <span class="k">def</span> <span class="nf">request_node</span><span class="p">(</span>
-    <span class="n">object_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">,</span>
+        <span class="n">object_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">NodeId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Requests that the node is sent to the caller given the JavaScript node object reference. All</span>
@@ -1946,10 +1946,10 @@
 <div class="viewcode-block" id="resolve_node">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.resolve_node">[docs]</a>
 <span class="k">def</span> <span class="nf">resolve_node</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">object_group</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">execution_context_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">ExecutionContextId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">object_group</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">execution_context_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">ExecutionContextId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObject</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Resolves the JavaScript node object for a given NodeId or BackendNodeId.</span>
@@ -1981,7 +1981,7 @@
 <div class="viewcode-block" id="set_attribute_value">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.set_attribute_value">[docs]</a>
 <span class="k">def</span> <span class="nf">set_attribute_value</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets attribute for an element with given id.</span>
@@ -2005,7 +2005,7 @@
 <div class="viewcode-block" id="set_attributes_as_text">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.set_attributes_as_text">[docs]</a>
 <span class="k">def</span> <span class="nf">set_attributes_as_text</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets attributes on element with given id. This method is useful when user edits some existing</span>
@@ -2031,10 +2031,10 @@
 <div class="viewcode-block" id="set_file_input_files">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.set_file_input_files">[docs]</a>
 <span class="k">def</span> <span class="nf">set_file_input_files</span><span class="p">(</span>
-    <span class="n">files</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">files</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backend_node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">object_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets files for the given file input element.</span>
@@ -2063,7 +2063,7 @@
 <div class="viewcode-block" id="set_node_stack_traces_enabled">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.set_node_stack_traces_enabled">[docs]</a>
 <span class="k">def</span> <span class="nf">set_node_stack_traces_enabled</span><span class="p">(</span>
-    <span class="n">enable</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">enable</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets if stack traces should be captured for Nodes. See ``Node.getNodeStackTraces``. Default is disabled.</span>
@@ -2085,7 +2085,7 @@
 <div class="viewcode-block" id="get_node_stack_traces">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_node_stack_traces">[docs]</a>
 <span class="k">def</span> <span class="nf">get_node_stack_traces</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">runtime</span><span class="o">.</span><span class="n">StackTrace</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gets stack traces associated with a Node. As of now, only provides stack trace for Node creation.</span>
@@ -2113,7 +2113,7 @@
 <div class="viewcode-block" id="get_file_info">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_file_info">[docs]</a>
 <span class="k">def</span> <span class="nf">get_file_info</span><span class="p">(</span>
-    <span class="n">object_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">,</span>
+        <span class="n">object_id</span><span class="p">:</span> <span class="n">runtime</span><span class="o">.</span><span class="n">RemoteObjectId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns file information for the given</span>
@@ -2138,7 +2138,7 @@
 <div class="viewcode-block" id="get_detached_dom_nodes">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_detached_dom_nodes">[docs]</a>
 <span class="k">def</span> <span class="nf">get_detached_dom_nodes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span>
-    <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">DetachedElementInfo</span><span class="p">]]</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">DetachedElementInfo</span><span class="p">]]</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns list of detached nodes</span>
@@ -2158,7 +2158,7 @@
 <div class="viewcode-block" id="set_inspected_node">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.set_inspected_node">[docs]</a>
 <span class="k">def</span> <span class="nf">set_inspected_node</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enables console to refer to the node with given id via $x (see Command Line API for more details</span>
@@ -2181,7 +2181,7 @@
 <div class="viewcode-block" id="set_node_name">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.set_node_name">[docs]</a>
 <span class="k">def</span> <span class="nf">set_node_name</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">NodeId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets node name for a node with given id.</span>
@@ -2205,7 +2205,7 @@
 <div class="viewcode-block" id="set_node_value">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.set_node_value">[docs]</a>
 <span class="k">def</span> <span class="nf">set_node_value</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets node value for a node with given id.</span>
@@ -2227,7 +2227,7 @@
 <div class="viewcode-block" id="set_outer_html">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.set_outer_html">[docs]</a>
 <span class="k">def</span> <span class="nf">set_outer_html</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">outer_html</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">outer_html</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets node HTML markup, returns new node id.</span>
@@ -2264,7 +2264,7 @@
 <div class="viewcode-block" id="get_frame_owner">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_frame_owner">[docs]</a>
 <span class="k">def</span> <span class="nf">get_frame_owner</span><span class="p">(</span>
-    <span class="n">frame_id</span><span class="p">:</span> <span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="p">,</span>
+        <span class="n">frame_id</span><span class="p">:</span> <span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="n">BackendNodeId</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]]</span>
 <span class="p">]:</span>
@@ -2300,11 +2300,11 @@
 <div class="viewcode-block" id="get_container_for_node">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_container_for_node">[docs]</a>
 <span class="k">def</span> <span class="nf">get_container_for_node</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
-    <span class="n">container_name</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">physical_axes</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">PhysicalAxes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">logical_axes</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">LogicalAxes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">queries_scroll_state</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">container_name</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">physical_axes</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">PhysicalAxes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">logical_axes</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">LogicalAxes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">queries_scroll_state</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the query container of the given node based on container query</span>
@@ -2348,7 +2348,7 @@
 <div class="viewcode-block" id="get_querying_descendants_for_container">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_querying_descendants_for_container">[docs]</a>
 <span class="k">def</span> <span class="nf">get_querying_descendants_for_container</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">NodeId</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the descendants of a container query container that have</span>
@@ -2373,7 +2373,7 @@
 <div class="viewcode-block" id="get_anchor_element">
 <a class="viewcode-back" href="../../../nodriver/cdp/dom.html#nodriver.cdp.dom.get_anchor_element">[docs]</a>
 <span class="k">def</span> <span class="nf">get_anchor_element</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">anchor_specifier</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">NodeId</span><span class="p">,</span> <span class="n">anchor_specifier</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">NodeId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the target anchor element of the given anchor query according to</span>

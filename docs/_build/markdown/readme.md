@@ -44,14 +44,18 @@ to fully customizable everything using the entire array of
 
 ### what is new
 
+```
+**
+```
+
+tab.xpath(“/some/x/path[#contains
+
 **tab.cf_verify()**
 
 finds the checkbox and click it successfully
 this only works when NOT in expert mode.
 currently built-in english only
 requires opencv-python package to be installed
-
-
 
 **tab.bypass_insecure_connection_warning()**
 

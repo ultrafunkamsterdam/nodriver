@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.extensions - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -275,9 +276,8 @@
 
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">typing</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">event_class</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">T_JSON_DICT</span>
 
 
 <div class="viewcode-block" id="StorageArea">
@@ -325,10 +325,30 @@
 
 
 
+<div class="viewcode-block" id="uninstall">
+<a class="viewcode-back" href="../../../nodriver/cdp/extensions.html#nodriver.cdp.extensions.uninstall">[docs]</a>
+<span class="k">def</span> <span class="nf">uninstall</span><span class="p">(</span><span class="n">id_</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Uninstalls an unpacked extension (others not supported) from the profile.</span>
+<span class="sd">    Available if the client is connected using the --remote-debugging-pipe flag</span>
+<span class="sd">    and the --enable-unsafe-extension-debugging.</span>
+
+<span class="sd">    :param id_: Extension id.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Extensions.uninstall&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
 <div class="viewcode-block" id="get_storage_items">
 <a class="viewcode-back" href="../../../nodriver/cdp/extensions.html#nodriver.cdp.extensions.get_storage_items">[docs]</a>
 <span class="k">def</span> <span class="nf">get_storage_items</span><span class="p">(</span>
-    <span class="n">id_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">storage_area</span><span class="p">:</span> <span class="n">StorageArea</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">id_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">storage_area</span><span class="p">:</span> <span class="n">StorageArea</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gets data from extension storage in the given ``storageArea``. If ``keys`` is</span>
@@ -356,7 +376,7 @@
 <div class="viewcode-block" id="remove_storage_items">
 <a class="viewcode-back" href="../../../nodriver/cdp/extensions.html#nodriver.cdp.extensions.remove_storage_items">[docs]</a>
 <span class="k">def</span> <span class="nf">remove_storage_items</span><span class="p">(</span>
-    <span class="n">id_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">storage_area</span><span class="p">:</span> <span class="n">StorageArea</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+        <span class="n">id_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">storage_area</span><span class="p">:</span> <span class="n">StorageArea</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Removes ``keys`` from extension storage in the given ``storageArea``.</span>
@@ -380,7 +400,7 @@
 <div class="viewcode-block" id="clear_storage_items">
 <a class="viewcode-back" href="../../../nodriver/cdp/extensions.html#nodriver.cdp.extensions.clear_storage_items">[docs]</a>
 <span class="k">def</span> <span class="nf">clear_storage_items</span><span class="p">(</span>
-    <span class="n">id_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">storage_area</span><span class="p">:</span> <span class="n">StorageArea</span>
+        <span class="n">id_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">storage_area</span><span class="p">:</span> <span class="n">StorageArea</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Clears extension storage in the given ``storageArea``.</span>
@@ -402,7 +422,7 @@
 <div class="viewcode-block" id="set_storage_items">
 <a class="viewcode-back" href="../../../nodriver/cdp/extensions.html#nodriver.cdp.extensions.set_storage_items">[docs]</a>
 <span class="k">def</span> <span class="nf">set_storage_items</span><span class="p">(</span>
-    <span class="n">id_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">storage_area</span><span class="p">:</span> <span class="n">StorageArea</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="n">id_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">storage_area</span><span class="p">:</span> <span class="n">StorageArea</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets ``values`` in extension storage in the given ``storageArea``. The provided ``values``</span>

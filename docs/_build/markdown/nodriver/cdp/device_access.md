@@ -26,9 +26,9 @@ A device id.
 
 Device information displayed in a user prompt to select a device.
 
-#### id_ *: [`DeviceId`](#nodriver.cdp.device_access.DeviceId)*
+#### id_*: [`DeviceId`](#nodriver.cdp.device_access.DeviceId)*
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Display name as it appears in a device request user prompt.
 
@@ -87,6 +87,6 @@ you use the event’s attributes.
 A device request opened a user prompt to select a device. Respond with the
 selectPrompt or cancelPrompt command.
 
-#### id_ *: [`RequestId`](#nodriver.cdp.device_access.RequestId)*
+#### id_*: [`RequestId`](#nodriver.cdp.device_access.RequestId)*
 
-#### devices *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PromptDevice`](#nodriver.cdp.device_access.PromptDevice)]*
+#### devices*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PromptDevice`](#nodriver.cdp.device_access.PromptDevice)]*

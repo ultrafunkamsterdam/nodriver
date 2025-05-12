@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.css - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -358,6 +359,36 @@
 
 
 
+<div class="viewcode-block" id="CSSAnimationStyle">
+<a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.CSSAnimationStyle">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CSSAnimationStyle</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CSS style coming from animations with the name of the animation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: The style coming from the animation.</span>
+    <span class="n">style</span><span class="p">:</span> <span class="n">CSSStyle</span>
+
+    <span class="c1">#: The name of the animation.</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSSAnimationStyle</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">style</span><span class="o">=</span><span class="n">CSSStyle</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">]),</span>
+            <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="InheritedStyleEntry">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.InheritedStyleEntry">[docs]</a>
 <span class="nd">@dataclass</span>
@@ -386,6 +417,45 @@
             <span class="n">inline_style</span><span class="o">=</span><span class="p">(</span>
                 <span class="n">CSSStyle</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;inlineStyle&quot;</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;inlineStyle&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="InheritedAnimatedStyleEntry">
+<a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.InheritedAnimatedStyleEntry">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">InheritedAnimatedStyleEntry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Inherited CSS style collection for animated styles from ancestor node.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: Styles coming from the animations of the ancestor, if any, in the style inheritance chain.</span>
+    <span class="n">animation_styles</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSAnimationStyle</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: The style coming from the transitions of the ancestor, if any, in the style inheritance chain.</span>
+    <span class="n">transitions_style</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CSSStyle</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">animation_styles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;animationStyles&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">animation_styles</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transitions_style</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;transitionsStyle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transitions_style</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InheritedAnimatedStyleEntry</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">animation_styles</span><span class="o">=</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">CSSAnimationStyle</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;animationStyles&quot;</span><span class="p">]]</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;animationStyles&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">transitions_style</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">CSSStyle</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;transitionsStyle&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;transitionsStyle&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="k">else</span> <span class="kc">None</span>
             <span class="p">),</span>
         <span class="p">)</span></div>
@@ -2008,6 +2078,183 @@
 
 
 
+<div class="viewcode-block" id="CSSFunctionParameter">
+<a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.CSSFunctionParameter">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CSSFunctionParameter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CSS function argument representation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: The parameter name.</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="c1">#: The parameter type.</span>
+    <span class="n">type_</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSSFunctionParameter</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]),</span>
+            <span class="n">type_</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CSSFunctionConditionNode">
+<a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.CSSFunctionConditionNode">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CSSFunctionConditionNode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CSS function conditional block representation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: Block body.</span>
+    <span class="n">children</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSFunctionNode</span><span class="p">]</span>
+
+    <span class="c1">#: The condition text.</span>
+    <span class="n">condition_text</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="c1">#: Media query for this conditional block. Only one type of condition should be set.</span>
+    <span class="n">media</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CSSMedia</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Container query for this conditional block. Only one type of condition should be set.</span>
+    <span class="n">container_queries</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CSSContainerQuery</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: @supports CSS at-rule condition. Only one type of condition should be set.</span>
+    <span class="n">supports</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CSSSupports</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;children&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">]</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;conditionText&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition_text</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">media</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;media&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">media</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">container_queries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;containerQueries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">container_queries</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;supports&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSSFunctionConditionNode</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">CSSFunctionNode</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;children&quot;</span><span class="p">]],</span>
+            <span class="n">condition_text</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;conditionText&quot;</span><span class="p">]),</span>
+            <span class="n">media</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">CSSMedia</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;media&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;media&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">container_queries</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">CSSContainerQuery</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;containerQueries&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;containerQueries&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">supports</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">CSSSupports</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;supports&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;supports&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CSSFunctionNode">
+<a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.CSSFunctionNode">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CSSFunctionNode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Section of the body of a CSS function rule.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: A conditional block. If set, style should not be set.</span>
+    <span class="n">condition</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CSSFunctionConditionNode</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Values set by this node. If set, condition should not be set.</span>
+    <span class="n">style</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CSSStyle</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;condition&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSSFunctionNode</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">condition</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">CSSFunctionConditionNode</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;condition&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;condition&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">style</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">CSSStyle</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;style&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CSSFunctionRule">
+<a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.CSSFunctionRule">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CSSFunctionRule</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CSS function at-rule representation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: Name of the function.</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Value</span>
+
+    <span class="c1">#: Parent stylesheet&#39;s origin.</span>
+    <span class="n">origin</span><span class="p">:</span> <span class="n">StyleSheetOrigin</span>
+
+    <span class="c1">#: List of parameters.</span>
+    <span class="n">parameters</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSFunctionParameter</span><span class="p">]</span>
+
+    <span class="c1">#: Function body.</span>
+    <span class="n">children</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSFunctionNode</span><span class="p">]</span>
+
+    <span class="c1">#: The css style sheet identifier (absent for user agent stylesheet and user-specified</span>
+    <span class="c1">#: stylesheet rules) this rule came from.</span>
+    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">StyleSheetId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;origin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">]</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;children&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">style_sheet_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;styleSheetId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">style_sheet_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CSSFunctionRule</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">Value</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]),</span>
+            <span class="n">origin</span><span class="o">=</span><span class="n">StyleSheetOrigin</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;origin&quot;</span><span class="p">]),</span>
+            <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="n">CSSFunctionParameter</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]],</span>
+            <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">CSSFunctionNode</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;children&quot;</span><span class="p">]],</span>
+            <span class="n">style_sheet_id</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">StyleSheetId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;styleSheetId&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;styleSheetId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="CSSKeyframeRule">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.CSSKeyframeRule">[docs]</a>
 <span class="nd">@dataclass</span>
@@ -2090,10 +2337,10 @@
 <div class="viewcode-block" id="add_rule">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.add_rule">[docs]</a>
 <span class="k">def</span> <span class="nf">add_rule</span><span class="p">(</span>
-    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span>
-    <span class="n">rule_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">location</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span>
-    <span class="n">node_for_property_syntax_validation</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span>
+        <span class="n">rule_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">location</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span>
+        <span class="n">node_for_property_syntax_validation</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">CSSRule</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inserts a new rule with the given ``ruleText`` in a stylesheet with given ``styleSheetId``, at the</span>
@@ -2125,7 +2372,7 @@
 <div class="viewcode-block" id="collect_class_names">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.collect_class_names">[docs]</a>
 <span class="k">def</span> <span class="nf">collect_class_names</span><span class="p">(</span>
-    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span>
+        <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns all class names from specified stylesheet.</span>
@@ -2147,16 +2394,19 @@
 <div class="viewcode-block" id="create_style_sheet">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.create_style_sheet">[docs]</a>
 <span class="k">def</span> <span class="nf">create_style_sheet</span><span class="p">(</span>
-    <span class="n">frame_id</span><span class="p">:</span> <span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="p">,</span>
+        <span class="n">frame_id</span><span class="p">:</span> <span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">StyleSheetId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a new special &quot;via-inspector&quot; stylesheet in the frame with given ``frameId``.</span>
 
 <span class="sd">    :param frame_id: Identifier of the frame where &quot;via-inspector&quot; stylesheet should be created.</span>
+<span class="sd">    :param force: *(Optional)* If true, creates a new stylesheet for every call. If false, returns a stylesheet previously created by a call with force=false for the frame&#39;s document if it exists or creates a new stylesheet (default: false).</span>
 <span class="sd">    :returns: Identifier of the created &quot;via-inspector&quot; stylesheet.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">params</span><span class="p">[</span><span class="s2">&quot;frameId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">force</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;force&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">force</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;CSS.createStyleSheet&quot;</span><span class="p">,</span>
         <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
@@ -2196,7 +2446,7 @@
 <div class="viewcode-block" id="force_pseudo_state">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.force_pseudo_state">[docs]</a>
 <span class="k">def</span> <span class="nf">force_pseudo_state</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span> <span class="n">forced_pseudo_classes</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span> <span class="n">forced_pseudo_classes</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Ensures that the given node will have specified pseudo-classes whenever its style is computed by</span>
@@ -2216,10 +2466,32 @@
 
 
 
+<div class="viewcode-block" id="force_starting_style">
+<a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.force_starting_style">[docs]</a>
+<span class="k">def</span> <span class="nf">force_starting_style</span><span class="p">(</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span> <span class="n">forced</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensures that the given node is in its starting-style state.</span>
+
+<span class="sd">    :param node_id: The element id for which to force the starting-style state.</span>
+<span class="sd">    :param forced: Boolean indicating if this is on or off.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;nodeId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;forced&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">forced</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;CSS.forceStartingStyle&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
 <div class="viewcode-block" id="get_background_colors">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.get_background_colors">[docs]</a>
 <span class="k">def</span> <span class="nf">get_background_colors</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
@@ -2265,7 +2537,7 @@
 <div class="viewcode-block" id="get_computed_style_for_node">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.get_computed_style_for_node">[docs]</a>
 <span class="k">def</span> <span class="nf">get_computed_style_for_node</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSComputedStyleProperty</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the computed style for a DOM node identified by ``nodeId``.</span>
@@ -2284,10 +2556,76 @@
 
 
 
+<div class="viewcode-block" id="resolve_values">
+<a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.resolve_values">[docs]</a>
+<span class="k">def</span> <span class="nf">resolve_values</span><span class="p">(</span>
+        <span class="n">values</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">property_name</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pseudo_type</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">PseudoType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pseudo_identifier</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resolve the specified values in the context of the provided element.</span>
+<span class="sd">    For example, a value of &#39;1em&#39; is evaluated according to the computed</span>
+<span class="sd">    &#39;font-size&#39; of the element and a value &#39;calc(1px + 2px)&#39; will be</span>
+<span class="sd">    resolved to &#39;3px&#39;.</span>
+
+<span class="sd">    :param values: Substitution functions (var()/env()/attr()) and cascade-dependent keywords (revert/revert-layer) do not work.</span>
+<span class="sd">    :param node_id: Id of the node in whose context the expression is evaluated</span>
+<span class="sd">    :param property_name: *(Optional)* Only longhands and custom property names are accepted.</span>
+<span class="sd">    :param pseudo_type: **(EXPERIMENTAL)** *(Optional)* Pseudo element type, only works for pseudo elements that generate elements in the tree, such as ::before and ::after.</span>
+<span class="sd">    :param pseudo_identifier: **(EXPERIMENTAL)** *(Optional)* Pseudo element custom ident.</span>
+<span class="sd">    :returns:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;nodeId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">property_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;propertyName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">property_name</span>
+    <span class="k">if</span> <span class="n">pseudo_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;pseudoType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pseudo_type</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">pseudo_identifier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;pseudoIdentifier&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pseudo_identifier</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;CSS.resolveValues&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]]</span></div>
+
+
+
+<div class="viewcode-block" id="get_longhand_properties">
+<a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.get_longhand_properties">[docs]</a>
+<span class="k">def</span> <span class="nf">get_longhand_properties</span><span class="p">(</span>
+        <span class="n">shorthand_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSProperty</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    **EXPERIMENTAL**</span>
+
+<span class="sd">    :param shorthand_name:</span>
+<span class="sd">    :param value:</span>
+<span class="sd">    :returns:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;shorthandName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shorthand_name</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;CSS.getLonghandProperties&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">CSSProperty</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;longhandProperties&quot;</span><span class="p">]]</span></div>
+
+
+
 <div class="viewcode-block" id="get_inline_styles_for_node">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.get_inline_styles_for_node">[docs]</a>
 <span class="k">def</span> <span class="nf">get_inline_styles_for_node</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
@@ -2325,10 +2663,63 @@
 
 
 
+<div class="viewcode-block" id="get_animated_styles_for_node">
+<a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.get_animated_styles_for_node">[docs]</a>
+<span class="k">def</span> <span class="nf">get_animated_styles_for_node</span><span class="p">(</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
+    <span class="n">T_JSON_DICT</span><span class="p">,</span>
+    <span class="n">T_JSON_DICT</span><span class="p">,</span>
+    <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSAnimationStyle</span><span class="p">]],</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CSSStyle</span><span class="p">],</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">InheritedAnimatedStyleEntry</span><span class="p">]],</span>
+    <span class="p">],</span>
+<span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the styles coming from animations &amp; transitions</span>
+<span class="sd">    including the animation &amp; transition styles coming from inheritance chain.</span>
+
+<span class="sd">    **EXPERIMENTAL**</span>
+
+<span class="sd">    :param node_id:</span>
+<span class="sd">    :returns: A tuple with the following items:</span>
+
+<span class="sd">        0. **animationStyles** - *(Optional)* Styles coming from animations.</span>
+<span class="sd">        1. **transitionsStyle** - *(Optional)* Style coming from transitions.</span>
+<span class="sd">        2. **inherited** - *(Optional)* Inherited style entries for animationsStyle and transitionsStyle from the inheritance chain of the element.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;nodeId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;CSS.getAnimatedStylesForNode&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="p">(</span>
+            <span class="p">[</span><span class="n">CSSAnimationStyle</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;animationStyles&quot;</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;animationStyles&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">CSSStyle</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;transitionsStyle&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;transitionsStyle&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="p">[</span><span class="n">InheritedAnimatedStyleEntry</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;inherited&quot;</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;inherited&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+    <span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="get_matched_styles_for_node">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.get_matched_styles_for_node">[docs]</a>
 <span class="k">def</span> <span class="nf">get_matched_styles_for_node</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
     <span class="n">T_JSON_DICT</span><span class="p">,</span>
@@ -2346,6 +2737,7 @@
         <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSPropertyRegistration</span><span class="p">]],</span>
         <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CSSFontPaletteValuesRule</span><span class="p">],</span>
         <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">],</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSFunctionRule</span><span class="p">]],</span>
     <span class="p">],</span>
 <span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2367,6 +2759,7 @@
 <span class="sd">        10. **cssPropertyRegistrations** - *(Optional)* A list of CSS property registrations matching this node.</span>
 <span class="sd">        11. **cssFontPaletteValuesRule** - *(Optional)* A font-palette-values rule matching this node.</span>
 <span class="sd">        12. **parentLayoutNodeId** - *(Optional)* Id of the first parent element that does not have display: contents.</span>
+<span class="sd">        13. **cssFunctionRules** - *(Optional)* A list of CSS at-function rules referenced by styles of this node.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">params</span><span class="p">[</span><span class="s2">&quot;nodeId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
@@ -2447,6 +2840,11 @@
             <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parentLayoutNodeId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="k">else</span> <span class="kc">None</span>
         <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="p">[</span><span class="n">CSSFunctionRule</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;cssFunctionRules&quot;</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cssFunctionRules&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
     <span class="p">)</span></div>
 
 
@@ -2454,7 +2852,7 @@
 <div class="viewcode-block" id="get_media_queries">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.get_media_queries">[docs]</a>
 <span class="k">def</span> <span class="nf">get_media_queries</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span>
-    <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSMedia</span><span class="p">]]</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSMedia</span><span class="p">]]</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns all media queries parsed by the rendering engine.</span>
@@ -2472,7 +2870,7 @@
 <div class="viewcode-block" id="get_platform_fonts_for_node">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.get_platform_fonts_for_node">[docs]</a>
 <span class="k">def</span> <span class="nf">get_platform_fonts_for_node</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">PlatformFontUsage</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Requests information about platform fonts which we used to render child TextNodes in the given</span>
@@ -2495,7 +2893,7 @@
 <div class="viewcode-block" id="get_style_sheet_text">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.get_style_sheet_text">[docs]</a>
 <span class="k">def</span> <span class="nf">get_style_sheet_text</span><span class="p">(</span>
-    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span>
+        <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the current textual content for a stylesheet.</span>
@@ -2517,7 +2915,7 @@
 <div class="viewcode-block" id="get_layers_for_node">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.get_layers_for_node">[docs]</a>
 <span class="k">def</span> <span class="nf">get_layers_for_node</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">CSSLayerData</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns all layers parsed by the rendering engine for the tree scope of a node.</span>
@@ -2544,7 +2942,7 @@
 <div class="viewcode-block" id="get_location_for_selector">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.get_location_for_selector">[docs]</a>
 <span class="k">def</span> <span class="nf">get_location_for_selector</span><span class="p">(</span>
-    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">selector_text</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">selector_text</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">SourceRange</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a CSS selector text and a style sheet ID, getLocationForSelector</span>
@@ -2571,7 +2969,7 @@
 <div class="viewcode-block" id="track_computed_style_updates_for_node">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.track_computed_style_updates_for_node">[docs]</a>
 <span class="k">def</span> <span class="nf">track_computed_style_updates_for_node</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Starts tracking the given node for the computed style updates</span>
@@ -2599,7 +2997,7 @@
 <div class="viewcode-block" id="track_computed_style_updates">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.track_computed_style_updates">[docs]</a>
 <span class="k">def</span> <span class="nf">track_computed_style_updates</span><span class="p">(</span>
-    <span class="n">properties_to_track</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSComputedStyleProperty</span><span class="p">],</span>
+        <span class="n">properties_to_track</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSComputedStyleProperty</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Starts tracking the given computed styles for updates. The specified array of properties</span>
@@ -2626,7 +3024,7 @@
 <div class="viewcode-block" id="take_computed_style_updates">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.take_computed_style_updates">[docs]</a>
 <span class="k">def</span> <span class="nf">take_computed_style_updates</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span>
-    <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">]]</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">]]</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Polls the next batch of computed style updates.</span>
@@ -2646,7 +3044,7 @@
 <div class="viewcode-block" id="set_effective_property_value_for_node">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.set_effective_property_value_for_node">[docs]</a>
 <span class="k">def</span> <span class="nf">set_effective_property_value_for_node</span><span class="p">(</span>
-    <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span> <span class="n">property_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">node_id</span><span class="p">:</span> <span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">,</span> <span class="n">property_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Find a rule with the given active property for the given node and set the new value for this</span>
@@ -2671,7 +3069,7 @@
 <div class="viewcode-block" id="set_property_rule_property_name">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.set_property_rule_property_name">[docs]</a>
 <span class="k">def</span> <span class="nf">set_property_rule_property_name</span><span class="p">(</span>
-    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">range_</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span> <span class="n">property_name</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">range_</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span> <span class="n">property_name</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">Value</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Modifies the property rule property name.</span>
@@ -2697,7 +3095,7 @@
 <div class="viewcode-block" id="set_keyframe_key">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.set_keyframe_key">[docs]</a>
 <span class="k">def</span> <span class="nf">set_keyframe_key</span><span class="p">(</span>
-    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">range_</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span> <span class="n">key_text</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">range_</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span> <span class="n">key_text</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">Value</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Modifies the keyframe rule key text.</span>
@@ -2723,7 +3121,7 @@
 <div class="viewcode-block" id="set_media_text">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.set_media_text">[docs]</a>
 <span class="k">def</span> <span class="nf">set_media_text</span><span class="p">(</span>
-    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">range_</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">range_</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">CSSMedia</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Modifies the rule selector.</span>
@@ -2749,7 +3147,7 @@
 <div class="viewcode-block" id="set_container_query_text">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.set_container_query_text">[docs]</a>
 <span class="k">def</span> <span class="nf">set_container_query_text</span><span class="p">(</span>
-    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">range_</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">range_</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">CSSContainerQuery</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Modifies the expression of a container query.</span>
@@ -2777,7 +3175,7 @@
 <div class="viewcode-block" id="set_supports_text">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.set_supports_text">[docs]</a>
 <span class="k">def</span> <span class="nf">set_supports_text</span><span class="p">(</span>
-    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">range_</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">range_</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">CSSSupports</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Modifies the expression of a supports at-rule.</span>
@@ -2805,7 +3203,7 @@
 <div class="viewcode-block" id="set_scope_text">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.set_scope_text">[docs]</a>
 <span class="k">def</span> <span class="nf">set_scope_text</span><span class="p">(</span>
-    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">range_</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">range_</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">CSSScope</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Modifies the expression of a scope at-rule.</span>
@@ -2833,7 +3231,7 @@
 <div class="viewcode-block" id="set_rule_selector">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.set_rule_selector">[docs]</a>
 <span class="k">def</span> <span class="nf">set_rule_selector</span><span class="p">(</span>
-    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">range_</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span> <span class="n">selector</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">range_</span><span class="p">:</span> <span class="n">SourceRange</span><span class="p">,</span> <span class="n">selector</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">SelectorList</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Modifies the rule selector.</span>
@@ -2859,7 +3257,7 @@
 <div class="viewcode-block" id="set_style_sheet_text">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.set_style_sheet_text">[docs]</a>
 <span class="k">def</span> <span class="nf">set_style_sheet_text</span><span class="p">(</span>
-    <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">style_sheet_id</span><span class="p">:</span> <span class="n">StyleSheetId</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets the new stylesheet text.</span>
@@ -2887,8 +3285,8 @@
 <div class="viewcode-block" id="set_style_texts">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.set_style_texts">[docs]</a>
 <span class="k">def</span> <span class="nf">set_style_texts</span><span class="p">(</span>
-    <span class="n">edits</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">StyleDeclarationEdit</span><span class="p">],</span>
-    <span class="n">node_for_property_syntax_validation</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">edits</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">StyleDeclarationEdit</span><span class="p">],</span>
+        <span class="n">node_for_property_syntax_validation</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">NodeId</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">CSSStyle</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Applies specified style edits one after another in the given order.</span>
@@ -2928,7 +3326,7 @@
 <div class="viewcode-block" id="stop_rule_usage_tracking">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.stop_rule_usage_tracking">[docs]</a>
 <span class="k">def</span> <span class="nf">stop_rule_usage_tracking</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span>
-    <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">RuleUsage</span><span class="p">]]</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">RuleUsage</span><span class="p">]]</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Stop tracking rule usage and return the list of rules that were used since last call to</span>
@@ -2947,9 +3345,9 @@
 <div class="viewcode-block" id="take_coverage_delta">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.take_coverage_delta">[docs]</a>
 <span class="k">def</span> <span class="nf">take_coverage_delta</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span>
-    <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
-        <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">RuleUsage</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span>
-    <span class="p">]</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
+            <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">RuleUsage</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span>
+        <span class="p">]</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Obtain list of rules that became used since last call to this method (or since start of coverage</span>
@@ -2974,7 +3372,7 @@
 <div class="viewcode-block" id="set_local_fonts_enabled">
 <a class="viewcode-back" href="../../../nodriver/cdp/css.html#nodriver.cdp.css.set_local_fonts_enabled">[docs]</a>
 <span class="k">def</span> <span class="nf">set_local_fonts_enabled</span><span class="p">(</span>
-    <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enables/disables rendering of local CSS fonts (enabled by default).</span>

@@ -265,7 +265,13 @@
         </div>
         <article role="main">
           <h1>Source code for nodriver.core.browser</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span></span><span class="c1"># Copyright 2024 by UltrafunkAmsterdam (https://github.com/UltrafunkAmsterdam)</span>
+<span class="c1"># All rights reserved.</span>
+<span class="c1"># This file is part of the nodriver package.</span>
+<span class="c1"># and is released under the &quot;GNU AFFERO GENERAL PUBLIC LICENSE&quot;.</span>
+<span class="c1"># Please see the LICENSE.txt file that should have been included as part of this package.</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">atexit</span>
@@ -330,17 +336,17 @@
 <a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.create">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span>
-        <span class="n">config</span><span class="p">:</span> <span class="n">Config</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">user_data_dir</span><span class="p">:</span> <span class="n">PathLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">headless</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">browser_executable_path</span><span class="p">:</span> <span class="n">PathLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">browser_args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">sandbox</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="bp">cls</span><span class="p">,</span>
+            <span class="n">config</span><span class="p">:</span> <span class="n">Config</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">*</span><span class="p">,</span>
+            <span class="n">user_data_dir</span><span class="p">:</span> <span class="n">PathLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">headless</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">browser_executable_path</span><span class="p">:</span> <span class="n">PathLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">browser_args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">sandbox</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Browser</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        entry point for creating an instance</span>
@@ -438,13 +444,13 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;alias for wait&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_handle_target_update</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">event</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
-            <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfoChanged</span><span class="p">,</span>
-            <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetDestroyed</span><span class="p">,</span>
-            <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetCreated</span><span class="p">,</span>
-            <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetCrashed</span><span class="p">,</span>
-        <span class="p">],</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">event</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetInfoChanged</span><span class="p">,</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetDestroyed</span><span class="p">,</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetCreated</span><span class="p">,</span>
+                <span class="n">cdp</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">TargetCrashed</span><span class="p">,</span>
+            <span class="p">],</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;this is an internal handler which updates the targets when chrome emits the corresponding event&quot;&quot;&quot;</span>
 
@@ -501,11 +507,10 @@
 
         <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_targets</span><span class="p">())</span>
 
-
 <div class="viewcode-block" id="Browser.get">
 <a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.get">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;chrome://welcome&quot;</span><span class="p">,</span> <span class="n">new_tab</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">new_window</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;chrome://welcome&quot;</span><span class="p">,</span> <span class="n">new_tab</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">new_window</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tab</span><span class="o">.</span><span class="n">Tab</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;top level get. utilizes the first tab to retrieve given url.</span>
 
@@ -552,14 +557,14 @@
 <div class="viewcode-block" id="Browser.create_context">
 <a class="viewcode-back" href="../../../nodriver/classes/browser.html#nodriver.Browser.create_context">[docs]</a>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">create_context</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;chrome://welcome&quot;</span><span class="p">,</span>
-        <span class="n">new_tab</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">new_window</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">dispose_on_detach</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">proxy_server</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">proxy_bypass_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">origins_with_universal_network_access</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;chrome://welcome&quot;</span><span class="p">,</span>
+            <span class="n">new_tab</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">new_window</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">dispose_on_detach</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">proxy_server</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">proxy_bypass_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">origins_with_universal_network_access</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tab</span><span class="o">.</span><span class="n">Tab</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        creates a new browser context - mostly useful if you want to use proxies for different browser instances</span>
@@ -885,7 +890,7 @@
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">slice</span><span class="p">]</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">slice</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">tab</span><span class="o">.</span><span class="n">Tab</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">tab</span><span class="o">.</span><span class="n">Tab</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        allows to get py:obj:`tab.Tab` instances by using browser[0], browser[1], etc.</span>
@@ -1022,7 +1027,7 @@
         <span class="c1"># self._connection = connection</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">get_all</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">requests_cookie_format</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">requests_cookie_format</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">cdp</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">Cookie</span><span class="p">,</span> <span class="s2">&quot;http.cookiejar.Cookie&quot;</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        get all cookies</span>

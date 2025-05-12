@@ -46,7 +46,7 @@ you use the event’s attributes.
 
 Fired when remote debugging connection is about to be terminated. Contains detach reason.
 
-#### reason *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### reason*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The reason why connection has been terminated.
 

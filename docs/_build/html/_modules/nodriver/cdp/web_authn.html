@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.web_authn - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -602,7 +603,7 @@
 <div class="viewcode-block" id="enable">
 <a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.enable">[docs]</a>
 <span class="k">def</span> <span class="nf">enable</span><span class="p">(</span>
-    <span class="n">enable_ui</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">enable_ui</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enable the WebAuthn domain and start intercepting credential storage and</span>
@@ -637,7 +638,7 @@
 <div class="viewcode-block" id="add_virtual_authenticator">
 <a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.add_virtual_authenticator">[docs]</a>
 <span class="k">def</span> <span class="nf">add_virtual_authenticator</span><span class="p">(</span>
-    <span class="n">options</span><span class="p">:</span> <span class="n">VirtualAuthenticatorOptions</span><span class="p">,</span>
+        <span class="n">options</span><span class="p">:</span> <span class="n">VirtualAuthenticatorOptions</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">AuthenticatorId</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates and adds a virtual authenticator.</span>
@@ -659,10 +660,10 @@
 <div class="viewcode-block" id="set_response_override_bits">
 <a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.set_response_override_bits">[docs]</a>
 <span class="k">def</span> <span class="nf">set_response_override_bits</span><span class="p">(</span>
-    <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
-    <span class="n">is_bogus_signature</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">is_bad_uv</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">is_bad_up</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
+        <span class="n">is_bogus_signature</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_bad_uv</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_bad_up</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Resets parameters isBogusSignature, isBadUV, isBadUP to false if they are not present.</span>
@@ -691,7 +692,7 @@
 <div class="viewcode-block" id="remove_virtual_authenticator">
 <a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.remove_virtual_authenticator">[docs]</a>
 <span class="k">def</span> <span class="nf">remove_virtual_authenticator</span><span class="p">(</span>
-    <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Removes the given authenticator.</span>
@@ -711,7 +712,7 @@
 <div class="viewcode-block" id="add_credential">
 <a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.add_credential">[docs]</a>
 <span class="k">def</span> <span class="nf">add_credential</span><span class="p">(</span>
-    <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span> <span class="n">credential</span><span class="p">:</span> <span class="n">Credential</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span> <span class="n">credential</span><span class="p">:</span> <span class="n">Credential</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Adds the credential to the specified authenticator.</span>
@@ -733,7 +734,7 @@
 <div class="viewcode-block" id="get_credential">
 <a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.get_credential">[docs]</a>
 <span class="k">def</span> <span class="nf">get_credential</span><span class="p">(</span>
-    <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span> <span class="n">credential_id</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span> <span class="n">credential_id</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">Credential</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a single credential stored in the given virtual authenticator that</span>
@@ -758,7 +759,7 @@
 <div class="viewcode-block" id="get_credentials">
 <a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.get_credentials">[docs]</a>
 <span class="k">def</span> <span class="nf">get_credentials</span><span class="p">(</span>
-    <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">Credential</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns all the credentials stored in the given virtual authenticator.</span>
@@ -780,7 +781,7 @@
 <div class="viewcode-block" id="remove_credential">
 <a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.remove_credential">[docs]</a>
 <span class="k">def</span> <span class="nf">remove_credential</span><span class="p">(</span>
-    <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span> <span class="n">credential_id</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span> <span class="n">credential_id</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Removes a credential from the authenticator.</span>
@@ -802,7 +803,7 @@
 <div class="viewcode-block" id="clear_credentials">
 <a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.clear_credentials">[docs]</a>
 <span class="k">def</span> <span class="nf">clear_credentials</span><span class="p">(</span>
-    <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Clears all the credentials from the specified device.</span>
@@ -822,7 +823,7 @@
 <div class="viewcode-block" id="set_user_verified">
 <a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.set_user_verified">[docs]</a>
 <span class="k">def</span> <span class="nf">set_user_verified</span><span class="p">(</span>
-    <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span> <span class="n">is_user_verified</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span> <span class="n">is_user_verified</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets whether User Verification succeeds or fails for an authenticator.</span>
@@ -845,7 +846,7 @@
 <div class="viewcode-block" id="set_automatic_presence_simulation">
 <a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.set_automatic_presence_simulation">[docs]</a>
 <span class="k">def</span> <span class="nf">set_automatic_presence_simulation</span><span class="p">(</span>
-    <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span> <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span> <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets whether tests of user presence will succeed immediately (if true) or fail to resolve (if false) for an authenticator.</span>
@@ -868,10 +869,10 @@
 <div class="viewcode-block" id="set_credential_properties">
 <a class="viewcode-back" href="../../../nodriver/cdp/web_authn.html#nodriver.cdp.web_authn.set_credential_properties">[docs]</a>
 <span class="k">def</span> <span class="nf">set_credential_properties</span><span class="p">(</span>
-    <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
-    <span class="n">credential_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">backup_eligibility</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">backup_state</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">authenticator_id</span><span class="p">:</span> <span class="n">AuthenticatorId</span><span class="p">,</span>
+        <span class="n">credential_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">backup_eligibility</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backup_state</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Allows setting credential properties.</span>

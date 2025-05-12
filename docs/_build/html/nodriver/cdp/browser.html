@@ -167,6 +167,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../classes/browser.html">Browser class</a></li>
@@ -187,7 +189,6 @@
 <li class="toctree-l2"><a class="reference internal" href="cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="device_orientation.html">DeviceOrientation</a></li>
@@ -355,8 +356,8 @@ arguments to other commands.</p>
 <dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PermissionType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/browser.html#PermissionType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.browser.PermissionType" title="Link to this definition">#</a></dt>
 <dd><dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.ACCESSIBILITY_EVENTS">
-<span class="sig-name descname"><span class="pre">ACCESSIBILITY_EVENTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'accessibilityEvents'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.ACCESSIBILITY_EVENTS" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.AR">
+<span class="sig-name descname"><span class="pre">AR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ar'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.AR" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -365,13 +366,23 @@ arguments to other commands.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.BACKGROUND_SYNC">
-<span class="sig-name descname"><span class="pre">BACKGROUND_SYNC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'backgroundSync'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.BACKGROUND_SYNC" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.AUTOMATIC_FULLSCREEN">
+<span class="sig-name descname"><span class="pre">AUTOMATIC_FULLSCREEN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'automaticFullscreen'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.AUTOMATIC_FULLSCREEN" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.BACKGROUND_FETCH">
 <span class="sig-name descname"><span class="pre">BACKGROUND_FETCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'backgroundFetch'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.BACKGROUND_FETCH" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.BACKGROUND_SYNC">
+<span class="sig-name descname"><span class="pre">BACKGROUND_SYNC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'backgroundSync'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.BACKGROUND_SYNC" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.CAMERA_PAN_TILT_ZOOM">
+<span class="sig-name descname"><span class="pre">CAMERA_PAN_TILT_ZOOM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cameraPanTiltZoom'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.CAMERA_PAN_TILT_ZOOM" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -400,13 +411,13 @@ arguments to other commands.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.FLASH">
-<span class="sig-name descname"><span class="pre">FLASH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'flash'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.FLASH" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.GEOLOCATION">
+<span class="sig-name descname"><span class="pre">GEOLOCATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'geolocation'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.GEOLOCATION" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.GEOLOCATION">
-<span class="sig-name descname"><span class="pre">GEOLOCATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'geolocation'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.GEOLOCATION" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.HAND_TRACKING">
+<span class="sig-name descname"><span class="pre">HAND_TRACKING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'handTracking'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.HAND_TRACKING" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -415,8 +426,18 @@ arguments to other commands.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.KEYBOARD_LOCK">
+<span class="sig-name descname"><span class="pre">KEYBOARD_LOCK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'keyboardLock'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.KEYBOARD_LOCK" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.LOCAL_FONTS">
 <span class="sig-name descname"><span class="pre">LOCAL_FONTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'localFonts'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.LOCAL_FONTS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.LOCAL_NETWORK_ACCESS">
+<span class="sig-name descname"><span class="pre">LOCAL_NETWORK_ACCESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'localNetworkAccess'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.LOCAL_NETWORK_ACCESS" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -450,6 +471,11 @@ arguments to other commands.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.POINTER_LOCK">
+<span class="sig-name descname"><span class="pre">POINTER_LOCK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'pointerLock'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.POINTER_LOCK" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.PROTECTED_MEDIA_IDENTIFIER">
 <span class="sig-name descname"><span class="pre">PROTECTED_MEDIA_IDENTIFIER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'protectedMediaIdentifier'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.PROTECTED_MEDIA_IDENTIFIER" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -460,13 +486,18 @@ arguments to other commands.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.STORAGE_ACCESS">
-<span class="sig-name descname"><span class="pre">STORAGE_ACCESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'storageAccess'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.STORAGE_ACCESS" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.SMART_CARD">
+<span class="sig-name descname"><span class="pre">SMART_CARD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'smartCard'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.SMART_CARD" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.SPEAKER_SELECTION">
 <span class="sig-name descname"><span class="pre">SPEAKER_SELECTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'speakerSelection'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.SPEAKER_SELECTION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.STORAGE_ACCESS">
+<span class="sig-name descname"><span class="pre">STORAGE_ACCESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'storageAccess'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.STORAGE_ACCESS" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -480,8 +511,8 @@ arguments to other commands.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.VIDEO_CAPTURE_PAN_TILT_ZOOM">
-<span class="sig-name descname"><span class="pre">VIDEO_CAPTURE_PAN_TILT_ZOOM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'videoCapturePanTiltZoom'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.VIDEO_CAPTURE_PAN_TILT_ZOOM" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.VR">
+<span class="sig-name descname"><span class="pre">VR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'vr'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.VR" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -497,6 +528,11 @@ arguments to other commands.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.WEB_APP_INSTALLATION">
 <span class="sig-name descname"><span class="pre">WEB_APP_INSTALLATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'webAppInstallation'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.WEB_APP_INSTALLATION" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PermissionType.WEB_PRINTING">
+<span class="sig-name descname"><span class="pre">WEB_PRINTING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'webPrinting'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PermissionType.WEB_PRINTING" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -646,6 +682,21 @@ Note that userVisibleOnly = true is the only currently supported type.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PrivacySandboxAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrivacySandboxAPI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/browser.html#PrivacySandboxAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.browser.PrivacySandboxAPI" title="Link to this definition">#</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PrivacySandboxAPI.BIDDING_AND_AUCTION_SERVICES">
+<span class="sig-name descname"><span class="pre">BIDDING_AND_AUCTION_SERVICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'BiddingAndAuctionServices'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PrivacySandboxAPI.BIDDING_AND_AUCTION_SERVICES" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.browser.PrivacySandboxAPI.TRUSTED_KEY_VALUE">
+<span class="sig-name descname"><span class="pre">TRUSTED_KEY_VALUE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TrustedKeyValue'</span></em><a class="headerlink" href="#nodriver.cdp.browser.PrivacySandboxAPI.TRUSTED_KEY_VALUE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="commands">
 <h2>Commands<a class="headerlink" href="#commands" title="Link to this heading">#</a></h2>
@@ -657,6 +708,28 @@ this library, types <code class="docutils literal notranslate"><span class="pre"
 commands, and <code class="docutils literal notranslate"><span class="pre">z</span></code> is the return type you should pay attention
 to. For more information, see
 <a class="reference internal" href="../../readme.html#getting-started-commands"><span class="std std-ref">Getting Started: Commands</span></a>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.browser.add_privacy_sandbox_coordinator_key_config">
+<span class="sig-name descname"><span class="pre">add_privacy_sandbox_coordinator_key_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinator_origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">browser_context_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/browser.html#add_privacy_sandbox_coordinator_key_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.browser.add_privacy_sandbox_coordinator_key_config" title="Link to this definition">#</a></dt>
+<dd><p>Configures encryption keys used with a given privacy sandbox API to talk
+to a trusted coordinator.  Since this is intended for test automation only,
+coordinatorOrigin must be a .test domain. No existing coordinator
+configuration for the origin may exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>api</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.browser.PrivacySandboxAPI" title="nodriver.cdp.browser.PrivacySandboxAPI"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrivacySandboxAPI</span></code></a></span>) – </p></li>
+<li><p><strong>coordinator_origin</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p></li>
+<li><p><strong>key_config</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p></li>
+<li><p><strong>browser_context_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="#nodriver.cdp.browser.BrowserContextID" title="nodriver.cdp.browser.BrowserContextID"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrowserContextID</span></code></a>]</span>) – <em>(Optional)</em> BrowserContext to perform the action in. When omitted, default browser context is used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="nodriver.cdp.browser.add_privacy_sandbox_enrollment_override">
 <span class="sig-name descname"><span class="pre">add_privacy_sandbox_enrollment_override</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/browser.html#add_privacy_sandbox_enrollment_override"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.browser.add_privacy_sandbox_enrollment_override" title="Link to this definition">#</a></dt>
@@ -1116,35 +1189,42 @@ you use the event’s attributes.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType"><code class="docutils literal notranslate"><span class="pre">PermissionType</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.ACCESSIBILITY_EVENTS"><code class="docutils literal notranslate"><span class="pre">PermissionType.ACCESSIBILITY_EVENTS</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.AR"><code class="docutils literal notranslate"><span class="pre">PermissionType.AR</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.AUDIO_CAPTURE"><code class="docutils literal notranslate"><span class="pre">PermissionType.AUDIO_CAPTURE</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.BACKGROUND_SYNC"><code class="docutils literal notranslate"><span class="pre">PermissionType.BACKGROUND_SYNC</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.AUTOMATIC_FULLSCREEN"><code class="docutils literal notranslate"><span class="pre">PermissionType.AUTOMATIC_FULLSCREEN</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.BACKGROUND_FETCH"><code class="docutils literal notranslate"><span class="pre">PermissionType.BACKGROUND_FETCH</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.BACKGROUND_SYNC"><code class="docutils literal notranslate"><span class="pre">PermissionType.BACKGROUND_SYNC</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.CAMERA_PAN_TILT_ZOOM"><code class="docutils literal notranslate"><span class="pre">PermissionType.CAMERA_PAN_TILT_ZOOM</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.CAPTURED_SURFACE_CONTROL"><code class="docutils literal notranslate"><span class="pre">PermissionType.CAPTURED_SURFACE_CONTROL</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.CLIPBOARD_READ_WRITE"><code class="docutils literal notranslate"><span class="pre">PermissionType.CLIPBOARD_READ_WRITE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.CLIPBOARD_SANITIZED_WRITE"><code class="docutils literal notranslate"><span class="pre">PermissionType.CLIPBOARD_SANITIZED_WRITE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.DISPLAY_CAPTURE"><code class="docutils literal notranslate"><span class="pre">PermissionType.DISPLAY_CAPTURE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.DURABLE_STORAGE"><code class="docutils literal notranslate"><span class="pre">PermissionType.DURABLE_STORAGE</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.FLASH"><code class="docutils literal notranslate"><span class="pre">PermissionType.FLASH</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.GEOLOCATION"><code class="docutils literal notranslate"><span class="pre">PermissionType.GEOLOCATION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.HAND_TRACKING"><code class="docutils literal notranslate"><span class="pre">PermissionType.HAND_TRACKING</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.IDLE_DETECTION"><code class="docutils literal notranslate"><span class="pre">PermissionType.IDLE_DETECTION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.KEYBOARD_LOCK"><code class="docutils literal notranslate"><span class="pre">PermissionType.KEYBOARD_LOCK</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.LOCAL_FONTS"><code class="docutils literal notranslate"><span class="pre">PermissionType.LOCAL_FONTS</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.LOCAL_NETWORK_ACCESS"><code class="docutils literal notranslate"><span class="pre">PermissionType.LOCAL_NETWORK_ACCESS</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.MIDI"><code class="docutils literal notranslate"><span class="pre">PermissionType.MIDI</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.MIDI_SYSEX"><code class="docutils literal notranslate"><span class="pre">PermissionType.MIDI_SYSEX</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.NFC"><code class="docutils literal notranslate"><span class="pre">PermissionType.NFC</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.NOTIFICATIONS"><code class="docutils literal notranslate"><span class="pre">PermissionType.NOTIFICATIONS</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.PAYMENT_HANDLER"><code class="docutils literal notranslate"><span class="pre">PermissionType.PAYMENT_HANDLER</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.PERIODIC_BACKGROUND_SYNC"><code class="docutils literal notranslate"><span class="pre">PermissionType.PERIODIC_BACKGROUND_SYNC</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.POINTER_LOCK"><code class="docutils literal notranslate"><span class="pre">PermissionType.POINTER_LOCK</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.PROTECTED_MEDIA_IDENTIFIER"><code class="docutils literal notranslate"><span class="pre">PermissionType.PROTECTED_MEDIA_IDENTIFIER</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.SENSORS"><code class="docutils literal notranslate"><span class="pre">PermissionType.SENSORS</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.STORAGE_ACCESS"><code class="docutils literal notranslate"><span class="pre">PermissionType.STORAGE_ACCESS</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.SMART_CARD"><code class="docutils literal notranslate"><span class="pre">PermissionType.SMART_CARD</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.SPEAKER_SELECTION"><code class="docutils literal notranslate"><span class="pre">PermissionType.SPEAKER_SELECTION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.STORAGE_ACCESS"><code class="docutils literal notranslate"><span class="pre">PermissionType.STORAGE_ACCESS</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.TOP_LEVEL_STORAGE_ACCESS"><code class="docutils literal notranslate"><span class="pre">PermissionType.TOP_LEVEL_STORAGE_ACCESS</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.VIDEO_CAPTURE"><code class="docutils literal notranslate"><span class="pre">PermissionType.VIDEO_CAPTURE</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.VIDEO_CAPTURE_PAN_TILT_ZOOM"><code class="docutils literal notranslate"><span class="pre">PermissionType.VIDEO_CAPTURE_PAN_TILT_ZOOM</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.VR"><code class="docutils literal notranslate"><span class="pre">PermissionType.VR</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.WAKE_LOCK_SCREEN"><code class="docutils literal notranslate"><span class="pre">PermissionType.WAKE_LOCK_SCREEN</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.WAKE_LOCK_SYSTEM"><code class="docutils literal notranslate"><span class="pre">PermissionType.WAKE_LOCK_SYSTEM</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.WEB_APP_INSTALLATION"><code class="docutils literal notranslate"><span class="pre">PermissionType.WEB_APP_INSTALLATION</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.WEB_PRINTING"><code class="docutils literal notranslate"><span class="pre">PermissionType.WEB_PRINTING</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.PermissionType.WINDOW_MANAGEMENT"><code class="docutils literal notranslate"><span class="pre">PermissionType.WINDOW_MANAGEMENT</span></code></a></li>
 </ul>
 </li>
@@ -1181,9 +1261,15 @@ you use the event’s attributes.</p>
 <li><a class="reference internal" href="#nodriver.cdp.browser.Histogram.buckets"><code class="docutils literal notranslate"><span class="pre">Histogram.buckets</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PrivacySandboxAPI"><code class="docutils literal notranslate"><span class="pre">PrivacySandboxAPI</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PrivacySandboxAPI.BIDDING_AND_AUCTION_SERVICES"><code class="docutils literal notranslate"><span class="pre">PrivacySandboxAPI.BIDDING_AND_AUCTION_SERVICES</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.browser.PrivacySandboxAPI.TRUSTED_KEY_VALUE"><code class="docutils literal notranslate"><span class="pre">PrivacySandboxAPI.TRUSTED_KEY_VALUE</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#commands">Commands</a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.browser.add_privacy_sandbox_coordinator_key_config"><code class="docutils literal notranslate"><span class="pre">add_privacy_sandbox_coordinator_key_config()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.add_privacy_sandbox_enrollment_override"><code class="docutils literal notranslate"><span class="pre">add_privacy_sandbox_enrollment_override()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.cancel_download"><code class="docutils literal notranslate"><span class="pre">cancel_download()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.browser.close"><code class="docutils literal notranslate"><span class="pre">close()</span></code></a></li>

@@ -16,39 +16,39 @@ arguments to other commands.
 
 ### *class* File(name, last_modified, size, type_)
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### last_modified *: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
+#### last_modified*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
 Timestamp
 
-#### size *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### size*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Size in bytes
 
-#### type_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ### *class* Directory(name, nested_directories, nested_files)
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### nested_directories *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### nested_directories*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
-#### nested_files *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`File`](#nodriver.cdp.file_system.File)]*
+#### nested_files*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`File`](#nodriver.cdp.file_system.File)]*
 
 Files that are directly nested under this directory.
 
 ### *class* BucketFileSystemLocator(storage_key, path_components, bucket_name=None)
 
-#### storage_key *: [`SerializedStorageKey`](storage.md#nodriver.cdp.storage.SerializedStorageKey)*
+#### storage_key*: [`SerializedStorageKey`](storage.md#nodriver.cdp.storage.SerializedStorageKey)*
 
 Storage key
 
-#### path_components *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### path_components*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 Path to the directory using each path component as an array item.
 
-#### bucket_name *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### bucket_name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 //developer.mozilla.org/en-US/docs/Web/API/Storage_API#storage_buckets)
 

@@ -15,28 +15,28 @@ arguments to other commands.
 
 Profile node. Holds callsite information, execution statistics and child nodes.
 
-#### id_ *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### id_*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Unique id of the node.
 
-#### call_frame *: [`CallFrame`](runtime.md#nodriver.cdp.runtime.CallFrame)*
+#### call_frame*: [`CallFrame`](runtime.md#nodriver.cdp.runtime.CallFrame)*
 
 Function location.
 
-#### hit_count *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### hit_count*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 Number of samples where this node was on top of the call stack.
 
-#### children *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`int`](https://docs.python.org/3/library/functions.html#int)]]* *= None*
+#### children*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`int`](https://docs.python.org/3/library/functions.html#int)]]* *= None*
 
 Child node ids.
 
-#### deopt_reason *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### deopt_reason*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The reason of being not optimized. The function may be deoptimized or marked as don’t
 optimize.
 
-#### position_ticks *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PositionTickInfo`](#nodriver.cdp.profiler.PositionTickInfo)]]* *= None*
+#### position_ticks*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PositionTickInfo`](#nodriver.cdp.profiler.PositionTickInfo)]]* *= None*
 
 An array of source position ticks.
 
@@ -44,23 +44,23 @@ An array of source position ticks.
 
 Profile.
 
-#### nodes *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ProfileNode`](#nodriver.cdp.profiler.ProfileNode)]*
+#### nodes*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ProfileNode`](#nodriver.cdp.profiler.ProfileNode)]*
 
 The list of profile nodes. First item is the root node.
 
-#### start_time *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### start_time*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Profiling start timestamp in microseconds.
 
-#### end_time *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### end_time*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Profiling end timestamp in microseconds.
 
-#### samples *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`int`](https://docs.python.org/3/library/functions.html#int)]]* *= None*
+#### samples*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`int`](https://docs.python.org/3/library/functions.html#int)]]* *= None*
 
 Ids of samples top nodes.
 
-#### time_deltas *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`int`](https://docs.python.org/3/library/functions.html#int)]]* *= None*
+#### time_deltas*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`int`](https://docs.python.org/3/library/functions.html#int)]]* *= None*
 
 Time intervals between adjacent samples in microseconds. The first delta is relative to the
 profile startTime.
@@ -69,11 +69,11 @@ profile startTime.
 
 Specifies a number of samples attributed to a certain source position.
 
-#### line *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### line*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Source line number (1-based).
 
-#### ticks *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### ticks*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Number of samples attributed to the source line.
 
@@ -81,15 +81,15 @@ Number of samples attributed to the source line.
 
 Coverage data for a source range.
 
-#### start_offset *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### start_offset*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 JavaScript script source offset for the range start.
 
-#### end_offset *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### end_offset*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 JavaScript script source offset for the range end.
 
-#### count *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### count*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Collected execution count of the source range.
 
@@ -97,15 +97,15 @@ Collected execution count of the source range.
 
 Coverage data for a JavaScript function.
 
-#### function_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### function_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 JavaScript function name.
 
-#### ranges *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CoverageRange`](#nodriver.cdp.profiler.CoverageRange)]*
+#### ranges*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CoverageRange`](#nodriver.cdp.profiler.CoverageRange)]*
 
 Source ranges inside the function with coverage data.
 
-#### is_block_coverage *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### is_block_coverage*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Whether coverage data for this function has block granularity.
 
@@ -113,15 +113,15 @@ Whether coverage data for this function has block granularity.
 
 Coverage data for a JavaScript script.
 
-#### script_id *: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
+#### script_id*: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
 
 JavaScript script id.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 JavaScript script name or url.
 
-#### functions *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FunctionCoverage`](#nodriver.cdp.profiler.FunctionCoverage)]*
+#### functions*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FunctionCoverage`](#nodriver.cdp.profiler.FunctionCoverage)]*
 
 Functions contained in the script that has coverage data.
 
@@ -177,9 +177,9 @@ coverage may be incomplete. Enabling prevents running optimized code and resets 
 counters.
 
 * **Parameters:**
-  * **call_count** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Collect accurate call counts beyond simple ‘covered’ or ‘not covered’.
-  * **detailed** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Collect block-based coverage.
-  * **allow_triggered_updates** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Allow the backend to send updates on its own initiative
+  * **call_count** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Collect accurate call counts beyond simple ‘covered’ or ‘not covered’.
+  * **detailed** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Collect block-based coverage.
+  * **allow_triggered_updates** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Allow the backend to send updates on its own initiative
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`float`](https://docs.python.org/3/library/functions.html#float)]
 * **Returns:**
@@ -220,15 +220,15 @@ you use the event’s attributes.
 
 ### *class* ConsoleProfileFinished(id_, location, profile, title)
 
-#### id_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### id_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### location *: [`Location`](debugger.md#nodriver.cdp.debugger.Location)*
+#### location*: [`Location`](debugger.md#nodriver.cdp.debugger.Location)*
 
 Location of console.profileEnd().
 
-#### profile *: [`Profile`](#nodriver.cdp.profiler.Profile)*
+#### profile*: [`Profile`](#nodriver.cdp.profiler.Profile)*
 
-#### title *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### title*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 Profile title passed as an argument to console.profile().
 
@@ -236,13 +236,13 @@ Profile title passed as an argument to console.profile().
 
 Sent when new profile recording is started using console.profile() call.
 
-#### id_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### id_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### location *: [`Location`](debugger.md#nodriver.cdp.debugger.Location)*
+#### location*: [`Location`](debugger.md#nodriver.cdp.debugger.Location)*
 
 Location of console.profile().
 
-#### title *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### title*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 Profile title passed as an argument to console.profile().
 
@@ -255,14 +255,14 @@ Reports coverage delta since the last poll (either from an event like this, or f
 coverage has been started. This event can be trigged by the embedder to, for example,
 trigger collection of coverage data immediately at a certain point in time.
 
-#### timestamp *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### timestamp*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Monotonically increasing time (in seconds) when the coverage update was taken in the backend.
 
-#### occasion *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### occasion*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Identifier for distinguishing coverage events.
 
-#### result *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ScriptCoverage`](#nodriver.cdp.profiler.ScriptCoverage)]*
+#### result*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ScriptCoverage`](#nodriver.cdp.profiler.ScriptCoverage)]*
 
 Coverage data for the current isolate.

@@ -10,7 +10,7 @@ Config object
 
 #### *property* user_data_dir
 
-#### *property* uses_custom_data_dir *: [bool](https://docs.python.org/3/library/functions.html#bool)*
+#### *property* uses_custom_data_dir*: [bool](https://docs.python.org/3/library/functions.html#bool)*
 
 #### add_extension(extension_path)
 
@@ -18,7 +18,7 @@ adds an extension to load, you could point extension_path
 to a folder (containing the manifest), or extension file (crx)
 
 * **Parameters:**
-  **extension_path** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – 
+  **extension_path** ([`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`PathLike`, bound= [`str`](https://docs.python.org/3/library/stdtypes.html#str) | [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path))) – 
 * **Returns:**
 * **Return type:**
 

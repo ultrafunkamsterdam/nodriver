@@ -22,9 +22,9 @@ Unique identifier of attached debugging session.
 
 ### *class* TargetInfo(target_id, type_, title, url, attached, can_access_opener, opener_id=None, opener_frame_id=None, browser_context_id=None, subtype=None)
 
-#### target_id *: [`TargetID`](#nodriver.cdp.target.TargetID)*
+#### target_id*: [`TargetID`](#nodriver.cdp.target.TargetID)*
 
-#### type_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 //source.chromium.org/chromium/chromium/src/+/main:content/browser/devtools/devtools_agent_host_impl.cc?ss=chromium&q=f:devtools%20-f:out%20%22::kTypeTab%5B%5D%22
 
@@ -33,29 +33,29 @@ Unique identifier of attached debugging session.
 * **Type:**
   https
 
-#### title *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### title*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### attached *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### attached*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Whether the target has an attached client.
 
-#### can_access_opener *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### can_access_opener*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Whether the target has access to the originating window.
 
-#### opener_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](#nodriver.cdp.target.TargetID)]* *= None*
+#### opener_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](#nodriver.cdp.target.TargetID)]* *= None*
 
 Opener target Id
 
-#### opener_frame_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]* *= None*
+#### opener_frame_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]* *= None*
 
 Frame id of originating window (is only set if target has an opener).
 
-#### browser_context_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](browser.md#nodriver.cdp.browser.BrowserContextID)]* *= None*
+#### browser_context_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](browser.md#nodriver.cdp.browser.BrowserContextID)]* *= None*
 
-#### subtype *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### subtype*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Provides additional details for specific target types. For example, for
 the type of “page”, this may be set to “prerender”.
@@ -64,11 +64,11 @@ the type of “page”, this may be set to “prerender”.
 
 A filter used by target query/discovery/auto-attach operations.
 
-#### exclude *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### exclude*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 If set, causes exclusion of matching targets from the list.
 
-#### type_ *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### type_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 If not present, matches any type.
 
@@ -83,9 +83,21 @@ If filter is not specified, the one assumed is
 
 ### *class* RemoteLocation(host, port)
 
-#### host *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### host*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### port *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### port*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+### *class* WindowState(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
+
+The state of the target window.
+
+#### NORMAL *= 'normal'*
+
+#### MINIMIZED *= 'minimized'*
+
+#### MAXIMIZED *= 'maximized'*
+
+#### FULLSCREEN *= 'fullscreen'*
 
 ## Commands
 
@@ -124,7 +136,7 @@ Attaches to the target with given id.
 
 * **Parameters:**
   * **target_id** ([`TargetID`](#nodriver.cdp.target.TargetID)) – 
-  * **flatten** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Enables “flat” access to the session via specifying sessionId attribute in the commands. We plan to make this the default, deprecate non-flattened mode, and eventually retire it. See crbug.com/991325.
+  * **flatten** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Enables “flat” access to the session via specifying sessionId attribute in the commands. We plan to make this the default, deprecate non-flattened mode, and eventually retire it. See crbug.com/991325.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`SessionID`](#nodriver.cdp.target.SessionID)]
 * **Returns:**
@@ -143,7 +155,7 @@ This cancels the effect of any previous `setAutoAttach` and is also cancelled by
 * **Parameters:**
   * **target_id** ([`TargetID`](#nodriver.cdp.target.TargetID)) – 
   * **wait_for_debugger_on_start** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – Whether to pause new targets when attaching to them. Use ``Runtime.runIfWaitingForDebugger`` to run paused targets.
-  * **filter** – **(EXPERIMENTAL)**  *(Optional)* Only targets matching filter will be attached.
+  * **filter** – **(EXPERIMENTAL)** *(Optional)* Only targets matching filter will be attached.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -164,28 +176,31 @@ Creates a new empty BrowserContext. Similar to an incognito profile but you can 
 one.
 
 * **Parameters:**
-  * **dispose_on_detach** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* If specified, disposes this context when debugging session disconnects.
-  * **proxy_server** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)**  *(Optional)* Proxy server, similar to the one passed to –proxy-server
-  * **proxy_bypass_list** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)**  *(Optional)* Proxy bypass list, similar to the one passed to –proxy-bypass-list
-  * **origins_with_universal_network_access** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]) – **(EXPERIMENTAL)**  *(Optional)* An optional list of origins to grant unlimited cross-origin access to. Parts of the URL other than those constituting origin are ignored.
+  * **dispose_on_detach** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* If specified, disposes this context when debugging session disconnects.
+  * **proxy_server** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)** *(Optional)* Proxy server, similar to the one passed to –proxy-server
+  * **proxy_bypass_list** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)** *(Optional)* Proxy bypass list, similar to the one passed to –proxy-bypass-list
+  * **origins_with_universal_network_access** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]) – **(EXPERIMENTAL)** *(Optional)* An optional list of origins to grant unlimited cross-origin access to. Parts of the URL other than those constituting origin are ignored.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`BrowserContextID`](browser.md#nodriver.cdp.browser.BrowserContextID)]
 * **Returns:**
   The id of the context created.
 
-### create_target(url, width=None, height=None, browser_context_id=None, enable_begin_frame_control=None, new_window=None, background=None, for_tab=None)
+### create_target(url, left=None, top=None, width=None, height=None, window_state=None, browser_context_id=None, enable_begin_frame_control=None, new_window=None, background=None, for_tab=None)
 
 Creates a new page.
 
 * **Parameters:**
   * **url** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – The initial URL the page will be navigated to. An empty string indicates [about:blank](about:blank).
-  * **width** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Frame width in DIP (headless chrome only).
-  * **height** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) –  *(Optional)* Frame height in DIP (headless chrome only).
-  * **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](browser.md#nodriver.cdp.browser.BrowserContextID)]) – **(EXPERIMENTAL)**  *(Optional)* The browser context to create the page in.
-  * **enable_begin_frame_control** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* Whether BeginFrames for this target will be controlled via DevTools (headless chrome only, not supported on MacOS yet, false by default).
-  * **new_window** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Whether to create a new Window or Tab (chrome-only, false by default).
-  * **background** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* Whether to create the target in background or foreground (chrome-only, false by default).
-  * **for_tab** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* Whether to create the target of type “tab”.
+  * **left** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – **(EXPERIMENTAL)** *(Optional)* Frame left origin in DIP (requires newWindow to be true or headless shell).
+  * **top** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – **(EXPERIMENTAL)** *(Optional)* Frame top origin in DIP (requires newWindow to be true or headless shell).
+  * **width** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Frame width in DIP (requires newWindow to be true or headless shell).
+  * **height** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Frame height in DIP (requires newWindow to be true or headless shell).
+  * **window_state** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`WindowState`](#nodriver.cdp.target.WindowState)]) – *(Optional)* Frame window state (requires newWindow to be true or headless shell). Default is normal.
+  * **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](browser.md#nodriver.cdp.browser.BrowserContextID)]) – **(EXPERIMENTAL)** *(Optional)* The browser context to create the page in.
+  * **enable_begin_frame_control** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Whether BeginFrames for this target will be controlled via DevTools (headless shell only, not supported on MacOS yet, false by default).
+  * **new_window** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether to create a new Window or Tab (false by default, not supported by headless shell).
+  * **background** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether to create the target in background or foreground (false by default, not supported by headless shell).
+  * **for_tab** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Whether to create the target of type “tab”.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`TargetID`](#nodriver.cdp.target.TargetID)]
 * **Returns:**
@@ -196,8 +211,8 @@ Creates a new page.
 Detaches session with given id.
 
 * **Parameters:**
-  * **session_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SessionID`](#nodriver.cdp.target.SessionID)]) –  *(Optional)* Session to detach.
-  * **target_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](#nodriver.cdp.target.TargetID)]) – **(DEPRECATED)**  *(Optional)* Deprecated.
+  * **session_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SessionID`](#nodriver.cdp.target.SessionID)]) – *(Optional)* Session to detach.
+  * **target_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](#nodriver.cdp.target.TargetID)]) – **(DEPRECATED)** *(Optional)* Deprecated.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -211,7 +226,7 @@ beforeunload hooks.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
-### expose_dev_tools_protocol(target_id, binding_name=None)
+### expose_dev_tools_protocol(target_id, binding_name=None, inherit_permissions=None)
 
 Inject object to the target’s main frame that provides a communication
 channel with browser target.
@@ -226,7 +241,8 @@ The object has the following API:
 
 * **Parameters:**
   * **target_id** ([`TargetID`](#nodriver.cdp.target.TargetID)) – 
-  * **binding_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Binding name, ‘cdp’ if not specified.
+  * **binding_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Binding name, ‘cdp’ if not specified.
+  * **inherit_permissions** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If true, inherits the current root session’s permissions (default: false).
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -246,7 +262,7 @@ Returns information about a target.
 **EXPERIMENTAL**
 
 * **Parameters:**
-  **target_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](#nodriver.cdp.target.TargetID)]) –  *(Optional)*
+  **target_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](#nodriver.cdp.target.TargetID)]) – *(Optional)*
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`TargetInfo`](#nodriver.cdp.target.TargetInfo)]
 * **Returns:**
@@ -256,7 +272,7 @@ Returns information about a target.
 Retrieves a list of available targets.
 
 * **Parameters:**
-  **filter** – **(EXPERIMENTAL)**  *(Optional)* Only targets matching filter will be reported. If filter is not specified and target discovery is currently enabled, a filter used for target discovery is used for consistency.
+  **filter** – **(EXPERIMENTAL)** *(Optional)* Only targets matching filter will be reported. If filter is not specified and target discovery is currently enabled, a filter used for target discovery is used for consistency.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`TargetInfo`](#nodriver.cdp.target.TargetInfo)]]
 * **Returns:**
@@ -273,8 +289,8 @@ Deprecated since version 1.3.
 
 * **Parameters:**
   * **message** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **session_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SessionID`](#nodriver.cdp.target.SessionID)]) –  *(Optional)* Identifier of the session.
-  * **target_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](#nodriver.cdp.target.TargetID)]) – **(DEPRECATED)**  *(Optional)* Deprecated.
+  * **session_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SessionID`](#nodriver.cdp.target.SessionID)]) – *(Optional)* Identifier of the session.
+  * **target_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](#nodriver.cdp.target.TargetID)]) – **(DEPRECATED)** *(Optional)* Deprecated.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -292,8 +308,8 @@ for creation of related targets.
 * **Parameters:**
   * **auto_attach** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – Whether to auto-attach to related targets.
   * **wait_for_debugger_on_start** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – Whether to pause new targets when attaching to them. Use ``Runtime.runIfWaitingForDebugger`` to run paused targets.
-  * **flatten** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)**  *(Optional)* Enables “flat” access to the session via specifying sessionId attribute in the commands. We plan to make this the default, deprecate non-flattened mode, and eventually retire it. See crbug.com/991325.
-  * **filter** – **(EXPERIMENTAL)**  *(Optional)* Only targets matching filter will be attached.
+  * **flatten** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Enables “flat” access to the session via specifying sessionId attribute in the commands. We plan to make this the default, deprecate non-flattened mode, and eventually retire it. See crbug.com/991325.
+  * **filter** – **(EXPERIMENTAL)** *(Optional)* Only targets matching filter will be attached.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -304,7 +320,7 @@ Controls whether to discover available targets and notify via
 
 * **Parameters:**
   * **discover** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – Whether to discover available targets.
-  * **filter** – **(EXPERIMENTAL)**  *(Optional)* Only targets matching filter will be attached. If ``discover``` is false, ```filter`` must be omitted or empty.
+  * **filter** – **(EXPERIMENTAL)** *(Optional)* Only targets matching filter will be attached. If ``discover``` is false, ```filter`` must be omitted or empty.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -332,13 +348,13 @@ you use the event’s attributes.
 
 Issued when attached to target because of auto-attach or `attachToTarget` command.
 
-#### session_id *: [`SessionID`](#nodriver.cdp.target.SessionID)*
+#### session_id*: [`SessionID`](#nodriver.cdp.target.SessionID)*
 
 Identifier assigned to the session used to send/receive messages.
 
-#### target_info *: [`TargetInfo`](#nodriver.cdp.target.TargetInfo)*
+#### target_info*: [`TargetInfo`](#nodriver.cdp.target.TargetInfo)*
 
-#### waiting_for_debugger *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### waiting_for_debugger*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 ### *class* DetachedFromTarget(session_id, target_id)
 
@@ -347,11 +363,11 @@ Identifier assigned to the session used to send/receive messages.
 Issued when detached from target for any reason (including `detachFromTarget` command). Can be
 issued multiple times per target if multiple sessions have been attached to it.
 
-#### session_id *: [`SessionID`](#nodriver.cdp.target.SessionID)*
+#### session_id*: [`SessionID`](#nodriver.cdp.target.SessionID)*
 
 Detached session identifier.
 
-#### target_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](#nodriver.cdp.target.TargetID)]*
+#### target_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](#nodriver.cdp.target.TargetID)]*
 
 Deprecated.
 
@@ -360,13 +376,13 @@ Deprecated.
 Notifies about a new protocol message received from the session (as reported in
 `attachedToTarget` event).
 
-#### session_id *: [`SessionID`](#nodriver.cdp.target.SessionID)*
+#### session_id*: [`SessionID`](#nodriver.cdp.target.SessionID)*
 
 Identifier of a session which sends a message.
 
-#### message *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### message*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### target_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](#nodriver.cdp.target.TargetID)]*
+#### target_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](#nodriver.cdp.target.TargetID)]*
 
 Deprecated.
 
@@ -374,25 +390,25 @@ Deprecated.
 
 Issued when a possible inspection target is created.
 
-#### target_info *: [`TargetInfo`](#nodriver.cdp.target.TargetInfo)*
+#### target_info*: [`TargetInfo`](#nodriver.cdp.target.TargetInfo)*
 
 ### *class* TargetDestroyed(target_id)
 
 Issued when a target is destroyed.
 
-#### target_id *: [`TargetID`](#nodriver.cdp.target.TargetID)*
+#### target_id*: [`TargetID`](#nodriver.cdp.target.TargetID)*
 
 ### *class* TargetCrashed(target_id, status, error_code)
 
 Issued when a target has crashed.
 
-#### target_id *: [`TargetID`](#nodriver.cdp.target.TargetID)*
+#### target_id*: [`TargetID`](#nodriver.cdp.target.TargetID)*
 
-#### status *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### status*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Termination status type.
 
-#### error_code *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### error_code*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Termination error code.
 
@@ -401,4 +417,4 @@ Termination error code.
 Issued when some information about a target has changed. This only happens between
 `targetCreated` and `targetDestroyed`.
 
-#### target_info *: [`TargetInfo`](#nodriver.cdp.target.TargetInfo)*
+#### target_info*: [`TargetInfo`](#nodriver.cdp.target.TargetInfo)*

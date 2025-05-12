@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.service_worker - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -498,7 +499,7 @@
 <div class="viewcode-block" id="deliver_push_message">
 <a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.deliver_push_message">[docs]</a>
 <span class="k">def</span> <span class="nf">deliver_push_message</span><span class="p">(</span>
-    <span class="n">origin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">registration_id</span><span class="p">:</span> <span class="n">RegistrationID</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">origin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">registration_id</span><span class="p">:</span> <span class="n">RegistrationID</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param origin:</span>
@@ -520,7 +521,6 @@
 <div class="viewcode-block" id="disable">
 <a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.disable">[docs]</a>
 <span class="k">def</span> <span class="nf">disable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;ServiceWorker.disable&quot;</span><span class="p">,</span>
     <span class="p">}</span>
@@ -531,7 +531,7 @@
 <div class="viewcode-block" id="dispatch_sync_event">
 <a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.dispatch_sync_event">[docs]</a>
 <span class="k">def</span> <span class="nf">dispatch_sync_event</span><span class="p">(</span>
-    <span class="n">origin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">registration_id</span><span class="p">:</span> <span class="n">RegistrationID</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">last_chance</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="n">origin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">registration_id</span><span class="p">:</span> <span class="n">RegistrationID</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">last_chance</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param origin:</span>
@@ -555,7 +555,7 @@
 <div class="viewcode-block" id="dispatch_periodic_sync_event">
 <a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.dispatch_periodic_sync_event">[docs]</a>
 <span class="k">def</span> <span class="nf">dispatch_periodic_sync_event</span><span class="p">(</span>
-    <span class="n">origin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">registration_id</span><span class="p">:</span> <span class="n">RegistrationID</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">origin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">registration_id</span><span class="p">:</span> <span class="n">RegistrationID</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param origin:</span>
@@ -577,7 +577,6 @@
 <div class="viewcode-block" id="enable">
 <a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.enable">[docs]</a>
 <span class="k">def</span> <span class="nf">enable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;ServiceWorker.enable&quot;</span><span class="p">,</span>
     <span class="p">}</span>
@@ -604,7 +603,7 @@
 <div class="viewcode-block" id="set_force_update_on_page_load">
 <a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.set_force_update_on_page_load">[docs]</a>
 <span class="k">def</span> <span class="nf">set_force_update_on_page_load</span><span class="p">(</span>
-    <span class="n">force_update_on_page_load</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">force_update_on_page_load</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param force_update_on_page_load:</span>
@@ -654,7 +653,6 @@
 <div class="viewcode-block" id="stop_all_workers">
 <a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.stop_all_workers">[docs]</a>
 <span class="k">def</span> <span class="nf">stop_all_workers</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;ServiceWorker.stopAllWorkers&quot;</span><span class="p">,</span>
     <span class="p">}</span>
@@ -697,7 +695,7 @@
 <div class="viewcode-block" id="update_registration">
 <a class="viewcode-back" href="../../../nodriver/cdp/service_worker.html#nodriver.cdp.service_worker.update_registration">[docs]</a>
 <span class="k">def</span> <span class="nf">update_registration</span><span class="p">(</span>
-    <span class="n">scope_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">scope_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param scope_url:</span>

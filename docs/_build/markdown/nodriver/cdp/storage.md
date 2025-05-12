@@ -20,8 +20,6 @@ arguments to other commands.
 
 Enum of possible storage types.
 
-#### APPCACHE *= 'appcache'*
-
 #### COOKIES *= 'cookies'*
 
 #### FILE_SYSTEMS *= 'file_systems'*
@@ -52,11 +50,11 @@ Enum of possible storage types.
 
 Usage for a storage type.
 
-#### storage_type *: [`StorageType`](#nodriver.cdp.storage.StorageType)*
+#### storage_type*: [`StorageType`](#nodriver.cdp.storage.StorageType)*
 
 Name of storage type.
 
-#### usage *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### usage*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Storage usage (bytes).
 
@@ -65,9 +63,9 @@ Storage usage (bytes).
 Pair of issuer origin and number of available (signed, but not used) Trust
 Tokens from that issuer.
 
-#### issuer_origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### issuer_origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### count *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### count*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 ### *class* InterestGroupAuctionId
 
@@ -171,27 +169,27 @@ Enum of shared storage access types.
 
 Struct for a single key-value pair in an origin’s shared storage.
 
-#### key *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ### *class* SharedStorageMetadata(creation_time, length, remaining_budget, bytes_used)
 
 Details for an origin’s shared storage.
 
-#### creation_time *: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
+#### creation_time*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
 Time when the origin’s shared storage was last created.
 
-#### length *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### length*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Number of key-value pairs stored in origin’s shared storage.
 
-#### remaining_budget *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### remaining_budget*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Current amount of bits of entropy remaining in the navigation budget.
 
-#### bytes_used *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### bytes_used*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Total number of bytes stored as key-value pairs in origin’s shared
 storage.
@@ -200,19 +198,19 @@ storage.
 
 Pair of reporting metadata details for a candidate URL for `selectURL()`.
 
-#### event_type *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### event_type*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### reporting_url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### reporting_url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ### *class* SharedStorageUrlWithMetadata(url, reporting_metadata)
 
 Bundles a candidate URL with its reporting metadata.
 
-#### url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Spec of candidate URL.
 
-#### reporting_metadata *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SharedStorageReportingMetadata`](#nodriver.cdp.storage.SharedStorageReportingMetadata)]*
+#### reporting_metadata*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SharedStorageReportingMetadata`](#nodriver.cdp.storage.SharedStorageReportingMetadata)]*
 
 Any associated reporting metadata.
 
@@ -221,29 +219,29 @@ Any associated reporting metadata.
 Bundles the parameters for shared storage access events whose
 presence/absence can vary according to SharedStorageAccessType.
 
-#### script_source_url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### script_source_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Spec of the module script URL.
 Present only for SharedStorageAccessType.documentAddModule.
 
-#### operation_name *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### operation_name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Name of the registered operation to be run.
 Present only for SharedStorageAccessType.documentRun and
 SharedStorageAccessType.documentSelectURL.
 
-#### serialized_data *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### serialized_data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The operation’s serialized data in bytes (converted to a string).
 Present only for SharedStorageAccessType.documentRun and
 SharedStorageAccessType.documentSelectURL.
 
-#### urls_with_metadata *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SharedStorageUrlWithMetadata`](#nodriver.cdp.storage.SharedStorageUrlWithMetadata)]]* *= None*
+#### urls_with_metadata*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SharedStorageUrlWithMetadata`](#nodriver.cdp.storage.SharedStorageUrlWithMetadata)]]* *= None*
 
 Array of candidate URLs’ specs, along with any associated metadata.
 Present only for SharedStorageAccessType.documentSelectURL.
 
-#### key *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Key for a specific entry in an origin’s shared storage.
 Present only for SharedStorageAccessType.documentSet,
@@ -257,7 +255,7 @@ SharedStorageAccessType.headerSet,
 SharedStorageAccessType.headerAppend, and
 SharedStorageAccessType.headerDelete.
 
-#### value *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### value*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Value for a specific entry in an origin’s shared storage.
 Present only for SharedStorageAccessType.documentSet,
@@ -267,7 +265,7 @@ SharedStorageAccessType.workletAppend,
 SharedStorageAccessType.headerSet, and
 SharedStorageAccessType.headerAppend.
 
-#### ignore_if_present *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### ignore_if_present*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 Whether or not to set an entry for a key if that key is already present.
 Present only for SharedStorageAccessType.documentSet,
@@ -282,27 +280,27 @@ SharedStorageAccessType.headerSet.
 
 ### *class* StorageBucket(storage_key, name=None)
 
-#### storage_key *: [`SerializedStorageKey`](#nodriver.cdp.storage.SerializedStorageKey)*
+#### storage_key*: [`SerializedStorageKey`](#nodriver.cdp.storage.SerializedStorageKey)*
 
-#### name *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 If not specified, it is the default bucket of the storageKey.
 
 ### *class* StorageBucketInfo(bucket, id_, expiration, quota, persistent, durability)
 
-#### bucket *: [`StorageBucket`](#nodriver.cdp.storage.StorageBucket)*
+#### bucket*: [`StorageBucket`](#nodriver.cdp.storage.StorageBucket)*
 
-#### id_ *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### id_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### expiration *: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
+#### expiration*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
-#### quota *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### quota*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Storage quota (bytes).
 
-#### persistent *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### persistent*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### durability *: [`StorageBucketsDurability`](#nodriver.cdp.storage.StorageBucketsDurability)*
+#### durability*: [`StorageBucketsDurability`](#nodriver.cdp.storage.StorageBucketsDurability)*
 
 ### *class* AttributionReportingSourceType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -318,48 +316,48 @@ Storage quota (bytes).
 
 ### *class* AttributionReportingFilterDataEntry(key, values)
 
-#### key *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### values *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### values*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 ### *class* AttributionReportingFilterConfig(filter_values, lookback_window=None)
 
-#### filter_values *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingFilterDataEntry`](#nodriver.cdp.storage.AttributionReportingFilterDataEntry)]*
+#### filter_values*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingFilterDataEntry`](#nodriver.cdp.storage.AttributionReportingFilterDataEntry)]*
 
-#### lookback_window *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### lookback_window*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 duration in seconds
 
 ### *class* AttributionReportingFilterPair(filters, not_filters)
 
-#### filters *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingFilterConfig`](#nodriver.cdp.storage.AttributionReportingFilterConfig)]*
+#### filters*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingFilterConfig`](#nodriver.cdp.storage.AttributionReportingFilterConfig)]*
 
-#### not_filters *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingFilterConfig`](#nodriver.cdp.storage.AttributionReportingFilterConfig)]*
+#### not_filters*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingFilterConfig`](#nodriver.cdp.storage.AttributionReportingFilterConfig)]*
 
 ### *class* AttributionReportingAggregationKeysEntry(key, value)
 
-#### key *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### value *: [`UnsignedInt128AsBase16`](#nodriver.cdp.storage.UnsignedInt128AsBase16)*
+#### value*: [`UnsignedInt128AsBase16`](#nodriver.cdp.storage.UnsignedInt128AsBase16)*
 
 ### *class* AttributionReportingEventReportWindows(start, ends)
 
-#### start *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### start*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 duration in seconds
 
-#### ends *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
+#### ends*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
 
 duration in seconds
 
 ### *class* AttributionReportingTriggerSpec(trigger_data, event_report_windows)
 
-#### trigger_data *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`float`](https://docs.python.org/3/library/functions.html#float)]*
+#### trigger_data*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`float`](https://docs.python.org/3/library/functions.html#float)]*
 
 number instead of integer because not all uint32 can be represented by
 int
 
-#### event_report_windows *: [`AttributionReportingEventReportWindows`](#nodriver.cdp.storage.AttributionReportingEventReportWindows)*
+#### event_report_windows*: [`AttributionReportingEventReportWindows`](#nodriver.cdp.storage.AttributionReportingEventReportWindows)*
 
 ### *class* AttributionReportingTriggerDataMatching(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -369,80 +367,80 @@ int
 
 ### *class* AttributionReportingAggregatableDebugReportingData(key_piece, value, types)
 
-#### key_piece *: [`UnsignedInt128AsBase16`](#nodriver.cdp.storage.UnsignedInt128AsBase16)*
+#### key_piece*: [`UnsignedInt128AsBase16`](#nodriver.cdp.storage.UnsignedInt128AsBase16)*
 
-#### value *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### value*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 number instead of integer because not all uint32 can be represented by
 int
 
-#### types *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### types*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 ### *class* AttributionReportingAggregatableDebugReportingConfig(key_piece, debug_data, budget=None, aggregation_coordinator_origin=None)
 
-#### key_piece *: [`UnsignedInt128AsBase16`](#nodriver.cdp.storage.UnsignedInt128AsBase16)*
+#### key_piece*: [`UnsignedInt128AsBase16`](#nodriver.cdp.storage.UnsignedInt128AsBase16)*
 
-#### debug_data *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingAggregatableDebugReportingData`](#nodriver.cdp.storage.AttributionReportingAggregatableDebugReportingData)]*
+#### debug_data*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingAggregatableDebugReportingData`](#nodriver.cdp.storage.AttributionReportingAggregatableDebugReportingData)]*
 
-#### budget *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### budget*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 number instead of integer because not all uint32 can be represented by
 int, only present for source registrations
 
-#### aggregation_coordinator_origin *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### aggregation_coordinator_origin*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 ### *class* AttributionScopesData(values, limit, max_event_states)
 
-#### values *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### values*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
-#### limit *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### limit*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 number instead of integer because not all uint32 can be represented by
 int
 
-#### max_event_states *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### max_event_states*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 ### *class* AttributionReportingSourceRegistration(time, expiry, trigger_specs, aggregatable_report_window, type_, source_origin, reporting_origin, destination_sites, event_id, priority, filter_data, aggregation_keys, trigger_data_matching, destination_limit_priority, aggregatable_debug_reporting_config, max_event_level_reports, debug_key=None, scopes_data=None)
 
-#### time *: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
+#### time*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
-#### expiry *: [`int`](https://docs.python.org/3/library/functions.html#int)*
-
-duration in seconds
-
-#### trigger_specs *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingTriggerSpec`](#nodriver.cdp.storage.AttributionReportingTriggerSpec)]*
-
-#### aggregatable_report_window *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### expiry*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 duration in seconds
 
-#### type_ *: [`AttributionReportingSourceType`](#nodriver.cdp.storage.AttributionReportingSourceType)*
+#### trigger_specs*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingTriggerSpec`](#nodriver.cdp.storage.AttributionReportingTriggerSpec)]*
 
-#### source_origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### aggregatable_report_window*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
-#### reporting_origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+duration in seconds
 
-#### destination_sites *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### type_*: [`AttributionReportingSourceType`](#nodriver.cdp.storage.AttributionReportingSourceType)*
 
-#### event_id *: [`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)*
+#### source_origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### priority *: [`SignedInt64AsBase10`](#nodriver.cdp.storage.SignedInt64AsBase10)*
+#### reporting_origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### filter_data *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingFilterDataEntry`](#nodriver.cdp.storage.AttributionReportingFilterDataEntry)]*
+#### destination_sites*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
-#### aggregation_keys *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingAggregationKeysEntry`](#nodriver.cdp.storage.AttributionReportingAggregationKeysEntry)]*
+#### event_id*: [`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)*
 
-#### trigger_data_matching *: [`AttributionReportingTriggerDataMatching`](#nodriver.cdp.storage.AttributionReportingTriggerDataMatching)*
+#### priority*: [`SignedInt64AsBase10`](#nodriver.cdp.storage.SignedInt64AsBase10)*
 
-#### destination_limit_priority *: [`SignedInt64AsBase10`](#nodriver.cdp.storage.SignedInt64AsBase10)*
+#### filter_data*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingFilterDataEntry`](#nodriver.cdp.storage.AttributionReportingFilterDataEntry)]*
 
-#### aggregatable_debug_reporting_config *: [`AttributionReportingAggregatableDebugReportingConfig`](#nodriver.cdp.storage.AttributionReportingAggregatableDebugReportingConfig)*
+#### aggregation_keys*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingAggregationKeysEntry`](#nodriver.cdp.storage.AttributionReportingAggregationKeysEntry)]*
 
-#### max_event_level_reports *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### trigger_data_matching*: [`AttributionReportingTriggerDataMatching`](#nodriver.cdp.storage.AttributionReportingTriggerDataMatching)*
 
-#### debug_key *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)]* *= None*
+#### destination_limit_priority*: [`SignedInt64AsBase10`](#nodriver.cdp.storage.SignedInt64AsBase10)*
 
-#### scopes_data *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AttributionScopesData`](#nodriver.cdp.storage.AttributionScopesData)]* *= None*
+#### aggregatable_debug_reporting_config*: [`AttributionReportingAggregatableDebugReportingConfig`](#nodriver.cdp.storage.AttributionReportingAggregatableDebugReportingConfig)*
+
+#### max_event_level_reports*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+#### debug_key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)]* *= None*
+
+#### scopes_data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AttributionScopesData`](#nodriver.cdp.storage.AttributionScopesData)]* *= None*
 
 ### *class* AttributionReportingSourceRegistrationResult(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -486,72 +484,72 @@ duration in seconds
 
 ### *class* AttributionReportingAggregatableValueDictEntry(key, value, filtering_id)
 
-#### key *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### value *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### value*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 number instead of integer because not all uint32 can be represented by
 int
 
-#### filtering_id *: [`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)*
+#### filtering_id*: [`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)*
 
 ### *class* AttributionReportingAggregatableValueEntry(values, filters)
 
-#### values *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingAggregatableValueDictEntry`](#nodriver.cdp.storage.AttributionReportingAggregatableValueDictEntry)]*
+#### values*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingAggregatableValueDictEntry`](#nodriver.cdp.storage.AttributionReportingAggregatableValueDictEntry)]*
 
-#### filters *: [`AttributionReportingFilterPair`](#nodriver.cdp.storage.AttributionReportingFilterPair)*
+#### filters*: [`AttributionReportingFilterPair`](#nodriver.cdp.storage.AttributionReportingFilterPair)*
 
 ### *class* AttributionReportingEventTriggerData(data, priority, filters, dedup_key=None)
 
-#### data *: [`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)*
+#### data*: [`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)*
 
-#### priority *: [`SignedInt64AsBase10`](#nodriver.cdp.storage.SignedInt64AsBase10)*
+#### priority*: [`SignedInt64AsBase10`](#nodriver.cdp.storage.SignedInt64AsBase10)*
 
-#### filters *: [`AttributionReportingFilterPair`](#nodriver.cdp.storage.AttributionReportingFilterPair)*
+#### filters*: [`AttributionReportingFilterPair`](#nodriver.cdp.storage.AttributionReportingFilterPair)*
 
-#### dedup_key *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)]* *= None*
+#### dedup_key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)]* *= None*
 
 ### *class* AttributionReportingAggregatableTriggerData(key_piece, source_keys, filters)
 
-#### key_piece *: [`UnsignedInt128AsBase16`](#nodriver.cdp.storage.UnsignedInt128AsBase16)*
+#### key_piece*: [`UnsignedInt128AsBase16`](#nodriver.cdp.storage.UnsignedInt128AsBase16)*
 
-#### source_keys *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### source_keys*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
-#### filters *: [`AttributionReportingFilterPair`](#nodriver.cdp.storage.AttributionReportingFilterPair)*
+#### filters*: [`AttributionReportingFilterPair`](#nodriver.cdp.storage.AttributionReportingFilterPair)*
 
 ### *class* AttributionReportingAggregatableDedupKey(filters, dedup_key=None)
 
-#### filters *: [`AttributionReportingFilterPair`](#nodriver.cdp.storage.AttributionReportingFilterPair)*
+#### filters*: [`AttributionReportingFilterPair`](#nodriver.cdp.storage.AttributionReportingFilterPair)*
 
-#### dedup_key *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)]* *= None*
+#### dedup_key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)]* *= None*
 
 ### *class* AttributionReportingTriggerRegistration(filters, aggregatable_dedup_keys, event_trigger_data, aggregatable_trigger_data, aggregatable_values, aggregatable_filtering_id_max_bytes, debug_reporting, source_registration_time_config, aggregatable_debug_reporting_config, scopes, debug_key=None, aggregation_coordinator_origin=None, trigger_context_id=None)
 
-#### filters *: [`AttributionReportingFilterPair`](#nodriver.cdp.storage.AttributionReportingFilterPair)*
+#### filters*: [`AttributionReportingFilterPair`](#nodriver.cdp.storage.AttributionReportingFilterPair)*
 
-#### aggregatable_dedup_keys *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingAggregatableDedupKey`](#nodriver.cdp.storage.AttributionReportingAggregatableDedupKey)]*
+#### aggregatable_dedup_keys*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingAggregatableDedupKey`](#nodriver.cdp.storage.AttributionReportingAggregatableDedupKey)]*
 
-#### event_trigger_data *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingEventTriggerData`](#nodriver.cdp.storage.AttributionReportingEventTriggerData)]*
+#### event_trigger_data*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingEventTriggerData`](#nodriver.cdp.storage.AttributionReportingEventTriggerData)]*
 
-#### aggregatable_trigger_data *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingAggregatableTriggerData`](#nodriver.cdp.storage.AttributionReportingAggregatableTriggerData)]*
+#### aggregatable_trigger_data*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingAggregatableTriggerData`](#nodriver.cdp.storage.AttributionReportingAggregatableTriggerData)]*
 
-#### aggregatable_values *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingAggregatableValueEntry`](#nodriver.cdp.storage.AttributionReportingAggregatableValueEntry)]*
+#### aggregatable_values*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingAggregatableValueEntry`](#nodriver.cdp.storage.AttributionReportingAggregatableValueEntry)]*
 
-#### aggregatable_filtering_id_max_bytes *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### aggregatable_filtering_id_max_bytes*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
-#### debug_reporting *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### debug_reporting*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### source_registration_time_config *: [`AttributionReportingSourceRegistrationTimeConfig`](#nodriver.cdp.storage.AttributionReportingSourceRegistrationTimeConfig)*
+#### source_registration_time_config*: [`AttributionReportingSourceRegistrationTimeConfig`](#nodriver.cdp.storage.AttributionReportingSourceRegistrationTimeConfig)*
 
-#### aggregatable_debug_reporting_config *: [`AttributionReportingAggregatableDebugReportingConfig`](#nodriver.cdp.storage.AttributionReportingAggregatableDebugReportingConfig)*
+#### aggregatable_debug_reporting_config*: [`AttributionReportingAggregatableDebugReportingConfig`](#nodriver.cdp.storage.AttributionReportingAggregatableDebugReportingConfig)*
 
-#### scopes *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### scopes*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
-#### debug_key *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)]* *= None*
+#### debug_key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)]* *= None*
 
-#### aggregation_coordinator_origin *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### aggregation_coordinator_origin*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
-#### trigger_context_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### trigger_context_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 ### *class* AttributionReportingEventLevelResult(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -629,15 +627,15 @@ int
 
 A single Related Website Set object.
 
-#### primary_sites *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### primary_sites*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 The primary site of this set, along with the ccTLDs if there is any.
 
-#### associated_sites *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### associated_sites*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 The associated sites of this set, along with the ccTLDs if there is any.
 
-#### service_sites *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### service_sites*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 The service sites of this set, along with the ccTLDs if there is any.
 
@@ -657,7 +655,7 @@ to. For more information, see
 Clears cookies.
 
 * **Parameters:**
-  **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](browser.md#nodriver.cdp.browser.BrowserContextID)]) –  *(Optional)* Browser context to use when called on the browser endpoint.
+  **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](browser.md#nodriver.cdp.browser.BrowserContextID)]) – *(Optional)* Browser context to use when called on the browser endpoint.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -729,12 +727,28 @@ Deletes the Storage Bucket with the given storage key and bucket name.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
+### get_affected_urls_for_third_party_cookie_metadata(first_party_url, third_party_urls)
+
+Returns the list of URLs from a page and its embedded resources that match
+existing grace period URL pattern rules.
+[https://developers.google.com/privacy-sandbox/cookies/temporary-exceptions/grace-period](https://developers.google.com/privacy-sandbox/cookies/temporary-exceptions/grace-period)
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  * **first_party_url** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – The URL of the page currently being visited.
+  * **third_party_urls** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – The list of embedded resource URLs from the page.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]
+* **Returns:**
+  Array of matching URLs. If there is a primary pattern match for the first- party URL, only the first-party URL is returned in the array.
+
 ### get_cookies(browser_context_id=None)
 
 Returns all browser cookies.
 
 * **Parameters:**
-  **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](browser.md#nodriver.cdp.browser.BrowserContextID)]) –  *(Optional)* Browser context to use when called on the browser endpoint.
+  **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](browser.md#nodriver.cdp.browser.BrowserContextID)]) – *(Optional)* Browser context to use when called on the browser endpoint.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Cookie`](network.md#nodriver.cdp.network.Cookie)]]
 * **Returns:**
@@ -833,7 +847,7 @@ Override quota for the specified origin
 
 * **Parameters:**
   * **origin** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – Security origin.
-  * **quota_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) –  *(Optional)* The quota size (in bytes) to override the original quota with. If this is called multiple times, the overridden quota will be equal to the quotaSize provided in the final call. If this is called without specifying a quotaSize, the quota will be reset to the default value for the specified origin. If this is called multiple times with different origins, the override will be maintained for each origin until it is disabled (called without a quotaSize).
+  * **quota_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* The quota size (in bytes) to override the original quota with. If this is called multiple times, the overridden quota will be equal to the quotaSize provided in the final call. If this is called without specifying a quotaSize, the quota will be reset to the default value for the specified origin. If this is called multiple times with different origins, the override will be maintained for each origin until it is disabled (called without a quotaSize).
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -898,7 +912,7 @@ Sets given cookies.
 
 * **Parameters:**
   * **cookies** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CookieParam`](network.md#nodriver.cdp.network.CookieParam)]) – Cookies to be set.
-  * **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](browser.md#nodriver.cdp.browser.BrowserContextID)]) –  *(Optional)* Browser context to use when called on the browser endpoint.
+  * **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](browser.md#nodriver.cdp.browser.BrowserContextID)]) – *(Optional)* Browser context to use when called on the browser endpoint.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -935,7 +949,7 @@ Sets entry with `key` and `value` for a given origin’s shared storage.
   * **owner_origin** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
   * **key** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
   * **value** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
-  * **ignore_if_present** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) –  *(Optional)* If ``ignoreIfPresent``` is included and true, then only sets the entry if ```key`` doesn’t already exist.
+  * **ignore_if_present** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If ``ignoreIfPresent``` is included and true, then only sets the entry if ```key`` doesn’t already exist.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1044,19 +1058,19 @@ you use the event’s attributes.
 
 A cache’s contents have been modified.
 
-#### origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Origin to update.
 
-#### storage_key *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### storage_key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Storage key to update.
 
-#### bucket_id *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### bucket_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Storage bucket to update.
 
-#### cache_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### cache_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Name of cache in origin.
 
@@ -1064,15 +1078,15 @@ Name of cache in origin.
 
 A cache has been added/deleted.
 
-#### origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Origin to update.
 
-#### storage_key *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### storage_key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Storage key to update.
 
-#### bucket_id *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### bucket_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Storage bucket to update.
 
@@ -1080,23 +1094,23 @@ Storage bucket to update.
 
 The origin’s IndexedDB object store has been modified.
 
-#### origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Origin to update.
 
-#### storage_key *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### storage_key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Storage key to update.
 
-#### bucket_id *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### bucket_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Storage bucket to update.
 
-#### database_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### database_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Database to update.
 
-#### object_store_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### object_store_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ObjectStore to update.
 
@@ -1104,15 +1118,15 @@ ObjectStore to update.
 
 The origin’s IndexedDB database list has been modified.
 
-#### origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Origin to update.
 
-#### storage_key *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### storage_key*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Storage key to update.
 
-#### bucket_id *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### bucket_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Storage bucket to update.
 
@@ -1121,26 +1135,26 @@ Storage bucket to update.
 One of the interest groups was accessed. Note that these events are global
 to all targets sharing an interest group store.
 
-#### access_time *: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
+#### access_time*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
-#### type_ *: [`InterestGroupAccessType`](#nodriver.cdp.storage.InterestGroupAccessType)*
+#### type_*: [`InterestGroupAccessType`](#nodriver.cdp.storage.InterestGroupAccessType)*
 
-#### owner_origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### owner_origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### component_seller_origin *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### component_seller_origin*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
 For topLevelBid/topLevelAdditionalBid, and when appropriate,
 win and additionalBidWin
 
-#### bid *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]*
+#### bid*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]*
 
 For bid or somethingBid event, if done locally and not on a server.
 
-#### bid_currency *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+#### bid_currency*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
 
-#### unique_auction_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`InterestGroupAuctionId`](#nodriver.cdp.storage.InterestGroupAuctionId)]*
+#### unique_auction_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`InterestGroupAuctionId`](#nodriver.cdp.storage.InterestGroupAuctionId)]*
 
 For non-global events — links to interestGroupAuctionEvent
 
@@ -1149,17 +1163,17 @@ For non-global events — links to interestGroupAuctionEvent
 An auction involving interest groups is taking place. These events are
 target-specific.
 
-#### event_time *: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
+#### event_time*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
-#### type_ *: [`InterestGroupAuctionEventType`](#nodriver.cdp.storage.InterestGroupAuctionEventType)*
+#### type_*: [`InterestGroupAuctionEventType`](#nodriver.cdp.storage.InterestGroupAuctionEventType)*
 
-#### unique_auction_id *: [`InterestGroupAuctionId`](#nodriver.cdp.storage.InterestGroupAuctionId)*
+#### unique_auction_id*: [`InterestGroupAuctionId`](#nodriver.cdp.storage.InterestGroupAuctionId)*
 
-#### parent_auction_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`InterestGroupAuctionId`](#nodriver.cdp.storage.InterestGroupAuctionId)]*
+#### parent_auction_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`InterestGroupAuctionId`](#nodriver.cdp.storage.InterestGroupAuctionId)]*
 
 Set for child auctions.
 
-#### auction_config *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]*
+#### auction_config*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]*
 
 Set for started and configResolved
 
@@ -1170,11 +1184,11 @@ in what role. Note that it is not ordered with respect to
 Network.requestWillBeSent (but will happen before loadingFinished
 loadingFailed).
 
-#### type_ *: [`InterestGroupAuctionFetchType`](#nodriver.cdp.storage.InterestGroupAuctionFetchType)*
+#### type_*: [`InterestGroupAuctionFetchType`](#nodriver.cdp.storage.InterestGroupAuctionFetchType)*
 
-#### request_id *: [`RequestId`](network.md#nodriver.cdp.network.RequestId)*
+#### request_id*: [`RequestId`](network.md#nodriver.cdp.network.RequestId)*
 
-#### auctions *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`InterestGroupAuctionId`](#nodriver.cdp.storage.InterestGroupAuctionId)]*
+#### auctions*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`InterestGroupAuctionId`](#nodriver.cdp.storage.InterestGroupAuctionId)]*
 
 This is the set of the auctions using the worklet that issued this
 request.  In the case of trusted signals, it’s possible that only some of
@@ -1185,49 +1199,49 @@ them actually care about the keys being queried.
 Shared storage was accessed by the associated page.
 The following parameters are included in all events.
 
-#### access_time *: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
+#### access_time*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
 Time of the access.
 
-#### type_ *: [`SharedStorageAccessType`](#nodriver.cdp.storage.SharedStorageAccessType)*
+#### type_*: [`SharedStorageAccessType`](#nodriver.cdp.storage.SharedStorageAccessType)*
 
 Enum value indicating the Shared Storage API method invoked.
 
-#### main_frame_id *: [`FrameId`](page.md#nodriver.cdp.page.FrameId)*
+#### main_frame_id*: [`FrameId`](page.md#nodriver.cdp.page.FrameId)*
 
 DevTools Frame Token for the primary frame tree’s root.
 
-#### owner_origin *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### owner_origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Serialized origin for the context that invoked the Shared Storage API.
 
-#### params *: [`SharedStorageAccessParams`](#nodriver.cdp.storage.SharedStorageAccessParams)*
+#### params*: [`SharedStorageAccessParams`](#nodriver.cdp.storage.SharedStorageAccessParams)*
 
 The sub-parameters wrapped by `params` are all optional and their
 presence/absence depends on `type`.
 
 ### *class* StorageBucketCreatedOrUpdated(bucket_info)
 
-#### bucket_info *: [`StorageBucketInfo`](#nodriver.cdp.storage.StorageBucketInfo)*
+#### bucket_info*: [`StorageBucketInfo`](#nodriver.cdp.storage.StorageBucketInfo)*
 
 ### *class* StorageBucketDeleted(bucket_id)
 
-#### bucket_id *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### bucket_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 ### *class* AttributionReportingSourceRegistered(registration, result)
 
 **EXPERIMENTAL**
 
-#### registration *: [`AttributionReportingSourceRegistration`](#nodriver.cdp.storage.AttributionReportingSourceRegistration)*
+#### registration*: [`AttributionReportingSourceRegistration`](#nodriver.cdp.storage.AttributionReportingSourceRegistration)*
 
-#### result *: [`AttributionReportingSourceRegistrationResult`](#nodriver.cdp.storage.AttributionReportingSourceRegistrationResult)*
+#### result*: [`AttributionReportingSourceRegistrationResult`](#nodriver.cdp.storage.AttributionReportingSourceRegistrationResult)*
 
 ### *class* AttributionReportingTriggerRegistered(registration, event_level, aggregatable)
 
 **EXPERIMENTAL**
 
-#### registration *: [`AttributionReportingTriggerRegistration`](#nodriver.cdp.storage.AttributionReportingTriggerRegistration)*
+#### registration*: [`AttributionReportingTriggerRegistration`](#nodriver.cdp.storage.AttributionReportingTriggerRegistration)*
 
-#### event_level *: [`AttributionReportingEventLevelResult`](#nodriver.cdp.storage.AttributionReportingEventLevelResult)*
+#### event_level*: [`AttributionReportingEventLevelResult`](#nodriver.cdp.storage.AttributionReportingEventLevelResult)*
 
-#### aggregatable *: [`AttributionReportingAggregatableResult`](#nodriver.cdp.storage.AttributionReportingAggregatableResult)*
+#### aggregatable*: [`AttributionReportingAggregatableResult`](#nodriver.cdp.storage.AttributionReportingAggregatableResult)*

@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.bluetooth_emulation - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -296,6 +297,25 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CentralState</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="GATTOperationType">
+<a class="viewcode-back" href="../../../nodriver/cdp/bluetooth_emulation.html#nodriver.cdp.bluetooth_emulation.GATTOperationType">[docs]</a>
+<span class="k">class</span> <span class="nc">GATTOperationType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Indicates the various types of GATT event.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CONNECTION</span> <span class="o">=</span> <span class="s2">&quot;connection&quot;</span>
+    <span class="n">DISCOVERY</span> <span class="o">=</span> <span class="s2">&quot;discovery&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GATTOperationType</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div>
 
 
@@ -426,16 +446,40 @@
 
 <div class="viewcode-block" id="enable">
 <a class="viewcode-back" href="../../../nodriver/cdp/bluetooth_emulation.html#nodriver.cdp.bluetooth_emulation.enable">[docs]</a>
-<span class="k">def</span> <span class="nf">enable</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">CentralState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">enable</span><span class="p">(</span>
+        <span class="n">state</span><span class="p">:</span> <span class="n">CentralState</span><span class="p">,</span> <span class="n">le_supported</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enable the BluetoothEmulation domain.</span>
+
+<span class="sd">    :param state: State of the simulated central.</span>
+<span class="sd">    :param le_supported: If the simulated central supports low-energy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;leSupported&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">le_supported</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;BluetoothEmulation.enable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="set_simulated_central_state">
+<a class="viewcode-back" href="../../../nodriver/cdp/bluetooth_emulation.html#nodriver.cdp.bluetooth_emulation.set_simulated_central_state">[docs]</a>
+<span class="k">def</span> <span class="nf">set_simulated_central_state</span><span class="p">(</span>
+        <span class="n">state</span><span class="p">:</span> <span class="n">CentralState</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set the state of the simulated central.</span>
 
 <span class="sd">    :param state: State of the simulated central.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">params</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;BluetoothEmulation.enable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;BluetoothEmulation.setSimulatedCentralState&quot;</span><span class="p">,</span>
         <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
@@ -458,10 +502,10 @@
 <div class="viewcode-block" id="simulate_preconnected_peripheral">
 <a class="viewcode-back" href="../../../nodriver/cdp/bluetooth_emulation.html#nodriver.cdp.bluetooth_emulation.simulate_preconnected_peripheral">[docs]</a>
 <span class="k">def</span> <span class="nf">simulate_preconnected_peripheral</span><span class="p">(</span>
-    <span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">manufacturer_data</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">ManufacturerData</span><span class="p">],</span>
-    <span class="n">known_service_uuids</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">manufacturer_data</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">ManufacturerData</span><span class="p">],</span>
+        <span class="n">known_service_uuids</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simulates a peripheral with ``address``, ``name`` and ``knownServiceUuids``</span>
@@ -488,7 +532,7 @@
 <div class="viewcode-block" id="simulate_advertisement">
 <a class="viewcode-back" href="../../../nodriver/cdp/bluetooth_emulation.html#nodriver.cdp.bluetooth_emulation.simulate_advertisement">[docs]</a>
 <span class="k">def</span> <span class="nf">simulate_advertisement</span><span class="p">(</span>
-    <span class="n">entry</span><span class="p">:</span> <span class="n">ScanEntry</span><span class="p">,</span>
+        <span class="n">entry</span><span class="p">:</span> <span class="n">ScanEntry</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simulates an advertisement packet described in ``entry`` being received by</span>
@@ -503,6 +547,54 @@
         <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="simulate_gatt_operation_response">
+<a class="viewcode-back" href="../../../nodriver/cdp/bluetooth_emulation.html#nodriver.cdp.bluetooth_emulation.simulate_gatt_operation_response">[docs]</a>
+<span class="k">def</span> <span class="nf">simulate_gatt_operation_response</span><span class="p">(</span>
+        <span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">type_</span><span class="p">:</span> <span class="n">GATTOperationType</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulates the response code from the peripheral with ``address`` for a</span>
+<span class="sd">    GATT operation of ``type``. The ``code`` value follows the HCI Error Codes from</span>
+<span class="sd">    Bluetooth Core Specification Vol 2 Part D 1.3 List Of Error Codes.</span>
+
+<span class="sd">    :param address:</span>
+<span class="sd">    :param type_:</span>
+<span class="sd">    :param code:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">address</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;BluetoothEmulation.simulateGATTOperationResponse&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="GattOperationReceived">
+<a class="viewcode-back" href="../../../nodriver/cdp/bluetooth_emulation.html#nodriver.cdp.bluetooth_emulation.GattOperationReceived">[docs]</a>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s2">&quot;BluetoothEmulation.gattOperationReceived&quot;</span><span class="p">)</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">GattOperationReceived</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Event for when a GATT operation of ``type`` to the peripheral with ``address``</span>
+<span class="sd">    happened.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">address</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">type_</span><span class="p">:</span> <span class="n">GATTOperationType</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GattOperationReceived</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">address</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">]),</span>
+            <span class="n">type_</span><span class="o">=</span><span class="n">GATTOperationType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]),</span>
+        <span class="p">)</span></div>
 
 </pre></div>
         </article>

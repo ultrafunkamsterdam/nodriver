@@ -25,6 +25,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: GATTOperationType
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: ManufacturerData
       :members:
       :undoc-members:
@@ -56,11 +61,22 @@ to. For more information, see
 
 .. autofunction:: enable
 
+.. autofunction:: set_simulated_central_state
+
 .. autofunction:: simulate_advertisement
+
+.. autofunction:: simulate_gatt_operation_response
 
 .. autofunction:: simulate_preconnected_peripheral
 
 Events
 ------
 
-*There are no events in this module.*
+Generally, you do not need to instantiate CDP events
+yourself. Instead, the API creates events for you and then
+you use the event's attributes.
+
+.. autoclass:: GattOperationReceived
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json

@@ -167,6 +167,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../classes/browser.html">Browser class</a></li>
@@ -187,7 +189,6 @@
 <li class="toctree-l2"><a class="reference internal" href="cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="device_orientation.html">DeviceOrientation</a></li>
@@ -288,11 +289,6 @@ arguments to other commands.</p>
 <dt class="sig sig-object py" id="nodriver.cdp.storage.StorageType">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StorageType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/storage.html#StorageType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.storage.StorageType" title="Link to this definition">#</a></dt>
 <dd><p>Enum of possible storage types.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.storage.StorageType.APPCACHE">
-<span class="sig-name descname"><span class="pre">APPCACHE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'appcache'</span></em><a class="headerlink" href="#nodriver.cdp.storage.StorageType.APPCACHE" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.storage.StorageType.COOKIES">
 <span class="sig-name descname"><span class="pre">COOKIES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cookies'</span></em><a class="headerlink" href="#nodriver.cdp.storage.StorageType.COOKIES" title="Link to this definition">#</a></dt>
@@ -1748,6 +1744,29 @@ Leaves other stored data, including the issuer’s Redemption Records, intact.</
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="nodriver.cdp.storage.get_affected_urls_for_third_party_cookie_metadata">
+<span class="sig-name descname"><span class="pre">get_affected_urls_for_third_party_cookie_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first_party_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">third_party_urls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/storage.html#get_affected_urls_for_third_party_cookie_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.storage.get_affected_urls_for_third_party_cookie_metadata" title="Link to this definition">#</a></dt>
+<dd><p>Returns the list of URLs from a page and its embedded resources that match
+existing grace period URL pattern rules.
+<a class="reference external" href="https://developers.google.com/privacy-sandbox/cookies/temporary-exceptions/grace-period">https://developers.google.com/privacy-sandbox/cookies/temporary-exceptions/grace-period</a></p>
+<p><strong>EXPERIMENTAL</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>first_party_url</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The URL of the page currently being visited.</p></li>
+<li><p><strong>third_party_urls</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – The list of embedded resource URLs from the page.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of matching URLs. If there is a primary pattern match for the first- party URL, only the first-party URL is returned in the array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="nodriver.cdp.storage.get_cookies">
 <span class="sig-name descname"><span class="pre">get_cookies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">browser_context_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/storage.html#get_cookies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.storage.get_cookies" title="Link to this definition">#</a></dt>
 <dd><p>Returns all browser cookies.</p>
@@ -2590,7 +2609,6 @@ presence/absence depends on <code class="docutils literal notranslate"><span cla
 <li><a class="reference internal" href="#types">Types</a><ul>
 <li><a class="reference internal" href="#nodriver.cdp.storage.SerializedStorageKey"><code class="docutils literal notranslate"><span class="pre">SerializedStorageKey</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.storage.StorageType"><code class="docutils literal notranslate"><span class="pre">StorageType</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.storage.StorageType.APPCACHE"><code class="docutils literal notranslate"><span class="pre">StorageType.APPCACHE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.storage.StorageType.COOKIES"><code class="docutils literal notranslate"><span class="pre">StorageType.COOKIES</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.storage.StorageType.FILE_SYSTEMS"><code class="docutils literal notranslate"><span class="pre">StorageType.FILE_SYSTEMS</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.storage.StorageType.INDEXEDDB"><code class="docutils literal notranslate"><span class="pre">StorageType.INDEXEDDB</span></code></a></li>
@@ -2927,6 +2945,7 @@ presence/absence depends on <code class="docutils literal notranslate"><span cla
 <li><a class="reference internal" href="#nodriver.cdp.storage.clear_trust_tokens"><code class="docutils literal notranslate"><span class="pre">clear_trust_tokens()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.storage.delete_shared_storage_entry"><code class="docutils literal notranslate"><span class="pre">delete_shared_storage_entry()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.storage.delete_storage_bucket"><code class="docutils literal notranslate"><span class="pre">delete_storage_bucket()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.storage.get_affected_urls_for_third_party_cookie_metadata"><code class="docutils literal notranslate"><span class="pre">get_affected_urls_for_third_party_cookie_metadata()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.storage.get_cookies"><code class="docutils literal notranslate"><span class="pre">get_cookies()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.storage.get_interest_group_details"><code class="docutils literal notranslate"><span class="pre">get_interest_group_details()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.storage.get_related_website_sets"><code class="docutils literal notranslate"><span class="pre">get_related_website_sets()</span></code></a></li>

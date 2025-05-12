@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.emulation - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -281,6 +282,83 @@
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">dom</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">page</span>
 <span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">event_class</span>
+
+
+<div class="viewcode-block" id="SafeAreaInsets">
+<a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.SafeAreaInsets">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SafeAreaInsets</span><span class="p">:</span>
+    <span class="c1">#: Overrides safe-area-inset-top.</span>
+    <span class="n">top</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Overrides safe-area-max-inset-top.</span>
+    <span class="n">top_max</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Overrides safe-area-inset-left.</span>
+    <span class="n">left</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Overrides safe-area-max-inset-left.</span>
+    <span class="n">left_max</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Overrides safe-area-inset-bottom.</span>
+    <span class="n">bottom</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Overrides safe-area-max-inset-bottom.</span>
+    <span class="n">bottom_max</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Overrides safe-area-inset-right.</span>
+    <span class="n">right</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: Overrides safe-area-max-inset-right.</span>
+    <span class="n">right_max</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
+        <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;topMax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_max</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;leftMax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_max</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;bottomMax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_max</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;rightMax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_max</span>
+        <span class="k">return</span> <span class="n">json</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SafeAreaInsets</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">top</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">top_max</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;topMax&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;topMax&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">left</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">left_max</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;leftMax&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;leftMax&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">bottom</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">bottom_max</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;bottomMax&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bottomMax&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">right</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">right_max</span><span class="o">=</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;rightMax&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rightMax&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="ScreenOrientation">
@@ -843,7 +921,7 @@
 <div class="viewcode-block" id="set_focus_emulation_enabled">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_focus_emulation_enabled">[docs]</a>
 <span class="k">def</span> <span class="nf">set_focus_emulation_enabled</span><span class="p">(</span>
-    <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enables or disables simulating a focused and active page.</span>
@@ -865,7 +943,7 @@
 <div class="viewcode-block" id="set_auto_dark_mode_override">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_auto_dark_mode_override">[docs]</a>
 <span class="k">def</span> <span class="nf">set_auto_dark_mode_override</span><span class="p">(</span>
-    <span class="n">enabled</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">enabled</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Automatically render all web contents using a dark theme.</span>
@@ -888,7 +966,7 @@
 <div class="viewcode-block" id="set_cpu_throttling_rate">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_cpu_throttling_rate">[docs]</a>
 <span class="k">def</span> <span class="nf">set_cpu_throttling_rate</span><span class="p">(</span>
-    <span class="n">rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enables CPU throttling to emulate slow CPUs.</span>
@@ -908,7 +986,7 @@
 <div class="viewcode-block" id="set_default_background_color_override">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_default_background_color_override">[docs]</a>
 <span class="k">def</span> <span class="nf">set_default_background_color_override</span><span class="p">(</span>
-    <span class="n">color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">RGBA</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets or clears an override of the default background color of the frame. This override is used</span>
@@ -927,23 +1005,46 @@
 
 
 
+<div class="viewcode-block" id="set_safe_area_insets_override">
+<a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_safe_area_insets_override">[docs]</a>
+<span class="k">def</span> <span class="nf">set_safe_area_insets_override</span><span class="p">(</span>
+        <span class="n">insets</span><span class="p">:</span> <span class="n">SafeAreaInsets</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Overrides the values for env(safe-area-inset-*) and env(safe-area-max-inset-*). Unset values will cause the</span>
+<span class="sd">    respective variables to be undefined, even if previously overridden.</span>
+
+<span class="sd">    **EXPERIMENTAL**</span>
+
+<span class="sd">    :param insets:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;insets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">insets</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Emulation.setSafeAreaInsetsOverride&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
 <div class="viewcode-block" id="set_device_metrics_override">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_device_metrics_override">[docs]</a>
 <span class="k">def</span> <span class="nf">set_device_metrics_override</span><span class="p">(</span>
-    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">height</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">device_scale_factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">mobile</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">scale</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">screen_width</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">screen_height</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">position_x</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">position_y</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">dont_set_visible_size</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">screen_orientation</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ScreenOrientation</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">viewport</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">page</span><span class="o">.</span><span class="n">Viewport</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">display_feature</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">DisplayFeature</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">device_posture</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">DevicePosture</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">height</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">device_scale_factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">mobile</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">scale</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">screen_width</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">screen_height</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">position_x</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">position_y</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dont_set_visible_size</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">screen_orientation</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ScreenOrientation</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">viewport</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">page</span><span class="o">.</span><span class="n">Viewport</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">display_feature</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">DisplayFeature</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">device_posture</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">DevicePosture</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overrides the values of device screen dimensions (window.screen.width, window.screen.height,</span>
@@ -962,7 +1063,7 @@
 <span class="sd">    :param dont_set_visible_size: **(EXPERIMENTAL)** *(Optional)* Do not set visible view size, rely upon explicit setVisibleSize call.</span>
 <span class="sd">    :param screen_orientation: *(Optional)* Screen orientation override.</span>
 <span class="sd">    :param viewport: **(EXPERIMENTAL)** *(Optional)* If set, the visible area of the page will be overridden to this viewport. This viewport change is not observed by the page, e.g. viewport-relative elements do not change positions.</span>
-<span class="sd">    :param display_feature: **(EXPERIMENTAL)** *(Optional)* If set, the display feature of a multi-segment screen. If not set, multi-segment support is turned-off.</span>
+<span class="sd">    :param display_feature: **(DEPRECATED)** **(EXPERIMENTAL)** *(Optional)* If set, the display feature of a multi-segment screen. If not set, multi-segment support is turned-off. Deprecated, use Emulation.setDisplayFeaturesOverride.</span>
 <span class="sd">    :param device_posture: **(DEPRECATED)** **(EXPERIMENTAL)** *(Optional)* If set, the posture of a foldable device. If not set the posture is set to continuous. Deprecated, use Emulation.setDevicePostureOverride.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -1001,7 +1102,7 @@
 <div class="viewcode-block" id="set_device_posture_override">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_device_posture_override">[docs]</a>
 <span class="k">def</span> <span class="nf">set_device_posture_override</span><span class="p">(</span>
-    <span class="n">posture</span><span class="p">:</span> <span class="n">DevicePosture</span><span class="p">,</span>
+        <span class="n">posture</span><span class="p">:</span> <span class="n">DevicePosture</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Start reporting the given posture value to the Device Posture API.</span>
@@ -1039,10 +1140,53 @@
 
 
 
+<div class="viewcode-block" id="set_display_features_override">
+<a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_display_features_override">[docs]</a>
+<span class="k">def</span> <span class="nf">set_display_features_override</span><span class="p">(</span>
+        <span class="n">features</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">DisplayFeature</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Start using the given display features to pupulate the Viewport Segments API.</span>
+<span class="sd">    This override can also be set in setDeviceMetricsOverride().</span>
+
+<span class="sd">    **EXPERIMENTAL**</span>
+
+<span class="sd">    :param features:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">features</span><span class="p">]</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Emulation.setDisplayFeaturesOverride&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
+<div class="viewcode-block" id="clear_display_features_override">
+<a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.clear_display_features_override">[docs]</a>
+<span class="k">def</span> <span class="nf">clear_display_features_override</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Clears the display features override set with either setDeviceMetricsOverride()</span>
+<span class="sd">    or setDisplayFeaturesOverride() and starts using display features from the</span>
+<span class="sd">    platform again.</span>
+<span class="sd">    Does nothing if no override is set.</span>
+
+<span class="sd">    **EXPERIMENTAL**</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Emulation.clearDisplayFeaturesOverride&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
+
+
+
 <div class="viewcode-block" id="set_scrollbars_hidden">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_scrollbars_hidden">[docs]</a>
 <span class="k">def</span> <span class="nf">set_scrollbars_hidden</span><span class="p">(</span>
-    <span class="n">hidden</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">hidden</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
@@ -1064,7 +1208,7 @@
 <div class="viewcode-block" id="set_document_cookie_disabled">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_document_cookie_disabled">[docs]</a>
 <span class="k">def</span> <span class="nf">set_document_cookie_disabled</span><span class="p">(</span>
-    <span class="n">disabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">disabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
@@ -1086,7 +1230,7 @@
 <div class="viewcode-block" id="set_emit_touch_events_for_mouse">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_emit_touch_events_for_mouse">[docs]</a>
 <span class="k">def</span> <span class="nf">set_emit_touch_events_for_mouse</span><span class="p">(</span>
-    <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">configuration</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">configuration</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
@@ -1111,8 +1255,8 @@
 <div class="viewcode-block" id="set_emulated_media">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_emulated_media">[docs]</a>
 <span class="k">def</span> <span class="nf">set_emulated_media</span><span class="p">(</span>
-    <span class="n">media</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">features</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">MediaFeature</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">media</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">features</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">MediaFeature</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Emulates the given media type or media feature for CSS media queries.</span>
@@ -1136,7 +1280,7 @@
 <div class="viewcode-block" id="set_emulated_vision_deficiency">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_emulated_vision_deficiency">[docs]</a>
 <span class="k">def</span> <span class="nf">set_emulated_vision_deficiency</span><span class="p">(</span>
-    <span class="n">type_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">type_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Emulates the given vision deficiency.</span>
@@ -1156,9 +1300,9 @@
 <div class="viewcode-block" id="set_geolocation_override">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_geolocation_override">[docs]</a>
 <span class="k">def</span> <span class="nf">set_geolocation_override</span><span class="p">(</span>
-    <span class="n">latitude</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">longitude</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">accuracy</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">latitude</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">longitude</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">accuracy</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position</span>
@@ -1186,7 +1330,7 @@
 <div class="viewcode-block" id="get_overridden_sensor_information">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.get_overridden_sensor_information">[docs]</a>
 <span class="k">def</span> <span class="nf">get_overridden_sensor_information</span><span class="p">(</span>
-    <span class="n">type_</span><span class="p">:</span> <span class="n">SensorType</span><span class="p">,</span>
+        <span class="n">type_</span><span class="p">:</span> <span class="n">SensorType</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
@@ -1210,7 +1354,7 @@
 <div class="viewcode-block" id="set_sensor_override_enabled">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_sensor_override_enabled">[docs]</a>
 <span class="k">def</span> <span class="nf">set_sensor_override_enabled</span><span class="p">(</span>
-    <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">type_</span><span class="p">:</span> <span class="n">SensorType</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">SensorMetadata</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">type_</span><span class="p">:</span> <span class="n">SensorType</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">SensorMetadata</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overrides a platform sensor of a given type. If ``enabled`` is true, calls to</span>
@@ -1241,7 +1385,7 @@
 <div class="viewcode-block" id="set_sensor_override_readings">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_sensor_override_readings">[docs]</a>
 <span class="k">def</span> <span class="nf">set_sensor_override_readings</span><span class="p">(</span>
-    <span class="n">type_</span><span class="p">:</span> <span class="n">SensorType</span><span class="p">,</span> <span class="n">reading</span><span class="p">:</span> <span class="n">SensorReading</span>
+        <span class="n">type_</span><span class="p">:</span> <span class="n">SensorType</span><span class="p">,</span> <span class="n">reading</span><span class="p">:</span> <span class="n">SensorReading</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Updates the sensor readings reported by a sensor type previously overridden</span>
@@ -1266,9 +1410,9 @@
 <div class="viewcode-block" id="set_pressure_source_override_enabled">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_pressure_source_override_enabled">[docs]</a>
 <span class="k">def</span> <span class="nf">set_pressure_source_override_enabled</span><span class="p">(</span>
-    <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">source</span><span class="p">:</span> <span class="n">PressureSource</span><span class="p">,</span>
-    <span class="n">metadata</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">PressureMetadata</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">source</span><span class="p">:</span> <span class="n">PressureSource</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">PressureMetadata</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overrides a pressure source of a given type, as used by the Compute</span>
@@ -1298,7 +1442,7 @@
 <div class="viewcode-block" id="set_pressure_state_override">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_pressure_state_override">[docs]</a>
 <span class="k">def</span> <span class="nf">set_pressure_state_override</span><span class="p">(</span>
-    <span class="n">source</span><span class="p">:</span> <span class="n">PressureSource</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">PressureState</span>
+        <span class="n">source</span><span class="p">:</span> <span class="n">PressureSource</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">PressureState</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Provides a given pressure state that will be processed and eventually be</span>
@@ -1324,7 +1468,7 @@
 <div class="viewcode-block" id="set_idle_override">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_idle_override">[docs]</a>
 <span class="k">def</span> <span class="nf">set_idle_override</span><span class="p">(</span>
-    <span class="n">is_user_active</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">is_screen_unlocked</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="n">is_user_active</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">is_screen_unlocked</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overrides the Idle state.</span>
@@ -1360,7 +1504,7 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_navigator_overrides">[docs]</a>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.3&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">set_navigator_overrides</span><span class="p">(</span>
-    <span class="n">platform</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">platform</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overrides value returned by the javascript navigator object.</span>
@@ -1384,7 +1528,7 @@
 <div class="viewcode-block" id="set_page_scale_factor">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_page_scale_factor">[docs]</a>
 <span class="k">def</span> <span class="nf">set_page_scale_factor</span><span class="p">(</span>
-    <span class="n">page_scale_factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">page_scale_factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets a specified page scale factor.</span>
@@ -1406,7 +1550,7 @@
 <div class="viewcode-block" id="set_script_execution_disabled">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_script_execution_disabled">[docs]</a>
 <span class="k">def</span> <span class="nf">set_script_execution_disabled</span><span class="p">(</span>
-    <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Switches script execution in the page.</span>
@@ -1426,7 +1570,7 @@
 <div class="viewcode-block" id="set_touch_emulation_enabled">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_touch_emulation_enabled">[docs]</a>
 <span class="k">def</span> <span class="nf">set_touch_emulation_enabled</span><span class="p">(</span>
-    <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">max_touch_points</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">max_touch_points</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enables touch on platforms which do not support them.</span>
@@ -1449,10 +1593,10 @@
 <div class="viewcode-block" id="set_virtual_time_policy">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_virtual_time_policy">[docs]</a>
 <span class="k">def</span> <span class="nf">set_virtual_time_policy</span><span class="p">(</span>
-    <span class="n">policy</span><span class="p">:</span> <span class="n">VirtualTimePolicy</span><span class="p">,</span>
-    <span class="n">budget</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">max_virtual_time_task_starvation_count</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">initial_virtual_time</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">TimeSinceEpoch</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">policy</span><span class="p">:</span> <span class="n">VirtualTimePolicy</span><span class="p">,</span>
+        <span class="n">budget</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_virtual_time_task_starvation_count</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">initial_virtual_time</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">TimeSinceEpoch</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Turns on virtual time for all frames (replacing real-time with a synthetic time source) and sets</span>
@@ -1488,7 +1632,7 @@
 <div class="viewcode-block" id="set_locale_override">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_locale_override">[docs]</a>
 <span class="k">def</span> <span class="nf">set_locale_override</span><span class="p">(</span>
-    <span class="n">locale</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">locale</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overrides default host system locale with the specified one.</span>
@@ -1511,7 +1655,7 @@
 <div class="viewcode-block" id="set_timezone_override">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_timezone_override">[docs]</a>
 <span class="k">def</span> <span class="nf">set_timezone_override</span><span class="p">(</span>
-    <span class="n">timezone_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">timezone_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overrides default host system timezone with the specified one.</span>
@@ -1532,7 +1676,7 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_visible_size">[docs]</a>
 <span class="nd">@deprecated</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.3&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">set_visible_size</span><span class="p">(</span>
-    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">int</span>
+        <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Resizes the frame/viewport of the page. Note that this does not affect the frame&#39;s container</span>
@@ -1560,7 +1704,7 @@
 <div class="viewcode-block" id="set_disabled_image_types">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_disabled_image_types">[docs]</a>
 <span class="k">def</span> <span class="nf">set_disabled_image_types</span><span class="p">(</span>
-    <span class="n">image_types</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">DisabledImageType</span><span class="p">],</span>
+        <span class="n">image_types</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">DisabledImageType</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
@@ -1582,7 +1726,7 @@
 <div class="viewcode-block" id="set_hardware_concurrency_override">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_hardware_concurrency_override">[docs]</a>
 <span class="k">def</span> <span class="nf">set_hardware_concurrency_override</span><span class="p">(</span>
-    <span class="n">hardware_concurrency</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">hardware_concurrency</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
@@ -1604,10 +1748,10 @@
 <div class="viewcode-block" id="set_user_agent_override">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_user_agent_override">[docs]</a>
 <span class="k">def</span> <span class="nf">set_user_agent_override</span><span class="p">(</span>
-    <span class="n">user_agent</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">accept_language</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">platform</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">user_agent_metadata</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">UserAgentMetadata</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">user_agent</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">accept_language</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">platform</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">user_agent_metadata</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">UserAgentMetadata</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Allows overriding user agent with the given string.</span>
@@ -1637,7 +1781,7 @@
 <div class="viewcode-block" id="set_automation_override">
 <a class="viewcode-back" href="../../../nodriver/cdp/emulation.html#nodriver.cdp.emulation.set_automation_override">[docs]</a>
 <span class="k">def</span> <span class="nf">set_automation_override</span><span class="p">(</span>
-    <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Allows overriding the automation flag.</span>

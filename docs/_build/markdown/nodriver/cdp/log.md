@@ -18,45 +18,45 @@ arguments to other commands.
 
 Log entry.
 
-#### source *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### source*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Log entry source.
 
-#### level *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### level*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Log entry severity.
 
-#### text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Logged text.
 
-#### timestamp *: [`Timestamp`](runtime.md#nodriver.cdp.runtime.Timestamp)*
+#### timestamp*: [`Timestamp`](runtime.md#nodriver.cdp.runtime.Timestamp)*
 
 Timestamp when this entry was added.
 
-#### category *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### category*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
-#### url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 URL of the resource if known.
 
-#### line_number *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+#### line_number*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
 
 Line number in the resource.
 
-#### stack_trace *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)]* *= None*
+#### stack_trace*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StackTrace`](runtime.md#nodriver.cdp.runtime.StackTrace)]* *= None*
 
 JavaScript stack trace.
 
-#### network_request_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RequestId`](network.md#nodriver.cdp.network.RequestId)]* *= None*
+#### network_request_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RequestId`](network.md#nodriver.cdp.network.RequestId)]* *= None*
 
 Identifier of the network request associated with this entry.
 
-#### worker_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### worker_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Identifier of the worker associated with this entry.
 
-#### args *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)]]* *= None*
+#### args*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`RemoteObject`](runtime.md#nodriver.cdp.runtime.RemoteObject)]]* *= None*
 
 Call arguments.
 
@@ -64,11 +64,11 @@ Call arguments.
 
 Violation configuration setting.
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Violation type.
 
-#### threshold *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### threshold*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Time threshold to trigger upon.
 
@@ -131,6 +131,6 @@ you use the event’s attributes.
 
 Issued when new message was logged.
 
-#### entry *: [`LogEntry`](#nodriver.cdp.log.LogEntry)*
+#### entry*: [`LogEntry`](#nodriver.cdp.log.LogEntry)*
 
 The entry.

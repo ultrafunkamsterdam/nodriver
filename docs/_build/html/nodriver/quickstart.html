@@ -167,6 +167,8 @@
 <li class="toctree-l1"><a class="reference internal" href="#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="classes/browser.html">Browser class</a></li>
@@ -187,7 +189,6 @@
 <li class="toctree-l2"><a class="reference internal" href="cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -366,6 +367,25 @@ type or paste a few lines and off you go.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
+</section>
+<section id="proxies-socks5-authenticated-too">
+<h1>Proxies (socks5, authenticated too)<a class="headerlink" href="#proxies-socks5-authenticated-too" title="Link to this heading">#</a></h1>
+<p>You can create as many browser contexts, with each a
+different proxy, while normally you can only use 1 proxy
+for all your browser windows.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nodriver</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">browser</span> <span class="o">=</span> <span class="k">await</span> <span class="n">start</span><span class="p">()</span>
+<span class="n">proxied_tab</span> <span class="o">=</span> <span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">create_context</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">:</span> <span class="o">...</span>
+    <span class="n">proxy_server</span> <span class="o">=</span> <span class="s2">&quot;socks5://myuser:mypass@myproxyhost.local&quot;</span>
+    <span class="n">proxy_bypass_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;localhost&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="k">await</span> <span class="n">proxied_tab</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://whatismyip.com&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="concrete-example">
+<h1>Concrete example<a class="headerlink" href="#concrete-example" title="Link to this heading">#</a></h1>
 <p>A more concrete example, which can be found in the ./example/ folder,
 shows a script to create a twitter account</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -561,6 +581,8 @@ shows a script to create a twitter account</p>
 <li><a class="reference internal" href="#more-complete-example">More complete example</a></li>
 <li><a class="reference internal" href="#custom-starting-options">Custom starting options</a></li>
 <li><a class="reference internal" href="#alternative-custom-options">Alternative custom options</a></li>
+<li><a class="reference internal" href="#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li><a class="reference internal" href="#concrete-example">Concrete example</a></li>
 </ul>
 
           </div>

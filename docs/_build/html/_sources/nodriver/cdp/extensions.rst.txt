@@ -46,6 +46,8 @@ to. For more information, see
 
 .. autofunction:: set_storage_items
 
+.. autofunction:: uninstall
+
 Events
 ------
 

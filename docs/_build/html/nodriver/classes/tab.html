@@ -1269,6 +1269,33 @@ an TimeoutError will be raised</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">websocket</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClientConnection</span></em><a class="headerlink" href="#nodriver.Tab.websocket" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="nodriver.Tab.xpath">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xpath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/core/tab.html#Tab.xpath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.Tab.xpath" title="Link to this definition">#</a></dt>
+<dd><p>find elements by xpath string.
+if not immediately found, retries are attempted until <span class="xref std std-ref">timeout</span> is reached (default 2.5 seconds).
+in case nothing is found, it returns an empty list. It will not raise.
+this timeout mechanism helps when relying on some element to appear before continuing your script.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># find all the inline scripts (script elements without src attribute )</span>
+<span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//script[not(@src)]&#39;</span><span class="p">)</span>
+
+<span class="c1"># or here, more complex, but my personal favorite to case-insensitive text search</span>
+
+<span class="k">await</span> <span class="n">tab</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//text()[ contains( translate(., &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;, &quot;abcdefghijklmnopqrstuvwxyz&quot;),&quot;test&quot;)]&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xpath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – </p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – 2.5</p></li>
+</ul>
+</dd>
+</dl>
+<p>:return:List[nodriver.Element] or []
+:rtype:</p>
+</dd></dl>
+
 </section>
 </dd></dl>
 
@@ -1394,6 +1421,7 @@ an TimeoutError will be raised</p>
 <li><a class="reference internal" href="#nodriver.Tab.wait"><code class="docutils literal notranslate"><span class="pre">Tab.wait()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.wait_for"><code class="docutils literal notranslate"><span class="pre">Tab.wait_for()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.Tab.websocket"><code class="docutils literal notranslate"><span class="pre">Tab.websocket</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.Tab.xpath"><code class="docutils literal notranslate"><span class="pre">Tab.xpath()</span></code></a></li>
 </ul>
 </li>
 </ul>

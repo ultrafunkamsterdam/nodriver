@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>nodriver.cdp.fed_cm - nodriver documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -166,6 +166,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#more-complete-example">More complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#custom-starting-options">Custom starting options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#alternative-custom-options">Alternative custom options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#proxies-socks5-authenticated-too">Proxies (socks5, authenticated too)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nodriver/quickstart.html#concrete-example">Concrete example</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../nodriver/classes/browser.html">Browser class</a></li>
@@ -186,7 +188,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/cast.html">Cast</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/console.html">Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/css.html">CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/database.html">Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/debugger.html">Debugger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_access.html">DeviceAccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../nodriver/cdp/device_orientation.html">DeviceOrientation</a></li>
@@ -433,7 +434,7 @@
 <div class="viewcode-block" id="enable">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.enable">[docs]</a>
 <span class="k">def</span> <span class="nf">enable</span><span class="p">(</span>
-    <span class="n">disable_rejection_delay</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">disable_rejection_delay</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param disable_rejection_delay: *(Optional)* Allows callers to disable the promise rejection delay that would normally happen, if this is unimportant to what&#39;s being tested. (step 4 of https://fedidcg.github.io/FedCM/#browser-api-rp-sign-in)</span>
@@ -452,7 +453,6 @@
 <div class="viewcode-block" id="disable">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.disable">[docs]</a>
 <span class="k">def</span> <span class="nf">disable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;FedCm.disable&quot;</span><span class="p">,</span>
     <span class="p">}</span>
@@ -463,7 +463,7 @@
 <div class="viewcode-block" id="select_account">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.select_account">[docs]</a>
 <span class="k">def</span> <span class="nf">select_account</span><span class="p">(</span>
-    <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">account_index</span><span class="p">:</span> <span class="nb">int</span>
+        <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">account_index</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param dialog_id:</span>
@@ -483,7 +483,7 @@
 <div class="viewcode-block" id="click_dialog_button">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.click_dialog_button">[docs]</a>
 <span class="k">def</span> <span class="nf">click_dialog_button</span><span class="p">(</span>
-    <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dialog_button</span><span class="p">:</span> <span class="n">DialogButton</span>
+        <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dialog_button</span><span class="p">:</span> <span class="n">DialogButton</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param dialog_id:</span>
@@ -503,7 +503,7 @@
 <div class="viewcode-block" id="open_url">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.open_url">[docs]</a>
 <span class="k">def</span> <span class="nf">open_url</span><span class="p">(</span>
-    <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">account_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">account_url_type</span><span class="p">:</span> <span class="n">AccountUrlType</span>
+        <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">account_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">account_url_type</span><span class="p">:</span> <span class="n">AccountUrlType</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param dialog_id:</span>
@@ -525,7 +525,7 @@
 <div class="viewcode-block" id="dismiss_dialog">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.dismiss_dialog">[docs]</a>
 <span class="k">def</span> <span class="nf">dismiss_dialog</span><span class="p">(</span>
-    <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">trigger_cooldown</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">trigger_cooldown</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param dialog_id:</span>

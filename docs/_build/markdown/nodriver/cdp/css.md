@@ -41,35 +41,59 @@ inspector” rules), “regular” for regular stylesheets.
 
 CSS rule collection for a single pseudo style.
 
-#### pseudo_type *: [`PseudoType`](dom.md#nodriver.cdp.dom.PseudoType)*
+#### pseudo_type*: [`PseudoType`](dom.md#nodriver.cdp.dom.PseudoType)*
 
 Pseudo element type.
 
-#### matches *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`RuleMatch`](#nodriver.cdp.css.RuleMatch)]*
+#### matches*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`RuleMatch`](#nodriver.cdp.css.RuleMatch)]*
 
 Matches of CSS rules applicable to the pseudo style.
 
-#### pseudo_identifier *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### pseudo_identifier*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Pseudo element custom ident.
+
+### *class* CSSAnimationStyle(style, name=None)
+
+CSS style coming from animations with the name of the animation.
+
+#### style*: [`CSSStyle`](#nodriver.cdp.css.CSSStyle)*
+
+The style coming from the animation.
+
+#### name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+The name of the animation.
 
 ### *class* InheritedStyleEntry(matched_css_rules, inline_style=None)
 
 Inherited CSS rule collection from ancestor node.
 
-#### matched_css_rules *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`RuleMatch`](#nodriver.cdp.css.RuleMatch)]*
+#### matched_css_rules*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`RuleMatch`](#nodriver.cdp.css.RuleMatch)]*
 
 Matches of CSS rules matching the ancestor node in the style inheritance chain.
 
-#### inline_style *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSStyle`](#nodriver.cdp.css.CSSStyle)]* *= None*
+#### inline_style*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSStyle`](#nodriver.cdp.css.CSSStyle)]* *= None*
 
 The ancestor node’s inline style, if any, in the style inheritance chain.
+
+### *class* InheritedAnimatedStyleEntry(animation_styles=None, transitions_style=None)
+
+Inherited CSS style collection for animated styles from ancestor node.
+
+#### animation_styles*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSAnimationStyle`](#nodriver.cdp.css.CSSAnimationStyle)]]* *= None*
+
+Styles coming from the animations of the ancestor, if any, in the style inheritance chain.
+
+#### transitions_style*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSStyle`](#nodriver.cdp.css.CSSStyle)]* *= None*
+
+The style coming from the transitions of the ancestor, if any, in the style inheritance chain.
 
 ### *class* InheritedPseudoElementMatches(pseudo_elements)
 
 Inherited pseudo element matches from pseudos of an ancestor node.
 
-#### pseudo_elements *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PseudoElementMatches`](#nodriver.cdp.css.PseudoElementMatches)]*
+#### pseudo_elements*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PseudoElementMatches`](#nodriver.cdp.css.PseudoElementMatches)]*
 
 Matches of pseudo styles from the pseudos of an ancestor node.
 
@@ -77,11 +101,11 @@ Matches of pseudo styles from the pseudos of an ancestor node.
 
 Match data for a CSS rule.
 
-#### rule *: [`CSSRule`](#nodriver.cdp.css.CSSRule)*
+#### rule*: [`CSSRule`](#nodriver.cdp.css.CSSRule)*
 
 CSS rule in the match.
 
-#### matching_selectors *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
+#### matching_selectors*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
 
 Matching selector indices in the rule’s selectorList selectors (0-based).
 
@@ -89,15 +113,15 @@ Matching selector indices in the rule’s selectorList selectors (0-based).
 
 Data for a simple selector (these are delimited by commas in a selector list).
 
-#### text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Value text.
 
-#### range_ *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
+#### range_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
 
 Value range in the underlying resource (if available).
 
-#### specificity *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Specificity`](#nodriver.cdp.css.Specificity)]* *= None*
+#### specificity*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Specificity`](#nodriver.cdp.css.Specificity)]* *= None*
 
 Specificity of the selector.
 
@@ -106,16 +130,16 @@ Specificity of the selector.
 Specificity:
 [https://drafts.csswg.org/selectors/#specificity-rules](https://drafts.csswg.org/selectors/#specificity-rules)
 
-#### a *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### a*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 The a component, which represents the number of ID selectors.
 
-#### b *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### b*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 The b component, which represents the number of class selectors, attributes selectors, and
 pseudo-classes.
 
-#### c *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### c*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 The c component, which represents the number of type selectors and pseudo-elements.
 
@@ -123,11 +147,11 @@ The c component, which represents the number of type selectors and pseudo-elemen
 
 Selector list data.
 
-#### selectors *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Value`](#nodriver.cdp.css.Value)]*
+#### selectors*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Value`](#nodriver.cdp.css.Value)]*
 
 Selectors in the list.
 
-#### text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Rule selector text.
 
@@ -135,82 +159,82 @@ Rule selector text.
 
 CSS stylesheet metainformation.
 
-#### style_sheet_id *: [`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)*
+#### style_sheet_id*: [`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)*
 
 The stylesheet identifier.
 
-#### frame_id *: [`FrameId`](page.md#nodriver.cdp.page.FrameId)*
+#### frame_id*: [`FrameId`](page.md#nodriver.cdp.page.FrameId)*
 
 Owner frame identifier.
 
-#### source_url *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### source_url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Stylesheet resource URL. Empty if this is a constructed stylesheet created using
 new CSSStyleSheet() (but non-empty if this is a constructed stylesheet imported
 as a CSS module script).
 
-#### origin *: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
+#### origin*: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
 
 Stylesheet origin.
 
-#### title *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### title*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Stylesheet title.
 
-#### disabled *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### disabled*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Denotes whether the stylesheet is disabled.
 
-#### is_inline *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### is_inline*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Whether this stylesheet is created for STYLE tag by parser. This flag is not set for
 document.written STYLE tags.
 
-#### is_mutable *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### is_mutable*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Whether this stylesheet is mutable. Inline stylesheets become mutable
 after they have been modified via CSSOM API.
 `<link>` element’s stylesheets become mutable only if DevTools modifies them.
 Constructed stylesheets (new CSSStyleSheet()) are mutable immediately after creation.
 
-#### is_constructed *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### is_constructed*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 True if this stylesheet is created through new CSSStyleSheet() or imported as a
 CSS module script.
 
-#### start_line *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### start_line*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Line offset of the stylesheet within the resource (zero based).
 
-#### start_column *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### start_column*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Column offset of the stylesheet within the resource (zero based).
 
-#### length *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### length*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Size of the content (in characters).
 
-#### end_line *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### end_line*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Line offset of the end of the stylesheet within the resource (zero based).
 
-#### end_column *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### end_column*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Column offset of the end of the stylesheet within the resource (zero based).
 
-#### source_map_url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### source_map_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 URL of source map associated with the stylesheet (if any).
 
-#### owner_node *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
+#### owner_node*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
 
 The backend id for the owner node of the stylesheet.
 
-#### has_source_url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### has_source_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 Whether the sourceURL field value comes from the sourceURL comment.
 
-#### loading_failed *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### loading_failed*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 If the style sheet was loaded from a network resource, this indicates when the resource failed to load
 
@@ -218,57 +242,57 @@ If the style sheet was loaded from a network resource, this indicates when the r
 
 CSS rule representation.
 
-#### selector_list *: [`SelectorList`](#nodriver.cdp.css.SelectorList)*
+#### selector_list*: [`SelectorList`](#nodriver.cdp.css.SelectorList)*
 
 Rule selector data.
 
-#### origin *: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
+#### origin*: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
 
 Parent stylesheet’s origin.
 
-#### style *: [`CSSStyle`](#nodriver.cdp.css.CSSStyle)*
+#### style*: [`CSSStyle`](#nodriver.cdp.css.CSSStyle)*
 
 Associated style declaration.
 
-#### style_sheet_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
+#### style_sheet_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
 
 The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from.
 
-#### nesting_selectors *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
+#### nesting_selectors*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
 
 Array of selectors from ancestor style rules, sorted by distance from the current rule.
 
-#### media *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSMedia`](#nodriver.cdp.css.CSSMedia)]]* *= None*
+#### media*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSMedia`](#nodriver.cdp.css.CSSMedia)]]* *= None*
 
 Media list array (for rules involving media queries). The array enumerates media queries
 starting with the innermost one, going outwards.
 
-#### container_queries *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSContainerQuery`](#nodriver.cdp.css.CSSContainerQuery)]]* *= None*
+#### container_queries*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSContainerQuery`](#nodriver.cdp.css.CSSContainerQuery)]]* *= None*
 
 Container query list array (for rules involving container queries).
 The array enumerates container queries starting with the innermost one, going outwards.
 
-#### supports *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSSupports`](#nodriver.cdp.css.CSSSupports)]]* *= None*
+#### supports*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSSupports`](#nodriver.cdp.css.CSSSupports)]]* *= None*
 
 @supports CSS at-rule array.
 The array enumerates @supports at-rules starting with the innermost one, going outwards.
 
-#### layers *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSLayer`](#nodriver.cdp.css.CSSLayer)]]* *= None*
+#### layers*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSLayer`](#nodriver.cdp.css.CSSLayer)]]* *= None*
 
 Cascade layer array. Contains the layer hierarchy that this rule belongs to starting
 with the innermost layer and going outwards.
 
-#### scopes *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSScope`](#nodriver.cdp.css.CSSScope)]]* *= None*
+#### scopes*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSScope`](#nodriver.cdp.css.CSSScope)]]* *= None*
 
 @scope CSS at-rule array.
 The array enumerates @scope at-rules starting with the innermost one, going outwards.
 
-#### rule_types *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSRuleType`](#nodriver.cdp.css.CSSRuleType)]]* *= None*
+#### rule_types*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSRuleType`](#nodriver.cdp.css.CSSRuleType)]]* *= None*
 
 The array keeps the types of ancestor CSSRules from the innermost going outwards.
 
-#### starting_styles *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSStartingStyle`](#nodriver.cdp.css.CSSStartingStyle)]]* *= None*
+#### starting_styles*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSStartingStyle`](#nodriver.cdp.css.CSSStartingStyle)]]* *= None*
 
 @starting-style CSS at-rule array.
 The array enumerates @starting-style at-rules starting with the innermost one, going outwards.
@@ -296,20 +320,20 @@ This list only contains rule types that are collected during the ancestor rule c
 
 CSS coverage information.
 
-#### style_sheet_id *: [`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)*
+#### style_sheet_id*: [`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)*
 
 The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from.
 
-#### start_offset *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### start_offset*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Offset of the start of the rule (including selector) from the beginning of the stylesheet.
 
-#### end_offset *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### end_offset*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Offset of the end of the rule body from the beginning of the stylesheet.
 
-#### used *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### used*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Indicates whether the rule was actually used by some element in the page.
 
@@ -317,43 +341,43 @@ Indicates whether the rule was actually used by some element in the page.
 
 Text range within a resource. All numbers are zero-based.
 
-#### start_line *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### start_line*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Start line of range.
 
-#### start_column *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### start_column*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 Start column of range (inclusive).
 
-#### end_line *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### end_line*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 End line of range
 
-#### end_column *: [`int`](https://docs.python.org/3/library/functions.html#int)*
+#### end_column*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
 End column of range (exclusive).
 
 ### *class* ShorthandEntry(name, value, important=None)
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Shorthand name.
 
-#### value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Shorthand value.
 
-#### important *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### important*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 Whether the property has “!important” annotation (implies `false` if absent).
 
 ### *class* CSSComputedStyleProperty(name, value)
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Computed style property name.
 
-#### value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Computed style property value.
 
@@ -361,24 +385,24 @@ Computed style property value.
 
 CSS style representation.
 
-#### css_properties *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSProperty`](#nodriver.cdp.css.CSSProperty)]*
+#### css_properties*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSProperty`](#nodriver.cdp.css.CSSProperty)]*
 
 CSS properties in the style.
 
-#### shorthand_entries *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ShorthandEntry`](#nodriver.cdp.css.ShorthandEntry)]*
+#### shorthand_entries*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ShorthandEntry`](#nodriver.cdp.css.ShorthandEntry)]*
 
 Computed values for all shorthands found in the style.
 
-#### style_sheet_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
+#### style_sheet_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
 
 The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from.
 
-#### css_text *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### css_text*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Style declaration text (if available).
 
-#### range_ *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
+#### range_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
 
 Style declaration range in the enclosing stylesheet (if available).
 
@@ -386,39 +410,39 @@ Style declaration range in the enclosing stylesheet (if available).
 
 CSS property declaration data.
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The property name.
 
-#### value *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The property value.
 
-#### important *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### important*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 Whether the property has “!important” annotation (implies `false` if absent).
 
-#### implicit *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### implicit*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 Whether the property is implicit (implies `false` if absent).
 
-#### text *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### text*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The full property text as specified in the style.
 
-#### parsed_ok *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### parsed_ok*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 Whether the property is understood by the browser (implies `true` if absent).
 
-#### disabled *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### disabled*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 Whether the property is disabled by the user (present for source-based properties only).
 
-#### range_ *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
+#### range_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
 
 The entire property range in the enclosing style declaration (if available).
 
-#### longhand_properties *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSProperty`](#nodriver.cdp.css.CSSProperty)]]* *= None*
+#### longhand_properties*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSProperty`](#nodriver.cdp.css.CSSProperty)]]* *= None*
 
 Parsed longhand components of this property if it is a shorthand.
 This field will be empty if the given property is not a shorthand.
@@ -427,11 +451,11 @@ This field will be empty if the given property is not a shorthand.
 
 CSS media rule descriptor.
 
-#### text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Media query text.
 
-#### source *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### source*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 “mediaRule” if specified by a @media rule, “importRule” if
 specified by an @import rule, “linkedSheet” if specified by a “media” attribute in a linked
@@ -441,20 +465,20 @@ stylesheet’s STYLE tag.
 * **Type:**
   Source of the media query
 
-#### source_url *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### source_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 URL of the document containing the media query description.
 
-#### range_ *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
+#### range_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
 
 The associated rule (@media or @import) header range in the enclosing stylesheet (if
 available).
 
-#### style_sheet_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
+#### style_sheet_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
 
 Identifier of the stylesheet containing this object (if exists).
 
-#### media_list *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`MediaQuery`](#nodriver.cdp.css.MediaQuery)]]* *= None*
+#### media_list*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`MediaQuery`](#nodriver.cdp.css.MediaQuery)]]* *= None*
 
 Array of media queries.
 
@@ -462,11 +486,11 @@ Array of media queries.
 
 Media query descriptor.
 
-#### expressions *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`MediaQueryExpression`](#nodriver.cdp.css.MediaQueryExpression)]*
+#### expressions*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`MediaQueryExpression`](#nodriver.cdp.css.MediaQueryExpression)]*
 
 Array of media query expressions.
 
-#### active *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### active*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Whether the media query condition is satisfied.
 
@@ -474,23 +498,23 @@ Whether the media query condition is satisfied.
 
 Media query expression descriptor.
 
-#### value *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### value*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Media query expression value.
 
-#### unit *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### unit*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Media query expression units.
 
-#### feature *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### feature*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Media query expression feature.
 
-#### value_range *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
+#### value_range*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
 
 The associated range of the value text in the enclosing stylesheet (if available).
 
-#### computed_length *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+#### computed_length*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 
 Computed length of media query expression (if applicable).
 
@@ -498,32 +522,32 @@ Computed length of media query expression (if applicable).
 
 CSS container query rule descriptor.
 
-#### text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Container query text.
 
-#### range_ *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
+#### range_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
 
 The associated rule header range in the enclosing stylesheet (if
 available).
 
-#### style_sheet_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
+#### style_sheet_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
 
 Identifier of the stylesheet containing this object (if exists).
 
-#### name *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+#### name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Optional name for the container.
 
-#### physical_axes *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PhysicalAxes`](dom.md#nodriver.cdp.dom.PhysicalAxes)]* *= None*
+#### physical_axes*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PhysicalAxes`](dom.md#nodriver.cdp.dom.PhysicalAxes)]* *= None*
 
 Optional physical axes queried for the container.
 
-#### logical_axes *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LogicalAxes`](dom.md#nodriver.cdp.dom.LogicalAxes)]* *= None*
+#### logical_axes*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LogicalAxes`](dom.md#nodriver.cdp.dom.LogicalAxes)]* *= None*
 
 Optional logical axes queried for the container.
 
-#### queries_scroll_state *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+#### queries_scroll_state*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 true if the query contains scroll-state() queries.
 
@@ -531,20 +555,20 @@ true if the query contains scroll-state() queries.
 
 CSS Supports at-rule descriptor.
 
-#### text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Supports rule text.
 
-#### active *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### active*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Whether the supports condition is satisfied.
 
-#### range_ *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
+#### range_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
 
 The associated rule header range in the enclosing stylesheet (if
 available).
 
-#### style_sheet_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
+#### style_sheet_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
 
 Identifier of the stylesheet containing this object (if exists).
 
@@ -552,16 +576,16 @@ Identifier of the stylesheet containing this object (if exists).
 
 CSS Scope at-rule descriptor.
 
-#### text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Scope rule text.
 
-#### range_ *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
+#### range_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
 
 The associated rule header range in the enclosing stylesheet (if
 available).
 
-#### style_sheet_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
+#### style_sheet_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
 
 Identifier of the stylesheet containing this object (if exists).
 
@@ -569,16 +593,16 @@ Identifier of the stylesheet containing this object (if exists).
 
 CSS Layer at-rule descriptor.
 
-#### text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Layer name.
 
-#### range_ *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
+#### range_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
 
 The associated rule header range in the enclosing stylesheet (if
 available).
 
-#### style_sheet_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
+#### style_sheet_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
 
 Identifier of the stylesheet containing this object (if exists).
 
@@ -586,12 +610,12 @@ Identifier of the stylesheet containing this object (if exists).
 
 CSS Starting Style at-rule descriptor.
 
-#### range_ *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
+#### range_*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]* *= None*
 
 The associated rule header range in the enclosing stylesheet (if
 available).
 
-#### style_sheet_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
+#### style_sheet_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
 
 Identifier of the stylesheet containing this object (if exists).
 
@@ -599,16 +623,16 @@ Identifier of the stylesheet containing this object (if exists).
 
 CSS Layer data.
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Layer name.
 
-#### order *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### order*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Layer order. The order determines the order of the layer in the cascade order.
 A higher number has higher priority in the cascade order.
 
-#### sub_layers *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSLayerData`](#nodriver.cdp.css.CSSLayerData)]]* *= None*
+#### sub_layers*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSLayerData`](#nodriver.cdp.css.CSSLayerData)]]* *= None*
 
 Direct sub-layers
 
@@ -616,19 +640,19 @@ Direct sub-layers
 
 Information about amount of glyphs that were rendered with given font.
 
-#### family_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### family_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Font’s family name reported by platform.
 
-#### post_script_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### post_script_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Font’s PostScript name reported by platform.
 
-#### is_custom_font *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### is_custom_font*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
 Indicates if the font was downloaded or resolved locally.
 
-#### glyph_count *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### glyph_count*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Amount of glyphs that were rendered with this font.
 
@@ -636,23 +660,23 @@ Amount of glyphs that were rendered with this font.
 
 Information about font variation axes for variable fonts
 
-#### tag *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### tag*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The font-variation-setting tag (a.k.a. “axis tag”).
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Human-readable variation name in the default language (normally, “en”).
 
-#### min_value *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### min_value*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 The minimum value (inclusive) the font supports for this tag.
 
-#### max_value *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### max_value*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 The maximum value (inclusive) the font supports for this tag.
 
-#### default_value *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### default_value*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 The default value.
 
@@ -661,43 +685,43 @@ The default value.
 Properties of a web font: [https://www.w3.org/TR/2008/REC-CSS2-20080411/fonts.html#font-descriptions](https://www.w3.org/TR/2008/REC-CSS2-20080411/fonts.html#font-descriptions)
 and additional information such as platformFontFamily and fontVariationAxes.
 
-#### font_family *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### font_family*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The font-family.
 
-#### font_style *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### font_style*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The font-style.
 
-#### font_variant *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### font_variant*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The font-variant.
 
-#### font_weight *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### font_weight*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The font-weight.
 
-#### font_stretch *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### font_stretch*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The font-stretch.
 
-#### font_display *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### font_display*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The font-display.
 
-#### unicode_range *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### unicode_range*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The unicode-range.
 
-#### src *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### src*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The src.
 
-#### platform_font_family *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### platform_font_family*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 The resolved platform font family
 
-#### font_variation_axes *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FontVariationAxis`](#nodriver.cdp.css.FontVariationAxis)]]* *= None*
+#### font_variation_axes*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`FontVariationAxis`](#nodriver.cdp.css.FontVariationAxis)]]* *= None*
 
 Available variation settings (a.k.a. “axes”).
 
@@ -705,15 +729,15 @@ Available variation settings (a.k.a. “axes”).
 
 CSS try rule representation.
 
-#### origin *: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
+#### origin*: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
 
 Parent stylesheet’s origin.
 
-#### style *: [`CSSStyle`](#nodriver.cdp.css.CSSStyle)*
+#### style*: [`CSSStyle`](#nodriver.cdp.css.CSSStyle)*
 
 Associated style declaration.
 
-#### style_sheet_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
+#### style_sheet_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
 
 The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from.
@@ -722,21 +746,21 @@ stylesheet rules) this rule came from.
 
 CSS @position-try rule representation.
 
-#### name *: [`Value`](#nodriver.cdp.css.Value)*
+#### name*: [`Value`](#nodriver.cdp.css.Value)*
 
 The prelude dashed-ident name
 
-#### origin *: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
+#### origin*: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
 
 Parent stylesheet’s origin.
 
-#### style *: [`CSSStyle`](#nodriver.cdp.css.CSSStyle)*
+#### style*: [`CSSStyle`](#nodriver.cdp.css.CSSStyle)*
 
 Associated style declaration.
 
-#### active *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### active*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### style_sheet_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
+#### style_sheet_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
 
 The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from.
@@ -745,11 +769,11 @@ stylesheet rules) this rule came from.
 
 CSS keyframes rule representation.
 
-#### animation_name *: [`Value`](#nodriver.cdp.css.Value)*
+#### animation_name*: [`Value`](#nodriver.cdp.css.Value)*
 
 Animation name.
 
-#### keyframes *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSKeyframeRule`](#nodriver.cdp.css.CSSKeyframeRule)]*
+#### keyframes*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSKeyframeRule`](#nodriver.cdp.css.CSSKeyframeRule)]*
 
 List of keyframes.
 
@@ -757,31 +781,31 @@ List of keyframes.
 
 Representation of a custom property registration through CSS.registerProperty
 
-#### property_name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### property_name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### inherits *: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+#### inherits*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
-#### syntax *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### syntax*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-#### initial_value *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Value`](#nodriver.cdp.css.Value)]* *= None*
+#### initial_value*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Value`](#nodriver.cdp.css.Value)]* *= None*
 
 ### *class* CSSFontPaletteValuesRule(origin, font_palette_name, style, style_sheet_id=None)
 
 CSS font-palette-values rule representation.
 
-#### origin *: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
+#### origin*: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
 
 Parent stylesheet’s origin.
 
-#### font_palette_name *: [`Value`](#nodriver.cdp.css.Value)*
+#### font_palette_name*: [`Value`](#nodriver.cdp.css.Value)*
 
 Associated font palette name.
 
-#### style *: [`CSSStyle`](#nodriver.cdp.css.CSSStyle)*
+#### style*: [`CSSStyle`](#nodriver.cdp.css.CSSStyle)*
 
 Associated style declaration.
 
-#### style_sheet_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
+#### style_sheet_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
 
 The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from.
@@ -790,19 +814,92 @@ stylesheet rules) this rule came from.
 
 CSS property at-rule representation.
 
-#### origin *: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
+#### origin*: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
 
 Parent stylesheet’s origin.
 
-#### property_name *: [`Value`](#nodriver.cdp.css.Value)*
+#### property_name*: [`Value`](#nodriver.cdp.css.Value)*
 
 Associated property name.
 
-#### style *: [`CSSStyle`](#nodriver.cdp.css.CSSStyle)*
+#### style*: [`CSSStyle`](#nodriver.cdp.css.CSSStyle)*
 
 Associated style declaration.
 
-#### style_sheet_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
+#### style_sheet_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
+
+The css style sheet identifier (absent for user agent stylesheet and user-specified
+stylesheet rules) this rule came from.
+
+### *class* CSSFunctionParameter(name, type_)
+
+CSS function argument representation.
+
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+The parameter name.
+
+#### type_*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+The parameter type.
+
+### *class* CSSFunctionConditionNode(children, condition_text, media=None, container_queries=None, supports=None)
+
+CSS function conditional block representation.
+
+#### children*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSFunctionNode`](#nodriver.cdp.css.CSSFunctionNode)]*
+
+Block body.
+
+#### condition_text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+The condition text.
+
+#### media*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSMedia`](#nodriver.cdp.css.CSSMedia)]* *= None*
+
+Media query for this conditional block. Only one type of condition should be set.
+
+#### container_queries*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSContainerQuery`](#nodriver.cdp.css.CSSContainerQuery)]* *= None*
+
+Container query for this conditional block. Only one type of condition should be set.
+
+#### supports*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSSupports`](#nodriver.cdp.css.CSSSupports)]* *= None*
+
+@supports CSS at-rule condition. Only one type of condition should be set.
+
+### *class* CSSFunctionNode(condition=None, style=None)
+
+Section of the body of a CSS function rule.
+
+#### condition*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSFunctionConditionNode`](#nodriver.cdp.css.CSSFunctionConditionNode)]* *= None*
+
+A conditional block. If set, style should not be set.
+
+#### style*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSStyle`](#nodriver.cdp.css.CSSStyle)]* *= None*
+
+Values set by this node. If set, condition should not be set.
+
+### *class* CSSFunctionRule(name, origin, parameters, children, style_sheet_id=None)
+
+CSS function at-rule representation.
+
+#### name*: [`Value`](#nodriver.cdp.css.Value)*
+
+Name of the function.
+
+#### origin*: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
+
+Parent stylesheet’s origin.
+
+#### parameters*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSFunctionParameter`](#nodriver.cdp.css.CSSFunctionParameter)]*
+
+List of parameters.
+
+#### children*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSFunctionNode`](#nodriver.cdp.css.CSSFunctionNode)]*
+
+Function body.
+
+#### style_sheet_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
 
 The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from.
@@ -811,19 +908,19 @@ stylesheet rules) this rule came from.
 
 CSS keyframe rule representation.
 
-#### origin *: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
+#### origin*: [`StyleSheetOrigin`](#nodriver.cdp.css.StyleSheetOrigin)*
 
 Parent stylesheet’s origin.
 
-#### key_text *: [`Value`](#nodriver.cdp.css.Value)*
+#### key_text*: [`Value`](#nodriver.cdp.css.Value)*
 
 Associated key text.
 
-#### style *: [`CSSStyle`](#nodriver.cdp.css.CSSStyle)*
+#### style*: [`CSSStyle`](#nodriver.cdp.css.CSSStyle)*
 
 Associated style declaration.
 
-#### style_sheet_id *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
+#### style_sheet_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]* *= None*
 
 The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from.
@@ -832,15 +929,15 @@ stylesheet rules) this rule came from.
 
 A descriptor of operation to mutate style declaration text.
 
-#### style_sheet_id *: [`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)*
+#### style_sheet_id*: [`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)*
 
 The css style sheet identifier.
 
-#### range_ *: [`SourceRange`](#nodriver.cdp.css.SourceRange)*
+#### range_*: [`SourceRange`](#nodriver.cdp.css.SourceRange)*
 
 The range of the style text in the enclosing stylesheet.
 
-#### text *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### text*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 New style text.
 
@@ -864,7 +961,7 @@ position specified by `location`.
   * **style_sheet_id** ([`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)) – The css style sheet identifier where a new rule should be inserted.
   * **rule_text** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – The text of a new rule.
   * **location** ([`SourceRange`](#nodriver.cdp.css.SourceRange)) – Text position of a new rule in the target style sheet.
-  * **node_for_property_syntax_validation** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](dom.md#nodriver.cdp.dom.NodeId)]) – **(EXPERIMENTAL)**  *(Optional)* NodeId for the DOM node in whose context custom property declarations for registered properties should be validated. If omitted, declarations in the new rule text can only be validated statically, which may produce incorrect results if the declaration contains a var() for example.
+  * **node_for_property_syntax_validation** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](dom.md#nodriver.cdp.dom.NodeId)]) – **(EXPERIMENTAL)** *(Optional)* NodeId for the DOM node in whose context custom property declarations for registered properties should be validated. If omitted, declarations in the new rule text can only be validated statically, which may produce incorrect results if the declaration contains a var() for example.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`CSSRule`](#nodriver.cdp.css.CSSRule)]
 * **Returns:**
@@ -881,12 +978,13 @@ Returns all class names from specified stylesheet.
 * **Returns:**
   Class name list.
 
-### create_style_sheet(frame_id)
+### create_style_sheet(frame_id, force=None)
 
 Creates a new special “via-inspector” stylesheet in the frame with given `frameId`.
 
 * **Parameters:**
-  **frame_id** ([`FrameId`](page.md#nodriver.cdp.page.FrameId)) – Identifier of the frame where “via-inspector” stylesheet should be created.
+  * **frame_id** ([`FrameId`](page.md#nodriver.cdp.page.FrameId)) – Identifier of the frame where “via-inspector” stylesheet should be created.
+  * **force** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* If true, creates a new stylesheet for every call. If false, returns a stylesheet previously created by a call with force=false for the frame’s document if it exists or creates a new stylesheet (default: false).
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)]
 * **Returns:**
@@ -918,6 +1016,33 @@ the browser.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
+### force_starting_style(node_id, forced)
+
+Ensures that the given node is in its starting-style state.
+
+* **Parameters:**
+  * **node_id** ([`NodeId`](dom.md#nodriver.cdp.dom.NodeId)) – The element id for which to force the starting-style state.
+  * **forced** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – Boolean indicating if this is on or off.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### get_animated_styles_for_node(node_id)
+
+Returns the styles coming from animations & transitions
+including the animation & transition styles coming from inheritance chain.
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  **node_id** ([`NodeId`](dom.md#nodriver.cdp.dom.NodeId)) – 
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSAnimationStyle`](#nodriver.cdp.css.CSSAnimationStyle)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSStyle`](#nodriver.cdp.css.CSSStyle)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`InheritedAnimatedStyleEntry`](#nodriver.cdp.css.InheritedAnimatedStyleEntry)]]]]
+* **Returns:**
+  A tuple with the following items:
+  1. **animationStyles** - *(Optional)* Styles coming from animations.
+  2. **transitionsStyle** - *(Optional)* Style coming from transitions.
+  3. **inherited** - *(Optional)* Inherited style entries for animationsStyle and transitionsStyle from the inheritance chain of the element.
+
 ### get_background_colors(node_id)
 
 * **Parameters:**
@@ -926,9 +1051,9 @@ the browser.
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]]
 * **Returns:**
   A tuple with the following items:
-  1. **backgroundColors** -  *(Optional)* The range of background colors behind this element, if it contains any visible text. If no visible text is present, this will be undefined. In the case of a flat background color, this will consist of simply that color. In the case of a gradient, this will consist of each of the color stops. For anything more complicated, this will be an empty array. Images will be ignored (as if the image had failed to load).
-  2. **computedFontSize** -  *(Optional)* The computed font size for this node, as a CSS computed value string (e.g. ‘12px’).
-  3. **computedFontWeight** -  *(Optional)* The computed font weight for this node, as a CSS computed value string (e.g. ‘normal’ or ‘100’).
+  1. **backgroundColors** - *(Optional)* The range of background colors behind this element, if it contains any visible text. If no visible text is present, this will be undefined. In the case of a flat background color, this will consist of simply that color. In the case of a gradient, this will consist of each of the color stops. For anything more complicated, this will be an empty array. Images will be ignored (as if the image had failed to load).
+  2. **computedFontSize** - *(Optional)* The computed font size for this node, as a CSS computed value string (e.g. ‘12px’).
+  3. **computedFontWeight** - *(Optional)* The computed font weight for this node, as a CSS computed value string (e.g. ‘normal’ or ‘100’).
 
 ### get_computed_style_for_node(node_id)
 
@@ -952,8 +1077,8 @@ attributes) for a DOM node identified by `nodeId`.
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSStyle`](#nodriver.cdp.css.CSSStyle)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSStyle`](#nodriver.cdp.css.CSSStyle)]]]
 * **Returns:**
   A tuple with the following items:
-  1. **inlineStyle** -  *(Optional)* Inline style for the specified DOM node.
-  2. **attributesStyle** -  *(Optional)* Attribute-defined element style (e.g. resulting from “width=20 height=100%”).
+  1. **inlineStyle** - *(Optional)* Inline style for the specified DOM node.
+  2. **attributesStyle** - *(Optional)* Attribute-defined element style (e.g. resulting from “width=20 height=100%”).
 
 ### get_layers_for_node(node_id)
 
@@ -984,6 +1109,17 @@ returns an array of locations of the CSS selector in the style sheet.
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SourceRange`](#nodriver.cdp.css.SourceRange)]]
 * **Returns:**
 
+### get_longhand_properties(shorthand_name, value)
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  * **shorthand_name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **value** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSProperty`](#nodriver.cdp.css.CSSProperty)]]
+* **Returns:**
+
 ### get_matched_styles_for_node(node_id)
 
 Returns requested styles for a DOM node identified by `nodeId`.
@@ -991,22 +1127,23 @@ Returns requested styles for a DOM node identified by `nodeId`.
 * **Parameters:**
   **node_id** ([`NodeId`](dom.md#nodriver.cdp.dom.NodeId)) – 
 * **Return type:**
-  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSStyle`](#nodriver.cdp.css.CSSStyle)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSStyle`](#nodriver.cdp.css.CSSStyle)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`RuleMatch`](#nodriver.cdp.css.RuleMatch)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PseudoElementMatches`](#nodriver.cdp.css.PseudoElementMatches)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`InheritedStyleEntry`](#nodriver.cdp.css.InheritedStyleEntry)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`InheritedPseudoElementMatches`](#nodriver.cdp.css.InheritedPseudoElementMatches)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSKeyframesRule`](#nodriver.cdp.css.CSSKeyframesRule)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSPositionTryRule`](#nodriver.cdp.css.CSSPositionTryRule)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSPropertyRule`](#nodriver.cdp.css.CSSPropertyRule)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSPropertyRegistration`](#nodriver.cdp.css.CSSPropertyRegistration)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSFontPaletteValuesRule`](#nodriver.cdp.css.CSSFontPaletteValuesRule)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](dom.md#nodriver.cdp.dom.NodeId)]]]
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSStyle`](#nodriver.cdp.css.CSSStyle)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSStyle`](#nodriver.cdp.css.CSSStyle)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`RuleMatch`](#nodriver.cdp.css.RuleMatch)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PseudoElementMatches`](#nodriver.cdp.css.PseudoElementMatches)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`InheritedStyleEntry`](#nodriver.cdp.css.InheritedStyleEntry)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`InheritedPseudoElementMatches`](#nodriver.cdp.css.InheritedPseudoElementMatches)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSKeyframesRule`](#nodriver.cdp.css.CSSKeyframesRule)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSPositionTryRule`](#nodriver.cdp.css.CSSPositionTryRule)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSPropertyRule`](#nodriver.cdp.css.CSSPropertyRule)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSPropertyRegistration`](#nodriver.cdp.css.CSSPropertyRegistration)]], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CSSFontPaletteValuesRule`](#nodriver.cdp.css.CSSFontPaletteValuesRule)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](dom.md#nodriver.cdp.dom.NodeId)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSFunctionRule`](#nodriver.cdp.css.CSSFunctionRule)]]]]
 * **Returns:**
   A tuple with the following items:
-  1. **inlineStyle** -  *(Optional)* Inline style for the specified DOM node.
-  2. **attributesStyle** -  *(Optional)* Attribute-defined element style (e.g. resulting from “width=20 height=100%”).
-  3. **matchedCSSRules** -  *(Optional)* CSS rules matching this node, from all applicable stylesheets.
-  4. **pseudoElements** -  *(Optional)* Pseudo style matches for this node.
-  5. **inherited** -  *(Optional)* A chain of inherited styles (from the immediate node parent up to the DOM tree root).
-  6. **inheritedPseudoElements** -  *(Optional)* A chain of inherited pseudo element styles (from the immediate node parent up to the DOM tree root).
-  7. **cssKeyframesRules** -  *(Optional)* A list of CSS keyframed animations matching this node.
-  8. **cssPositionTryRules** -  *(Optional)* A list of CSS @position-try rules matching this node, based on the position-try-fallbacks property.
-  9. **activePositionFallbackIndex** -  *(Optional)* Index of the active fallback in the applied position-try-fallback property, will not be set if there is no active position-try fallback.
-  10. **cssPropertyRules** -  *(Optional)* A list of CSS at-property rules matching this node.
-  11. **cssPropertyRegistrations** -  *(Optional)* A list of CSS property registrations matching this node.
-  12. **cssFontPaletteValuesRule** -  *(Optional)* A font-palette-values rule matching this node.
-  13. **parentLayoutNodeId** -  *(Optional)* Id of the first parent element that does not have display: contents.
+  1. **inlineStyle** - *(Optional)* Inline style for the specified DOM node.
+  2. **attributesStyle** - *(Optional)* Attribute-defined element style (e.g. resulting from “width=20 height=100%”).
+  3. **matchedCSSRules** - *(Optional)* CSS rules matching this node, from all applicable stylesheets.
+  4. **pseudoElements** - *(Optional)* Pseudo style matches for this node.
+  5. **inherited** - *(Optional)* A chain of inherited styles (from the immediate node parent up to the DOM tree root).
+  6. **inheritedPseudoElements** - *(Optional)* A chain of inherited pseudo element styles (from the immediate node parent up to the DOM tree root).
+  7. **cssKeyframesRules** - *(Optional)* A list of CSS keyframed animations matching this node.
+  8. **cssPositionTryRules** - *(Optional)* A list of CSS @position-try rules matching this node, based on the position-try-fallbacks property.
+  9. **activePositionFallbackIndex** - *(Optional)* Index of the active fallback in the applied position-try-fallback property, will not be set if there is no active position-try fallback.
+  10. **cssPropertyRules** - *(Optional)* A list of CSS at-property rules matching this node.
+  11. **cssPropertyRegistrations** - *(Optional)* A list of CSS property registrations matching this node.
+  12. **cssFontPaletteValuesRule** - *(Optional)* A font-palette-values rule matching this node.
+  13. **parentLayoutNodeId** - *(Optional)* Id of the first parent element that does not have display: contents.
+  14. **cssFunctionRules** - *(Optional)* A list of CSS at-function rules referenced by styles of this node.
 
 ### get_media_queries()
 
@@ -1038,6 +1175,23 @@ Returns the current textual content for a stylesheet.
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`str`](https://docs.python.org/3/library/stdtypes.html#str)]
 * **Returns:**
   The stylesheet text.
+
+### resolve_values(values, node_id, property_name=None, pseudo_type=None, pseudo_identifier=None)
+
+Resolve the specified values in the context of the provided element.
+For example, a value of ‘1em’ is evaluated according to the computed
+‘font-size’ of the element and a value ‘calc(1px + 2px)’ will be
+resolved to ‘3px’.
+
+* **Parameters:**
+  * **values** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – Substitution functions (var()/env()/attr()) and cascade-dependent keywords (revert/revert-layer) do not work.
+  * **node_id** ([`NodeId`](dom.md#nodriver.cdp.dom.NodeId)) – Id of the node in whose context the expression is evaluated
+  * **property_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Only longhands and custom property names are accepted.
+  * **pseudo_type** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PseudoType`](dom.md#nodriver.cdp.dom.PseudoType)]) – **(EXPERIMENTAL)** *(Optional)* Pseudo element type, only works for pseudo elements that generate elements in the tree, such as ::before and ::after.
+  * **pseudo_identifier** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)** *(Optional)* Pseudo element custom ident.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]
+* **Returns:**
 
 ### set_container_query_text(style_sheet_id, range_, text)
 
@@ -1154,7 +1308,7 @@ Sets the new stylesheet text.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]
 * **Returns:**
-   *(Optional)* URL of source map associated with script (if any).
+  *(Optional)* URL of source map associated with script (if any).
 
 ### set_style_texts(edits, node_for_property_syntax_validation=None)
 
@@ -1162,7 +1316,7 @@ Applies specified style edits one after another in the given order.
 
 * **Parameters:**
   * **edits** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`StyleDeclarationEdit`](#nodriver.cdp.css.StyleDeclarationEdit)]) – 
-  * **node_for_property_syntax_validation** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](dom.md#nodriver.cdp.dom.NodeId)]) – **(EXPERIMENTAL)**  *(Optional)* NodeId for the DOM node in whose context custom property declarations for registered properties should be validated. If omitted, declarations in the new rule text can only be validated statically, which may produce incorrect results if the declaration contains a var() for example.
+  * **node_for_property_syntax_validation** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](dom.md#nodriver.cdp.dom.NodeId)]) – **(EXPERIMENTAL)** *(Optional)* NodeId for the DOM node in whose context custom property declarations for registered properties should be validated. If omitted, declarations in the new rule text can only be validated statically, which may produce incorrect results if the declaration contains a var() for example.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSStyle`](#nodriver.cdp.css.CSSStyle)]]
 * **Returns:**
@@ -1250,7 +1404,7 @@ Pass `undefined` to disable tracking.
 **EXPERIMENTAL**
 
 * **Parameters:**
-  **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](dom.md#nodriver.cdp.dom.NodeId)]) –  *(Optional)*
+  **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](dom.md#nodriver.cdp.dom.NodeId)]) – *(Optional)*
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1265,7 +1419,7 @@ you use the event’s attributes.
 Fires whenever a web font is updated.  A non-empty font parameter indicates a successfully loaded
 web font.
 
-#### font *: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FontFace`](#nodriver.cdp.css.FontFace)]*
+#### font*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FontFace`](#nodriver.cdp.css.FontFace)]*
 
 The web font that has loaded.
 
@@ -1278,7 +1432,7 @@ resized.) The current implementation considers only viewport-dependent media fea
 
 Fired whenever an active document stylesheet is added.
 
-#### header *: [`CSSStyleSheetHeader`](#nodriver.cdp.css.CSSStyleSheetHeader)*
+#### header*: [`CSSStyleSheetHeader`](#nodriver.cdp.css.CSSStyleSheetHeader)*
 
 Added stylesheet metainfo.
 
@@ -1286,13 +1440,13 @@ Added stylesheet metainfo.
 
 Fired whenever a stylesheet is changed as a result of the client operation.
 
-#### style_sheet_id *: [`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)*
+#### style_sheet_id*: [`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)*
 
 ### *class* StyleSheetRemoved(style_sheet_id)
 
 Fired whenever an active document stylesheet is removed.
 
-#### style_sheet_id *: [`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)*
+#### style_sheet_id*: [`StyleSheetId`](#nodriver.cdp.css.StyleSheetId)*
 
 Identifier of the removed stylesheet.
 
@@ -1300,6 +1454,6 @@ Identifier of the removed stylesheet.
 
 **EXPERIMENTAL**
 
-#### node_id *: [`NodeId`](dom.md#nodriver.cdp.dom.NodeId)*
+#### node_id*: [`NodeId`](dom.md#nodriver.cdp.dom.NodeId)*
 
 The node id that has updated computed styles.

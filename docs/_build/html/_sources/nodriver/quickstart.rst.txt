@@ -122,7 +122,27 @@ I'll leave out the async boilerplate here
 
 
 
+Proxies (socks5, authenticated too)
+============================
 
+You can create as many browser contexts, with each a
+different proxy, while normally you can only use 1 proxy
+for all your browser windows.
+
+.. code-block::
+
+    from nodriver import *
+    browser = await start()
+    proxied_tab = await browser.create_context(
+        url: ...
+        proxy_server = "socks5://myuser:mypass@myproxyhost.local"
+        proxy_bypass_list = ["localhost"]
+    )
+    await proxied_tab.get('https://whatismyip.com')
+
+
+Concrete example
+=====================
 A more concrete example, which can be found in the ./example/ folder,
 shows a script to create a twitter account
 

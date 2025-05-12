@@ -47,7 +47,7 @@ this is also suitable to use as wait condition.
 
 ## [`find()`](#nodriver.Tab.find) |  find(text, best_match=True) or find(text, True)
 
-Much more powerful (and expensive!!) than the above, is the use of the `find(text, best_match=True)` flag.
+Much more powerful (and expensive!!) than the above, is the use of the find(text, best_match=True) flag.
 It will still return 1 element, but when multiple matches are found, picks the one having the
 most similar text length.
 How would that help?
@@ -71,13 +71,37 @@ this is also suitable to use as wait condition.
 
 ## await [`Tab`](#nodriver.Tab)
 
-calling `await tab` will do a lot of stuff under the hood, and ensures all references
+calling await tab will do a lot of stuff under the hood, and ensures all references
 are up to date. also it allows for the script to “breathe”, as it is oftentime faster than your browser or
 webpage. So whenever you get stuck and things crashes or element could not be found, you should probably let
-it “breathe”  by calling `await page`  and/or `await page.sleep()`
+it “breathe”  by calling await page  and/or await page.sleep()
 
 also, it’s ensuring `url` will be updated to the most recent one, which is quite important in some
 other methods.
+
+attempts to find the location of given template image in the current viewport
+the only real use case for this is bot-detection systems.
+you can find for example the location of a ‘verify’-checkbox,
+which are hidden from dom using shadow-root’s or workers.
+
+## await [`Tab.template_location`](#nodriver.Tab.template_location) (and await [`Tab.verify_cf`](#nodriver.Tab.verify_cf))
+
+attempts to find the location of given template image in the current viewport.
+the only real use case for this is bot-detection systems.
+you can find, for example the location of a ‘verify’-checkbox, which are hidden from dom
+using shadow-root’s or/or workers and cannot be controlled by normal methods.
+
+template_image can be custom (for example your language, included is english only),
+but you need to create the template image yourself, which is just a cropped
+image of the area, see example image, where the target is exactly in the center.
+template_image can be custom (for example your language), but you need to
+create the template image yourself, where the target is exactly in the center.
+
+## example (111x71)
+
+this includes the white space on the left, to make the box center
+
+![example template image](nodriver/classes/template_example.png)
 
 ### Using other and custom CDP commands
 
@@ -92,10 +116,6 @@ cdp section.
 
 when you import \* from this package, cdp will be in your namespace, and contains all domains/actions/events
 you can act upon.
-
-#### *async* disconnect()
-
-closes the websocket connection. should not be called manually by users.
 
 #### *async* activate()
 
@@ -119,19 +139,12 @@ page.add_handler(cdp.network.RequestWillBeSent, lambda event: print('network eve
 the next time you make network traffic you will see your console print like crazy.
 
 * **Parameters:**
-  * **event_type_or_domain** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`type`](https://docs.python.org/3/library/functions.html#type), [`ModuleType`](https://docs.python.org/3/library/types.html#types.ModuleType)]) – 
+  * **event_type_or_domain** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`type`](https://docs.python.org/3/library/functions.html#type), [`ModuleType`](https://docs.python.org/3/library/types.html#types.ModuleType), [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`type`](https://docs.python.org/3/library/functions.html#type)]]) – 
   * **handler** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable), [`Awaitable`](https://docs.python.org/3/library/typing.html#typing.Awaitable)]) – 
 * **Returns:**
 * **Return type:**
 
-#### *async* connect(\*\*kw)
-
-opens the websocket connection. should not be called manually by users
-:type kw: 
-:param kw:
-:return:
-
-#### attached *: bool* *= None*
+#### attached*: [`bool`](https://docs.python.org/3/library/functions.html#bool)* *= None*
 
 #### *async* back()
 
@@ -141,7 +154,14 @@ history back
 
 alias to self.activate
 
-#### browser *: nodriver.core.browser.Browser*
+#### *property* browser*: [Browser](browser.md#nodriver.Browser)*
+
+#### *async* bypass_insecure_connection_warning()
+
+when you enter a site where the certificate is invalid
+you get a warning. call this function to “proceed”
+:return:
+:rtype:
 
 #### *async* close()
 
@@ -151,29 +171,34 @@ close the current target (ie: tab,window,page)
 
 #### *property* closed
 
+#### *async* connect(\*\*kw)
+
+opens the websocket connection. should not be called manually by users
+:type kw: 
+:param kw:
+:return:
+
+#### *async* disconnect()
+
+closes the websocket connection. should not be called manually by users.
+
 #### *async* download_file(url, filename=None)
 
 downloads file by given url.
 
 * **Parameters:**
   * **url** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – url of the file
-  * **filename** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/library/constants.html#None)]) – the name for the file. if not specified the name is composed from the url file name
+  * **filename** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`PathLike`, bound= [`str`](https://docs.python.org/3/library/stdtypes.html#str) | [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path))]) – the name for the file. if not specified the name is composed from the url file name
 
-#### *async* evaluate(expression, await_promise=False, return_by_value=True)
+#### *async* evaluate(expression, await_promise=False, return_by_value=False)
 
-#### feed_cdp(cdp_obj)
-
-used in specific cases, mostly during cdp.fetch.RequestPaused events,
-in which the browser literally blocks. using feed_cdp you can issue
-a response without a blocking “await”.
-
-note: this method won’t cause a response.
-note: this is not an async method, just a regular method!
-
-* **Parameters:**
-  **cdp_obj** – 
-* **Returns:**
 * **Return type:**
+  [`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any), [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`RemoteObject`](../cdp/runtime.md#nodriver.cdp.runtime.RemoteObject), [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ExceptionDetails`](../cdp/runtime.md#nodriver.cdp.runtime.ExceptionDetails)]]]
+
+#### *async* feed_cdp(cmd)
+
+* **Return type:**
+  `Future`
 
 #### *async* find(text, best_match=True, return_enclosing_element=True, timeout=10)
 
@@ -191,7 +216,7 @@ can also be used to wait for such element to appear.
       When False, it will return naively just the first match (but is way faster).
     * **type best_match:**
       bool
-  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float)*,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
 
 #### *async* find_all(text, timeout=10)
 
@@ -200,7 +225,7 @@ can also be used to wait for such element to appear.
 
 * **Parameters:**
   * **text** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – text to search for. note: script contents are also considered text
-  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float)*,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
 * **Return type:**
   [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Element`](element.md#nodriver.Element)]
 
@@ -221,6 +246,7 @@ finds and returns the first element containing <text>, or best match
 #### *async* find_elements_by_text(text, tag_hint=None)
 
 returns element which match the given text.
+returns element which match the given text.
 please note: this may (or will) also return any other element (like inline scripts),
 which happen to contain that text.
 
@@ -229,6 +255,8 @@ which happen to contain that text.
   * **tag_hint** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – when provided, narrows down search to only elements which match given tag eg: a, div, script, span
 * **Returns:**
 * **Return type:**
+
+#### *async* flash_point(x, y, duration=0.5, size=10)
 
 #### *async* forward()
 
@@ -275,6 +303,27 @@ convenience function, which returns all links (a,link,img,script,meta)
 #### *async* get_content()
 
 gets the current page source content (html)
+:return:
+:rtype:
+
+#### *async* get_frame_resource_tree()
+
+retrieves the frame resource tree for current tab.
+There seems no real difference between Tab.get_frame_tree()
+but still it returns a different object
+:return:
+:rtype:
+
+#### *async* get_frame_resource_urls()
+
+gets the urls of resources
+:return:
+:rtype:
+
+#### *async* get_frame_tree()
+
+retrieves the frame tree for current tab
+There seems no real difference between Tab.get_frame_resource_tree()
 :return:
 :rtype:
 
@@ -347,6 +396,45 @@ maximize page/tab/window
 
 minimize page/tab/window
 
+#### *async* mouse_click(x, y, button='left', buttons=1, modifiers=0, \_until_event=None)
+
+native click on position x,y
+:type y: [`float`](https://docs.python.org/3/library/functions.html#float)
+:param y:
+:type y:
+:type x: [`float`](https://docs.python.org/3/library/functions.html#float)
+:param x:
+:type x:
+:type button: [`str`](https://docs.python.org/3/library/stdtypes.html#str)
+:param button: str (default = “left”)
+:type buttons: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]
+:param buttons: which button (default 1 = left)
+:type modifiers: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]
+:param modifiers: *(Optional)* Bit field representing pressed modifier keys.
+
+> Alt=1, Ctrl=2, Meta/Command=4, Shift=8 (default: 0).
+* **Parameters:**
+  **\_until_event** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`type`](https://docs.python.org/3/library/functions.html#type)]) – internal. event to wait for before returning
+* **Returns:**
+
+#### *async* mouse_drag(source_point, dest_point, relative=False, steps=1)
+
+drag mouse from one point to another. holding button pressed
+you are probably looking for `element.Element.mouse_drag()` method. where you
+can drag on the element
+
+* **Parameters:**
+  * **dest_point** ([`tuple`](https://docs.python.org/3/library/stdtypes.html#tuple)[[`float`](https://docs.python.org/3/library/functions.html#float), [`float`](https://docs.python.org/3/library/functions.html#float)]) – 
+  * **source_point** ([`tuple`](https://docs.python.org/3/library/stdtypes.html#tuple)[[`float`](https://docs.python.org/3/library/functions.html#float), [`float`](https://docs.python.org/3/library/functions.html#float)]) – 
+  * **relative** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – when True, treats point as relative. for example (-100, 200) will move left 100px and down 200px
+  * **steps** ([*int*](https://docs.python.org/3/library/functions.html#int)) – move in <steps> points, this could make it look more “natural” (default 1),
+    but also a lot slower.
+    for very smooth action use 50-100
+* **Returns:**
+* **Return type:**
+
+#### *async* mouse_move(x, y, steps=10, flash=False)
+
 #### *async* open_external_inspector()
 
 opens the system’s browser containing the devtools inspector page
@@ -384,6 +472,16 @@ Reloads the page
 * **Returns:**
 * **Return type:**
 
+#### remove_handler(event_type_or_domain, handler=None)
+
+remove a handler for given event
+:type event_type_or_domain: [`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`type`](https://docs.python.org/3/library/functions.html#type), [`ModuleType`](https://docs.python.org/3/library/types.html#types.ModuleType), [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`type`](https://docs.python.org/3/library/functions.html#type)]]
+:param event_type_or_domain:
+:type event_type_or_domain:
+:type handler: [`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable), [`Awaitable`](https://docs.python.org/3/library/typing.html#typing.Awaitable)]
+:param handler:
+:type handler:
+
 #### *async* save_screenshot(filename='auto', format='jpeg', full_page=False)
 
 Saves a screenshot of the page.
@@ -397,6 +495,13 @@ This is not the same as [`Element.save_screenshot`](element.md#nodriver.Element.
   the path/filename of saved screenshot
 * **Return type:**
   [str](https://docs.python.org/3/library/stdtypes.html#str)
+
+#### *async* scroll_bottom_reached()
+
+returns True if scroll is at the bottom of the page
+handy when you need to scroll over paginated pages of different lengths
+:return:
+:rtype:
 
 #### *async* scroll_down(amount=25)
 
@@ -416,6 +521,11 @@ scrolls up maybe
 * **Returns:**
 * **Return type:**
 
+#### *async* search_frame_resources(query)
+
+* **Return type:**
+  [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SearchMatch`](../cdp/debugger.md#nodriver.cdp.debugger.SearchMatch)]]
+
 #### *async* select(selector, timeout=10)
 
 find single element by css selector.
@@ -423,7 +533,7 @@ can also be used to wait for such element to appear.
 
 * **Parameters:**
   * **selector** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – css selector, eg a[href], button[class\*=close], a > img[src]
-  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float)*,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
 * **Return type:**
   [`Element`](element.md#nodriver.Element)
 
@@ -434,7 +544,7 @@ can also be used to wait for such element to appear.
 
 * **Parameters:**
   * **selector** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – css selector, eg a[href], button[class\*=close], a > img[src]
-  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float) *,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float)*,*[*int*](https://docs.python.org/3/library/functions.html#int)) – raise timeout exception when after this many seconds nothing is found.
   * **include_frames** ([*bool*](https://docs.python.org/3/library/functions.html#bool)) – whether to include results in iframes.
 * **Return type:**
   [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Element`](element.md#nodriver.Element)]
@@ -459,7 +569,7 @@ sets the download path and allows downloads
 this is required for any download function to work (well not entirely, since when unset we set a default folder)
 
 * **Parameters:**
-  **path** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)]) – 
+  **path** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`PathLike`, bound= [`str`](https://docs.python.org/3/library/stdtypes.html#str) | [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path))]) – 
 * **Returns:**
 * **Return type:**
 
@@ -469,7 +579,7 @@ set local storage.
 dict items must be strings. simple types will be converted to strings automatically.
 
 * **Parameters:**
-  **items** ([*dict*](https://docs.python.org/3/library/stdtypes.html#dict) *[*[*str*](https://docs.python.org/3/library/stdtypes.html#str) *,*[*str*](https://docs.python.org/3/library/stdtypes.html#str) *]*) – dict containing {key:str, value:str}
+  **items** ([*dict*](https://docs.python.org/3/library/stdtypes.html#dict)*[*[*str*](https://docs.python.org/3/library/stdtypes.html#str)*,*[*str*](https://docs.python.org/3/library/stdtypes.html#str)*]*) – dict containing {key:str, value:str}
 * **Returns:**
 * **Return type:**
 
@@ -498,33 +608,70 @@ in case state is set other than “normal”, the left, top, width, and height a
   * **top** ([*int*](https://docs.python.org/3/library/functions.html#int)) – desired offset from the top, in pixels
   * **width** ([*int*](https://docs.python.org/3/library/functions.html#int)) – desired width in pixels
   * **height** ([*int*](https://docs.python.org/3/library/functions.html#int)) – desired height in pixels
-  * **state** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
-
-    can be one of the following strings:
+  * **state** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – can be one of the following strings:
     : - normal
       - fullscreen
       - maximized
       - minimized
 
-#### *async* sleep(t=0.25)
+#### *async* sleep(t=1)
 
-#### *property* target *: [TargetInfo](../cdp/target.md#nodriver.cdp.target.TargetInfo)*
+#### *property* target*: [TargetInfo](../cdp/target.md#nodriver.cdp.target.TargetInfo)*
 
-#### *async* update_target()
+#### *async* template_location(template_image=None)
 
-#### *async* verify_cf()
+attempts to find the location of given template image in the current viewport
+the only real use case for this is bot-detection systems.
+you can find for example the location of a ‘verify’-checkbox,
+which are hidden from dom using shadow-root’s or workers.
 
-an attempt..
+template_image can be custom (for example your language, included is english only),
+but you need to create the template image yourself, which is just a cropped
+image of the area, see example image, where the target is exactly in the center.
+template_image can be custom (for example your language), but you need to
+create the template image yourself, where the target is exactly in the center.
+
+### example (111x71)
+
+this includes the white space on the left, to make the box center
+
+![example template image](nodriver/classes/template_example.png)
+* **type template_image:**
+  [`TypeVar`](https://docs.python.org/3/library/typing.html#typing.TypeVar)(`PathLike`, bound= [`str`](https://docs.python.org/3/library/stdtypes.html#str) | [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path))
+* **param template_image:**
+* **type template_image:**
+* **return:**
+* **rtype:**
+
+#### *async* verify_cf(template_image=None, flash=False)
+
+convenience function to verify cf checkbox
+
+template_image can be custom (for example your language, included is english only),
+but you need to create the template image yourself, which is just a cropped
+image of the area, see example image, where the target is exactly in the center.
+
+### example (111x71)
+
+this includes the white space on the left, to make the box center
+
+![example template image](nodriver/classes/template_example.png)
+* **type template_image:**
+  [`str`](https://docs.python.org/3/library/stdtypes.html#str)
+* **param template_image:**
+  template_image can be custom (for example your language, included is english only),
+  but you need to create the template image yourself, which is just a cropped
+  image of the area, where the target is exactly in the center. see example on
+  ([https://ultrafunkamsterdam.github.io/nodriver/nodriver/classes/tab.html#example-111x71](https://ultrafunkamsterdam.github.io/nodriver/nodriver/classes/tab.html#example-111x71)),
+* **type template_image:**
+* **type flash:**
+* **param flash:**
+  whether to show an indicator where the mouse is clicking.
+* **type flash:**
+* **return:**
+* **rtype:**
 
 #### *async* wait(t=None)
-
-waits until the event listener reports idle (no new events received in certain timespan).
-when `t` is provided, ensures waiting for `t` seconds, no matter what.
-
-* **Parameters:**
-  **t** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`int`](https://docs.python.org/3/library/functions.html#int), [`float`](https://docs.python.org/3/library/functions.html#float)]) – 
-* **Returns:**
-* **Return type:**
 
 #### *async* wait_for(selector='', text='', timeout=10)
 
@@ -545,4 +692,27 @@ an TimeoutError will be raised
 * **Raises:**
   asyncio.TimeoutError
 
-#### websocket *: websockets.asyncio.client.ClientConnection*
+#### *property* websocket*: ClientConnection*
+
+#### *async* xpath(xpath, timeout=2.5)
+
+find elements by xpath string.
+if not immediately found, retries are attempted until timeout is reached (default 2.5 seconds).
+in case nothing is found, it returns an empty list. It will not raise.
+this timeout mechanism helps when relying on some element to appear before continuing your script.
+
+```python
+# find all the inline scripts (script elements without src attribute )
+await tab.xpath('//script[not(@src)]')
+
+# or here, more complex, but my personal favorite to case-insensitive text search
+
+await tab.xpath('//text()[ contains( translate(., "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"),"test")]')
+```
+
+* **Parameters:**
+  * **xpath** ([*str*](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **timeout** ([*float*](https://docs.python.org/3/library/functions.html#float)) – 2.5
+
+:return:List[nodriver.Element] or []
+:rtype:

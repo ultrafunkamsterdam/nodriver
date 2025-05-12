@@ -64,6 +64,8 @@ Some features
 what is new
 =============
 
+**tab.xpath("/some/x/path[#contains
+
 **tab.cf_verify()**
 
 finds the checkbox and click it successfully
@@ -107,7 +109,7 @@ does some hacking for more experienced users. It disables web security and origi
 
 
 Some examples of what the api looks like
-=============
+================================================
 ..
 
    * ```elem.text```

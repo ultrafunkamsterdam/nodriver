@@ -15,11 +15,11 @@ arguments to other commands.
 
 Run-time execution metric.
 
-#### name *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Metric name.
 
-#### value *: [`float`](https://docs.python.org/3/library/functions.html#float)*
+#### value*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 Metric value.
 
@@ -46,7 +46,7 @@ Disable collecting and reporting metrics.
 Enable collecting and reporting metrics.
 
 * **Parameters:**
-  **time_domain** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) –  *(Optional)* Time domain to use for collecting and reporting duration metrics.
+  **time_domain** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Time domain to use for collecting and reporting duration metrics.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -88,10 +88,10 @@ you use the event’s attributes.
 
 Current values of the metrics.
 
-#### metrics *: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Metric`](#nodriver.cdp.performance.Metric)]*
+#### metrics*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Metric`](#nodriver.cdp.performance.Metric)]*
 
 Current values of the metrics.
 
-#### title *: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+#### title*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Timestamp title.
