@@ -200,16 +200,6 @@ class Tab(Connection):
     ) -> asyncio.Future:
         return await super()._send_oneshot(cmd)
 
-    async def send(
-        self, cdp_obj: Generator[dict[str, Any], dict[str, Any], Any], _is_update=False
-    ) -> Any:
-        if self.browser:
-            if self.browser.config.headless:
-                await self._prepare_headless()
-            if self.browser.config.expert:
-                await self._prepare_expert()
-        return await super().send(cdp_obj, _is_update=_is_update)
-
     async def _prepare_headless(self):
 
         if getattr(self, "_prep_headless_done", None):
