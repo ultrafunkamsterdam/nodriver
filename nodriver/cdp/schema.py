@@ -6,19 +6,17 @@
 # CDP domain: Schema
 
 from __future__ import annotations
-
+import enum
 import typing
 from dataclasses import dataclass
-
-from .util import T_JSON_DICT
+from .util import event_class, T_JSON_DICT
 
 
 @dataclass
 class Domain:
-    """
+    '''
     Description of the protocol domain.
-    """
-
+    '''
     #: Domain name.
     name: str
 
@@ -27,26 +25,26 @@ class Domain:
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json["name"] = self.name
-        json["version"] = self.version
+        json['name'] = self.name
+        json['version'] = self.version
         return json
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> Domain:
         return cls(
-            name=str(json["name"]),
-            version=str(json["version"]),
+            name=str(json['name']),
+            version=str(json['version']),
         )
 
 
-def get_domains() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, typing.List[Domain]]:
-    """
+def get_domains() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[Domain]]:
+    '''
     Returns supported domains.
 
     :returns: List of supported domains.
-    """
+    '''
     cmd_dict: T_JSON_DICT = {
-        "method": "Schema.getDomains",
+        'method': 'Schema.getDomains',
     }
     json = yield cmd_dict
-    return [Domain.from_json(i) for i in json["domains"]]
+    return [Domain.from_json(i) for i in json['domains']]
