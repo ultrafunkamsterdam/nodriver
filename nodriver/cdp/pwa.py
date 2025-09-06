@@ -129,7 +129,8 @@ def install(
 
     To generate bundle id for proxy mode:
     1. Generate 32 random bytes.
-    2. Add a specific suffix 0x00 at the end.
+    2. Add a specific suffix at the end following the documentation
+       https://github.com/WICG/isolated-web-apps/blob/main/Scheme.md#suffix
     3. Encode the entire sequence using Base32 without padding.
 
     If Chrome is not in IWA dev

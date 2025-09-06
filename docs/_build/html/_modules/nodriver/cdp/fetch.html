@@ -273,24 +273,24 @@
 <span class="c1"># CDP domain: Fetch</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
-
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">io</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">page</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">event_class</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">io</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">network</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">page</span>
 
 
 <div class="viewcode-block" id="RequestId">
 <a class="viewcode-back" href="../../../nodriver/cdp/fetch.html#nodriver.cdp.fetch.RequestId">[docs]</a>
 <span class="k">class</span> <span class="nc">RequestId</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Unique request identifier.</span>
 <span class="sd">    Note that this does not identify individual HTTP requests that are part of</span>
 <span class="sd">    a network request.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span>
 
@@ -299,19 +299,18 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;RequestId(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="s1">&#39;RequestId(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">())</span></div>
 
 
 
 <div class="viewcode-block" id="RequestStage">
 <a class="viewcode-back" href="../../../nodriver/cdp/fetch.html#nodriver.cdp.fetch.RequestStage">[docs]</a>
 <span class="k">class</span> <span class="nc">RequestStage</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Stages of the request to handle. Request will intercept before the request is</span>
 <span class="sd">    sent. Response will intercept after the response is received (but before response</span>
 <span class="sd">    body is received).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">REQUEST</span> <span class="o">=</span> <span class="s2">&quot;Request&quot;</span>
     <span class="n">RESPONSE</span> <span class="o">=</span> <span class="s2">&quot;Response&quot;</span>
 
@@ -341,31 +340,19 @@
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">url_pattern</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;urlPattern&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url_pattern</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;urlPattern&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url_pattern</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;resourceType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_type</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;resourceType&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_type</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_stage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestStage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_stage</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;requestStage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_stage</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RequestPattern</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">url_pattern</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;urlPattern&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;urlPattern&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">resource_type</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">network</span><span class="o">.</span><span class="n">ResourceType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;resourceType&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resourceType&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">request_stage</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">RequestStage</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestStage&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requestStage&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
+            <span class="n">url_pattern</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;urlPattern&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;urlPattern&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">resource_type</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">ResourceType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;resourceType&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resourceType&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">request_stage</span><span class="o">=</span><span class="n">RequestStage</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;requestStage&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;requestStage&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
@@ -374,25 +361,24 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/fetch.html#nodriver.cdp.fetch.HeaderEntry">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">HeaderEntry</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Response HTTP header entry</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
 
     <span class="n">value</span><span class="p">:</span> <span class="nb">str</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HeaderEntry</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]),</span>
-            <span class="n">value</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]),</span>
+            <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]),</span>
+            <span class="n">value</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]),</span>
         <span class="p">)</span></div>
 
 
@@ -401,10 +387,9 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/fetch.html#nodriver.cdp.fetch.AuthChallenge">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">AuthChallenge</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Authorization challenge for HTTP status code 401 or 407.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="c1">#: Origin of the challenger.</span>
     <span class="n">origin</span><span class="p">:</span> <span class="nb">str</span>
 
@@ -419,22 +404,20 @@
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;origin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;scheme&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheme</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;realm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">realm</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;scheme&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheme</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;realm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">realm</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AuthChallenge</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">origin</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;origin&quot;</span><span class="p">]),</span>
-            <span class="n">scheme</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;scheme&quot;</span><span class="p">]),</span>
-            <span class="n">realm</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;realm&quot;</span><span class="p">]),</span>
-            <span class="n">source</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
+            <span class="n">origin</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;origin&#39;</span><span class="p">]),</span>
+            <span class="n">scheme</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;scheme&#39;</span><span class="p">]),</span>
+            <span class="n">realm</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;realm&#39;</span><span class="p">]),</span>
+            <span class="n">source</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
@@ -443,10 +426,9 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/fetch.html#nodriver.cdp.fetch.AuthChallengeResponse">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">AuthChallengeResponse</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Response to an AuthChallenge.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="c1">#: The decision on what to do in response to the authorization challenge.  Default means</span>
     <span class="c1">#: deferring to the default behavior of the net stack, which will likely either the Cancel</span>
     <span class="c1">#: authentication or display a popup dialog box.</span>
@@ -462,39 +444,31 @@
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;response&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AuthChallengeResponse</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">response</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;response&quot;</span><span class="p">]),</span>
-            <span class="n">username</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">password</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
+            <span class="n">response</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]),</span>
+            <span class="n">username</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">password</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="disable">
 <a class="viewcode-back" href="../../../nodriver/cdp/fetch.html#nodriver.cdp.fetch.disable">[docs]</a>
-<span class="k">def</span> <span class="nf">disable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">disable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Disables the fetch domain.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Fetch.disable&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;Fetch.disable&#39;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -504,23 +478,23 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/fetch.html#nodriver.cdp.fetch.enable">[docs]</a>
 <span class="k">def</span> <span class="nf">enable</span><span class="p">(</span>
         <span class="n">patterns</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">RequestPattern</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">handle_auth_requests</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">handle_auth_requests</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Enables issuing of requestPaused events. A request will be paused until client</span>
 <span class="sd">    calls one of failRequest, fulfillRequest or continueRequest/continueWithAuth.</span>
 
 <span class="sd">    :param patterns: *(Optional)* If specified, only requests matching any of these patterns will produce fetchRequested event and will be paused until clients response. If not set, all requests will be affected.</span>
 <span class="sd">    :param handle_auth_requests: *(Optional)* If true, authRequired events will be issued and requests will be paused expecting a call to continueWithAuth.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">patterns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;patterns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">patterns</span><span class="p">]</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;patterns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">patterns</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">handle_auth_requests</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;handleAuthRequests&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">handle_auth_requests</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;handleAuthRequests&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">handle_auth_requests</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Fetch.enable&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;Fetch.enable&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -529,20 +503,21 @@
 <div class="viewcode-block" id="fail_request">
 <a class="viewcode-back" href="../../../nodriver/cdp/fetch.html#nodriver.cdp.fetch.fail_request">[docs]</a>
 <span class="k">def</span> <span class="nf">fail_request</span><span class="p">(</span>
-        <span class="n">request_id</span><span class="p">:</span> <span class="n">RequestId</span><span class="p">,</span> <span class="n">error_reason</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">ErrorReason</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">request_id</span><span class="p">:</span> <span class="n">RequestId</span><span class="p">,</span>
+        <span class="n">error_reason</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">ErrorReason</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Causes the request to fail with specified reason.</span>
 
 <span class="sd">    :param request_id: An id the client received in requestPaused event.</span>
 <span class="sd">    :param error_reason: Causes the request to fail with the given reason.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;errorReason&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">error_reason</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;requestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;errorReason&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">error_reason</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Fetch.failRequest&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;Fetch.failRequest&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -556,9 +531,9 @@
         <span class="n">response_headers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">HeaderEntry</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">binary_response_headers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">body</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">response_phrase</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">response_phrase</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provides response to the request.</span>
 
 <span class="sd">    :param request_id: An id the client received in requestPaused event.</span>
@@ -567,21 +542,21 @@
 <span class="sd">    :param binary_response_headers: *(Optional)* Alternative way of specifying response headers as a \0-separated series of name: value pairs. Prefer the above method unless you need to represent some non-UTF8 values that can&#39;t be transmitted over the protocol as text. (Encoded as a base64 string when passed over JSON)</span>
 <span class="sd">    :param body: *(Optional)* A response body. If absent, original response body will be used if the request is intercepted at the response stage and empty body will be used if the request is intercepted at the request stage. (Encoded as a base64 string when passed over JSON)</span>
 <span class="sd">    :param response_phrase: *(Optional)* A textual representation of responseCode. If absent, a standard phrase matching responseCode is used.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;responseCode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_code</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;requestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;responseCode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_code</span>
     <span class="k">if</span> <span class="n">response_headers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;responseHeaders&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">response_headers</span><span class="p">]</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;responseHeaders&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">response_headers</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">binary_response_headers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;binaryResponseHeaders&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">binary_response_headers</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;binaryResponseHeaders&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">binary_response_headers</span>
     <span class="k">if</span> <span class="n">body</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">body</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">body</span>
     <span class="k">if</span> <span class="n">response_phrase</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;responsePhrase&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_phrase</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;responsePhrase&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_phrase</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Fetch.fulfillRequest&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;Fetch.fulfillRequest&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -595,9 +570,9 @@
         <span class="n">method</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">post_data</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">headers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">HeaderEntry</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">intercept_response</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">intercept_response</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Continues the request, optionally modifying some of its parameters.</span>
 
 <span class="sd">    :param request_id: An id the client received in requestPaused event.</span>
@@ -606,22 +581,22 @@
 <span class="sd">    :param post_data: *(Optional)* If set, overrides the post data in the request. (Encoded as a base64 string when passed over JSON)</span>
 <span class="sd">    :param headers: *(Optional)* If set, overrides the request headers. Note that the overrides do not extend to subsequent redirect hops, if a redirect happens. Another override may be applied to a different request produced by a redirect.</span>
 <span class="sd">    :param intercept_response: **(EXPERIMENTAL)** *(Optional)* If set, overrides response interception behavior for this request.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;requestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
     <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">method</span>
     <span class="k">if</span> <span class="n">post_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;postData&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">post_data</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;postData&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">post_data</span>
     <span class="k">if</span> <span class="n">headers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;headers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">headers</span><span class="p">]</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">headers</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">intercept_response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;interceptResponse&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">intercept_response</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;interceptResponse&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">intercept_response</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Fetch.continueRequest&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;Fetch.continueRequest&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -630,20 +605,21 @@
 <div class="viewcode-block" id="continue_with_auth">
 <a class="viewcode-back" href="../../../nodriver/cdp/fetch.html#nodriver.cdp.fetch.continue_with_auth">[docs]</a>
 <span class="k">def</span> <span class="nf">continue_with_auth</span><span class="p">(</span>
-        <span class="n">request_id</span><span class="p">:</span> <span class="n">RequestId</span><span class="p">,</span> <span class="n">auth_challenge_response</span><span class="p">:</span> <span class="n">AuthChallengeResponse</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">request_id</span><span class="p">:</span> <span class="n">RequestId</span><span class="p">,</span>
+        <span class="n">auth_challenge_response</span><span class="p">:</span> <span class="n">AuthChallengeResponse</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Continues a request supplying authChallengeResponse following authRequired event.</span>
 
 <span class="sd">    :param request_id: An id the client received in authRequired event.</span>
 <span class="sd">    :param auth_challenge_response: Response to  with an authChallenge.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;authChallengeResponse&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">auth_challenge_response</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;requestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;authChallengeResponse&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">auth_challenge_response</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Fetch.continueWithAuth&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;Fetch.continueWithAuth&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -656,9 +632,9 @@
         <span class="n">response_code</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">response_phrase</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">response_headers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">HeaderEntry</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">binary_response_headers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">binary_response_headers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Continues loading of the paused response, optionally modifying the</span>
 <span class="sd">    response headers. If either responseCode or headers are modified, all of them</span>
 <span class="sd">    must be present.</span>
@@ -670,20 +646,20 @@
 <span class="sd">    :param response_phrase: *(Optional)* A textual representation of responseCode. If absent, a standard phrase matching responseCode is used.</span>
 <span class="sd">    :param response_headers: *(Optional)* Response headers. If absent, original response headers will be used.</span>
 <span class="sd">    :param binary_response_headers: *(Optional)* Alternative way of specifying response headers as a \0-separated series of name: value pairs. Prefer the above method unless you need to represent some non-UTF8 values that can&#39;t be transmitted over the protocol as text. (Encoded as a base64 string when passed over JSON)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;requestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">response_code</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;responseCode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_code</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;responseCode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_code</span>
     <span class="k">if</span> <span class="n">response_phrase</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;responsePhrase&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_phrase</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;responsePhrase&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_phrase</span>
     <span class="k">if</span> <span class="n">response_headers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;responseHeaders&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">response_headers</span><span class="p">]</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;responseHeaders&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">response_headers</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">binary_response_headers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;binaryResponseHeaders&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">binary_response_headers</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;binaryResponseHeaders&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">binary_response_headers</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Fetch.continueResponse&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;Fetch.continueResponse&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -692,9 +668,9 @@
 <div class="viewcode-block" id="get_response_body">
 <a class="viewcode-back" href="../../../nodriver/cdp/fetch.html#nodriver.cdp.fetch.get_response_body">[docs]</a>
 <span class="k">def</span> <span class="nf">get_response_body</span><span class="p">(</span>
-        <span class="n">request_id</span><span class="p">:</span> <span class="n">RequestId</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">request_id</span><span class="p">:</span> <span class="n">RequestId</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Causes the body of the response to be received from the server and</span>
 <span class="sd">    returned as a single string. May only be issued for a request that</span>
 <span class="sd">    is paused in the Response stage and is mutually exclusive with</span>
@@ -711,24 +687,27 @@
 
 <span class="sd">        0. **body** - Response body.</span>
 <span class="sd">        1. **base64Encoded** - True, if content was sent as base64.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;requestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Fetch.getResponseBody&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;Fetch.getResponseBody&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span>
-    <span class="k">return</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">]),</span> <span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;base64Encoded&quot;</span><span class="p">]))</span></div>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]),</span>
+        <span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;base64Encoded&#39;</span><span class="p">])</span>
+    <span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="take_response_body_as_stream">
 <a class="viewcode-back" href="../../../nodriver/cdp/fetch.html#nodriver.cdp.fetch.take_response_body_as_stream">[docs]</a>
 <span class="k">def</span> <span class="nf">take_response_body_as_stream</span><span class="p">(</span>
-        <span class="n">request_id</span><span class="p">:</span> <span class="n">RequestId</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">io</span><span class="o">.</span><span class="n">StreamHandle</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">request_id</span><span class="p">:</span> <span class="n">RequestId</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">io</span><span class="o">.</span><span class="n">StreamHandle</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Returns a handle to the stream representing the response body.</span>
 <span class="sd">    The request must be paused in the HeadersReceived stage.</span>
 <span class="sd">    Note that after this command the request can&#39;t be continued</span>
@@ -741,25 +720,25 @@
 <span class="sd">    domain before body is received results in an undefined behavior.</span>
 
 <span class="sd">    :param request_id:</span>
-<span class="sd">    :returns:</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    :returns: </span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;requestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Fetch.takeResponseBodyAsStream&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;Fetch.takeResponseBodyAsStream&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span>
-    <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">StreamHandle</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;stream&quot;</span><span class="p">])</span></div>
+    <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">StreamHandle</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;stream&#39;</span><span class="p">])</span></div>
 
 
 
 <div class="viewcode-block" id="RequestPaused">
 <a class="viewcode-back" href="../../../nodriver/cdp/fetch.html#nodriver.cdp.fetch.RequestPaused">[docs]</a>
-<span class="nd">@event_class</span><span class="p">(</span><span class="s2">&quot;Fetch.requestPaused&quot;</span><span class="p">)</span>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;Fetch.requestPaused&#39;</span><span class="p">)</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">RequestPaused</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Issued when the domain is enabled and the request URL matches the</span>
 <span class="sd">    specified filter. The request is paused until the client responds</span>
 <span class="sd">    with one of continueRequest, failRequest or fulfillRequest.</span>
@@ -771,8 +750,7 @@
 <span class="sd">    of ``responseStatusCode`` (which is one of 301, 302, 303, 307, 308) along with</span>
 <span class="sd">    presence of the ``location`` header. Requests resulting from a redirect will</span>
 <span class="sd">    have ``redirectedRequestId`` field set.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="c1">#: Each request the page makes will have a unique id.</span>
     <span class="n">request_id</span><span class="p">:</span> <span class="n">RequestId</span>
     <span class="c1">#: The details of the request.</span>
@@ -799,54 +777,29 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RequestPaused</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">request_id</span><span class="o">=</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]),</span>
-            <span class="n">request</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">Request</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">]),</span>
-            <span class="n">frame_id</span><span class="o">=</span><span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;frameId&quot;</span><span class="p">]),</span>
-            <span class="n">resource_type</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">ResourceType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;resourceType&quot;</span><span class="p">]),</span>
-            <span class="n">response_error_reason</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">network</span><span class="o">.</span><span class="n">ErrorReason</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;responseErrorReason&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;responseErrorReason&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">response_status_code</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;responseStatusCode&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;responseStatusCode&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">response_status_text</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;responseStatusText&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;responseStatusText&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">response_headers</span><span class="o">=</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">HeaderEntry</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;responseHeaders&quot;</span><span class="p">]]</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;responseHeaders&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">network_id</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">network</span><span class="o">.</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;networkId&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;networkId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">redirected_request_id</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;redirectedRequestId&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;redirectedRequestId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
+            <span class="n">request_id</span><span class="o">=</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;requestId&#39;</span><span class="p">]),</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">Request</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;request&#39;</span><span class="p">]),</span>
+            <span class="n">frame_id</span><span class="o">=</span><span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;frameId&#39;</span><span class="p">]),</span>
+            <span class="n">resource_type</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">ResourceType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;resourceType&#39;</span><span class="p">]),</span>
+            <span class="n">response_error_reason</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">ErrorReason</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;responseErrorReason&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;responseErrorReason&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">response_status_code</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;responseStatusCode&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;responseStatusCode&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">response_status_text</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;responseStatusText&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;responseStatusText&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">response_headers</span><span class="o">=</span><span class="p">[</span><span class="n">HeaderEntry</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;responseHeaders&#39;</span><span class="p">]]</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;responseHeaders&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">network_id</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;networkId&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;networkId&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">redirected_request_id</span><span class="o">=</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;redirectedRequestId&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;redirectedRequestId&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="AuthRequired">
 <a class="viewcode-back" href="../../../nodriver/cdp/fetch.html#nodriver.cdp.fetch.AuthRequired">[docs]</a>
-<span class="nd">@event_class</span><span class="p">(</span><span class="s2">&quot;Fetch.authRequired&quot;</span><span class="p">)</span>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;Fetch.authRequired&#39;</span><span class="p">)</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">AuthRequired</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Issued when the domain is enabled with handleAuthRequests set to true.</span>
 <span class="sd">    The request is paused until client responds with continueWithAuth.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="c1">#: Each request the page makes will have a unique id.</span>
     <span class="n">request_id</span><span class="p">:</span> <span class="n">RequestId</span>
     <span class="c1">#: The details of the request.</span>
@@ -863,11 +816,11 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AuthRequired</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">request_id</span><span class="o">=</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]),</span>
-            <span class="n">request</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">Request</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;request&quot;</span><span class="p">]),</span>
-            <span class="n">frame_id</span><span class="o">=</span><span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;frameId&quot;</span><span class="p">]),</span>
-            <span class="n">resource_type</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">ResourceType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;resourceType&quot;</span><span class="p">]),</span>
-            <span class="n">auth_challenge</span><span class="o">=</span><span class="n">AuthChallenge</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;authChallenge&quot;</span><span class="p">]),</span>
+            <span class="n">request_id</span><span class="o">=</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;requestId&#39;</span><span class="p">]),</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">Request</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;request&#39;</span><span class="p">]),</span>
+            <span class="n">frame_id</span><span class="o">=</span><span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;frameId&#39;</span><span class="p">]),</span>
+            <span class="n">resource_type</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">ResourceType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;resourceType&#39;</span><span class="p">]),</span>
+            <span class="n">auth_challenge</span><span class="o">=</span><span class="n">AuthChallenge</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;authChallenge&#39;</span><span class="p">])</span>
         <span class="p">)</span></div>
 
 </pre></div>

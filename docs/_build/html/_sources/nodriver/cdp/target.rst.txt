@@ -90,6 +90,8 @@ to. For more information, see
 
 .. autofunction:: get_targets
 
+.. autofunction:: open_dev_tools
+
 .. autofunction:: send_message_to_target
 
 .. autofunction:: set_auto_attach

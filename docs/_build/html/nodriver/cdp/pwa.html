@@ -396,14 +396,29 @@ impact the way the browser handling the web apps.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="nodriver.cdp.pwa.install">
 <span class="sig-name descname"><span class="pre">install</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manifest_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">install_url_or_bundle_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/pwa.html#install"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.pwa.install" title="Link to this definition">#</a></dt>
-<dd><p>Installs the given manifest identity, optionally using the given install_url
-or IWA bundle location.</p>
-<p>TODO(crbug.com/337872319) Support IWA to meet the following specific
-requirement.
-IWA-specific install description: If the manifest_id is isolated-app://,
-install_url_or_bundle_url is required, and can be either an http(s) URL or
-file:// URL pointing to a signed web bundle (.swbn). The .swbn file’s
-signing key must correspond to manifest_id. If Chrome is not in IWA dev
+<dd><p>Installs the given manifest identity, optionally using the given installUrlOrBundleUrl</p>
+<p>IWA-specific install description:
+manifestId corresponds to isolated-app:// + web_package::SignedWebBundleId</p>
+<p>File installation mode:
+The installUrlOrBundleUrl can be either <a class="reference external" href="file://">file://</a> or http(s):// pointing
+to a signed web bundle (.swbn). In this case SignedWebBundleId must correspond to
+The .swbn file’s signing key.</p>
+<p>Dev proxy installation mode:
+installUrlOrBundleUrl must be http(s):// that serves dev mode IWA.
+web_package::SignedWebBundleId must be of type dev proxy.</p>
+<p>The advantage of dev proxy mode is that all changes to IWA
+automatically will be reflected in the running app without
+reinstallation.</p>
+<p>To generate bundle id for proxy mode:
+1. Generate 32 random bytes.
+2. Add a specific suffix at the end following the documentation</p>
+<blockquote>
+<div><p><a class="reference external" href="https://github.com/WICG/isolated-web-apps/blob/main/Scheme.md#suffix">https://github.com/WICG/isolated-web-apps/blob/main/Scheme.md#suffix</a></p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>Encode the entire sequence using Base32 without padding.</p></li>
+</ol>
+<p>If Chrome is not in IWA dev
 mode, the installation will fail, regardless of the state of the allowlist.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

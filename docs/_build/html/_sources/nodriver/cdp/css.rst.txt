@@ -114,6 +114,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: ComputedStyleExtraFields
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: CSSStyle
       :members:
       :undoc-members:
@@ -275,6 +280,8 @@ to. For more information, see
 .. autofunction:: get_background_colors
 
 .. autofunction:: get_computed_style_for_node
+
+.. autofunction:: get_environment_variables
 
 .. autofunction:: get_inline_styles_for_node
 

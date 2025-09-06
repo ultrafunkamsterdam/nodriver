@@ -381,6 +381,14 @@ Computed style property name.
 
 Computed style property value.
 
+### *class* ComputedStyleExtraFields(is_appearance_base)
+
+#### is_appearance_base*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+
+Returns whether or not this node is being rendered with base appearance,
+which happens when it has its appearance property set to base/base-select
+or it is in the subtree of an element being rendered with base appearance.
+
 ### *class* CSSStyle(css_properties, shorthand_entries, style_sheet_id=None, css_text=None, range_=None)
 
 CSS style representation.
@@ -518,7 +526,7 @@ The associated range of the value text in the enclosing stylesheet (if available
 
 Computed length of media query expression (if applicable).
 
-### *class* CSSContainerQuery(text, range_=None, style_sheet_id=None, name=None, physical_axes=None, logical_axes=None, queries_scroll_state=None)
+### *class* CSSContainerQuery(text, range_=None, style_sheet_id=None, name=None, physical_axes=None, logical_axes=None, queries_scroll_state=None, queries_anchored=None)
 
 CSS container query rule descriptor.
 
@@ -550,6 +558,10 @@ Optional logical axes queried for the container.
 #### queries_scroll_state*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 true if the query contains scroll-state() queries.
+
+#### queries_anchored*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+true if the query contains anchored() queries.
 
 ### *class* CSSSupports(text, active, range_=None, style_sheet_id=None)
 
@@ -1062,9 +1074,21 @@ Returns the computed style for a DOM node identified by `nodeId`.
 * **Parameters:**
   **node_id** ([`NodeId`](dom.md#nodriver.cdp.dom.NodeId)) – 
 * **Return type:**
-  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSComputedStyleProperty`](#nodriver.cdp.css.CSSComputedStyleProperty)]]
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`CSSComputedStyleProperty`](#nodriver.cdp.css.CSSComputedStyleProperty)], [`ComputedStyleExtraFields`](#nodriver.cdp.css.ComputedStyleExtraFields)]]
 * **Returns:**
-  Computed style for the specified DOM node.
+  A tuple with the following items:
+  1. **computedStyle** - Computed style for the specified DOM node.
+  2. **extraFields** - A list of non-standard “extra fields” which blink stores alongside each computed style.
+
+### get_environment_variables()
+
+Returns the values of the default UA-defined environment variables used in env()
+
+**EXPERIMENTAL**
+
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]
+* **Returns:**
 
 ### get_inline_styles_for_node(node_id)
 
@@ -1182,13 +1206,20 @@ Resolve the specified values in the context of the provided element.
 For example, a value of ‘1em’ is evaluated according to the computed
 ‘font-size’ of the element and a value ‘calc(1px + 2px)’ will be
 resolved to ‘3px’.
+If the `propertyName` was specified the `values` are resolved as if
+they were property’s declaration. If a value cannot be parsed according
+to the provided property syntax, the value is parsed using combined
+syntax as if null `propertyName` was provided. If the value cannot be
+resolved even then, return the provided value without any changes.
+
+**EXPERIMENTAL**
 
 * **Parameters:**
-  * **values** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – Substitution functions (var()/env()/attr()) and cascade-dependent keywords (revert/revert-layer) do not work.
+  * **values** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – Cascade-dependent keywords (revert/revert-layer) do not work.
   * **node_id** ([`NodeId`](dom.md#nodriver.cdp.dom.NodeId)) – Id of the node in whose context the expression is evaluated
   * **property_name** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Only longhands and custom property names are accepted.
-  * **pseudo_type** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PseudoType`](dom.md#nodriver.cdp.dom.PseudoType)]) – **(EXPERIMENTAL)** *(Optional)* Pseudo element type, only works for pseudo elements that generate elements in the tree, such as ::before and ::after.
-  * **pseudo_identifier** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – **(EXPERIMENTAL)** *(Optional)* Pseudo element custom ident.
+  * **pseudo_type** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PseudoType`](dom.md#nodriver.cdp.dom.PseudoType)]) – *(Optional)* Pseudo element type, only works for pseudo elements that generate elements in the tree, such as ::before and ::after.
+  * **pseudo_identifier** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Pseudo element custom ident.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]
 * **Returns:**

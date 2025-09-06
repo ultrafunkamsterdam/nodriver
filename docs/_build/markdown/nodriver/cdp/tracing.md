@@ -19,7 +19,7 @@ Configuration for memory dump. Used only when “memory-infra” category is ena
 
 #### record_mode*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
-Controls how the trace buffer stores data.
+Controls how the trace buffer stores data. The default is `recordUntilFull`.
 
 #### trace_buffer_size_in_kb*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
 

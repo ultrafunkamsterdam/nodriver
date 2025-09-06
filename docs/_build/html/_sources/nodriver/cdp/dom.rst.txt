@@ -134,6 +134,8 @@ to. For more information, see
 
 .. autofunction:: focus
 
+.. autofunction:: force_show_popover
+
 .. autofunction:: get_anchor_element
 
 .. autofunction:: get_attributes

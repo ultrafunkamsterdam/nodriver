@@ -640,6 +640,25 @@ class CSSComputedStyleProperty:
 
 
 @dataclass
+class ComputedStyleExtraFields:
+    #: Returns whether or not this node is being rendered with base appearance,
+    #: which happens when it has its appearance property set to base/base-select
+    #: or it is in the subtree of an element being rendered with base appearance.
+    is_appearance_base: bool
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['isAppearanceBase'] = self.is_appearance_base
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> ComputedStyleExtraFields:
+        return cls(
+            is_appearance_base=bool(json['isAppearanceBase']),
+        )
+
+
+@dataclass
 class CSSStyle:
     '''
     CSS style representation.
@@ -898,6 +917,9 @@ class CSSContainerQuery:
     #: true if the query contains scroll-state() queries.
     queries_scroll_state: typing.Optional[bool] = None
 
+    #: true if the query contains anchored() queries.
+    queries_anchored: typing.Optional[bool] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json['text'] = self.text
@@ -913,6 +935,8 @@ class CSSContainerQuery:
             json['logicalAxes'] = self.logical_axes.to_json()
         if self.queries_scroll_state is not None:
             json['queriesScrollState'] = self.queries_scroll_state
+        if self.queries_anchored is not None:
+            json['queriesAnchored'] = self.queries_anchored
         return json
 
     @classmethod
@@ -925,6 +949,7 @@ class CSSContainerQuery:
             physical_axes=dom.PhysicalAxes.from_json(json['physicalAxes']) if json.get('physicalAxes', None) is not None else None,
             logical_axes=dom.LogicalAxes.from_json(json['logicalAxes']) if json.get('logicalAxes', None) is not None else None,
             queries_scroll_state=bool(json['queriesScrollState']) if json.get('queriesScrollState', None) is not None else None,
+            queries_anchored=bool(json['queriesAnchored']) if json.get('queriesAnchored', None) is not None else None,
         )
 
 
@@ -1803,12 +1828,15 @@ def get_background_colors(
 
 def get_computed_style_for_node(
         node_id: dom.NodeId
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[CSSComputedStyleProperty]]:
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[typing.List[CSSComputedStyleProperty], ComputedStyleExtraFields]]:
     '''
     Returns the computed style for a DOM node identified by ``nodeId``.
 
     :param node_id:
-    :returns: Computed style for the specified DOM node.
+    :returns: A tuple with the following items:
+
+        0. **computedStyle** - Computed style for the specified DOM node.
+        1. **extraFields** - A list of non-standard "extra fields" which blink stores alongside each computed style.
     '''
     params: T_JSON_DICT = dict()
     params['nodeId'] = node_id.to_json()
@@ -1817,7 +1845,10 @@ def get_computed_style_for_node(
         'params': params,
     }
     json = yield cmd_dict
-    return [CSSComputedStyleProperty.from_json(i) for i in json['computedStyle']]
+    return (
+        [CSSComputedStyleProperty.from_json(i) for i in json['computedStyle']],
+        ComputedStyleExtraFields.from_json(json['extraFields'])
+    )
 
 
 def resolve_values(
@@ -1840,7 +1871,7 @@ def resolve_values(
 
     **EXPERIMENTAL**
 
-    :param values: Substitution functions (var()/env()/attr()) and cascade-dependent keywords (revert/revert-layer) do not work.
+    :param values: Cascade-dependent keywords (revert/revert-layer) do not work.
     :param node_id: Id of the node in whose context the expression is evaluated
     :param property_name: *(Optional)* Only longhands and custom property names are accepted.
     :param pseudo_type: *(Optional)* Pseudo element type, only works for pseudo elements that generate elements in the tree, such as ::before and ::after.
@@ -1991,6 +2022,21 @@ def get_matched_styles_for_node(
         dom.NodeId.from_json(json['parentLayoutNodeId']) if json.get('parentLayoutNodeId', None) is not None else None,
         [CSSFunctionRule.from_json(i) for i in json['cssFunctionRules']] if json.get('cssFunctionRules', None) is not None else None
     )
+
+
+def get_environment_variables() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,dict]:
+    '''
+    Returns the values of the default UA-defined environment variables used in env()
+
+    **EXPERIMENTAL**
+
+    :returns: 
+    '''
+    cmd_dict: T_JSON_DICT = {
+        'method': 'CSS.getEnvironmentVariables',
+    }
+    json = yield cmd_dict
+    return dict(json['environmentVariables'])
 
 
 def get_media_queries() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[CSSMedia]]:

@@ -119,51 +119,51 @@ Enum of network fetches auctions can do.
 
 #### SELLER_TRUSTED_SIGNALS *= 'sellerTrustedSignals'*
 
-### *class* SharedStorageAccessType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
+### *class* SharedStorageAccessScope(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
-Enum of shared storage access types.
+Enum of shared storage access scopes.
 
-#### DOCUMENT_ADD_MODULE *= 'documentAddModule'*
+#### WINDOW *= 'window'*
 
-#### DOCUMENT_SELECT_URL *= 'documentSelectURL'*
+#### SHARED_STORAGE_WORKLET *= 'sharedStorageWorklet'*
 
-#### DOCUMENT_RUN *= 'documentRun'*
+#### PROTECTED_AUDIENCE_WORKLET *= 'protectedAudienceWorklet'*
 
-#### DOCUMENT_SET *= 'documentSet'*
+#### HEADER *= 'header'*
 
-#### DOCUMENT_APPEND *= 'documentAppend'*
+### *class* SharedStorageAccessMethod(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
-#### DOCUMENT_DELETE *= 'documentDelete'*
+Enum of shared storage access methods.
 
-#### DOCUMENT_CLEAR *= 'documentClear'*
+#### ADD_MODULE *= 'addModule'*
 
-#### DOCUMENT_GET *= 'documentGet'*
+#### CREATE_WORKLET *= 'createWorklet'*
 
-#### WORKLET_SET *= 'workletSet'*
+#### SELECT_URL *= 'selectURL'*
 
-#### WORKLET_APPEND *= 'workletAppend'*
+#### RUN *= 'run'*
 
-#### WORKLET_DELETE *= 'workletDelete'*
+#### BATCH_UPDATE *= 'batchUpdate'*
 
-#### WORKLET_CLEAR *= 'workletClear'*
+#### SET_ *= 'set'*
 
-#### WORKLET_GET *= 'workletGet'*
+#### APPEND *= 'append'*
 
-#### WORKLET_KEYS *= 'workletKeys'*
+#### DELETE *= 'delete'*
 
-#### WORKLET_ENTRIES *= 'workletEntries'*
+#### CLEAR *= 'clear'*
 
-#### WORKLET_LENGTH *= 'workletLength'*
+#### GET *= 'get'*
 
-#### WORKLET_REMAINING_BUDGET *= 'workletRemainingBudget'*
+#### KEYS *= 'keys'*
 
-#### HEADER_SET *= 'headerSet'*
+#### VALUES *= 'values'*
 
-#### HEADER_APPEND *= 'headerAppend'*
+#### ENTRIES *= 'entries'*
 
-#### HEADER_DELETE *= 'headerDelete'*
+#### LENGTH *= 'length'*
 
-#### HEADER_CLEAR *= 'headerClear'*
+#### REMAINING_BUDGET *= 'remainingBudget'*
 
 ### *class* SharedStorageEntry(key, value)
 
@@ -194,6 +194,27 @@ Current amount of bits of entropy remaining in the navigation budget.
 Total number of bytes stored as key-value pairs in origin’s shared
 storage.
 
+### *class* SharedStoragePrivateAggregationConfig(filtering_id_max_bytes, aggregation_coordinator_origin=None, context_id=None, max_contributions=None)
+
+Represents a dictionary object passed in as privateAggregationConfig to
+run or selectURL.
+
+#### filtering_id_max_bytes*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+Configures the maximum size allowed for filtering IDs.
+
+#### aggregation_coordinator_origin*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+The chosen aggregation service deployment.
+
+#### context_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+The context ID provided.
+
+#### max_contributions*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+
+The limit on the number of contributions in the final report.
+
 ### *class* SharedStorageReportingMetadata(event_type, reporting_url)
 
 Pair of reporting metadata details for a candidate URL for `selectURL()`.
@@ -214,7 +235,7 @@ Spec of candidate URL.
 
 Any associated reporting metadata.
 
-### *class* SharedStorageAccessParams(script_source_url=None, operation_name=None, serialized_data=None, urls_with_metadata=None, key=None, value=None, ignore_if_present=None)
+### *class* SharedStorageAccessParams(script_source_url=None, data_origin=None, operation_name=None, operation_id=None, keep_alive=None, private_aggregation_config=None, serialized_data=None, urls_with_metadata=None, urn_uuid=None, key=None, value=None, ignore_if_present=None, worklet_ordinal=None, worklet_target_id=None, with_lock=None, batch_update_id=None, batch_size=None)
 
 Bundles the parameters for shared storage access events whose
 presence/absence can vary according to SharedStorageAccessType.
@@ -222,55 +243,103 @@ presence/absence can vary according to SharedStorageAccessType.
 #### script_source_url*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Spec of the module script URL.
-Present only for SharedStorageAccessType.documentAddModule.
+Present only for SharedStorageAccessMethods: addModule and
+createWorklet.
+
+#### data_origin*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+String denoting “context-origin”, “script-origin”, or a custom
+origin to be used as the worklet’s data origin.
+Present only for SharedStorageAccessMethod: createWorklet.
 
 #### operation_name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Name of the registered operation to be run.
-Present only for SharedStorageAccessType.documentRun and
-SharedStorageAccessType.documentSelectURL.
+Present only for SharedStorageAccessMethods: run and selectURL.
+
+#### operation_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+ID of the operation call.
+Present only for SharedStorageAccessMethods: run and selectURL.
+
+#### keep_alive*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+Whether or not to keep the worket alive for future run or selectURL
+calls.
+Present only for SharedStorageAccessMethods: run and selectURL.
+
+#### private_aggregation_config*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SharedStoragePrivateAggregationConfig`](#nodriver.cdp.storage.SharedStoragePrivateAggregationConfig)]* *= None*
+
+Configures the private aggregation options.
+Present only for SharedStorageAccessMethods: run and selectURL.
 
 #### serialized_data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 The operation’s serialized data in bytes (converted to a string).
-Present only for SharedStorageAccessType.documentRun and
-SharedStorageAccessType.documentSelectURL.
+Present only for SharedStorageAccessMethods: run and selectURL.
+TODO(crbug.com/401011862): Consider updating this parameter to binary.
 
 #### urls_with_metadata*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`SharedStorageUrlWithMetadata`](#nodriver.cdp.storage.SharedStorageUrlWithMetadata)]]* *= None*
 
 Array of candidate URLs’ specs, along with any associated metadata.
-Present only for SharedStorageAccessType.documentSelectURL.
+Present only for SharedStorageAccessMethod: selectURL.
+
+#### urn_uuid*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+UUID generated for a selectURL call.
+Present only for SharedStorageAccessMethod: selectURL.
+
+* **Type:**
+  Spec of the URN
 
 #### key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Key for a specific entry in an origin’s shared storage.
-Present only for SharedStorageAccessType.documentSet,
-SharedStorageAccessType.documentAppend,
-SharedStorageAccessType.documentDelete,
-SharedStorageAccessType.workletSet,
-SharedStorageAccessType.workletAppend,
-SharedStorageAccessType.workletDelete,
-SharedStorageAccessType.workletGet,
-SharedStorageAccessType.headerSet,
-SharedStorageAccessType.headerAppend, and
-SharedStorageAccessType.headerDelete.
+Present only for SharedStorageAccessMethods: set, append, delete, and
+get.
 
 #### value*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 Value for a specific entry in an origin’s shared storage.
-Present only for SharedStorageAccessType.documentSet,
-SharedStorageAccessType.documentAppend,
-SharedStorageAccessType.workletSet,
-SharedStorageAccessType.workletAppend,
-SharedStorageAccessType.headerSet, and
-SharedStorageAccessType.headerAppend.
+Present only for SharedStorageAccessMethods: set and append.
 
 #### ignore_if_present*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
 Whether or not to set an entry for a key if that key is already present.
-Present only for SharedStorageAccessType.documentSet,
-SharedStorageAccessType.workletSet, and
-SharedStorageAccessType.headerSet.
+Present only for SharedStorageAccessMethod: set.
+
+#### worklet_ordinal*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+
+A number denoting the (0-based) order of the worklet’s
+creation relative to all other shared storage worklets created by
+documents using the current storage partition.
+Present only for SharedStorageAccessMethods: addModule, createWorklet.
+
+#### worklet_target_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`TargetID`](target.md#nodriver.cdp.target.TargetID)]* *= None*
+
+Hex representation of the DevTools token used as the TargetID for the
+associated shared storage worklet.
+Present only for SharedStorageAccessMethods: addModule, createWorklet,
+run, selectURL, and any other SharedStorageAccessMethod when the
+SharedStorageAccessScope is sharedStorageWorklet.
+
+#### with_lock*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+Name of the lock to be acquired, if present.
+Optionally present only for SharedStorageAccessMethods: batchUpdate,
+set, append, delete, and clear.
+
+#### batch_update_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+If the method has been called as part of a batchUpdate, then this
+number identifies the batch to which it belongs.
+Optionally present only for SharedStorageAccessMethods:
+batchUpdate (required), set, append, delete, and clear.
+
+#### batch_size*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+
+Number of modifier methods sent in batch.
+Present only for SharedStorageAccessMethod: batchUpdate.
 
 ### *class* StorageBucketsDurability(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -350,15 +419,6 @@ duration in seconds
 
 duration in seconds
 
-### *class* AttributionReportingTriggerSpec(trigger_data, event_report_windows)
-
-#### trigger_data*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`float`](https://docs.python.org/3/library/functions.html#float)]*
-
-number instead of integer because not all uint32 can be represented by
-int
-
-#### event_report_windows*: [`AttributionReportingEventReportWindows`](#nodriver.cdp.storage.AttributionReportingEventReportWindows)*
-
 ### *class* AttributionReportingTriggerDataMatching(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 #### EXACT *= 'exact'*
@@ -400,7 +460,13 @@ int
 
 #### max_event_states*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
-### *class* AttributionReportingSourceRegistration(time, expiry, trigger_specs, aggregatable_report_window, type_, source_origin, reporting_origin, destination_sites, event_id, priority, filter_data, aggregation_keys, trigger_data_matching, destination_limit_priority, aggregatable_debug_reporting_config, max_event_level_reports, debug_key=None, scopes_data=None)
+### *class* AttributionReportingNamedBudgetDef(name, budget)
+
+#### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### budget*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+### *class* AttributionReportingSourceRegistration(time, expiry, trigger_data, event_report_windows, aggregatable_report_window, type_, source_origin, reporting_origin, destination_sites, event_id, priority, filter_data, aggregation_keys, trigger_data_matching, destination_limit_priority, aggregatable_debug_reporting_config, max_event_level_reports, named_budgets, debug_reporting, event_level_epsilon, debug_key=None, scopes_data=None)
 
 #### time*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
 
@@ -408,7 +474,12 @@ int
 
 duration in seconds
 
-#### trigger_specs*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingTriggerSpec`](#nodriver.cdp.storage.AttributionReportingTriggerSpec)]*
+#### trigger_data*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`float`](https://docs.python.org/3/library/functions.html#float)]*
+
+number instead of integer because not all uint32 can be represented by
+int
+
+#### event_report_windows*: [`AttributionReportingEventReportWindows`](#nodriver.cdp.storage.AttributionReportingEventReportWindows)*
 
 #### aggregatable_report_window*: [`int`](https://docs.python.org/3/library/functions.html#int)*
 
@@ -437,6 +508,12 @@ duration in seconds
 #### aggregatable_debug_reporting_config*: [`AttributionReportingAggregatableDebugReportingConfig`](#nodriver.cdp.storage.AttributionReportingAggregatableDebugReportingConfig)*
 
 #### max_event_level_reports*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+#### named_budgets*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingNamedBudgetDef`](#nodriver.cdp.storage.AttributionReportingNamedBudgetDef)]*
+
+#### debug_reporting*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+
+#### event_level_epsilon*: [`float`](https://docs.python.org/3/library/functions.html#float)*
 
 #### debug_key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)]* *= None*
 
@@ -523,7 +600,13 @@ int
 
 #### dedup_key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)]* *= None*
 
-### *class* AttributionReportingTriggerRegistration(filters, aggregatable_dedup_keys, event_trigger_data, aggregatable_trigger_data, aggregatable_values, aggregatable_filtering_id_max_bytes, debug_reporting, source_registration_time_config, aggregatable_debug_reporting_config, scopes, debug_key=None, aggregation_coordinator_origin=None, trigger_context_id=None)
+### *class* AttributionReportingNamedBudgetCandidate(filters, name=None)
+
+#### filters*: [`AttributionReportingFilterPair`](#nodriver.cdp.storage.AttributionReportingFilterPair)*
+
+#### name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+### *class* AttributionReportingTriggerRegistration(filters, aggregatable_dedup_keys, event_trigger_data, aggregatable_trigger_data, aggregatable_values, aggregatable_filtering_id_max_bytes, debug_reporting, source_registration_time_config, aggregatable_debug_reporting_config, scopes, named_budgets, debug_key=None, aggregation_coordinator_origin=None, trigger_context_id=None)
 
 #### filters*: [`AttributionReportingFilterPair`](#nodriver.cdp.storage.AttributionReportingFilterPair)*
 
@@ -544,6 +627,8 @@ int
 #### aggregatable_debug_reporting_config*: [`AttributionReportingAggregatableDebugReportingConfig`](#nodriver.cdp.storage.AttributionReportingAggregatableDebugReportingConfig)*
 
 #### scopes*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+
+#### named_budgets*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AttributionReportingNamedBudgetCandidate`](#nodriver.cdp.storage.AttributionReportingNamedBudgetCandidate)]*
 
 #### debug_key*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnsignedInt64AsBase10`](#nodriver.cdp.storage.UnsignedInt64AsBase10)]* *= None*
 
@@ -622,6 +707,16 @@ int
 #### REPORT_WINDOW_PASSED *= 'reportWindowPassed'*
 
 #### EXCESSIVE_REPORTS *= 'excessiveReports'*
+
+### *class* AttributionReportingReportResult(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
+
+#### SENT *= 'sent'*
+
+#### PROHIBITED *= 'prohibited'*
+
+#### FAILED_TO_ASSEMBLE *= 'failedToAssemble'*
+
+#### EXPIRED *= 'expired'*
 
 ### *class* RelatedWebsiteSet(primary_sites, associated_sites, service_sites)
 
@@ -939,6 +1034,15 @@ Enables/Disables issuing of interestGroupAccessed events.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
+### set_protected_audience_k_anonymity(owner, name, hashes)
+
+* **Parameters:**
+  * **owner** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **name** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **hashes** ([`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – 
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
 ### set_shared_storage_entry(owner_origin, key, value, ignore_if_present=None)
 
 Sets entry with `key` and `value` for a given origin’s shared storage.
@@ -1194,7 +1298,7 @@ This is the set of the auctions using the worklet that issued this
 request.  In the case of trusted signals, it’s possible that only some of
 them actually care about the keys being queried.
 
-### *class* SharedStorageAccessed(access_time, type_, main_frame_id, owner_origin, params)
+### *class* SharedStorageAccessed(access_time, scope, method, main_frame_id, owner_origin, owner_site, params)
 
 Shared storage was accessed by the associated page.
 The following parameters are included in all events.
@@ -1203,7 +1307,11 @@ The following parameters are included in all events.
 
 Time of the access.
 
-#### type_*: [`SharedStorageAccessType`](#nodriver.cdp.storage.SharedStorageAccessType)*
+#### scope*: [`SharedStorageAccessScope`](#nodriver.cdp.storage.SharedStorageAccessScope)*
+
+Enum value indicating the access scope.
+
+#### method*: [`SharedStorageAccessMethod`](#nodriver.cdp.storage.SharedStorageAccessMethod)*
 
 Enum value indicating the Shared Storage API method invoked.
 
@@ -1213,12 +1321,51 @@ DevTools Frame Token for the primary frame tree’s root.
 
 #### owner_origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-Serialized origin for the context that invoked the Shared Storage API.
+Serialization of the origin owning the Shared Storage data.
+
+#### owner_site*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+Serialization of the site owning the Shared Storage data.
 
 #### params*: [`SharedStorageAccessParams`](#nodriver.cdp.storage.SharedStorageAccessParams)*
 
 The sub-parameters wrapped by `params` are all optional and their
 presence/absence depends on `type`.
+
+### *class* SharedStorageWorkletOperationExecutionFinished(finished_time, execution_time, method, operation_id, worklet_target_id, main_frame_id, owner_origin)
+
+A shared storage run or selectURL operation finished its execution.
+The following parameters are included in all events.
+
+#### finished_time*: [`TimeSinceEpoch`](network.md#nodriver.cdp.network.TimeSinceEpoch)*
+
+Time that the operation finished.
+
+#### execution_time*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+Time, in microseconds, from start of shared storage JS API call until
+end of operation execution in the worklet.
+
+#### method*: [`SharedStorageAccessMethod`](#nodriver.cdp.storage.SharedStorageAccessMethod)*
+
+Enum value indicating the Shared Storage API method invoked.
+
+#### operation_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+ID of the operation call.
+
+#### worklet_target_id*: [`TargetID`](target.md#nodriver.cdp.target.TargetID)*
+
+Hex representation of the DevTools token used as the TargetID for the
+associated shared storage worklet.
+
+#### main_frame_id*: [`FrameId`](page.md#nodriver.cdp.page.FrameId)*
+
+DevTools Frame Token for the primary frame tree’s root.
+
+#### owner_origin*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+Serialization of the origin owning the Shared Storage data.
 
 ### *class* StorageBucketCreatedOrUpdated(bucket_info)
 
@@ -1245,3 +1392,35 @@ presence/absence depends on `type`.
 #### event_level*: [`AttributionReportingEventLevelResult`](#nodriver.cdp.storage.AttributionReportingEventLevelResult)*
 
 #### aggregatable*: [`AttributionReportingAggregatableResult`](#nodriver.cdp.storage.AttributionReportingAggregatableResult)*
+
+### *class* AttributionReportingReportSent(url, body, result, net_error, net_error_name, http_status_code)
+
+**EXPERIMENTAL**
+
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### body*: [`dict`](https://docs.python.org/3/library/stdtypes.html#dict)*
+
+#### result*: [`AttributionReportingReportResult`](#nodriver.cdp.storage.AttributionReportingReportResult)*
+
+#### net_error*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
+
+If result is `sent`, populated with net/HTTP status.
+
+#### net_error_name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+
+#### http_status_code*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
+
+### *class* AttributionReportingVerboseDebugReportSent(url, body, net_error, net_error_name, http_status_code)
+
+**EXPERIMENTAL**
+
+#### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### body*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]]*
+
+#### net_error*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
+
+#### net_error_name*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+
+#### http_status_code*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*

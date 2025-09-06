@@ -693,6 +693,27 @@ class BlockedReason(enum.Enum):
         return cls(json)
 
 
+class IpProxyStatus(enum.Enum):
+    '''
+    Sets Controls for IP Proxy of requests.
+    Page reload is required before the new behavior will be observed.
+    '''
+    AVAILABLE = "Available"
+    FEATURE_NOT_ENABLED = "FeatureNotEnabled"
+    MASKED_DOMAIN_LIST_NOT_ENABLED = "MaskedDomainListNotEnabled"
+    MASKED_DOMAIN_LIST_NOT_POPULATED = "MaskedDomainListNotPopulated"
+    AUTH_TOKENS_UNAVAILABLE = "AuthTokensUnavailable"
+    UNAVAILABLE = "Unavailable"
+    BYPASSED_BY_DEV_TOOLS = "BypassedByDevTools"
+
+    def to_json(self) -> str:
+        return self.value
+
+    @classmethod
+    def from_json(cls, json: str) -> IpProxyStatus:
+        return cls(json)
+
+
 class CorsError(enum.Enum):
     '''
     The reason why request was blocked.
@@ -985,6 +1006,10 @@ class Response:
     #: Security details for the request.
     security_details: typing.Optional[SecurityDetails] = None
 
+    #: Indicates whether the request was sent through IP Protection proxies. If
+    #: set to true, the request used the IP Protection privacy feature.
+    is_ip_protection_used: typing.Optional[bool] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json['url'] = self.url
@@ -1031,6 +1056,8 @@ class Response:
             json['alternateProtocolUsage'] = self.alternate_protocol_usage.to_json()
         if self.security_details is not None:
             json['securityDetails'] = self.security_details.to_json()
+        if self.is_ip_protection_used is not None:
+            json['isIpProtectionUsed'] = self.is_ip_protection_used
         return json
 
     @classmethod
@@ -1063,6 +1090,7 @@ class Response:
             protocol=str(json['protocol']) if json.get('protocol', None) is not None else None,
             alternate_protocol_usage=AlternateProtocolUsage.from_json(json['alternateProtocolUsage']) if json.get('alternateProtocolUsage', None) is not None else None,
             security_details=SecurityDetails.from_json(json['securityDetails']) if json.get('securityDetails', None) is not None else None,
+            is_ip_protection_used=bool(json['isIpProtectionUsed']) if json.get('isIpProtectionUsed', None) is not None else None,
         )
 
 
@@ -2162,7 +2190,7 @@ class PrivateNetworkRequestPolicy(enum.Enum):
 
 class IPAddressSpace(enum.Enum):
     LOOPBACK = "Loopback"
-    PRIVATE = "Private"
+    LOCAL = "Local"
     PUBLIC = "Public"
     UNKNOWN = "Unknown"
 
@@ -2549,6 +2577,41 @@ class LoadNetworkResourceOptions:
         )
 
 
+def get_ip_protection_proxy_status() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,IpProxyStatus]:
+    '''
+    Returns enum representing if IP Proxy of requests is available
+    or reason it is not active.
+
+    **EXPERIMENTAL**
+
+    :returns: Whether IP proxy is available
+    '''
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Network.getIPProtectionProxyStatus',
+    }
+    json = yield cmd_dict
+    return IpProxyStatus.from_json(json['status'])
+
+
+def set_ip_protection_proxy_bypass_enabled(
+        enabled: bool
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Sets bypass IP Protection Proxy boolean.
+
+    **EXPERIMENTAL**
+
+    :param enabled: Whether IP Proxy is being bypassed by devtools; false by default.
+    '''
+    params: T_JSON_DICT = dict()
+    params['enabled'] = enabled
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Network.setIPProtectionProxyBypassEnabled',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
 def set_accepted_encodings(
         encodings: typing.List[ContentEncoding]
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
@@ -2791,7 +2854,8 @@ def enable(
         max_total_buffer_size: typing.Optional[int] = None,
         max_resource_buffer_size: typing.Optional[int] = None,
         max_post_data_size: typing.Optional[int] = None,
-        report_direct_socket_traffic: typing.Optional[bool] = None
+        report_direct_socket_traffic: typing.Optional[bool] = None,
+        enable_durable_messages: typing.Optional[bool] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
     Enables network tracking, network events will now be delivered to the client.
@@ -2800,6 +2864,7 @@ def enable(
     :param max_resource_buffer_size: **(EXPERIMENTAL)** *(Optional)* Per-resource buffer size in bytes to use when preserving network payloads (XHRs, etc).
     :param max_post_data_size: *(Optional)* Longest post body size (in bytes) that would be included in requestWillBeSent notification
     :param report_direct_socket_traffic: **(EXPERIMENTAL)** *(Optional)* Whether DirectSocket chunk send/receive events should be reported.
+    :param enable_durable_messages: **(EXPERIMENTAL)** *(Optional)* Enable storing response bodies outside of renderer, so that these survive a cross-process navigation. Requires maxTotalBufferSize to be set. Currently defaults to false.
     '''
     params: T_JSON_DICT = dict()
     if max_total_buffer_size is not None:
@@ -2810,6 +2875,8 @@ def enable(
         params['maxPostDataSize'] = max_post_data_size
     if report_direct_socket_traffic is not None:
         params['reportDirectSocketTraffic'] = report_direct_socket_traffic
+    if enable_durable_messages is not None:
+        params['enableDurableMessages'] = enable_durable_messages
     cmd_dict: T_JSON_DICT = {
         'method': 'Network.enable',
         'params': params,

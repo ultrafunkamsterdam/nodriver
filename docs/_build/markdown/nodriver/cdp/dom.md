@@ -59,6 +59,8 @@ Pseudo element type.
 
 #### PICKER_ICON *= 'picker-icon'*
 
+#### INTEREST_HINT *= 'interest-hint'*
+
 #### MARKER *= 'marker'*
 
 #### BACKDROP *= 'backdrop'*
@@ -107,6 +109,8 @@ Pseudo element type.
 
 #### VIEW_TRANSITION_IMAGE_PAIR *= 'view-transition-image-pair'*
 
+#### VIEW_TRANSITION_GROUP_CHILDREN *= 'view-transition-group-children'*
+
 #### VIEW_TRANSITION_OLD *= 'view-transition-old'*
 
 #### VIEW_TRANSITION_NEW *= 'view-transition-new'*
@@ -118,6 +122,8 @@ Pseudo element type.
 #### DETAILS_CONTENT *= 'details-content'*
 
 #### PICKER *= 'picker'*
+
+#### PERMISSION_ICON *= 'permission-icon'*
 
 ### *class* ShadowRootType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -507,6 +513,21 @@ Focuses the given element.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
+### force_show_popover(node_id, enable)
+
+When enabling, this API force-opens the popover identified by nodeId
+and keeps it open until disabled.
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  * **node_id** ([`NodeId`](#nodriver.cdp.dom.NodeId)) – Id of the popover HTMLElement
+  * **enable** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – If true, opens the popover and keeps it open. If false, closes the popover if it was previously force-opened.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`NodeId`](#nodriver.cdp.dom.NodeId)]]
+* **Returns:**
+  List of popovers that were closed in order to respect popover stacking order.
+
 ### get_anchor_element(node_id, anchor_specifier=None)
 
 Returns the target anchor element of the given anchor query according to
@@ -546,13 +567,13 @@ Returns boxes for the given node.
 * **Returns:**
   Box model for the node.
 
-### get_container_for_node(node_id, container_name=None, physical_axes=None, logical_axes=None, queries_scroll_state=None)
+### get_container_for_node(node_id, container_name=None, physical_axes=None, logical_axes=None, queries_scroll_state=None, queries_anchored=None)
 
 Returns the query container of the given node based on container query
 conditions: containerName, physical and logical axes, and whether it queries
-scroll-state. If no axes are provided and queriesScrollState is false, the
-style container is returned, which is the direct parent or the closest
-element with a matching container-name.
+scroll-state or anchored elements. If no axes are provided and
+queriesScrollState is false, the style container is returned, which is the
+direct parent or the closest element with a matching container-name.
 
 **EXPERIMENTAL**
 
@@ -562,6 +583,7 @@ element with a matching container-name.
   * **physical_axes** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PhysicalAxes`](#nodriver.cdp.dom.PhysicalAxes)]) – *(Optional)*
   * **logical_axes** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LogicalAxes`](#nodriver.cdp.dom.LogicalAxes)]) – *(Optional)*
   * **queries_scroll_state** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)*
+  * **queries_anchored** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)*
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]]
 * **Returns:**
@@ -715,7 +737,7 @@ Finds nodes with a given computed style in a subtree.
 * **Returns:**
   Resulting nodes.
 
-### get_outer_html(node_id=None, backend_node_id=None, object_id=None)
+### get_outer_html(node_id=None, backend_node_id=None, object_id=None, include_shadow_dom=None)
 
 Returns node’s HTML markup.
 
@@ -723,6 +745,7 @@ Returns node’s HTML markup.
   * **node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`NodeId`](#nodriver.cdp.dom.NodeId)]) – *(Optional)* Identifier of the node.
   * **backend_node_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](#nodriver.cdp.dom.BackendNodeId)]) – *(Optional)* Identifier of the backend node.
   * **object_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`RemoteObjectId`](runtime.md#nodriver.cdp.runtime.RemoteObjectId)]) – *(Optional)* JavaScript object id of the node wrapper.
+  * **include_shadow_dom** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Include all shadow roots. Equals to false if not specified.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`str`](https://docs.python.org/3/library/stdtypes.html#str)]
 * **Returns:**

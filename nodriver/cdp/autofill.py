@@ -55,6 +55,8 @@ class CreditCard:
 @dataclass
 class AddressField:
     #: address field name, for example GIVEN_NAME.
+    #: The full list of supported field names:
+    #: https://source.chromium.org/chromium/chromium/src/+/main:components/autofill/core/browser/field_types.cc;l=38
     name: str
 
     #: address field value, for example Jon Doe.
@@ -205,8 +207,9 @@ class FilledField:
 
 def trigger(
         field_id: dom.BackendNodeId,
-        card: CreditCard,
-        frame_id: typing.Optional[page.FrameId] = None
+        frame_id: typing.Optional[page.FrameId] = None,
+        card: typing.Optional[CreditCard] = None,
+        address: typing.Optional[Address] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
     Trigger autofill on a form identified by the fieldId.
@@ -214,13 +217,17 @@ def trigger(
 
     :param field_id: Identifies a field that serves as an anchor for autofill.
     :param frame_id: *(Optional)* Identifies the frame that field belongs to.
-    :param card: Credit card information to fill out the form. Credit card data is not saved.
+    :param card: *(Optional)* Credit card information to fill out the form. Credit card data is not saved.  Mutually exclusive with ```address````.
+    :param address: *(Optional)* Address to fill out the form. Address data is not saved. Mutually exclusive with ````card```.
     '''
     params: T_JSON_DICT = dict()
     params['fieldId'] = field_id.to_json()
     if frame_id is not None:
         params['frameId'] = frame_id.to_json()
-    params['card'] = card.to_json()
+    if card is not None:
+        params['card'] = card.to_json()
+    if address is not None:
+        params['address'] = address.to_json()
     cmd_dict: T_JSON_DICT = {
         'method': 'Autofill.trigger',
         'params': params,

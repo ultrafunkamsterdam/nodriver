@@ -346,19 +346,44 @@ arguments to other commands.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="nodriver.cdp.page.AdScriptId">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdScriptId</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">script_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debugger_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/page.html#AdScriptId"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.page.AdScriptId" title="Link to this definition">#</a></dt>
-<dd><p>Identifies the bottom-most script which caused the frame to be labelled
-as an ad.</p>
+<dd><p>Identifies the script which caused a script or frame to be labelled as an
+ad.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.page.AdScriptId.script_id">
 <span class="sig-name descname"><span class="pre">script_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="runtime.html#nodriver.cdp.runtime.ScriptId" title="nodriver.cdp.runtime.ScriptId"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScriptId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.page.AdScriptId.script_id" title="Link to this definition">#</a></dt>
-<dd><p>Script Id of the bottom-most script which caused the frame to be labelled
-as an ad.</p>
+<dd><p>Script Id of the script which caused a script or frame to be labelled as
+an ad.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.page.AdScriptId.debugger_id">
 <span class="sig-name descname"><span class="pre">debugger_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="runtime.html#nodriver.cdp.runtime.UniqueDebuggerId" title="nodriver.cdp.runtime.UniqueDebuggerId"><code class="xref py py-class docutils literal notranslate"><span class="pre">UniqueDebuggerId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.page.AdScriptId.debugger_id" title="Link to this definition">#</a></dt>
-<dd><p>Id of adScriptId’s debugger.</p>
+<dd><p>Id of scriptId’s debugger.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="nodriver.cdp.page.AdScriptAncestry">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdScriptAncestry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ancestry_chain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_script_filterlist_rule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/page.html#AdScriptAncestry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.page.AdScriptAncestry" title="Link to this definition">#</a></dt>
+<dd><p>Encapsulates the script ancestry and the root script filterlist rule that
+caused the frame to be labelled as an ad. Only created when <code class="docutils literal notranslate"><span class="pre">ancestryChain</span></code>
+is not empty.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.page.AdScriptAncestry.ancestry_chain">
+<span class="sig-name descname"><span class="pre">ancestry_chain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference internal" href="#nodriver.cdp.page.AdScriptId" title="nodriver.cdp.page.AdScriptId"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdScriptId</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#nodriver.cdp.page.AdScriptAncestry.ancestry_chain" title="Link to this definition">#</a></dt>
+<dd><p>A chain of <code class="docutils literal notranslate"><span class="pre">AdScriptId</span></code>’s representing the ancestry of an ad script that
+led to the creation of a frame. The chain is ordered from the script
+itself (lower level) up to its root ancestor that was flagged by
+filterlist.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.page.AdScriptAncestry.root_script_filterlist_rule">
+<span class="sig-name descname"><span class="pre">root_script_filterlist_rule</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#nodriver.cdp.page.AdScriptAncestry.root_script_filterlist_rule" title="Link to this definition">#</a></dt>
+<dd><p>The filterlist rule that caused the root (last) script in
+<code class="docutils literal notranslate"><span class="pre">ancestryChain</span></code> to be ad-tagged. Only populated if the rule is
+available.</p>
 </dd></dl>
 
 </dd></dl>
@@ -439,7 +464,8 @@ as an ad.</p>
 <dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PermissionsPolicyFeature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/page.html#PermissionsPolicyFeature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature" title="Link to this definition">#</a></dt>
 <dd><p>All Permissions Policy features. This enum should match the one defined
-in services/network/public/cpp/permissions_policy/permissions_policy_features.json5.</p>
+in services/network/public/cpp/permissions_policy/permissions_policy_features.json5.
+LINT.IfChange(PermissionsPolicyFeature)</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.ACCELEROMETER">
 <span class="sig-name descname"><span class="pre">ACCELEROMETER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'accelerometer'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.ACCELEROMETER" title="Link to this definition">#</a></dt>
@@ -453,6 +479,11 @@ in services/network/public/cpp/permissions_policy/permissions_policy_features.js
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.AMBIENT_LIGHT_SENSOR">
 <span class="sig-name descname"><span class="pre">AMBIENT_LIGHT_SENSOR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ambient-light-sensor'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.AMBIENT_LIGHT_SENSOR" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.ARIA_NOTIFY">
+<span class="sig-name descname"><span class="pre">ARIA_NOTIFY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'aria-notify'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.ARIA_NOTIFY" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -641,6 +672,16 @@ in services/network/public/cpp/permissions_policy/permissions_policy_features.js
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.DEVICE_ATTRIBUTES">
+<span class="sig-name descname"><span class="pre">DEVICE_ATTRIBUTES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'device-attributes'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.DEVICE_ATTRIBUTES" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.DIGITAL_CREDENTIALS_CREATE">
+<span class="sig-name descname"><span class="pre">DIGITAL_CREDENTIALS_CREATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'digital-credentials-create'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.DIGITAL_CREDENTIALS_CREATE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.DIGITAL_CREDENTIALS_GET">
 <span class="sig-name descname"><span class="pre">DIGITAL_CREDENTIALS_GET</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'digital-credentials-get'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.DIGITAL_CREDENTIALS_GET" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -648,6 +689,11 @@ in services/network/public/cpp/permissions_policy/permissions_policy_features.js
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.DIRECT_SOCKETS">
 <span class="sig-name descname"><span class="pre">DIRECT_SOCKETS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'direct-sockets'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.DIRECT_SOCKETS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.DIRECT_SOCKETS_MULTICAST">
+<span class="sig-name descname"><span class="pre">DIRECT_SOCKETS_MULTICAST</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'direct-sockets-multicast'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.DIRECT_SOCKETS_MULTICAST" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -751,8 +797,18 @@ in services/network/public/cpp/permissions_policy/permissions_policy_features.js
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.LANGUAGE_MODEL">
+<span class="sig-name descname"><span class="pre">LANGUAGE_MODEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'language-model'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.LANGUAGE_MODEL" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.LOCAL_FONTS">
 <span class="sig-name descname"><span class="pre">LOCAL_FONTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'local-fonts'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.LOCAL_FONTS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.LOCAL_NETWORK_ACCESS">
+<span class="sig-name descname"><span class="pre">LOCAL_NETWORK_ACCESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'local-network-access'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.LOCAL_NETWORK_ACCESS" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -773,6 +829,11 @@ in services/network/public/cpp/permissions_policy/permissions_policy_features.js
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.MIDI">
 <span class="sig-name descname"><span class="pre">MIDI</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'midi'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.MIDI" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.ON_DEVICE_SPEECH_RECOGNITION">
+<span class="sig-name descname"><span class="pre">ON_DEVICE_SPEECH_RECOGNITION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'on-device-speech-recognition'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.ON_DEVICE_SPEECH_RECOGNITION" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -818,6 +879,11 @@ in services/network/public/cpp/permissions_policy/permissions_policy_features.js
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.PUBLICKEY_CREDENTIALS_GET">
 <span class="sig-name descname"><span class="pre">PUBLICKEY_CREDENTIALS_GET</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'publickey-credentials-get'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.PUBLICKEY_CREDENTIALS_GET" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.page.PermissionsPolicyFeature.RECORD_AD_AUCTION_EVENTS">
+<span class="sig-name descname"><span class="pre">RECORD_AD_AUCTION_EVENTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'record-ad-auction-events'</span></em><a class="headerlink" href="#nodriver.cdp.page.PermissionsPolicyFeature.RECORD_AD_AUCTION_EVENTS" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -2364,32 +2430,6 @@ experiment. See:
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="nodriver.cdp.page.AutoResponseMode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AutoResponseMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/page.html#AutoResponseMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.page.AutoResponseMode" title="Link to this definition">#</a></dt>
-<dd><p>Enum of possible auto-response for permission / prompt dialogs.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.page.AutoResponseMode.NONE">
-<span class="sig-name descname"><span class="pre">NONE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'none'</span></em><a class="headerlink" href="#nodriver.cdp.page.AutoResponseMode.NONE" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.page.AutoResponseMode.AUTO_ACCEPT">
-<span class="sig-name descname"><span class="pre">AUTO_ACCEPT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'autoAccept'</span></em><a class="headerlink" href="#nodriver.cdp.page.AutoResponseMode.AUTO_ACCEPT" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.page.AutoResponseMode.AUTO_REJECT">
-<span class="sig-name descname"><span class="pre">AUTO_REJECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'autoReject'</span></em><a class="headerlink" href="#nodriver.cdp.page.AutoResponseMode.AUTO_REJECT" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.page.AutoResponseMode.AUTO_OPT_OUT">
-<span class="sig-name descname"><span class="pre">AUTO_OPT_OUT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'autoOptOut'</span></em><a class="headerlink" href="#nodriver.cdp.page.AutoResponseMode.AUTO_OPT_OUT" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="nodriver.cdp.page.NavigationType">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NavigationType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/page.html#NavigationType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.page.NavigationType" title="Link to this definition">#</a></dt>
 <dd><p>The type of a frameNavigated event.</p>
@@ -2810,6 +2850,11 @@ experiment. See:
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.page.BackForwardCacheNotRestoredReason.SHARED_WORKER_MESSAGE">
+<span class="sig-name descname"><span class="pre">SHARED_WORKER_MESSAGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SharedWorkerMessage'</span></em><a class="headerlink" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.SHARED_WORKER_MESSAGE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_LOCKS">
 <span class="sig-name descname"><span class="pre">WEB_LOCKS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'WebLocks'</span></em><a class="headerlink" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_LOCKS" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -2930,18 +2975,18 @@ experiment. See:
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_RTC_STICKY">
-<span class="sig-name descname"><span class="pre">WEB_RTC_STICKY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'WebRTCSticky'</span></em><a class="headerlink" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_RTC_STICKY" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_RTC_USED_WITH_CCNS">
+<span class="sig-name descname"><span class="pre">WEB_RTC_USED_WITH_CCNS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'WebRTCUsedWithCCNS'</span></em><a class="headerlink" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_RTC_USED_WITH_CCNS" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_TRANSPORT_STICKY">
-<span class="sig-name descname"><span class="pre">WEB_TRANSPORT_STICKY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'WebTransportSticky'</span></em><a class="headerlink" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_TRANSPORT_STICKY" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_TRANSPORT_USED_WITH_CCNS">
+<span class="sig-name descname"><span class="pre">WEB_TRANSPORT_USED_WITH_CCNS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'WebTransportUsedWithCCNS'</span></em><a class="headerlink" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_TRANSPORT_USED_WITH_CCNS" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_SOCKET_STICKY">
-<span class="sig-name descname"><span class="pre">WEB_SOCKET_STICKY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'WebSocketSticky'</span></em><a class="headerlink" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_SOCKET_STICKY" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_SOCKET_USED_WITH_CCNS">
+<span class="sig-name descname"><span class="pre">WEB_SOCKET_USED_WITH_CCNS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'WebSocketUsedWithCCNS'</span></em><a class="headerlink" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_SOCKET_USED_WITH_CCNS" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -3110,8 +3155,13 @@ experiment. See:
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="nodriver.cdp.page.BackForwardCacheNotRestoredReason.CACHE_LIMIT_PRUNED">
-<span class="sig-name descname"><span class="pre">CACHE_LIMIT_PRUNED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CacheLimitPruned'</span></em><a class="headerlink" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.CACHE_LIMIT_PRUNED" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.page.BackForwardCacheNotRestoredReason.CACHE_LIMIT_PRUNED_ON_MODERATE_MEMORY_PRESSURE">
+<span class="sig-name descname"><span class="pre">CACHE_LIMIT_PRUNED_ON_MODERATE_MEMORY_PRESSURE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CacheLimitPrunedOnModerateMemoryPressure'</span></em><a class="headerlink" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.CACHE_LIMIT_PRUNED_ON_MODERATE_MEMORY_PRESSURE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.page.BackForwardCacheNotRestoredReason.CACHE_LIMIT_PRUNED_ON_CRITICAL_MEMORY_PRESSURE">
+<span class="sig-name descname"><span class="pre">CACHE_LIMIT_PRUNED_ON_CRITICAL_MEMORY_PRESSURE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CacheLimitPrunedOnCriticalMemoryPressure'</span></em><a class="headerlink" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.CACHE_LIMIT_PRUNED_ON_CRITICAL_MEMORY_PRESSURE" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -3514,18 +3564,18 @@ iframes, shadow DOM, external resources, and element-inline styles.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="nodriver.cdp.page.get_ad_script_id">
-<span class="sig-name descname"><span class="pre">get_ad_script_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/page.html#get_ad_script_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.page.get_ad_script_id" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="nodriver.cdp.page.get_ad_script_ancestry">
+<span class="sig-name descname"><span class="pre">get_ad_script_ancestry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/page.html#get_ad_script_ancestry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.page.get_ad_script_ancestry" title="Link to this definition">#</a></dt>
 <dd><p><strong>EXPERIMENTAL</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>frame_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.page.FrameId" title="nodriver.cdp.page.FrameId"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrameId</span></code></a></span>) – </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="#nodriver.cdp.page.AdScriptId" title="nodriver.cdp.page.AdScriptId"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdScriptId</span></code></a>]]</span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="#nodriver.cdp.page.AdScriptAncestry" title="nodriver.cdp.page.AdScriptAncestry"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdScriptAncestry</span></code></a>]]</span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>(Optional)</em> Identifies the bottom-most script which caused the frame to be labelled as an ad. Only sent if frame is labelled as an ad and id is available.</p>
+<dd class="field-odd"><p><em>(Optional)</em> The ancestry chain of ad script identifiers leading to this frame’s creation, along with the root script’s filterlist rule. The ancestry chain is ordered from the most immediate script (in the frame creation stack) to more distant ancestors (that created the immediately preceding script). Only sent if frame is labelled as an ad and ids are available.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3784,7 +3834,7 @@ If manifestId is provided, and it does not match the manifest of the</p>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference internal" href="#nodriver.cdp.page.FrameId" title="nodriver.cdp.page.FrameId"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrameId</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="network.html#nodriver.cdp.network.LoaderId" title="nodriver.cdp.network.LoaderId"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderId</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]]</span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference internal" href="#nodriver.cdp.page.FrameId" title="nodriver.cdp.page.FrameId"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrameId</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="network.html#nodriver.cdp.network.LoaderId" title="nodriver.cdp.network.LoaderId"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoaderId</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]]]</span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><p>A tuple with the following items:</p>
@@ -3792,6 +3842,7 @@ If manifestId is provided, and it does not match the manifest of the</p>
 <li><p><strong>frameId</strong> - Frame id that has navigated (or failed to navigate)</p></li>
 <li><p><strong>loaderId</strong> - <em>(Optional)</em> Loader identifier. This is omitted in case of same-document navigation, as the previously committed loaderId would not change.</p></li>
 <li><p><strong>errorText</strong> - <em>(Optional)</em> User friendly error message, present if and only if navigation has failed.</p></li>
+<li><p><strong>isDownload</strong> - <em>(Optional)</em> Whether the navigation resulted in a download.</p></li>
 </ol>
 </p>
 </dd>
@@ -4224,7 +4275,7 @@ for more details.</p>
 <p><strong>EXPERIMENTAL</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.page.AutoResponseMode" title="nodriver.cdp.page.AutoResponseMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">AutoResponseMode</span></code></a></span>) – </p>
+<dd class="field-odd"><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
@@ -4240,7 +4291,7 @@ for more details.</p>
 <p><strong>EXPERIMENTAL</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#nodriver.cdp.page.AutoResponseMode" title="nodriver.cdp.page.AutoResponseMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">AutoResponseMode</span></code></a></span>) – </p>
+<dd class="field-odd"><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span></p>
@@ -4706,9 +4757,15 @@ Deprecated. Use Browser.downloadProgress instead.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="nodriver.cdp.page.JavascriptDialogClosed">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">JavascriptDialogClosed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/page.html#JavascriptDialogClosed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.page.JavascriptDialogClosed" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">JavascriptDialogClosed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/page.html#JavascriptDialogClosed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.page.JavascriptDialogClosed" title="Link to this definition">#</a></dt>
 <dd><p>Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been
 closed.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.page.JavascriptDialogClosed.frame_id">
+<span class="sig-name descname"><span class="pre">frame_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.page.FrameId" title="nodriver.cdp.page.FrameId"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrameId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.page.JavascriptDialogClosed.frame_id" title="Link to this definition">#</a></dt>
+<dd><p>Frame id.</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.page.JavascriptDialogClosed.result">
 <span class="sig-name descname"><span class="pre">result</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#nodriver.cdp.page.JavascriptDialogClosed.result" title="Link to this definition">#</a></dt>
@@ -4725,13 +4782,19 @@ closed.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="nodriver.cdp.page.JavascriptDialogOpening">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">JavascriptDialogOpening</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_browser_handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_prompt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/page.html#JavascriptDialogOpening"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.page.JavascriptDialogOpening" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">JavascriptDialogOpening</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_browser_handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_prompt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/page.html#JavascriptDialogOpening"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.page.JavascriptDialogOpening" title="Link to this definition">#</a></dt>
 <dd><p>Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to
 open.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.page.JavascriptDialogOpening.url">
 <span class="sig-name descname"><span class="pre">url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.page.JavascriptDialogOpening.url" title="Link to this definition">#</a></dt>
 <dd><p>Frame url.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="nodriver.cdp.page.JavascriptDialogOpening.frame_id">
+<span class="sig-name descname"><span class="pre">frame_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#nodriver.cdp.page.FrameId" title="nodriver.cdp.page.FrameId"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrameId</span></code></a></em><a class="headerlink" href="#nodriver.cdp.page.JavascriptDialogOpening.frame_id" title="Link to this definition">#</a></dt>
+<dd><p>Frame id.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -4933,8 +4996,7 @@ etc.</p>
 <dt class="sig sig-object py" id="nodriver.cdp.page.CompilationCacheProduced">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CompilationCacheProduced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nodriver/cdp/page.html#CompilationCacheProduced"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nodriver.cdp.page.CompilationCacheProduced" title="Link to this definition">#</a></dt>
 <dd><p><strong>EXPERIMENTAL</strong></p>
-<p>Issued for every compilation cache generated. Is only available
-if Page.setGenerateCompilationCache is enabled.</p>
+<p>Issued for every compilation cache generated.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="nodriver.cdp.page.CompilationCacheProduced.url">
 <span class="sig-name descname"><span class="pre">url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#nodriver.cdp.page.CompilationCacheProduced.url" title="Link to this definition">#</a></dt>
@@ -5031,6 +5093,11 @@ if Page.setGenerateCompilationCache is enabled.</p>
 <li><a class="reference internal" href="#nodriver.cdp.page.AdScriptId.debugger_id"><code class="docutils literal notranslate"><span class="pre">AdScriptId.debugger_id</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#nodriver.cdp.page.AdScriptAncestry"><code class="docutils literal notranslate"><span class="pre">AdScriptAncestry</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.page.AdScriptAncestry.ancestry_chain"><code class="docutils literal notranslate"><span class="pre">AdScriptAncestry.ancestry_chain</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.AdScriptAncestry.root_script_filterlist_rule"><code class="docutils literal notranslate"><span class="pre">AdScriptAncestry.root_script_filterlist_rule</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#nodriver.cdp.page.SecureContextType"><code class="docutils literal notranslate"><span class="pre">SecureContextType</span></code></a><ul>
 <li><a class="reference internal" href="#nodriver.cdp.page.SecureContextType.SECURE"><code class="docutils literal notranslate"><span class="pre">SecureContextType.SECURE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.SecureContextType.SECURE_LOCALHOST"><code class="docutils literal notranslate"><span class="pre">SecureContextType.SECURE_LOCALHOST</span></code></a></li>
@@ -5055,6 +5122,7 @@ if Page.setGenerateCompilationCache is enabled.</p>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.ACCELEROMETER"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.ACCELEROMETER</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.ALL_SCREENS_CAPTURE"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.ALL_SCREENS_CAPTURE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.AMBIENT_LIGHT_SENSOR"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.AMBIENT_LIGHT_SENSOR</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.ARIA_NOTIFY"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.ARIA_NOTIFY</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.ATTRIBUTION_REPORTING"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.ATTRIBUTION_REPORTING</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.AUTOPLAY"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.AUTOPLAY</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.BLUETOOTH"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.BLUETOOTH</span></code></a></li>
@@ -5092,8 +5160,11 @@ if Page.setGenerateCompilationCache is enabled.</p>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.CROSS_ORIGIN_ISOLATED"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.CROSS_ORIGIN_ISOLATED</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.DEFERRED_FETCH"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.DEFERRED_FETCH</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.DEFERRED_FETCH_MINIMAL"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.DEFERRED_FETCH_MINIMAL</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.DEVICE_ATTRIBUTES"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.DEVICE_ATTRIBUTES</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.DIGITAL_CREDENTIALS_CREATE"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.DIGITAL_CREDENTIALS_CREATE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.DIGITAL_CREDENTIALS_GET"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.DIGITAL_CREDENTIALS_GET</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.DIRECT_SOCKETS"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.DIRECT_SOCKETS</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.DIRECT_SOCKETS_MULTICAST"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.DIRECT_SOCKETS_MULTICAST</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.DIRECT_SOCKETS_PRIVATE"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.DIRECT_SOCKETS_PRIVATE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.DISPLAY_CAPTURE"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.DISPLAY_CAPTURE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.DOCUMENT_DOMAIN"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.DOCUMENT_DOMAIN</span></code></a></li>
@@ -5114,11 +5185,14 @@ if Page.setGenerateCompilationCache is enabled.</p>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.JOIN_AD_INTEREST_GROUP"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.JOIN_AD_INTEREST_GROUP</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.KEYBOARD_MAP"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.KEYBOARD_MAP</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.LANGUAGE_DETECTOR"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.LANGUAGE_DETECTOR</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.LANGUAGE_MODEL"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.LANGUAGE_MODEL</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.LOCAL_FONTS"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.LOCAL_FONTS</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.LOCAL_NETWORK_ACCESS"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.LOCAL_NETWORK_ACCESS</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.MAGNETOMETER"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.MAGNETOMETER</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.MEDIA_PLAYBACK_WHILE_NOT_VISIBLE"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.MEDIA_PLAYBACK_WHILE_NOT_VISIBLE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.MICROPHONE"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.MICROPHONE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.MIDI"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.MIDI</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.ON_DEVICE_SPEECH_RECOGNITION"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.ON_DEVICE_SPEECH_RECOGNITION</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.OTP_CREDENTIALS"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.OTP_CREDENTIALS</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.PAYMENT"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.PAYMENT</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.PICTURE_IN_PICTURE"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.PICTURE_IN_PICTURE</span></code></a></li>
@@ -5128,6 +5202,7 @@ if Page.setGenerateCompilationCache is enabled.</p>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.PRIVATE_STATE_TOKEN_REDEMPTION"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.PRIVATE_STATE_TOKEN_REDEMPTION</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.PUBLICKEY_CREDENTIALS_CREATE"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.PUBLICKEY_CREDENTIALS_CREATE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.PUBLICKEY_CREDENTIALS_GET"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.PUBLICKEY_CREDENTIALS_GET</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.RECORD_AD_AUCTION_EVENTS"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.RECORD_AD_AUCTION_EVENTS</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.REWRITER"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.REWRITER</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.RUN_AD_AUCTION"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.RUN_AD_AUCTION</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.PermissionsPolicyFeature.SCREEN_WAKE_LOCK"><code class="docutils literal notranslate"><span class="pre">PermissionsPolicyFeature.SCREEN_WAKE_LOCK</span></code></a></li>
@@ -5493,13 +5568,6 @@ if Page.setGenerateCompilationCache is enabled.</p>
 <li><a class="reference internal" href="#nodriver.cdp.page.WebAppManifest.theme_color"><code class="docutils literal notranslate"><span class="pre">WebAppManifest.theme_color</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#nodriver.cdp.page.AutoResponseMode"><code class="docutils literal notranslate"><span class="pre">AutoResponseMode</span></code></a><ul>
-<li><a class="reference internal" href="#nodriver.cdp.page.AutoResponseMode.NONE"><code class="docutils literal notranslate"><span class="pre">AutoResponseMode.NONE</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.page.AutoResponseMode.AUTO_ACCEPT"><code class="docutils literal notranslate"><span class="pre">AutoResponseMode.AUTO_ACCEPT</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.page.AutoResponseMode.AUTO_REJECT"><code class="docutils literal notranslate"><span class="pre">AutoResponseMode.AUTO_REJECT</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.page.AutoResponseMode.AUTO_OPT_OUT"><code class="docutils literal notranslate"><span class="pre">AutoResponseMode.AUTO_OPT_OUT</span></code></a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#nodriver.cdp.page.NavigationType"><code class="docutils literal notranslate"><span class="pre">NavigationType</span></code></a><ul>
 <li><a class="reference internal" href="#nodriver.cdp.page.NavigationType.NAVIGATION"><code class="docutils literal notranslate"><span class="pre">NavigationType.NAVIGATION</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.NavigationType.BACK_FORWARD_CACHE_RESTORE"><code class="docutils literal notranslate"><span class="pre">NavigationType.BACK_FORWARD_CACHE_RESTORE</span></code></a></li>
@@ -5586,6 +5654,7 @@ if Page.setGenerateCompilationCache is enabled.</p>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.BROADCAST_CHANNEL"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.BROADCAST_CHANNEL</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_XR"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.WEB_XR</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.SHARED_WORKER"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.SHARED_WORKER</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.SHARED_WORKER_MESSAGE"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.SHARED_WORKER_MESSAGE</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_LOCKS"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.WEB_LOCKS</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_HID"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.WEB_HID</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_SHARE"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.WEB_SHARE</span></code></a></li>
@@ -5610,9 +5679,9 @@ if Page.setGenerateCompilationCache is enabled.</p>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.INDEXED_DB_EVENT"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.INDEXED_DB_EVENT</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.DUMMY"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.DUMMY</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.JS_NETWORK_REQUEST_RECEIVED_CACHE_CONTROL_NO_STORE_RESOURCE"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.JS_NETWORK_REQUEST_RECEIVED_CACHE_CONTROL_NO_STORE_RESOURCE</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_RTC_STICKY"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.WEB_RTC_STICKY</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_TRANSPORT_STICKY"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.WEB_TRANSPORT_STICKY</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_SOCKET_STICKY"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.WEB_SOCKET_STICKY</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_RTC_USED_WITH_CCNS"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.WEB_RTC_USED_WITH_CCNS</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_TRANSPORT_USED_WITH_CCNS"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.WEB_TRANSPORT_USED_WITH_CCNS</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.WEB_SOCKET_USED_WITH_CCNS"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.WEB_SOCKET_USED_WITH_CCNS</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.SMART_CARD"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.SMART_CARD</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.LIVE_MEDIA_STREAM_TRACK"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.LIVE_MEDIA_STREAM_TRACK</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.UNLOAD_HANDLER"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.UNLOAD_HANDLER</span></code></a></li>
@@ -5646,7 +5715,8 @@ if Page.setGenerateCompilationCache is enabled.</p>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.REQUESTED_BY_WEB_VIEW_CLIENT"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.REQUESTED_BY_WEB_VIEW_CLIENT</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.POST_MESSAGE_BY_WEB_VIEW_CLIENT"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.POST_MESSAGE_BY_WEB_VIEW_CLIENT</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.CACHE_CONTROL_NO_STORE_DEVICE_BOUND_SESSION_TERMINATED"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.CACHE_CONTROL_NO_STORE_DEVICE_BOUND_SESSION_TERMINATED</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.CACHE_LIMIT_PRUNED"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.CACHE_LIMIT_PRUNED</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.CACHE_LIMIT_PRUNED_ON_MODERATE_MEMORY_PRESSURE"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.CACHE_LIMIT_PRUNED_ON_MODERATE_MEMORY_PRESSURE</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReason.CACHE_LIMIT_PRUNED_ON_CRITICAL_MEMORY_PRESSURE"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReason.CACHE_LIMIT_PRUNED_ON_CRITICAL_MEMORY_PRESSURE</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.page.BackForwardCacheNotRestoredReasonType"><code class="docutils literal notranslate"><span class="pre">BackForwardCacheNotRestoredReasonType</span></code></a><ul>
@@ -5695,7 +5765,7 @@ if Page.setGenerateCompilationCache is enabled.</p>
 <li><a class="reference internal" href="#nodriver.cdp.page.disable"><code class="docutils literal notranslate"><span class="pre">disable()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.enable"><code class="docutils literal notranslate"><span class="pre">enable()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.generate_test_report"><code class="docutils literal notranslate"><span class="pre">generate_test_report()</span></code></a></li>
-<li><a class="reference internal" href="#nodriver.cdp.page.get_ad_script_id"><code class="docutils literal notranslate"><span class="pre">get_ad_script_id()</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.get_ad_script_ancestry"><code class="docutils literal notranslate"><span class="pre">get_ad_script_ancestry()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.get_app_id"><code class="docutils literal notranslate"><span class="pre">get_app_id()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.get_app_manifest"><code class="docutils literal notranslate"><span class="pre">get_app_manifest()</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.get_frame_tree"><code class="docutils literal notranslate"><span class="pre">get_frame_tree()</span></code></a></li>
@@ -5826,12 +5896,14 @@ if Page.setGenerateCompilationCache is enabled.</p>
 <li><a class="reference internal" href="#nodriver.cdp.page.InterstitialHidden"><code class="docutils literal notranslate"><span class="pre">InterstitialHidden</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.InterstitialShown"><code class="docutils literal notranslate"><span class="pre">InterstitialShown</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.JavascriptDialogClosed"><code class="docutils literal notranslate"><span class="pre">JavascriptDialogClosed</span></code></a><ul>
+<li><a class="reference internal" href="#nodriver.cdp.page.JavascriptDialogClosed.frame_id"><code class="docutils literal notranslate"><span class="pre">JavascriptDialogClosed.frame_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.JavascriptDialogClosed.result"><code class="docutils literal notranslate"><span class="pre">JavascriptDialogClosed.result</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.JavascriptDialogClosed.user_input"><code class="docutils literal notranslate"><span class="pre">JavascriptDialogClosed.user_input</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#nodriver.cdp.page.JavascriptDialogOpening"><code class="docutils literal notranslate"><span class="pre">JavascriptDialogOpening</span></code></a><ul>
 <li><a class="reference internal" href="#nodriver.cdp.page.JavascriptDialogOpening.url"><code class="docutils literal notranslate"><span class="pre">JavascriptDialogOpening.url</span></code></a></li>
+<li><a class="reference internal" href="#nodriver.cdp.page.JavascriptDialogOpening.frame_id"><code class="docutils literal notranslate"><span class="pre">JavascriptDialogOpening.frame_id</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.JavascriptDialogOpening.message"><code class="docutils literal notranslate"><span class="pre">JavascriptDialogOpening.message</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.JavascriptDialogOpening.type_"><code class="docutils literal notranslate"><span class="pre">JavascriptDialogOpening.type_</span></code></a></li>
 <li><a class="reference internal" href="#nodriver.cdp.page.JavascriptDialogOpening.has_browser_handler"><code class="docutils literal notranslate"><span class="pre">JavascriptDialogOpening.has_browser_handler</span></code></a></li>

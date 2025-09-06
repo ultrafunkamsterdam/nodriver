@@ -114,6 +114,8 @@ to. For more information, see
 
 .. autofunction:: reset_permissions
 
+.. autofunction:: set_contents_size
+
 .. autofunction:: set_dock_tile
 
 .. autofunction:: set_download_behavior

@@ -11,6 +11,8 @@ import typing
 from dataclasses import dataclass
 from .util import event_class, T_JSON_DICT
 
+from . import dom
+
 
 class PlayerId(str):
     '''
@@ -183,6 +185,27 @@ class PlayerError:
         )
 
 
+@dataclass
+class Player:
+    player_id: PlayerId
+
+    dom_node_id: typing.Optional[dom.BackendNodeId] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['playerId'] = self.player_id.to_json()
+        if self.dom_node_id is not None:
+            json['domNodeId'] = self.dom_node_id.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> Player:
+        return cls(
+            player_id=PlayerId.from_json(json['playerId']),
+            dom_node_id=dom.BackendNodeId.from_json(json['domNodeId']) if json.get('domNodeId', None) is not None else None,
+        )
+
+
 def enable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
     Enables the Media domain
@@ -273,18 +296,18 @@ class PlayerErrorsRaised:
         )
 
 
-@event_class('Media.playersCreated')
+@event_class('Media.playerCreated')
 @dataclass
-class PlayersCreated:
+class PlayerCreated:
     '''
     Called whenever a player is created, or when a new agent joins and receives
-    a list of active players. If an agent is restored, it will receive the full
-    list of player ids and all events again.
+    a list of active players. If an agent is restored, it will receive one
+    event for each active player.
     '''
-    players: typing.List[PlayerId]
+    player: Player
 
     @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> PlayersCreated:
+    def from_json(cls, json: T_JSON_DICT) -> PlayerCreated:
         return cls(
-            players=[PlayerId.from_json(i) for i in json['players']]
+            player=Player.from_json(json['player'])
         )

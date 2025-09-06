@@ -576,8 +576,6 @@ transparent).
 
 #### CAPTURE_AREA_SCREENSHOT *= 'captureAreaScreenshot'*
 
-#### SHOW_DISTANCES *= 'showDistances'*
-
 #### NONE *= 'none'*
 
 ## Commands
@@ -697,6 +695,9 @@ Highlights given quad. Coordinates are absolute with respect to the main frame v
 ### highlight_rect(x, y, width, height, color=None, outline_color=None)
 
 Highlights given rectangle. Coordinates are absolute with respect to the main frame viewport.
+Issue: the method does not handle device pixel ratio (DPR) correctly.
+The coordinates currently have to be adjusted by the client
+if DPR is not 1 (see crbug.com/437807128).
 
 * **Parameters:**
   * **x** ([`int`](https://docs.python.org/3/library/functions.html#int)) – X coordinate

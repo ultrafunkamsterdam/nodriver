@@ -30,6 +30,21 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: CharacteristicWriteType
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: CharacteristicOperationType
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: DescriptorOperationType
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: ManufacturerData
       :members:
       :undoc-members:
@@ -41,6 +56,11 @@ arguments to other commands.
       :exclude-members: from_json, to_json
 
 .. autoclass:: ScanEntry
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: CharacteristicProperties
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -57,13 +77,31 @@ commands, and ``z`` is the return type you should pay attention
 to. For more information, see
 :ref:`Getting Started: Commands <getting-started-commands>`.
 
+.. autofunction:: add_characteristic
+
+.. autofunction:: add_descriptor
+
+.. autofunction:: add_service
+
 .. autofunction:: disable
 
 .. autofunction:: enable
 
+.. autofunction:: remove_characteristic
+
+.. autofunction:: remove_descriptor
+
+.. autofunction:: remove_service
+
 .. autofunction:: set_simulated_central_state
 
 .. autofunction:: simulate_advertisement
+
+.. autofunction:: simulate_characteristic_operation_response
+
+.. autofunction:: simulate_descriptor_operation_response
+
+.. autofunction:: simulate_gatt_disconnection
 
 .. autofunction:: simulate_gatt_operation_response
 
@@ -77,6 +115,16 @@ yourself. Instead, the API creates events for you and then
 you use the event's attributes.
 
 .. autoclass:: GattOperationReceived
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: CharacteristicOperationReceived
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: DescriptorOperationReceived
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

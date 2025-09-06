@@ -107,6 +107,7 @@ class RuleSet:
 class RuleSetErrorType(enum.Enum):
     SOURCE_IS_NOT_JSON_OBJECT = "SourceIsNotJsonObject"
     INVALID_RULES_SKIPPED = "InvalidRulesSkipped"
+    INVALID_RULESET_LEVEL_TAG = "InvalidRulesetLevelTag"
 
     def to_json(self) -> str:
         return self.value
@@ -315,6 +316,7 @@ class PrerenderFinalStatus(enum.Enum):
     V8_OPTIMIZER_DISABLED = "V8OptimizerDisabled"
     PRERENDER_FAILED_DURING_PREFETCH = "PrerenderFailedDuringPrefetch"
     BROWSING_DATA_REMOVED = "BrowsingDataRemoved"
+    PRERENDER_HOST_REUSED = "PrerenderHostReused"
 
     def to_json(self) -> str:
         return self.value

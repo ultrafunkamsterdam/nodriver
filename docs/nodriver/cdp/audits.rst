@@ -154,6 +154,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: UnencodedDigestError
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: AttributionReportingIssueDetails
       :members:
       :undoc-members:
@@ -175,6 +180,11 @@ arguments to other commands.
       :exclude-members: from_json, to_json
 
 .. autoclass:: SRIMessageSignatureIssueDetails
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: UnencodedDigestIssueDetails
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -249,12 +259,12 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: SelectElementAccessibilityIssueReason
+.. autoclass:: ElementAccessibilityIssueReason
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: SelectElementAccessibilityIssueDetails
+.. autoclass:: ElementAccessibilityIssueDetails
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -275,6 +285,16 @@ arguments to other commands.
       :exclude-members: from_json, to_json
 
 .. autoclass:: PropertyRuleIssueDetails
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: UserReidentificationIssueType
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: UserReidentificationIssueDetails
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

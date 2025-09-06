@@ -118,6 +118,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: IpProxyStatus
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: CorsError
       :members:
       :undoc-members:
@@ -293,6 +298,16 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: DirectUDPSocketOptions
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: DirectUDPMessage
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: PrivateNetworkRequestPolicy
       :members:
       :undoc-members:
@@ -420,6 +435,8 @@ to. For more information, see
 
 .. autofunction:: get_cookies
 
+.. autofunction:: get_ip_protection_proxy_status
+
 .. autofunction:: get_request_post_data
 
 .. autofunction:: get_response_body
@@ -451,6 +468,8 @@ to. For more information, see
 .. autofunction:: set_cookies
 
 .. autofunction:: set_extra_http_headers
+
+.. autofunction:: set_ip_protection_proxy_bypass_enabled
 
 .. autofunction:: set_request_interception
 
@@ -583,6 +602,46 @@ you use the event's attributes.
       :exclude-members: from_json, to_json
 
 .. autoclass:: DirectTCPSocketClosed
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: DirectTCPSocketChunkSent
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: DirectTCPSocketChunkReceived
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: DirectUDPSocketCreated
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: DirectUDPSocketOpened
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: DirectUDPSocketAborted
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: DirectUDPSocketClosed
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: DirectUDPSocketChunkSent
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: DirectUDPSocketChunkReceived
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

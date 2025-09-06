@@ -551,6 +551,18 @@ CORS RFC1918 enforcement.
 
 #### VALIDATION_FAILED_SIGNATURE_MISMATCH *= 'ValidationFailedSignatureMismatch'*
 
+#### VALIDATION_FAILED_INTEGRITY_MISMATCH *= 'ValidationFailedIntegrityMismatch'*
+
+### *class* UnencodedDigestError(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
+
+#### MALFORMED_DICTIONARY *= 'MalformedDictionary'*
+
+#### UNKNOWN_ALGORITHM *= 'UnknownAlgorithm'*
+
+#### INCORRECT_DIGEST_TYPE *= 'IncorrectDigestType'*
+
+#### INCORRECT_DIGEST_LENGTH *= 'IncorrectDigestLength'*
+
 ### *class* AttributionReportingIssueDetails(violation_type, request=None, violating_node_id=None, invalid_parameter=None)
 
 Details for issues around “Attribution Reporting API” usage.
@@ -594,11 +606,19 @@ instead of “limited-quirks”.
 
 #### request*: [`AffectedRequest`](#nodriver.cdp.audits.AffectedRequest)*
 
-### *class* SRIMessageSignatureIssueDetails(error, signature_base, request)
+### *class* SRIMessageSignatureIssueDetails(error, signature_base, integrity_assertions, request)
 
 #### error*: [`SRIMessageSignatureError`](#nodriver.cdp.audits.SRIMessageSignatureError)*
 
 #### signature_base*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### integrity_assertions*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+
+#### request*: [`AffectedRequest`](#nodriver.cdp.audits.AffectedRequest)*
+
+### *class* UnencodedDigestIssueDetails(error, request)
+
+#### error*: [`UnencodedDigestError`](#nodriver.cdp.audits.UnencodedDigestError)*
 
 #### request*: [`AffectedRequest`](#nodriver.cdp.audits.AffectedRequest)*
 
@@ -792,6 +812,8 @@ all cases except for success.
 
 #### CORS_ERROR *= 'CorsError'*
 
+#### SUPPRESSED_BY_SEGMENTATION_PLATFORM *= 'SuppressedBySegmentationPlatform'*
+
 ### *class* FederatedAuthUserInfoRequestIssueDetails(federated_auth_user_info_request_issue_reason)
 
 #### federated_auth_user_info_request_issue_reason*: [`FederatedAuthUserInfoRequestIssueReason`](#nodriver.cdp.audits.FederatedAuthUserInfoRequestIssueReason)*
@@ -857,7 +879,7 @@ The BlobURL that failed to load.
 
 Additional information about the Partitioning Blob URL issue.
 
-### *class* SelectElementAccessibilityIssueReason(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
+### *class* ElementAccessibilityIssueReason(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 #### DISALLOWED_SELECT_CHILD *= 'DisallowedSelectChild'*
 
@@ -869,13 +891,15 @@ Additional information about the Partitioning Blob URL issue.
 
 #### INTERACTIVE_CONTENT_LEGEND_CHILD *= 'InteractiveContentLegendChild'*
 
-### *class* SelectElementAccessibilityIssueDetails(node_id, select_element_accessibility_issue_reason, has_disallowed_attributes)
+#### INTERACTIVE_CONTENT_SUMMARY_DESCENDANT *= 'InteractiveContentSummaryDescendant'*
 
-This issue warns about errors in the select element content model.
+### *class* ElementAccessibilityIssueDetails(node_id, element_accessibility_issue_reason, has_disallowed_attributes)
+
+This issue warns about errors in the select or summary element content model.
 
 #### node_id*: [`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)*
 
-#### select_element_accessibility_issue_reason*: [`SelectElementAccessibilityIssueReason`](#nodriver.cdp.audits.SelectElementAccessibilityIssueReason)*
+#### element_accessibility_issue_reason*: [`ElementAccessibilityIssueReason`](#nodriver.cdp.audits.ElementAccessibilityIssueReason)*
 
 #### has_disallowed_attributes*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
@@ -928,6 +952,29 @@ Reason why the property rule was discarded.
 
 The value of the property rule property that failed to parse
 
+### *class* UserReidentificationIssueType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
+
+#### BLOCKED_FRAME_NAVIGATION *= 'BlockedFrameNavigation'*
+
+#### BLOCKED_SUBRESOURCE *= 'BlockedSubresource'*
+
+#### NOISED_CANVAS_READBACK *= 'NoisedCanvasReadback'*
+
+### *class* UserReidentificationIssueDetails(type_, request=None, source_code_location=None)
+
+This issue warns about uses of APIs that may be considered misuse to
+re-identify users.
+
+#### type_*: [`UserReidentificationIssueType`](#nodriver.cdp.audits.UserReidentificationIssueType)*
+
+#### request*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AffectedRequest`](#nodriver.cdp.audits.AffectedRequest)]* *= None*
+
+Applies to BlockedFrameNavigation and BlockedSubresource issue types.
+
+#### source_code_location*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SourceCodeLocation`](#nodriver.cdp.audits.SourceCodeLocation)]* *= None*
+
+Applies to NoisedCanvasReadback issue type.
+
 ### *class* InspectorIssueCode(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 A unique identifier for the type of issue. Each type may use one of the
@@ -978,11 +1025,15 @@ information about the kind of issue.
 
 #### SHARED_DICTIONARY_ISSUE *= 'SharedDictionaryIssue'*
 
-#### SELECT_ELEMENT_ACCESSIBILITY_ISSUE *= 'SelectElementAccessibilityIssue'*
+#### ELEMENT_ACCESSIBILITY_ISSUE *= 'ElementAccessibilityIssue'*
 
 #### SRI_MESSAGE_SIGNATURE_ISSUE *= 'SRIMessageSignatureIssue'*
 
-### *class* InspectorIssueDetails(cookie_issue_details=None, mixed_content_issue_details=None, blocked_by_response_issue_details=None, heavy_ad_issue_details=None, content_security_policy_issue_details=None, shared_array_buffer_issue_details=None, low_text_contrast_issue_details=None, cors_issue_details=None, attribution_reporting_issue_details=None, quirks_mode_issue_details=None, partitioning_blob_url_issue_details=None, navigator_user_agent_issue_details=None, generic_issue_details=None, deprecation_issue_details=None, client_hint_issue_details=None, federated_auth_request_issue_details=None, bounce_tracking_issue_details=None, cookie_deprecation_metadata_issue_details=None, stylesheet_loading_issue_details=None, property_rule_issue_details=None, federated_auth_user_info_request_issue_details=None, shared_dictionary_issue_details=None, select_element_accessibility_issue_details=None, sri_message_signature_issue_details=None)
+#### UNENCODED_DIGEST_ISSUE *= 'UnencodedDigestIssue'*
+
+#### USER_REIDENTIFICATION_ISSUE *= 'UserReidentificationIssue'*
+
+### *class* InspectorIssueDetails(cookie_issue_details=None, mixed_content_issue_details=None, blocked_by_response_issue_details=None, heavy_ad_issue_details=None, content_security_policy_issue_details=None, shared_array_buffer_issue_details=None, low_text_contrast_issue_details=None, cors_issue_details=None, attribution_reporting_issue_details=None, quirks_mode_issue_details=None, partitioning_blob_url_issue_details=None, navigator_user_agent_issue_details=None, generic_issue_details=None, deprecation_issue_details=None, client_hint_issue_details=None, federated_auth_request_issue_details=None, bounce_tracking_issue_details=None, cookie_deprecation_metadata_issue_details=None, stylesheet_loading_issue_details=None, property_rule_issue_details=None, federated_auth_user_info_request_issue_details=None, shared_dictionary_issue_details=None, element_accessibility_issue_details=None, sri_message_signature_issue_details=None, unencoded_digest_issue_details=None, user_reidentification_issue_details=None)
 
 This struct holds a list of optional fields with additional information
 specific to the kind of issue. When adding a new issue code, please also
@@ -1032,9 +1083,13 @@ add a new optional field to this type.
 
 #### shared_dictionary_issue_details*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SharedDictionaryIssueDetails`](#nodriver.cdp.audits.SharedDictionaryIssueDetails)]* *= None*
 
-#### select_element_accessibility_issue_details*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SelectElementAccessibilityIssueDetails`](#nodriver.cdp.audits.SelectElementAccessibilityIssueDetails)]* *= None*
+#### element_accessibility_issue_details*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ElementAccessibilityIssueDetails`](#nodriver.cdp.audits.ElementAccessibilityIssueDetails)]* *= None*
 
 #### sri_message_signature_issue_details*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SRIMessageSignatureIssueDetails`](#nodriver.cdp.audits.SRIMessageSignatureIssueDetails)]* *= None*
+
+#### unencoded_digest_issue_details*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UnencodedDigestIssueDetails`](#nodriver.cdp.audits.UnencodedDigestIssueDetails)]* *= None*
+
+#### user_reidentification_issue_details*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`UserReidentificationIssueDetails`](#nodriver.cdp.audits.UserReidentificationIssueDetails)]* *= None*
 
 ### *class* IssueId
 

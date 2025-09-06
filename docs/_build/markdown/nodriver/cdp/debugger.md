@@ -736,7 +736,7 @@ Content hash of the script, SHA-256.
 
 #### build_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-For Wasm modules, the content of the `build_id` custom section.
+For Wasm modules, the content of the `build_id` custom section. For JavaScript the `debugId` magic comment.
 
 #### execution_context_aux_data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]*
 
@@ -818,7 +818,7 @@ Content hash of the script, SHA-256.
 
 #### build_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-For Wasm modules, the content of the `build_id` custom section.
+For Wasm modules, the content of the `build_id` custom section. For JavaScript the `debugId` magic comment.
 
 #### execution_context_aux_data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/library/stdtypes.html#dict)]*
 

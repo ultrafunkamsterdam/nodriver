@@ -46,17 +46,36 @@ Indicates whether a frame has been identified as an ad and why.
 
 ### *class* AdScriptId(script_id, debugger_id)
 
-Identifies the bottom-most script which caused the frame to be labelled
-as an ad.
+Identifies the script which caused a script or frame to be labelled as an
+ad.
 
 #### script_id*: [`ScriptId`](runtime.md#nodriver.cdp.runtime.ScriptId)*
 
-Script Id of the bottom-most script which caused the frame to be labelled
-as an ad.
+Script Id of the script which caused a script or frame to be labelled as
+an ad.
 
 #### debugger_id*: [`UniqueDebuggerId`](runtime.md#nodriver.cdp.runtime.UniqueDebuggerId)*
 
-Id of adScriptId’s debugger.
+Id of scriptId’s debugger.
+
+### *class* AdScriptAncestry(ancestry_chain, root_script_filterlist_rule=None)
+
+Encapsulates the script ancestry and the root script filterlist rule that
+caused the frame to be labelled as an ad. Only created when `ancestryChain`
+is not empty.
+
+#### ancestry_chain*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`AdScriptId`](#nodriver.cdp.page.AdScriptId)]*
+
+A chain of `AdScriptId`’s representing the ancestry of an ad script that
+led to the creation of a frame. The chain is ordered from the script
+itself (lower level) up to its root ancestor that was flagged by
+filterlist.
+
+#### root_script_filterlist_rule*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+The filterlist rule that caused the root (last) script in
+`ancestryChain` to be ad-tagged. Only populated if the rule is
+available.
 
 ### *class* SecureContextType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -94,12 +113,15 @@ Indicates whether the frame is cross-origin isolated and why it is the case.
 
 All Permissions Policy features. This enum should match the one defined
 in services/network/public/cpp/permissions_policy/permissions_policy_features.json5.
+LINT.IfChange(PermissionsPolicyFeature)
 
 #### ACCELEROMETER *= 'accelerometer'*
 
 #### ALL_SCREENS_CAPTURE *= 'all-screens-capture'*
 
 #### AMBIENT_LIGHT_SENSOR *= 'ambient-light-sensor'*
+
+#### ARIA_NOTIFY *= 'aria-notify'*
 
 #### ATTRIBUTION_REPORTING *= 'attribution-reporting'*
 
@@ -175,9 +197,15 @@ in services/network/public/cpp/permissions_policy/permissions_policy_features.js
 
 #### DEFERRED_FETCH_MINIMAL *= 'deferred-fetch-minimal'*
 
+#### DEVICE_ATTRIBUTES *= 'device-attributes'*
+
+#### DIGITAL_CREDENTIALS_CREATE *= 'digital-credentials-create'*
+
 #### DIGITAL_CREDENTIALS_GET *= 'digital-credentials-get'*
 
 #### DIRECT_SOCKETS *= 'direct-sockets'*
+
+#### DIRECT_SOCKETS_MULTICAST *= 'direct-sockets-multicast'*
 
 #### DIRECT_SOCKETS_PRIVATE *= 'direct-sockets-private'*
 
@@ -219,7 +247,11 @@ in services/network/public/cpp/permissions_policy/permissions_policy_features.js
 
 #### LANGUAGE_DETECTOR *= 'language-detector'*
 
+#### LANGUAGE_MODEL *= 'language-model'*
+
 #### LOCAL_FONTS *= 'local-fonts'*
+
+#### LOCAL_NETWORK_ACCESS *= 'local-network-access'*
 
 #### MAGNETOMETER *= 'magnetometer'*
 
@@ -228,6 +260,8 @@ in services/network/public/cpp/permissions_policy/permissions_policy_features.js
 #### MICROPHONE *= 'microphone'*
 
 #### MIDI *= 'midi'*
+
+#### ON_DEVICE_SPEECH_RECOGNITION *= 'on-device-speech-recognition'*
 
 #### OTP_CREDENTIALS *= 'otp-credentials'*
 
@@ -246,6 +280,8 @@ in services/network/public/cpp/permissions_policy/permissions_policy_features.js
 #### PUBLICKEY_CREDENTIALS_CREATE *= 'publickey-credentials-create'*
 
 #### PUBLICKEY_CREDENTIALS_GET *= 'publickey-credentials-get'*
+
+#### RECORD_AD_AUCTION_EVENTS *= 'record-ad-auction-events'*
 
 #### REWRITER *= 'rewriter'*
 
@@ -1064,18 +1100,6 @@ The screenshots used by chromium.
 
 #### theme_color*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
-### *class* AutoResponseMode(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
-
-Enum of possible auto-response for permission / prompt dialogs.
-
-#### NONE *= 'none'*
-
-#### AUTO_ACCEPT *= 'autoAccept'*
-
-#### AUTO_REJECT *= 'autoReject'*
-
-#### AUTO_OPT_OUT *= 'autoOptOut'*
-
 ### *class* NavigationType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 The type of a frameNavigated event.
@@ -1248,6 +1272,8 @@ List of not restored reasons for back-forward cache.
 
 #### SHARED_WORKER *= 'SharedWorker'*
 
+#### SHARED_WORKER_MESSAGE *= 'SharedWorkerMessage'*
+
 #### WEB_LOCKS *= 'WebLocks'*
 
 #### WEB_HID *= 'WebHID'*
@@ -1296,11 +1322,11 @@ List of not restored reasons for back-forward cache.
 
 #### JS_NETWORK_REQUEST_RECEIVED_CACHE_CONTROL_NO_STORE_RESOURCE *= 'JsNetworkRequestReceivedCacheControlNoStoreResource'*
 
-#### WEB_RTC_STICKY *= 'WebRTCSticky'*
+#### WEB_RTC_USED_WITH_CCNS *= 'WebRTCUsedWithCCNS'*
 
-#### WEB_TRANSPORT_STICKY *= 'WebTransportSticky'*
+#### WEB_TRANSPORT_USED_WITH_CCNS *= 'WebTransportUsedWithCCNS'*
 
-#### WEB_SOCKET_STICKY *= 'WebSocketSticky'*
+#### WEB_SOCKET_USED_WITH_CCNS *= 'WebSocketUsedWithCCNS'*
 
 #### SMART_CARD *= 'SmartCard'*
 
@@ -1368,7 +1394,9 @@ List of not restored reasons for back-forward cache.
 
 #### CACHE_CONTROL_NO_STORE_DEVICE_BOUND_SESSION_TERMINATED *= 'CacheControlNoStoreDeviceBoundSessionTerminated'*
 
-#### CACHE_LIMIT_PRUNED *= 'CacheLimitPruned'*
+#### CACHE_LIMIT_PRUNED_ON_MODERATE_MEMORY_PRESSURE *= 'CacheLimitPrunedOnModerateMemoryPressure'*
+
+#### CACHE_LIMIT_PRUNED_ON_CRITICAL_MEMORY_PRESSURE *= 'CacheLimitPrunedOnCriticalMemoryPressure'*
 
 ### *class* BackForwardCacheNotRestoredReasonType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -1645,16 +1673,16 @@ Generates a report for testing.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
-### get_ad_script_id(frame_id)
+### get_ad_script_ancestry(frame_id)
 
 **EXPERIMENTAL**
 
 * **Parameters:**
   **frame_id** ([`FrameId`](#nodriver.cdp.page.FrameId)) – 
 * **Return type:**
-  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AdScriptId`](#nodriver.cdp.page.AdScriptId)]]
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`AdScriptAncestry`](#nodriver.cdp.page.AdScriptAncestry)]]
 * **Returns:**
-  *(Optional)* Identifies the bottom-most script which caused the frame to be labelled as an ad. Only sent if frame is labelled as an ad and id is available.
+  *(Optional)* The ancestry chain of ad script identifiers leading to this frame’s creation, along with the root script’s filterlist rule. The ancestry chain is ordered from the most immediate script (in the frame creation stack) to more distant ancestors (that created the immediately preceding script). Only sent if frame is labelled as an ad and ids are available.
 
 ### get_app_id()
 
@@ -1823,12 +1851,13 @@ Navigates current page to the given URL.
   * **frame_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](#nodriver.cdp.page.FrameId)]) – *(Optional)* Frame id to navigate, if not specified navigates the top frame.
   * **referrer_policy** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`ReferrerPolicy`](#nodriver.cdp.page.ReferrerPolicy)]) – **(EXPERIMENTAL)** *(Optional)* Referrer-policy used for the navigation.
 * **Return type:**
-  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`FrameId`](#nodriver.cdp.page.FrameId), [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LoaderId`](network.md#nodriver.cdp.network.LoaderId)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]]
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`FrameId`](#nodriver.cdp.page.FrameId), [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`LoaderId`](network.md#nodriver.cdp.network.LoaderId)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)], [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]]]
 * **Returns:**
   A tuple with the following items:
   1. **frameId** - Frame id that has navigated (or failed to navigate)
   2. **loaderId** - *(Optional)* Loader identifier. This is omitted in case of same-document navigation, as the previously committed loaderId would not change.
   3. **errorText** - *(Optional)* User friendly error message, present if and only if navigation has failed.
+  4. **isDownload** - *(Optional)* Whether the navigation resulted in a download.
 
 ### navigate_to_history_entry(entry_id)
 
@@ -2140,7 +2169,7 @@ Extensions for Custom Handlers API:
 **EXPERIMENTAL**
 
 * **Parameters:**
-  **mode** ([`AutoResponseMode`](#nodriver.cdp.page.AutoResponseMode)) – 
+  **mode** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -2152,7 +2181,7 @@ Sets the Secure Payment Confirmation transaction mode.
 **EXPERIMENTAL**
 
 * **Parameters:**
-  **mode** ([`AutoResponseMode`](#nodriver.cdp.page.AutoResponseMode)) – 
+  **mode** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -2481,10 +2510,14 @@ Fired when interstitial page was hidden
 
 Fired when interstitial page was shown
 
-### *class* JavascriptDialogClosed(result, user_input)
+### *class* JavascriptDialogClosed(frame_id, result, user_input)
 
 Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been
 closed.
+
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
+
+Frame id.
 
 #### result*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
 
@@ -2494,7 +2527,7 @@ Whether dialog was confirmed.
 
 User input in case of prompt.
 
-### *class* JavascriptDialogOpening(url, message, type_, has_browser_handler, default_prompt)
+### *class* JavascriptDialogOpening(url, frame_id, message, type_, has_browser_handler, default_prompt)
 
 Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to
 open.
@@ -2502,6 +2535,10 @@ open.
 #### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Frame url.
+
+#### frame_id*: [`FrameId`](#nodriver.cdp.page.FrameId)*
+
+Frame id.
 
 #### message*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
@@ -2638,8 +2675,7 @@ Whether or not it was triggered by user gesture.
 
 **EXPERIMENTAL**
 
-Issued for every compilation cache generated. Is only available
-if Page.setGenerateCompilationCache is enabled.
+Issued for every compilation cache generated.
 
 #### url*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 

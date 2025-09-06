@@ -273,22 +273,19 @@
 <span class="c1"># CDP domain: FedCm (experimental)</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
-
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">event_class</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
 
 
 <div class="viewcode-block" id="LoginState">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.LoginState">[docs]</a>
 <span class="k">class</span> <span class="nc">LoginState</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Whether this is a sign-up or sign-in action for this account, i.e.</span>
 <span class="sd">    whether this account has ever been used to sign in to this RP before.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">SIGN_IN</span> <span class="o">=</span> <span class="s2">&quot;SignIn&quot;</span>
     <span class="n">SIGN_UP</span> <span class="o">=</span> <span class="s2">&quot;SignUp&quot;</span>
 
@@ -304,10 +301,9 @@
 <div class="viewcode-block" id="DialogType">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.DialogType">[docs]</a>
 <span class="k">class</span> <span class="nc">DialogType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    The types of FedCM dialogs.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">ACCOUNT_CHOOSER</span> <span class="o">=</span> <span class="s2">&quot;AccountChooser&quot;</span>
     <span class="n">AUTO_REAUTHN</span> <span class="o">=</span> <span class="s2">&quot;AutoReauthn&quot;</span>
     <span class="n">CONFIRM_IDP_LOGIN</span> <span class="o">=</span> <span class="s2">&quot;ConfirmIdpLogin&quot;</span>
@@ -325,10 +321,9 @@
 <div class="viewcode-block" id="DialogButton">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.DialogButton">[docs]</a>
 <span class="k">class</span> <span class="nc">DialogButton</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    The buttons on the FedCM dialog.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">CONFIRM_IDP_LOGIN_CONTINUE</span> <span class="o">=</span> <span class="s2">&quot;ConfirmIdpLoginContinue&quot;</span>
     <span class="n">ERROR_GOT_IT</span> <span class="o">=</span> <span class="s2">&quot;ErrorGotIt&quot;</span>
     <span class="n">ERROR_MORE_DETAILS</span> <span class="o">=</span> <span class="s2">&quot;ErrorMoreDetails&quot;</span>
@@ -345,10 +340,9 @@
 <div class="viewcode-block" id="AccountUrlType">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.AccountUrlType">[docs]</a>
 <span class="k">class</span> <span class="nc">AccountUrlType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    The URLs that each account has</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">TERMS_OF_SERVICE</span> <span class="o">=</span> <span class="s2">&quot;TermsOfService&quot;</span>
     <span class="n">PRIVACY_POLICY</span> <span class="o">=</span> <span class="s2">&quot;PrivacyPolicy&quot;</span>
 
@@ -365,10 +359,9 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.Account">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Account</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Corresponds to IdentityRequestAccount</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">account_id</span><span class="p">:</span> <span class="nb">str</span>
 
     <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
@@ -392,41 +385,33 @@
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;accountId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_id</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">email</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;givenName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">given_name</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;pictureUrl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">picture_url</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;idpConfigUrl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">idp_config_url</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;idpLoginUrl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">idp_login_url</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;loginState&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">login_state</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;accountId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_id</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">email</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;givenName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">given_name</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;pictureUrl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">picture_url</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;idpConfigUrl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">idp_config_url</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;idpLoginUrl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">idp_login_url</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;loginState&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">login_state</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">terms_of_service_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;termsOfServiceUrl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">terms_of_service_url</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;termsOfServiceUrl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">terms_of_service_url</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">privacy_policy_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;privacyPolicyUrl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">privacy_policy_url</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;privacyPolicyUrl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">privacy_policy_url</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Account</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">account_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;accountId&quot;</span><span class="p">]),</span>
-            <span class="n">email</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">]),</span>
-            <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]),</span>
-            <span class="n">given_name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;givenName&quot;</span><span class="p">]),</span>
-            <span class="n">picture_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;pictureUrl&quot;</span><span class="p">]),</span>
-            <span class="n">idp_config_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;idpConfigUrl&quot;</span><span class="p">]),</span>
-            <span class="n">idp_login_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;idpLoginUrl&quot;</span><span class="p">]),</span>
-            <span class="n">login_state</span><span class="o">=</span><span class="n">LoginState</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;loginState&quot;</span><span class="p">]),</span>
-            <span class="n">terms_of_service_url</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;termsOfServiceUrl&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;termsOfServiceUrl&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">privacy_policy_url</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;privacyPolicyUrl&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;privacyPolicyUrl&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
+            <span class="n">account_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;accountId&#39;</span><span class="p">]),</span>
+            <span class="n">email</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]),</span>
+            <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]),</span>
+            <span class="n">given_name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;givenName&#39;</span><span class="p">]),</span>
+            <span class="n">picture_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;pictureUrl&#39;</span><span class="p">]),</span>
+            <span class="n">idp_config_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;idpConfigUrl&#39;</span><span class="p">]),</span>
+            <span class="n">idp_login_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;idpLoginUrl&#39;</span><span class="p">]),</span>
+            <span class="n">login_state</span><span class="o">=</span><span class="n">LoginState</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;loginState&#39;</span><span class="p">]),</span>
+            <span class="n">terms_of_service_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;termsOfServiceUrl&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;termsOfServiceUrl&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">privacy_policy_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;privacyPolicyUrl&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;privacyPolicyUrl&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
@@ -434,17 +419,17 @@
 <div class="viewcode-block" id="enable">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.enable">[docs]</a>
 <span class="k">def</span> <span class="nf">enable</span><span class="p">(</span>
-        <span class="n">disable_rejection_delay</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">disable_rejection_delay</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    :param disable_rejection_delay: *(Optional)* Allows callers to disable the promise rejection delay that would normally happen, if this is unimportant to what&#39;s being tested. (step 4 of https://fedidcg.github.io/FedCM/#browser-api-rp-sign-in)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">disable_rejection_delay</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;disableRejectionDelay&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">disable_rejection_delay</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;disableRejectionDelay&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">disable_rejection_delay</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;FedCm.enable&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;FedCm.enable&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -452,9 +437,10 @@
 
 <div class="viewcode-block" id="disable">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.disable">[docs]</a>
-<span class="k">def</span> <span class="nf">disable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">disable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;FedCm.disable&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;FedCm.disable&#39;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -463,18 +449,19 @@
 <div class="viewcode-block" id="select_account">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.select_account">[docs]</a>
 <span class="k">def</span> <span class="nf">select_account</span><span class="p">(</span>
-        <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">account_index</span><span class="p">:</span> <span class="nb">int</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">account_index</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    :param dialog_id:</span>
 <span class="sd">    :param account_index:</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;dialogId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dialog_id</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;accountIndex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">account_index</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;dialogId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dialog_id</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;accountIndex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">account_index</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;FedCm.selectAccount&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;FedCm.selectAccount&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -483,18 +470,19 @@
 <div class="viewcode-block" id="click_dialog_button">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.click_dialog_button">[docs]</a>
 <span class="k">def</span> <span class="nf">click_dialog_button</span><span class="p">(</span>
-        <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dialog_button</span><span class="p">:</span> <span class="n">DialogButton</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">dialog_button</span><span class="p">:</span> <span class="n">DialogButton</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    :param dialog_id:</span>
 <span class="sd">    :param dialog_button:</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;dialogId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dialog_id</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;dialogButton&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dialog_button</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;dialogId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dialog_id</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;dialogButton&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dialog_button</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;FedCm.clickDialogButton&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;FedCm.clickDialogButton&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -503,20 +491,22 @@
 <div class="viewcode-block" id="open_url">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.open_url">[docs]</a>
 <span class="k">def</span> <span class="nf">open_url</span><span class="p">(</span>
-        <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">account_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">account_url_type</span><span class="p">:</span> <span class="n">AccountUrlType</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">account_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">account_url_type</span><span class="p">:</span> <span class="n">AccountUrlType</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    :param dialog_id:</span>
 <span class="sd">    :param account_index:</span>
 <span class="sd">    :param account_url_type:</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;dialogId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dialog_id</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;accountIndex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">account_index</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;accountUrlType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">account_url_type</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;dialogId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dialog_id</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;accountIndex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">account_index</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;accountUrlType&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">account_url_type</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;FedCm.openUrl&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;FedCm.openUrl&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -525,19 +515,20 @@
 <div class="viewcode-block" id="dismiss_dialog">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.dismiss_dialog">[docs]</a>
 <span class="k">def</span> <span class="nf">dismiss_dialog</span><span class="p">(</span>
-        <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">trigger_cooldown</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">trigger_cooldown</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    :param dialog_id:</span>
 <span class="sd">    :param trigger_cooldown: *(Optional)*</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;dialogId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dialog_id</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;dialogId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dialog_id</span>
     <span class="k">if</span> <span class="n">trigger_cooldown</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;triggerCooldown&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trigger_cooldown</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;triggerCooldown&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trigger_cooldown</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;FedCm.dismissDialog&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;FedCm.dismissDialog&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -545,13 +536,13 @@
 
 <div class="viewcode-block" id="reset_cooldown">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.reset_cooldown">[docs]</a>
-<span class="k">def</span> <span class="nf">reset_cooldown</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">reset_cooldown</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Resets the cooldown time, if any, to allow the next FedCM call to show</span>
 <span class="sd">    a dialog even if one was recently dismissed by the user.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;FedCm.resetCooldown&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;FedCm.resetCooldown&#39;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -559,7 +550,7 @@
 
 <div class="viewcode-block" id="DialogShown">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.DialogShown">[docs]</a>
-<span class="nd">@event_class</span><span class="p">(</span><span class="s2">&quot;FedCm.dialogShown&quot;</span><span class="p">)</span>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;FedCm.dialogShown&#39;</span><span class="p">)</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">DialogShown</span><span class="p">:</span>
     <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span>
@@ -573,34 +564,31 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DialogShown</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">dialog_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;dialogId&quot;</span><span class="p">]),</span>
-            <span class="n">dialog_type</span><span class="o">=</span><span class="n">DialogType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;dialogType&quot;</span><span class="p">]),</span>
-            <span class="n">accounts</span><span class="o">=</span><span class="p">[</span><span class="n">Account</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;accounts&quot;</span><span class="p">]],</span>
-            <span class="n">title</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]),</span>
-            <span class="n">subtitle</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;subtitle&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;subtitle&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
+            <span class="n">dialog_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;dialogId&#39;</span><span class="p">]),</span>
+            <span class="n">dialog_type</span><span class="o">=</span><span class="n">DialogType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;dialogType&#39;</span><span class="p">]),</span>
+            <span class="n">accounts</span><span class="o">=</span><span class="p">[</span><span class="n">Account</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;accounts&#39;</span><span class="p">]],</span>
+            <span class="n">title</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]),</span>
+            <span class="n">subtitle</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;subtitle&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;subtitle&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="DialogClosed">
 <a class="viewcode-back" href="../../../nodriver/cdp/fed_cm.html#nodriver.cdp.fed_cm.DialogClosed">[docs]</a>
-<span class="nd">@event_class</span><span class="p">(</span><span class="s2">&quot;FedCm.dialogClosed&quot;</span><span class="p">)</span>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;FedCm.dialogClosed&#39;</span><span class="p">)</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">DialogClosed</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Triggered when a dialog is closed, either by user action, JS abort,</span>
 <span class="sd">    or a command below.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">dialog_id</span><span class="p">:</span> <span class="nb">str</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DialogClosed</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">dialog_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;dialogId&quot;</span><span class="p">]))</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">dialog_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;dialogId&#39;</span><span class="p">])</span>
+        <span class="p">)</span></div>
 
 </pre></div>
         </article>

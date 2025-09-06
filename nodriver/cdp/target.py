@@ -66,6 +66,9 @@ class TargetInfo:
     #: Frame id of originating window (is only set if target has an opener).
     opener_frame_id: typing.Optional[page.FrameId] = None
 
+    #: Id of the parent frame, only present for the "iframe" targets.
+    parent_frame_id: typing.Optional[page.FrameId] = None
+
     browser_context_id: typing.Optional[browser.BrowserContextID] = None
 
     #: Provides additional details for specific target types. For example, for
@@ -84,6 +87,8 @@ class TargetInfo:
             json['openerId'] = self.opener_id.to_json()
         if self.opener_frame_id is not None:
             json['openerFrameId'] = self.opener_frame_id.to_json()
+        if self.parent_frame_id is not None:
+            json['parentFrameId'] = self.parent_frame_id.to_json()
         if self.browser_context_id is not None:
             json['browserContextId'] = self.browser_context_id.to_json()
         if self.subtype is not None:
@@ -101,6 +106,7 @@ class TargetInfo:
             can_access_opener=bool(json['canAccessOpener']),
             opener_id=TargetID.from_json(json['openerId']) if json.get('openerId', None) is not None else None,
             opener_frame_id=page.FrameId.from_json(json['openerFrameId']) if json.get('openerFrameId', None) is not None else None,
+            parent_frame_id=page.FrameId.from_json(json['parentFrameId']) if json.get('parentFrameId', None) is not None else None,
             browser_context_id=browser.BrowserContextID.from_json(json['browserContextId']) if json.get('browserContextId', None) is not None else None,
             subtype=str(json['subtype']) if json.get('subtype', None) is not None else None,
         )
@@ -624,6 +630,27 @@ def set_remote_locations(
         'params': params,
     }
     json = yield cmd_dict
+
+
+def open_dev_tools(
+        target_id: TargetID
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,TargetID]:
+    '''
+    Opens a DevTools window for the target.
+
+    **EXPERIMENTAL**
+
+    :param target_id: This can be the page or tab target ID.
+    :returns: The targetId of DevTools page target.
+    '''
+    params: T_JSON_DICT = dict()
+    params['targetId'] = target_id.to_json()
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Target.openDevTools',
+        'params': params,
+    }
+    json = yield cmd_dict
+    return TargetID.from_json(json['targetId'])
 
 
 @event_class('Target.attachedToTarget')

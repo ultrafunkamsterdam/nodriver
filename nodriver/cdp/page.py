@@ -204,6 +204,7 @@ class PermissionsPolicyFeature(enum.Enum):
     ACCELEROMETER = "accelerometer"
     ALL_SCREENS_CAPTURE = "all-screens-capture"
     AMBIENT_LIGHT_SENSOR = "ambient-light-sensor"
+    ARIA_NOTIFY = "aria-notify"
     ATTRIBUTION_REPORTING = "attribution-reporting"
     AUTOPLAY = "autoplay"
     BLUETOOTH = "bluetooth"
@@ -242,8 +243,10 @@ class PermissionsPolicyFeature(enum.Enum):
     DEFERRED_FETCH = "deferred-fetch"
     DEFERRED_FETCH_MINIMAL = "deferred-fetch-minimal"
     DEVICE_ATTRIBUTES = "device-attributes"
+    DIGITAL_CREDENTIALS_CREATE = "digital-credentials-create"
     DIGITAL_CREDENTIALS_GET = "digital-credentials-get"
     DIRECT_SOCKETS = "direct-sockets"
+    DIRECT_SOCKETS_MULTICAST = "direct-sockets-multicast"
     DIRECT_SOCKETS_PRIVATE = "direct-sockets-private"
     DISPLAY_CAPTURE = "display-capture"
     DOCUMENT_DOMAIN = "document-domain"
@@ -1844,9 +1847,9 @@ class BackForwardCacheNotRestoredReason(enum.Enum):
     INDEXED_DB_EVENT = "IndexedDBEvent"
     DUMMY = "Dummy"
     JS_NETWORK_REQUEST_RECEIVED_CACHE_CONTROL_NO_STORE_RESOURCE = "JsNetworkRequestReceivedCacheControlNoStoreResource"
-    WEB_RTC_STICKY = "WebRTCSticky"
-    WEB_TRANSPORT_STICKY = "WebTransportSticky"
-    WEB_SOCKET_STICKY = "WebSocketSticky"
+    WEB_RTC_USED_WITH_CCNS = "WebRTCUsedWithCCNS"
+    WEB_TRANSPORT_USED_WITH_CCNS = "WebTransportUsedWithCCNS"
+    WEB_SOCKET_USED_WITH_CCNS = "WebSocketUsedWithCCNS"
     SMART_CARD = "SmartCard"
     LIVE_MEDIA_STREAM_TRACK = "LiveMediaStreamTrack"
     UNLOAD_HANDLER = "UnloadHandler"
@@ -2507,7 +2510,7 @@ def navigate(
         transition_type: typing.Optional[TransitionType] = None,
         frame_id: typing.Optional[FrameId] = None,
         referrer_policy: typing.Optional[ReferrerPolicy] = None
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[FrameId, typing.Optional[network.LoaderId], typing.Optional[str]]]:
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[FrameId, typing.Optional[network.LoaderId], typing.Optional[str], typing.Optional[bool]]]:
     '''
     Navigates current page to the given URL.
 
@@ -2521,6 +2524,7 @@ def navigate(
         0. **frameId** - Frame id that has navigated (or failed to navigate)
         1. **loaderId** - *(Optional)* Loader identifier. This is omitted in case of same-document navigation, as the previously committed loaderId would not change.
         2. **errorText** - *(Optional)* User friendly error message, present if and only if navigation has failed.
+        3. **isDownload** - *(Optional)* Whether the navigation resulted in a download.
     '''
     params: T_JSON_DICT = dict()
     params['url'] = url
@@ -2540,7 +2544,8 @@ def navigate(
     return (
         FrameId.from_json(json['frameId']),
         network.LoaderId.from_json(json['loaderId']) if json.get('loaderId', None) is not None else None,
-        str(json['errorText']) if json.get('errorText', None) is not None else None
+        str(json['errorText']) if json.get('errorText', None) is not None else None,
+        bool(json['isDownload']) if json.get('isDownload', None) is not None else None
     )
 
 
@@ -3983,8 +3988,7 @@ class CompilationCacheProduced:
     '''
     **EXPERIMENTAL**
 
-    Issued for every compilation cache generated. Is only available
-    if Page.setGenerateCompilationCache is enabled.
+    Issued for every compilation cache generated.
     '''
     url: str
     #: Base64-encoded data (Encoded as a base64 string when passed over JSON)

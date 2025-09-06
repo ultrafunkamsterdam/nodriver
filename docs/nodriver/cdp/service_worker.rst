@@ -69,8 +69,6 @@ to. For more information, see
 
 .. autofunction:: enable
 
-.. autofunction:: inspect_worker
-
 .. autofunction:: set_force_update_on_page_load
 
 .. autofunction:: skip_waiting

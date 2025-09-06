@@ -180,6 +180,8 @@ Browser command ids used by executeBrowserCommand.
 
 #### CLOSE_TAB_SEARCH *= 'closeTabSearch'*
 
+#### OPEN_GLIC *= 'openGlic'*
+
 ### *class* Bucket(low, high, count)
 
 Chrome histogram bucket.
@@ -410,6 +412,19 @@ Reset all permission management for all origins.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
+### set_contents_size(window_id, width=None, height=None)
+
+Set size of the browser contents resizing browser window as necessary.
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  * **window_id** ([`WindowID`](#nodriver.cdp.browser.WindowID)) – Browser window id.
+  * **width** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* The window contents width in DIP. Assumes current width if omitted. Must be specified if ‘height’ is omitted.
+  * **height** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* The window contents height in DIP. Assumes current height if omitted. Must be specified if ‘width’ is omitted.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
 ### set_dock_tile(badge_label=None, image=None)
 
 Set dock tile details, platform-specific.
@@ -436,16 +451,17 @@ Set the behavior when downloading a file.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
-### set_permission(permission, setting, origin=None, browser_context_id=None)
+### set_permission(permission, setting, origin=None, embedding_origin=None, browser_context_id=None)
 
-Set permission settings for given origin.
+Set permission settings for given requesting and embedding origins.
 
 **EXPERIMENTAL**
 
 * **Parameters:**
   * **permission** ([`PermissionDescriptor`](#nodriver.cdp.browser.PermissionDescriptor)) – Descriptor of permission to override.
   * **setting** ([`PermissionSetting`](#nodriver.cdp.browser.PermissionSetting)) – Setting of the permission.
-  * **origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Origin the permission applies to, all origins if not specified.
+  * **origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Requesting origin the permission applies to, all origins if not specified.
+  * **embedding_origin** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Embedding origin the permission applies to. It is ignored unless the requesting origin is present and valid. If the requesting origin is provided but the embedding origin isn’t, the requesting origin is used as the embedding origin.
   * **browser_context_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](#nodriver.cdp.browser.BrowserContextID)]) – *(Optional)* Context to override. When omitted, default browser context is used.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
@@ -490,7 +506,7 @@ URL of the resource being downloaded.
 
 Suggested file name of the resource (the actual name of the file saved on disk may differ).
 
-### *class* DownloadProgress(guid, total_bytes, received_bytes, state)
+### *class* DownloadProgress(guid, total_bytes, received_bytes, state, file_path)
 
 **EXPERIMENTAL**
 
@@ -511,3 +527,9 @@ Total bytes received.
 #### state*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 Download status.
+
+#### file_path*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+
+If download is “completed”, provides the path of the downloaded file.
+Depending on the platform, it is not guaranteed to be set, nor the file
+is guaranteed to exist.

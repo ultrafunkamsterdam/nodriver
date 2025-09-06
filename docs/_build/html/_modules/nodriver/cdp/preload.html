@@ -273,22 +273,22 @@
 <span class="c1"># CDP domain: Preload (experimental)</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
-
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">dom</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">page</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">event_class</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">dom</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">network</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">page</span>
 
 
 <div class="viewcode-block" id="RuleSetId">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.RuleSetId">[docs]</a>
 <span class="k">class</span> <span class="nc">RuleSetId</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Unique id</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span>
 
@@ -297,7 +297,7 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;RuleSetId(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="s1">&#39;RuleSetId(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">())</span></div>
 
 
 
@@ -305,10 +305,9 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.RuleSet">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">RuleSet</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Corresponds to SpeculationRuleSet</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">id_</span><span class="p">:</span> <span class="n">RuleSetId</span>
 
     <span class="c1">#: Identifies a document which the rule set is associated with.</span>
@@ -317,7 +316,7 @@
     <span class="c1">#: Source text of JSON representing the rule set. If it comes from</span>
     <span class="c1">#: ``&lt;script&gt;`` tag, it is the textContent of the node. Note that it is</span>
     <span class="c1">#: a JSON for valid case.</span>
-    <span class="c1">#:</span>
+    <span class="c1">#: </span>
     <span class="c1">#: See also:</span>
     <span class="c1">#: - https://wicg.github.io/nav-speculation/speculation-rules.html</span>
     <span class="c1">#: - https://github.com/WICG/nav-speculation/blob/main/triggers.md</span>
@@ -329,7 +328,7 @@
     <span class="c1">#: the BackendNodeId of the relevant ``&lt;script&gt;`` tag. For the second</span>
     <span class="c1">#: case, we include the external URL where the rule set was loaded</span>
     <span class="c1">#: from, and also RequestId if Network domain is enabled.</span>
-    <span class="c1">#:</span>
+    <span class="c1">#: </span>
     <span class="c1">#: See also:</span>
     <span class="c1">#: - https://wicg.github.io/nav-speculation/speculation-rules.html#speculation-rules-script</span>
     <span class="c1">#: - https://wicg.github.io/nav-speculation/speculation-rules.html#speculation-rules-header</span>
@@ -348,48 +347,32 @@
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;loaderId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;sourceText&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_text</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;loaderId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;sourceText&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_text</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend_node_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;backendNodeId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend_node_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;backendNodeId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend_node_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;requestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;errorType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_type</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;errorType&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_type</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;errorMessage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;errorMessage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RuleSet</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">id_</span><span class="o">=</span><span class="n">RuleSetId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]),</span>
-            <span class="n">loader_id</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">LoaderId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;loaderId&quot;</span><span class="p">]),</span>
-            <span class="n">source_text</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;sourceText&quot;</span><span class="p">]),</span>
-            <span class="n">backend_node_id</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;backendNodeId&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;backendNodeId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">request_id</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">network</span><span class="o">.</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requestId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">error_type</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">RuleSetErrorType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;errorType&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;errorType&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">error_message</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;errorMessage&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;errorMessage&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
+            <span class="n">id_</span><span class="o">=</span><span class="n">RuleSetId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]),</span>
+            <span class="n">loader_id</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">LoaderId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;loaderId&#39;</span><span class="p">]),</span>
+            <span class="n">source_text</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;sourceText&#39;</span><span class="p">]),</span>
+            <span class="n">backend_node_id</span><span class="o">=</span><span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;backendNodeId&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;backendNodeId&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">request_id</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;requestId&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;requestId&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">error_type</span><span class="o">=</span><span class="n">RuleSetErrorType</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;errorType&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;errorType&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;errorMessage&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;errorMessage&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
@@ -399,6 +382,7 @@
 <span class="k">class</span> <span class="nc">RuleSetErrorType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">SOURCE_IS_NOT_JSON_OBJECT</span> <span class="o">=</span> <span class="s2">&quot;SourceIsNotJsonObject&quot;</span>
     <span class="n">INVALID_RULES_SKIPPED</span> <span class="o">=</span> <span class="s2">&quot;InvalidRulesSkipped&quot;</span>
+    <span class="n">INVALID_RULESET_LEVEL_TAG</span> <span class="o">=</span> <span class="s2">&quot;InvalidRulesetLevelTag&quot;</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
@@ -412,12 +396,11 @@
 <div class="viewcode-block" id="SpeculationAction">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.SpeculationAction">[docs]</a>
 <span class="k">class</span> <span class="nc">SpeculationAction</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    The type of preloading attempted. It corresponds to</span>
 <span class="sd">    mojom::SpeculationAction (although PrefetchWithSubresources is omitted as it</span>
 <span class="sd">    isn&#39;t being used by clients).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">PREFETCH</span> <span class="o">=</span> <span class="s2">&quot;Prefetch&quot;</span>
     <span class="n">PRERENDER</span> <span class="o">=</span> <span class="s2">&quot;Prerender&quot;</span>
 
@@ -433,11 +416,10 @@
 <div class="viewcode-block" id="SpeculationTargetHint">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.SpeculationTargetHint">[docs]</a>
 <span class="k">class</span> <span class="nc">SpeculationTargetHint</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Corresponds to mojom::SpeculationTargetHint.</span>
 <span class="sd">    See https://github.com/WICG/nav-speculation/blob/main/triggers.md#window-name-targeting-hints</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">BLANK</span> <span class="o">=</span> <span class="s2">&quot;Blank&quot;</span>
     <span class="n">SELF</span> <span class="o">=</span> <span class="s2">&quot;Self&quot;</span>
 
@@ -454,15 +436,14 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.PreloadingAttemptKey">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">PreloadingAttemptKey</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    A key that identifies a preloading attempt.</span>
 
 <span class="sd">    The url used is the url specified by the trigger (i.e. the initial URL), and</span>
 <span class="sd">    not the final url that is navigated to. For example, prerendering allows</span>
 <span class="sd">    same-origin main frame navigations during the attempt, but the attempt is</span>
 <span class="sd">    still keyed with the initial URL.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">loader_id</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">LoaderId</span>
 
     <span class="n">action</span><span class="p">:</span> <span class="n">SpeculationAction</span>
@@ -473,24 +454,20 @@
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;loaderId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;loaderId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader_id</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_hint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;targetHint&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_hint</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;targetHint&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_hint</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PreloadingAttemptKey</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">loader_id</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">LoaderId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;loaderId&quot;</span><span class="p">]),</span>
-            <span class="n">action</span><span class="o">=</span><span class="n">SpeculationAction</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]),</span>
-            <span class="n">url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]),</span>
-            <span class="n">target_hint</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">SpeculationTargetHint</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;targetHint&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;targetHint&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
+            <span class="n">loader_id</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">LoaderId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;loaderId&#39;</span><span class="p">]),</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">SpeculationAction</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]),</span>
+            <span class="n">url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]),</span>
+            <span class="n">target_hint</span><span class="o">=</span><span class="n">SpeculationTargetHint</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;targetHint&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;targetHint&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
@@ -499,14 +476,13 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.PreloadingAttemptSource">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">PreloadingAttemptSource</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Lists sources for a preloading attempt, specifically the ids of rule sets</span>
 <span class="sd">    that had a speculation rule that triggered the attempt, and the</span>
 <span class="sd">    BackendNodeIds of &lt;a href&gt; or &lt;area href&gt; elements that triggered the</span>
 <span class="sd">    attempt (in the case of attempts triggered by a document rule). It is</span>
 <span class="sd">    possible for multiple rule sets and links to trigger a single attempt.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">key</span><span class="p">:</span> <span class="n">PreloadingAttemptKey</span>
 
     <span class="n">rule_set_ids</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">RuleSetId</span><span class="p">]</span>
@@ -515,17 +491,17 @@
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;ruleSetIds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule_set_ids</span><span class="p">]</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;nodeIds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_ids</span><span class="p">]</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;ruleSetIds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule_set_ids</span><span class="p">]</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;nodeIds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_ids</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PreloadingAttemptSource</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">key</span><span class="o">=</span><span class="n">PreloadingAttemptKey</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]),</span>
-            <span class="n">rule_set_ids</span><span class="o">=</span><span class="p">[</span><span class="n">RuleSetId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;ruleSetIds&quot;</span><span class="p">]],</span>
-            <span class="n">node_ids</span><span class="o">=</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;nodeIds&quot;</span><span class="p">]],</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">PreloadingAttemptKey</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]),</span>
+            <span class="n">rule_set_ids</span><span class="o">=</span><span class="p">[</span><span class="n">RuleSetId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;ruleSetIds&#39;</span><span class="p">]],</span>
+            <span class="n">node_ids</span><span class="o">=</span><span class="p">[</span><span class="n">dom</span><span class="o">.</span><span class="n">BackendNodeId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;nodeIds&#39;</span><span class="p">]],</span>
         <span class="p">)</span></div>
 
 
@@ -533,7 +509,7 @@
 <div class="viewcode-block" id="PreloadPipelineId">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.PreloadPipelineId">[docs]</a>
 <span class="k">class</span> <span class="nc">PreloadPipelineId</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Chrome manages different types of preloads together using a</span>
 <span class="sd">    concept of preloading pipeline. For example, if a site uses a</span>
 <span class="sd">    SpeculationRules for prerender, Chrome first starts a prefetch and</span>
@@ -541,8 +517,7 @@
 
 <span class="sd">    CDP events for them are emitted separately but they share</span>
 <span class="sd">    ``PreloadPipelineId``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span>
 
@@ -551,24 +526,22 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;PreloadPipelineId(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="s1">&#39;PreloadPipelineId(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">())</span></div>
 
 
 
 <div class="viewcode-block" id="PrerenderFinalStatus">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.PrerenderFinalStatus">[docs]</a>
 <span class="k">class</span> <span class="nc">PrerenderFinalStatus</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    List of FinalStatus reasons for Prerender2.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">ACTIVATED</span> <span class="o">=</span> <span class="s2">&quot;Activated&quot;</span>
     <span class="n">DESTROYED</span> <span class="o">=</span> <span class="s2">&quot;Destroyed&quot;</span>
     <span class="n">LOW_END_DEVICE</span> <span class="o">=</span> <span class="s2">&quot;LowEndDevice&quot;</span>
     <span class="n">INVALID_SCHEME_REDIRECT</span> <span class="o">=</span> <span class="s2">&quot;InvalidSchemeRedirect&quot;</span>
     <span class="n">INVALID_SCHEME_NAVIGATION</span> <span class="o">=</span> <span class="s2">&quot;InvalidSchemeNavigation&quot;</span>
     <span class="n">NAVIGATION_REQUEST_BLOCKED_BY_CSP</span> <span class="o">=</span> <span class="s2">&quot;NavigationRequestBlockedByCsp&quot;</span>
-    <span class="n">MAIN_FRAME_NAVIGATION</span> <span class="o">=</span> <span class="s2">&quot;MainFrameNavigation&quot;</span>
     <span class="n">MOJO_BINDER_POLICY</span> <span class="o">=</span> <span class="s2">&quot;MojoBinderPolicy&quot;</span>
     <span class="n">RENDERER_PROCESS_CRASHED</span> <span class="o">=</span> <span class="s2">&quot;RendererProcessCrashed&quot;</span>
     <span class="n">RENDERER_PROCESS_KILLED</span> <span class="o">=</span> <span class="s2">&quot;RendererProcessKilled&quot;</span>
@@ -596,64 +569,36 @@
     <span class="n">START_FAILED</span> <span class="o">=</span> <span class="s2">&quot;StartFailed&quot;</span>
     <span class="n">TIMEOUT_BACKGROUNDED</span> <span class="o">=</span> <span class="s2">&quot;TimeoutBackgrounded&quot;</span>
     <span class="n">CROSS_SITE_REDIRECT_IN_INITIAL_NAVIGATION</span> <span class="o">=</span> <span class="s2">&quot;CrossSiteRedirectInInitialNavigation&quot;</span>
-    <span class="n">CROSS_SITE_NAVIGATION_IN_INITIAL_NAVIGATION</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;CrossSiteNavigationInInitialNavigation&quot;</span>
-    <span class="p">)</span>
-    <span class="n">SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_INITIAL_NAVIGATION</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;SameSiteCrossOriginRedirectNotOptInInInitialNavigation&quot;</span>
-    <span class="p">)</span>
-    <span class="n">SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_INITIAL_NAVIGATION</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;SameSiteCrossOriginNavigationNotOptInInInitialNavigation&quot;</span>
-    <span class="p">)</span>
+    <span class="n">CROSS_SITE_NAVIGATION_IN_INITIAL_NAVIGATION</span> <span class="o">=</span> <span class="s2">&quot;CrossSiteNavigationInInitialNavigation&quot;</span>
+    <span class="n">SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_INITIAL_NAVIGATION</span> <span class="o">=</span> <span class="s2">&quot;SameSiteCrossOriginRedirectNotOptInInInitialNavigation&quot;</span>
+    <span class="n">SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_INITIAL_NAVIGATION</span> <span class="o">=</span> <span class="s2">&quot;SameSiteCrossOriginNavigationNotOptInInInitialNavigation&quot;</span>
     <span class="n">ACTIVATION_NAVIGATION_PARAMETER_MISMATCH</span> <span class="o">=</span> <span class="s2">&quot;ActivationNavigationParameterMismatch&quot;</span>
     <span class="n">ACTIVATED_IN_BACKGROUND</span> <span class="o">=</span> <span class="s2">&quot;ActivatedInBackground&quot;</span>
     <span class="n">EMBEDDER_HOST_DISALLOWED</span> <span class="o">=</span> <span class="s2">&quot;EmbedderHostDisallowed&quot;</span>
-    <span class="n">ACTIVATION_NAVIGATION_DESTROYED_BEFORE_SUCCESS</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;ActivationNavigationDestroyedBeforeSuccess&quot;</span>
-    <span class="p">)</span>
+    <span class="n">ACTIVATION_NAVIGATION_DESTROYED_BEFORE_SUCCESS</span> <span class="o">=</span> <span class="s2">&quot;ActivationNavigationDestroyedBeforeSuccess&quot;</span>
     <span class="n">TAB_CLOSED_BY_USER_GESTURE</span> <span class="o">=</span> <span class="s2">&quot;TabClosedByUserGesture&quot;</span>
     <span class="n">TAB_CLOSED_WITHOUT_USER_GESTURE</span> <span class="o">=</span> <span class="s2">&quot;TabClosedWithoutUserGesture&quot;</span>
-    <span class="n">PRIMARY_MAIN_FRAME_RENDERER_PROCESS_CRASHED</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;PrimaryMainFrameRendererProcessCrashed&quot;</span>
-    <span class="p">)</span>
+    <span class="n">PRIMARY_MAIN_FRAME_RENDERER_PROCESS_CRASHED</span> <span class="o">=</span> <span class="s2">&quot;PrimaryMainFrameRendererProcessCrashed&quot;</span>
     <span class="n">PRIMARY_MAIN_FRAME_RENDERER_PROCESS_KILLED</span> <span class="o">=</span> <span class="s2">&quot;PrimaryMainFrameRendererProcessKilled&quot;</span>
     <span class="n">ACTIVATION_FRAME_POLICY_NOT_COMPATIBLE</span> <span class="o">=</span> <span class="s2">&quot;ActivationFramePolicyNotCompatible&quot;</span>
     <span class="n">PRELOADING_DISABLED</span> <span class="o">=</span> <span class="s2">&quot;PreloadingDisabled&quot;</span>
     <span class="n">BATTERY_SAVER_ENABLED</span> <span class="o">=</span> <span class="s2">&quot;BatterySaverEnabled&quot;</span>
     <span class="n">ACTIVATED_DURING_MAIN_FRAME_NAVIGATION</span> <span class="o">=</span> <span class="s2">&quot;ActivatedDuringMainFrameNavigation&quot;</span>
     <span class="n">PRELOADING_UNSUPPORTED_BY_WEB_CONTENTS</span> <span class="o">=</span> <span class="s2">&quot;PreloadingUnsupportedByWebContents&quot;</span>
-    <span class="n">CROSS_SITE_REDIRECT_IN_MAIN_FRAME_NAVIGATION</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;CrossSiteRedirectInMainFrameNavigation&quot;</span>
-    <span class="p">)</span>
-    <span class="n">CROSS_SITE_NAVIGATION_IN_MAIN_FRAME_NAVIGATION</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;CrossSiteNavigationInMainFrameNavigation&quot;</span>
-    <span class="p">)</span>
-    <span class="n">SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;SameSiteCrossOriginRedirectNotOptInInMainFrameNavigation&quot;</span>
-    <span class="p">)</span>
-    <span class="n">SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;SameSiteCrossOriginNavigationNotOptInInMainFrameNavigation&quot;</span>
-    <span class="p">)</span>
+    <span class="n">CROSS_SITE_REDIRECT_IN_MAIN_FRAME_NAVIGATION</span> <span class="o">=</span> <span class="s2">&quot;CrossSiteRedirectInMainFrameNavigation&quot;</span>
+    <span class="n">CROSS_SITE_NAVIGATION_IN_MAIN_FRAME_NAVIGATION</span> <span class="o">=</span> <span class="s2">&quot;CrossSiteNavigationInMainFrameNavigation&quot;</span>
+    <span class="n">SAME_SITE_CROSS_ORIGIN_REDIRECT_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION</span> <span class="o">=</span> <span class="s2">&quot;SameSiteCrossOriginRedirectNotOptInInMainFrameNavigation&quot;</span>
+    <span class="n">SAME_SITE_CROSS_ORIGIN_NAVIGATION_NOT_OPT_IN_IN_MAIN_FRAME_NAVIGATION</span> <span class="o">=</span> <span class="s2">&quot;SameSiteCrossOriginNavigationNotOptInInMainFrameNavigation&quot;</span>
     <span class="n">MEMORY_PRESSURE_ON_TRIGGER</span> <span class="o">=</span> <span class="s2">&quot;MemoryPressureOnTrigger&quot;</span>
     <span class="n">MEMORY_PRESSURE_AFTER_TRIGGERED</span> <span class="o">=</span> <span class="s2">&quot;MemoryPressureAfterTriggered&quot;</span>
     <span class="n">PRERENDERING_DISABLED_BY_DEV_TOOLS</span> <span class="o">=</span> <span class="s2">&quot;PrerenderingDisabledByDevTools&quot;</span>
     <span class="n">SPECULATION_RULE_REMOVED</span> <span class="o">=</span> <span class="s2">&quot;SpeculationRuleRemoved&quot;</span>
-    <span class="n">ACTIVATED_WITH_AUXILIARY_BROWSING_CONTEXTS</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;ActivatedWithAuxiliaryBrowsingContexts&quot;</span>
-    <span class="p">)</span>
-    <span class="n">MAX_NUM_OF_RUNNING_EAGER_PRERENDERS_EXCEEDED</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;MaxNumOfRunningEagerPrerendersExceeded&quot;</span>
-    <span class="p">)</span>
-    <span class="n">MAX_NUM_OF_RUNNING_NON_EAGER_PRERENDERS_EXCEEDED</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;MaxNumOfRunningNonEagerPrerendersExceeded&quot;</span>
-    <span class="p">)</span>
-    <span class="n">MAX_NUM_OF_RUNNING_EMBEDDER_PRERENDERS_EXCEEDED</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;MaxNumOfRunningEmbedderPrerendersExceeded&quot;</span>
-    <span class="p">)</span>
+    <span class="n">ACTIVATED_WITH_AUXILIARY_BROWSING_CONTEXTS</span> <span class="o">=</span> <span class="s2">&quot;ActivatedWithAuxiliaryBrowsingContexts&quot;</span>
+    <span class="n">MAX_NUM_OF_RUNNING_EAGER_PRERENDERS_EXCEEDED</span> <span class="o">=</span> <span class="s2">&quot;MaxNumOfRunningEagerPrerendersExceeded&quot;</span>
+    <span class="n">MAX_NUM_OF_RUNNING_NON_EAGER_PRERENDERS_EXCEEDED</span> <span class="o">=</span> <span class="s2">&quot;MaxNumOfRunningNonEagerPrerendersExceeded&quot;</span>
+    <span class="n">MAX_NUM_OF_RUNNING_EMBEDDER_PRERENDERS_EXCEEDED</span> <span class="o">=</span> <span class="s2">&quot;MaxNumOfRunningEmbedderPrerendersExceeded&quot;</span>
     <span class="n">PRERENDERING_URL_HAS_EFFECTIVE_URL</span> <span class="o">=</span> <span class="s2">&quot;PrerenderingUrlHasEffectiveUrl&quot;</span>
-    <span class="n">REDIRECTED_PRERENDERING_URL_HAS_EFFECTIVE_URL</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;RedirectedPrerenderingUrlHasEffectiveUrl&quot;</span>
-    <span class="p">)</span>
+    <span class="n">REDIRECTED_PRERENDERING_URL_HAS_EFFECTIVE_URL</span> <span class="o">=</span> <span class="s2">&quot;RedirectedPrerenderingUrlHasEffectiveUrl&quot;</span>
     <span class="n">ACTIVATION_URL_HAS_EFFECTIVE_URL</span> <span class="o">=</span> <span class="s2">&quot;ActivationUrlHasEffectiveUrl&quot;</span>
     <span class="n">JAVA_SCRIPT_INTERFACE_ADDED</span> <span class="o">=</span> <span class="s2">&quot;JavaScriptInterfaceAdded&quot;</span>
     <span class="n">JAVA_SCRIPT_INTERFACE_REMOVED</span> <span class="o">=</span> <span class="s2">&quot;JavaScriptInterfaceRemoved&quot;</span>
@@ -664,6 +609,7 @@
     <span class="n">V8_OPTIMIZER_DISABLED</span> <span class="o">=</span> <span class="s2">&quot;V8OptimizerDisabled&quot;</span>
     <span class="n">PRERENDER_FAILED_DURING_PREFETCH</span> <span class="o">=</span> <span class="s2">&quot;PrerenderFailedDuringPrefetch&quot;</span>
     <span class="n">BROWSING_DATA_REMOVED</span> <span class="o">=</span> <span class="s2">&quot;BrowsingDataRemoved&quot;</span>
+    <span class="n">PRERENDER_HOST_REUSED</span> <span class="o">=</span> <span class="s2">&quot;PrerenderHostReused&quot;</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
@@ -677,11 +623,10 @@
 <div class="viewcode-block" id="PreloadingStatus">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.PreloadingStatus">[docs]</a>
 <span class="k">class</span> <span class="nc">PreloadingStatus</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Preloading status values, see also PreloadingTriggeringOutcome. This</span>
 <span class="sd">    status is shared by prefetchStatusUpdated and prerenderStatusUpdated.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">PENDING</span> <span class="o">=</span> <span class="s2">&quot;Pending&quot;</span>
     <span class="n">RUNNING</span> <span class="o">=</span> <span class="s2">&quot;Running&quot;</span>
     <span class="n">READY</span> <span class="o">=</span> <span class="s2">&quot;Ready&quot;</span>
@@ -701,55 +646,36 @@
 <div class="viewcode-block" id="PrefetchStatus">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.PrefetchStatus">[docs]</a>
 <span class="k">class</span> <span class="nc">PrefetchStatus</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    TODO(https://crbug.com/1384419): revisit the list of PrefetchStatus and</span>
 <span class="sd">    filter out the ones that aren&#39;t necessary to the developers.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">PREFETCH_ALLOWED</span> <span class="o">=</span> <span class="s2">&quot;PrefetchAllowed&quot;</span>
     <span class="n">PREFETCH_FAILED_INELIGIBLE_REDIRECT</span> <span class="o">=</span> <span class="s2">&quot;PrefetchFailedIneligibleRedirect&quot;</span>
     <span class="n">PREFETCH_FAILED_INVALID_REDIRECT</span> <span class="o">=</span> <span class="s2">&quot;PrefetchFailedInvalidRedirect&quot;</span>
     <span class="n">PREFETCH_FAILED_MIME_NOT_SUPPORTED</span> <span class="o">=</span> <span class="s2">&quot;PrefetchFailedMIMENotSupported&quot;</span>
     <span class="n">PREFETCH_FAILED_NET_ERROR</span> <span class="o">=</span> <span class="s2">&quot;PrefetchFailedNetError&quot;</span>
     <span class="n">PREFETCH_FAILED_NON2_XX</span> <span class="o">=</span> <span class="s2">&quot;PrefetchFailedNon2XX&quot;</span>
-    <span class="n">PREFETCH_EVICTED_AFTER_BROWSING_DATA_REMOVED</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;PrefetchEvictedAfterBrowsingDataRemoved&quot;</span>
-    <span class="p">)</span>
+    <span class="n">PREFETCH_EVICTED_AFTER_BROWSING_DATA_REMOVED</span> <span class="o">=</span> <span class="s2">&quot;PrefetchEvictedAfterBrowsingDataRemoved&quot;</span>
     <span class="n">PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED</span> <span class="o">=</span> <span class="s2">&quot;PrefetchEvictedAfterCandidateRemoved&quot;</span>
     <span class="n">PREFETCH_EVICTED_FOR_NEWER_PREFETCH</span> <span class="o">=</span> <span class="s2">&quot;PrefetchEvictedForNewerPrefetch&quot;</span>
     <span class="n">PREFETCH_HELDBACK</span> <span class="o">=</span> <span class="s2">&quot;PrefetchHeldback&quot;</span>
     <span class="n">PREFETCH_INELIGIBLE_RETRY_AFTER</span> <span class="o">=</span> <span class="s2">&quot;PrefetchIneligibleRetryAfter&quot;</span>
     <span class="n">PREFETCH_IS_PRIVACY_DECOY</span> <span class="o">=</span> <span class="s2">&quot;PrefetchIsPrivacyDecoy&quot;</span>
     <span class="n">PREFETCH_IS_STALE</span> <span class="o">=</span> <span class="s2">&quot;PrefetchIsStale&quot;</span>
-    <span class="n">PREFETCH_NOT_ELIGIBLE_BROWSER_CONTEXT_OFF_THE_RECORD</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;PrefetchNotEligibleBrowserContextOffTheRecord&quot;</span>
-    <span class="p">)</span>
+    <span class="n">PREFETCH_NOT_ELIGIBLE_BROWSER_CONTEXT_OFF_THE_RECORD</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotEligibleBrowserContextOffTheRecord&quot;</span>
     <span class="n">PREFETCH_NOT_ELIGIBLE_DATA_SAVER_ENABLED</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotEligibleDataSaverEnabled&quot;</span>
     <span class="n">PREFETCH_NOT_ELIGIBLE_EXISTING_PROXY</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotEligibleExistingProxy&quot;</span>
     <span class="n">PREFETCH_NOT_ELIGIBLE_HOST_IS_NON_UNIQUE</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotEligibleHostIsNonUnique&quot;</span>
-    <span class="n">PREFETCH_NOT_ELIGIBLE_NON_DEFAULT_STORAGE_PARTITION</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;PrefetchNotEligibleNonDefaultStoragePartition&quot;</span>
-    <span class="p">)</span>
-    <span class="n">PREFETCH_NOT_ELIGIBLE_SAME_SITE_CROSS_ORIGIN_PREFETCH_REQUIRED_PROXY</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;PrefetchNotEligibleSameSiteCrossOriginPrefetchRequiredProxy&quot;</span>
-    <span class="p">)</span>
+    <span class="n">PREFETCH_NOT_ELIGIBLE_NON_DEFAULT_STORAGE_PARTITION</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotEligibleNonDefaultStoragePartition&quot;</span>
+    <span class="n">PREFETCH_NOT_ELIGIBLE_SAME_SITE_CROSS_ORIGIN_PREFETCH_REQUIRED_PROXY</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotEligibleSameSiteCrossOriginPrefetchRequiredProxy&quot;</span>
     <span class="n">PREFETCH_NOT_ELIGIBLE_SCHEME_IS_NOT_HTTPS</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotEligibleSchemeIsNotHttps&quot;</span>
     <span class="n">PREFETCH_NOT_ELIGIBLE_USER_HAS_COOKIES</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotEligibleUserHasCookies&quot;</span>
-    <span class="n">PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;PrefetchNotEligibleUserHasServiceWorker&quot;</span>
-    <span class="p">)</span>
-    <span class="n">PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER_NO_FETCH_HANDLER</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;PrefetchNotEligibleUserHasServiceWorkerNoFetchHandler&quot;</span>
-    <span class="p">)</span>
-    <span class="n">PREFETCH_NOT_ELIGIBLE_REDIRECT_FROM_SERVICE_WORKER</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;PrefetchNotEligibleRedirectFromServiceWorker&quot;</span>
-    <span class="p">)</span>
-    <span class="n">PREFETCH_NOT_ELIGIBLE_REDIRECT_TO_SERVICE_WORKER</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;PrefetchNotEligibleRedirectToServiceWorker&quot;</span>
-    <span class="p">)</span>
-    <span class="n">PREFETCH_NOT_ELIGIBLE_BATTERY_SAVER_ENABLED</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;PrefetchNotEligibleBatterySaverEnabled&quot;</span>
-    <span class="p">)</span>
+    <span class="n">PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotEligibleUserHasServiceWorker&quot;</span>
+    <span class="n">PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER_NO_FETCH_HANDLER</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotEligibleUserHasServiceWorkerNoFetchHandler&quot;</span>
+    <span class="n">PREFETCH_NOT_ELIGIBLE_REDIRECT_FROM_SERVICE_WORKER</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotEligibleRedirectFromServiceWorker&quot;</span>
+    <span class="n">PREFETCH_NOT_ELIGIBLE_REDIRECT_TO_SERVICE_WORKER</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotEligibleRedirectToServiceWorker&quot;</span>
+    <span class="n">PREFETCH_NOT_ELIGIBLE_BATTERY_SAVER_ENABLED</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotEligibleBatterySaverEnabled&quot;</span>
     <span class="n">PREFETCH_NOT_ELIGIBLE_PRELOADING_DISABLED</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotEligiblePreloadingDisabled&quot;</span>
     <span class="n">PREFETCH_NOT_FINISHED_IN_TIME</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotFinishedInTime&quot;</span>
     <span class="n">PREFETCH_NOT_STARTED</span> <span class="o">=</span> <span class="s2">&quot;PrefetchNotStarted&quot;</span>
@@ -772,10 +698,9 @@
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.PrerenderMismatchedHeaders">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">PrerenderMismatchedHeaders</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Information of headers to be displayed when the header mismatch occurred.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">header_name</span><span class="p">:</span> <span class="nb">str</span>
 
     <span class="n">initial_value</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -784,36 +709,29 @@
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;headerName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header_name</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;headerName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header_name</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;initialValue&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;initialValue&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;activationValue&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_value</span>
+            <span class="n">json</span><span class="p">[</span><span class="s1">&#39;activationValue&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_value</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PrerenderMismatchedHeaders</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">header_name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;headerName&quot;</span><span class="p">]),</span>
-            <span class="n">initial_value</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;initialValue&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;initialValue&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">activation_value</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;activationValue&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;activationValue&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
+            <span class="n">header_name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;headerName&#39;</span><span class="p">]),</span>
+            <span class="n">initial_value</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;initialValue&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;initialValue&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">activation_value</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;activationValue&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;activationValue&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="enable">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.enable">[docs]</a>
-<span class="k">def</span> <span class="nf">enable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">enable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Preload.enable&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;Preload.enable&#39;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -821,9 +739,10 @@
 
 <div class="viewcode-block" id="disable">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.disable">[docs]</a>
-<span class="k">def</span> <span class="nf">disable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">disable</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;Preload.disable&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;Preload.disable&#39;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -831,43 +750,45 @@
 
 <div class="viewcode-block" id="RuleSetUpdated">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.RuleSetUpdated">[docs]</a>
-<span class="nd">@event_class</span><span class="p">(</span><span class="s2">&quot;Preload.ruleSetUpdated&quot;</span><span class="p">)</span>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;Preload.ruleSetUpdated&#39;</span><span class="p">)</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">RuleSetUpdated</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Upsert. Currently, it is only emitted when a rule set added.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">rule_set</span><span class="p">:</span> <span class="n">RuleSet</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RuleSetUpdated</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">rule_set</span><span class="o">=</span><span class="n">RuleSet</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;ruleSet&quot;</span><span class="p">]))</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">rule_set</span><span class="o">=</span><span class="n">RuleSet</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;ruleSet&#39;</span><span class="p">])</span>
+        <span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="RuleSetRemoved">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.RuleSetRemoved">[docs]</a>
-<span class="nd">@event_class</span><span class="p">(</span><span class="s2">&quot;Preload.ruleSetRemoved&quot;</span><span class="p">)</span>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;Preload.ruleSetRemoved&#39;</span><span class="p">)</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">RuleSetRemoved</span><span class="p">:</span>
     <span class="n">id_</span><span class="p">:</span> <span class="n">RuleSetId</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RuleSetRemoved</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">id_</span><span class="o">=</span><span class="n">RuleSetId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]))</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">id_</span><span class="o">=</span><span class="n">RuleSetId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="PreloadEnabledStateUpdated">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.PreloadEnabledStateUpdated">[docs]</a>
-<span class="nd">@event_class</span><span class="p">(</span><span class="s2">&quot;Preload.preloadEnabledStateUpdated&quot;</span><span class="p">)</span>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;Preload.preloadEnabledStateUpdated&#39;</span><span class="p">)</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">PreloadEnabledStateUpdated</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Fired when a preload enabled state is updated.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">disabled_by_preference</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="n">disabled_by_data_saver</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="n">disabled_by_battery_saver</span><span class="p">:</span> <span class="nb">bool</span>
@@ -877,28 +798,23 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PreloadEnabledStateUpdated</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">disabled_by_preference</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;disabledByPreference&quot;</span><span class="p">]),</span>
-            <span class="n">disabled_by_data_saver</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;disabledByDataSaver&quot;</span><span class="p">]),</span>
-            <span class="n">disabled_by_battery_saver</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;disabledByBatterySaver&quot;</span><span class="p">]),</span>
-            <span class="n">disabled_by_holdback_prefetch_speculation_rules</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;disabledByHoldbackPrefetchSpeculationRules&quot;</span><span class="p">]</span>
-            <span class="p">),</span>
-            <span class="n">disabled_by_holdback_prerender_speculation_rules</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span>
-                <span class="n">json</span><span class="p">[</span><span class="s2">&quot;disabledByHoldbackPrerenderSpeculationRules&quot;</span><span class="p">]</span>
-            <span class="p">),</span>
+            <span class="n">disabled_by_preference</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;disabledByPreference&#39;</span><span class="p">]),</span>
+            <span class="n">disabled_by_data_saver</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;disabledByDataSaver&#39;</span><span class="p">]),</span>
+            <span class="n">disabled_by_battery_saver</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;disabledByBatterySaver&#39;</span><span class="p">]),</span>
+            <span class="n">disabled_by_holdback_prefetch_speculation_rules</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;disabledByHoldbackPrefetchSpeculationRules&#39;</span><span class="p">]),</span>
+            <span class="n">disabled_by_holdback_prerender_speculation_rules</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;disabledByHoldbackPrerenderSpeculationRules&#39;</span><span class="p">])</span>
         <span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="PrefetchStatusUpdated">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.PrefetchStatusUpdated">[docs]</a>
-<span class="nd">@event_class</span><span class="p">(</span><span class="s2">&quot;Preload.prefetchStatusUpdated&quot;</span><span class="p">)</span>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;Preload.prefetchStatusUpdated&#39;</span><span class="p">)</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">PrefetchStatusUpdated</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Fired when a prefetch attempt is updated.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">key</span><span class="p">:</span> <span class="n">PreloadingAttemptKey</span>
     <span class="n">pipeline_id</span><span class="p">:</span> <span class="n">PreloadPipelineId</span>
     <span class="c1">#: The frame id of the frame initiating prefetch.</span>
@@ -911,26 +827,25 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PrefetchStatusUpdated</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">key</span><span class="o">=</span><span class="n">PreloadingAttemptKey</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]),</span>
-            <span class="n">pipeline_id</span><span class="o">=</span><span class="n">PreloadPipelineId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;pipelineId&quot;</span><span class="p">]),</span>
-            <span class="n">initiating_frame_id</span><span class="o">=</span><span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;initiatingFrameId&quot;</span><span class="p">]),</span>
-            <span class="n">prefetch_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;prefetchUrl&quot;</span><span class="p">]),</span>
-            <span class="n">status</span><span class="o">=</span><span class="n">PreloadingStatus</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]),</span>
-            <span class="n">prefetch_status</span><span class="o">=</span><span class="n">PrefetchStatus</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;prefetchStatus&quot;</span><span class="p">]),</span>
-            <span class="n">request_id</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]),</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">PreloadingAttemptKey</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]),</span>
+            <span class="n">pipeline_id</span><span class="o">=</span><span class="n">PreloadPipelineId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;pipelineId&#39;</span><span class="p">]),</span>
+            <span class="n">initiating_frame_id</span><span class="o">=</span><span class="n">page</span><span class="o">.</span><span class="n">FrameId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;initiatingFrameId&#39;</span><span class="p">]),</span>
+            <span class="n">prefetch_url</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;prefetchUrl&#39;</span><span class="p">]),</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">PreloadingStatus</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]),</span>
+            <span class="n">prefetch_status</span><span class="o">=</span><span class="n">PrefetchStatus</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;prefetchStatus&#39;</span><span class="p">]),</span>
+            <span class="n">request_id</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">RequestId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;requestId&#39;</span><span class="p">])</span>
         <span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="PrerenderStatusUpdated">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.PrerenderStatusUpdated">[docs]</a>
-<span class="nd">@event_class</span><span class="p">(</span><span class="s2">&quot;Preload.prerenderStatusUpdated&quot;</span><span class="p">)</span>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;Preload.prerenderStatusUpdated&#39;</span><span class="p">)</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">PrerenderStatusUpdated</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Fired when a prerender attempt is updated.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">key</span><span class="p">:</span> <span class="n">PreloadingAttemptKey</span>
     <span class="n">pipeline_id</span><span class="p">:</span> <span class="n">PreloadPipelineId</span>
     <span class="n">status</span><span class="p">:</span> <span class="n">PreloadingStatus</span>
@@ -943,51 +858,32 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PrerenderStatusUpdated</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">key</span><span class="o">=</span><span class="n">PreloadingAttemptKey</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]),</span>
-            <span class="n">pipeline_id</span><span class="o">=</span><span class="n">PreloadPipelineId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;pipelineId&quot;</span><span class="p">]),</span>
-            <span class="n">status</span><span class="o">=</span><span class="n">PreloadingStatus</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]),</span>
-            <span class="n">prerender_status</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">PrerenderFinalStatus</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;prerenderStatus&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;prerenderStatus&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">disallowed_mojo_interface</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;disallowedMojoInterface&quot;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;disallowedMojoInterface&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">mismatched_headers</span><span class="o">=</span><span class="p">(</span>
-                <span class="p">[</span>
-                    <span class="n">PrerenderMismatchedHeaders</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;mismatchedHeaders&quot;</span><span class="p">]</span>
-                <span class="p">]</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mismatchedHeaders&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">PreloadingAttemptKey</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]),</span>
+            <span class="n">pipeline_id</span><span class="o">=</span><span class="n">PreloadPipelineId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;pipelineId&#39;</span><span class="p">]),</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">PreloadingStatus</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]),</span>
+            <span class="n">prerender_status</span><span class="o">=</span><span class="n">PrerenderFinalStatus</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;prerenderStatus&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;prerenderStatus&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">disallowed_mojo_interface</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;disallowedMojoInterface&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;disallowedMojoInterface&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">mismatched_headers</span><span class="o">=</span><span class="p">[</span><span class="n">PrerenderMismatchedHeaders</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;mismatchedHeaders&#39;</span><span class="p">]]</span> <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mismatchedHeaders&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="PreloadingAttemptSourcesUpdated">
 <a class="viewcode-back" href="../../../nodriver/cdp/preload.html#nodriver.cdp.preload.PreloadingAttemptSourcesUpdated">[docs]</a>
-<span class="nd">@event_class</span><span class="p">(</span><span class="s2">&quot;Preload.preloadingAttemptSourcesUpdated&quot;</span><span class="p">)</span>
+<span class="nd">@event_class</span><span class="p">(</span><span class="s1">&#39;Preload.preloadingAttemptSourcesUpdated&#39;</span><span class="p">)</span>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">PreloadingAttemptSourcesUpdated</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Send a list of sources for all preloading attempts in a document.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">loader_id</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">LoaderId</span>
     <span class="n">preloading_attempt_sources</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">PreloadingAttemptSource</span><span class="p">]</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PreloadingAttemptSourcesUpdated</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">loader_id</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">LoaderId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;loaderId&quot;</span><span class="p">]),</span>
-            <span class="n">preloading_attempt_sources</span><span class="o">=</span><span class="p">[</span>
-                <span class="n">PreloadingAttemptSource</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;preloadingAttemptSources&quot;</span><span class="p">]</span>
-            <span class="p">],</span>
+            <span class="n">loader_id</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">LoaderId</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;loaderId&#39;</span><span class="p">]),</span>
+            <span class="n">preloading_attempt_sources</span><span class="o">=</span><span class="p">[</span><span class="n">PreloadingAttemptSource</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;preloadingAttemptSources&#39;</span><span class="p">]]</span>
         <span class="p">)</span></div>
 
 </pre></div>

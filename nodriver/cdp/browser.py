@@ -311,16 +311,18 @@ def set_permission(
         permission: PermissionDescriptor,
         setting: PermissionSetting,
         origin: typing.Optional[str] = None,
+        embedding_origin: typing.Optional[str] = None,
         browser_context_id: typing.Optional[BrowserContextID] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
-    Set permission settings for given origin.
+    Set permission settings for given requesting and embedding origins.
 
     **EXPERIMENTAL**
 
     :param permission: Descriptor of permission to override.
     :param setting: Setting of the permission.
-    :param origin: *(Optional)* Origin the permission applies to, all origins if not specified.
+    :param origin: *(Optional)* Requesting origin the permission applies to, all origins if not specified.
+    :param embedding_origin: *(Optional)* Embedding origin the permission applies to. It is ignored unless the requesting origin is present and valid. If the requesting origin is provided but the embedding origin isn't, the requesting origin is used as the embedding origin.
     :param browser_context_id: *(Optional)* Context to override. When omitted, default browser context is used.
     '''
     params: T_JSON_DICT = dict()
@@ -328,6 +330,8 @@ def set_permission(
     params['setting'] = setting.to_json()
     if origin is not None:
         params['origin'] = origin
+    if embedding_origin is not None:
+        params['embeddingOrigin'] = embedding_origin
     if browser_context_id is not None:
         params['browserContextId'] = browser_context_id.to_json()
     cmd_dict: T_JSON_DICT = {
@@ -628,6 +632,33 @@ def set_window_bounds(
     params['bounds'] = bounds.to_json()
     cmd_dict: T_JSON_DICT = {
         'method': 'Browser.setWindowBounds',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
+def set_contents_size(
+        window_id: WindowID,
+        width: typing.Optional[int] = None,
+        height: typing.Optional[int] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Set size of the browser contents resizing browser window as necessary.
+
+    **EXPERIMENTAL**
+
+    :param window_id: Browser window id.
+    :param width: *(Optional)* The window contents width in DIP. Assumes current width if omitted. Must be specified if 'height' is omitted.
+    :param height: *(Optional)* The window contents height in DIP. Assumes current height if omitted. Must be specified if 'width' is omitted.
+    '''
+    params: T_JSON_DICT = dict()
+    params['windowId'] = window_id.to_json()
+    if width is not None:
+        params['width'] = width
+    if height is not None:
+        params['height'] = height
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Browser.setContentsSize',
         'params': params,
     }
     json = yield cmd_dict

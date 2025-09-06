@@ -75,6 +75,8 @@ Replace this property with structured error.
 
 #### INVALID_RULES_SKIPPED *= 'InvalidRulesSkipped'*
 
+#### INVALID_RULESET_LEVEL_TAG *= 'InvalidRulesetLevelTag'*
+
 ### *class* SpeculationAction(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 The type of preloading attempted. It corresponds to
@@ -150,8 +152,6 @@ List of FinalStatus reasons for Prerender2.
 #### INVALID_SCHEME_NAVIGATION *= 'InvalidSchemeNavigation'*
 
 #### NAVIGATION_REQUEST_BLOCKED_BY_CSP *= 'NavigationRequestBlockedByCsp'*
-
-#### MAIN_FRAME_NAVIGATION *= 'MainFrameNavigation'*
 
 #### MOJO_BINDER_POLICY *= 'MojoBinderPolicy'*
 
@@ -286,6 +286,8 @@ List of FinalStatus reasons for Prerender2.
 #### PRERENDER_FAILED_DURING_PREFETCH *= 'PrerenderFailedDuringPrefetch'*
 
 #### BROWSING_DATA_REMOVED *= 'BrowsingDataRemoved'*
+
+#### PRERENDER_HOST_REUSED *= 'PrerenderHostReused'*
 
 ### *class* PreloadingStatus(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 

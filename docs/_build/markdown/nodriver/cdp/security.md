@@ -1,8 +1,5 @@
 # Security
 
-Security
-
-<a id="module-nodriver.cdp.security"></a>
 * [Types]()
 * [Commands]()
 * [Events]()

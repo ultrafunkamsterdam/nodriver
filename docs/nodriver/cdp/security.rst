@@ -1,8 +1,6 @@
 Security
 ========
 
-Security
-
 .. module:: nodriver.cdp.security
 
 * Types_

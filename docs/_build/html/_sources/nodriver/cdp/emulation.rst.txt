@@ -102,6 +102,21 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: WorkAreaInsets
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: ScreenId
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: ScreenInfo
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: DisabledImageType
       :members:
       :undoc-members:
@@ -119,6 +134,8 @@ commands, and ``z`` is the return type you should pay attention
 to. For more information, see
 :ref:`Getting Started: Commands <getting-started-commands>`.
 
+.. autofunction:: add_screen
+
 .. autofunction:: can_emulate
 
 .. autofunction:: clear_device_metrics_override
@@ -133,6 +150,10 @@ to. For more information, see
 
 .. autofunction:: get_overridden_sensor_information
 
+.. autofunction:: get_screen_infos
+
+.. autofunction:: remove_screen
+
 .. autofunction:: reset_page_scale_factor
 
 .. autofunction:: set_auto_dark_mode_override
@@ -140,6 +161,8 @@ to. For more information, see
 .. autofunction:: set_automation_override
 
 .. autofunction:: set_cpu_throttling_rate
+
+.. autofunction:: set_data_saver_override
 
 .. autofunction:: set_default_background_color_override
 
@@ -157,6 +180,8 @@ to. For more information, see
 
 .. autofunction:: set_emulated_media
 
+.. autofunction:: set_emulated_os_text_scale
+
 .. autofunction:: set_emulated_vision_deficiency
 
 .. autofunction:: set_focus_emulation_enabled
@@ -173,6 +198,8 @@ to. For more information, see
 
 .. autofunction:: set_page_scale_factor
 
+.. autofunction:: set_pressure_data_override
+
 .. autofunction:: set_pressure_source_override_enabled
 
 .. autofunction:: set_pressure_state_override
@@ -186,6 +213,8 @@ to. For more information, see
 .. autofunction:: set_sensor_override_enabled
 
 .. autofunction:: set_sensor_override_readings
+
+.. autofunction:: set_small_viewport_height_difference_override
 
 .. autofunction:: set_timezone_override
 

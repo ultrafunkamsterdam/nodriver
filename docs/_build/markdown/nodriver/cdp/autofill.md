@@ -43,6 +43,8 @@ Name of the credit card owner.
 #### name*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 address field name, for example GIVEN_NAME.
+The full list of supported field names:
+[https://source.chromium.org/chromium/chromium/src/+/main:components/autofill/core/browser/field_types.cc;l=38](https://source.chromium.org/chromium/chromium/src/+/main:components/autofill/core/browser/field_types.cc;l=38)
 
 #### value*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
@@ -150,7 +152,7 @@ Set addresses so that developers can verify their forms implementation.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
-### trigger(field_id, card, frame_id=None)
+### trigger(field_id, frame_id=None, card=None, address=None)
 
 Trigger autofill on a form identified by the fieldId.
 If the field and related form cannot be autofilled, returns an error.
@@ -158,7 +160,8 @@ If the field and related form cannot be autofilled, returns an error.
 * **Parameters:**
   * **field_id** ([`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)) – Identifies a field that serves as an anchor for autofill.
   * **frame_id** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]) – *(Optional)* Identifies the frame that field belongs to.
-  * **card** ([`CreditCard`](#nodriver.cdp.autofill.CreditCard)) – Credit card information to fill out the form. Credit card data is not saved.
+  * **card** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CreditCard`](#nodriver.cdp.autofill.CreditCard)]) – *(Optional)* Credit card information to fill out the form. Credit card data is not saved.  Mutually exclusive with ``address```.
+  * **address** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Address`](#nodriver.cdp.autofill.Address)]) – *(Optional)* Address to fill out the form. Address data is not saved. Mutually exclusive with ```card``.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 

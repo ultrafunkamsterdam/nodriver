@@ -86,6 +86,7 @@ class PseudoType(enum.Enum):
     BEFORE = "before"
     AFTER = "after"
     PICKER_ICON = "picker-icon"
+    INTEREST_HINT = "interest-hint"
     MARKER = "marker"
     BACKDROP = "backdrop"
     COLUMN = "column"
@@ -1017,7 +1018,8 @@ def get_node_for_location(
 def get_outer_html(
         node_id: typing.Optional[NodeId] = None,
         backend_node_id: typing.Optional[BackendNodeId] = None,
-        object_id: typing.Optional[runtime.RemoteObjectId] = None
+        object_id: typing.Optional[runtime.RemoteObjectId] = None,
+        include_shadow_dom: typing.Optional[bool] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,str]:
     '''
     Returns node's HTML markup.
@@ -1025,6 +1027,7 @@ def get_outer_html(
     :param node_id: *(Optional)* Identifier of the node.
     :param backend_node_id: *(Optional)* Identifier of the backend node.
     :param object_id: *(Optional)* JavaScript object id of the node wrapper.
+    :param include_shadow_dom: **(EXPERIMENTAL)** *(Optional)* Include all shadow roots. Equals to false if not specified.
     :returns: Outer HTML markup.
     '''
     params: T_JSON_DICT = dict()
@@ -1034,6 +1037,8 @@ def get_outer_html(
         params['backendNodeId'] = backend_node_id.to_json()
     if object_id is not None:
         params['objectId'] = object_id.to_json()
+    if include_shadow_dom is not None:
+        params['includeShadowDOM'] = include_shadow_dom
     cmd_dict: T_JSON_DICT = {
         'method': 'DOM.getOuterHTML',
         'params': params,
@@ -1727,14 +1732,15 @@ def get_container_for_node(
         container_name: typing.Optional[str] = None,
         physical_axes: typing.Optional[PhysicalAxes] = None,
         logical_axes: typing.Optional[LogicalAxes] = None,
-        queries_scroll_state: typing.Optional[bool] = None
+        queries_scroll_state: typing.Optional[bool] = None,
+        queries_anchored: typing.Optional[bool] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Optional[NodeId]]:
     '''
     Returns the query container of the given node based on container query
     conditions: containerName, physical and logical axes, and whether it queries
-    scroll-state. If no axes are provided and queriesScrollState is false, the
-    style container is returned, which is the direct parent or the closest
-    element with a matching container-name.
+    scroll-state or anchored elements. If no axes are provided and
+    queriesScrollState is false, the style container is returned, which is the
+    direct parent or the closest element with a matching container-name.
 
     **EXPERIMENTAL**
 
@@ -1743,6 +1749,7 @@ def get_container_for_node(
     :param physical_axes: *(Optional)*
     :param logical_axes: *(Optional)*
     :param queries_scroll_state: *(Optional)*
+    :param queries_anchored: *(Optional)*
     :returns: *(Optional)* The container node for the given node, or null if not found.
     '''
     params: T_JSON_DICT = dict()
@@ -1755,6 +1762,8 @@ def get_container_for_node(
         params['logicalAxes'] = logical_axes.to_json()
     if queries_scroll_state is not None:
         params['queriesScrollState'] = queries_scroll_state
+    if queries_anchored is not None:
+        params['queriesAnchored'] = queries_anchored
     cmd_dict: T_JSON_DICT = {
         'method': 'DOM.getContainerForNode',
         'params': params,
@@ -1809,6 +1818,31 @@ def get_anchor_element(
     }
     json = yield cmd_dict
     return NodeId.from_json(json['nodeId'])
+
+
+def force_show_popover(
+        node_id: NodeId,
+        enable: bool
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[NodeId]]:
+    '''
+    When enabling, this API force-opens the popover identified by nodeId
+    and keeps it open until disabled.
+
+    **EXPERIMENTAL**
+
+    :param node_id: Id of the popover HTMLElement
+    :param enable: If true, opens the popover and keeps it open. If false, closes the popover if it was previously force-opened.
+    :returns: List of popovers that were closed in order to respect popover stacking order.
+    '''
+    params: T_JSON_DICT = dict()
+    params['nodeId'] = node_id.to_json()
+    params['enable'] = enable
+    cmd_dict: T_JSON_DICT = {
+        'method': 'DOM.forceShowPopover',
+        'params': params,
+    }
+    json = yield cmd_dict
+    return [NodeId.from_json(i) for i in json['nodeIds']]
 
 
 @event_class('DOM.attributeModified')

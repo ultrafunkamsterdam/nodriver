@@ -110,7 +110,7 @@ Used to specify User Agent Client Hints to emulate. See [https://wicg.github.io/
 
 #### version*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
-### *class* UserAgentMetadata(platform, platform_version, architecture, model, mobile, brands=None, full_version_list=None, full_version=None, bitness=None, wow64=None)
+### *class* UserAgentMetadata(platform, platform_version, architecture, model, mobile, brands=None, full_version_list=None, full_version=None, bitness=None, wow64=None, form_factors=None)
 
 Used to specify User Agent Client Hints to emulate. See [https://wicg.github.io/ua-client-hints](https://wicg.github.io/ua-client-hints)
 Missing optional values will be filled in by the target with what it would normally use.
@@ -138,6 +138,11 @@ Brands appearing in Sec-CH-UA-Full-Version-List.
 #### bitness*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
 
 #### wow64*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+#### form_factors*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]]* *= None*
+
+Used to specify User Agent form-factor values.
+See [https://wicg.github.io/ua-client-hints/#sec-ch-ua-form-factors](https://wicg.github.io/ua-client-hints/#sec-ch-ua-form-factors)
 
 ### *class* SensorType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -216,6 +221,95 @@ See [https://w3c.github.io/sensors/#automation](https://w3c.github.io/sensors/#a
 
 #### available*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
 
+### *class* WorkAreaInsets(top=None, left=None, bottom=None, right=None)
+
+#### top*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+
+Work area top inset in pixels. Default is 0;
+
+#### left*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+
+Work area left inset in pixels. Default is 0;
+
+#### bottom*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+
+Work area bottom inset in pixels. Default is 0;
+
+#### right*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+
+Work area right inset in pixels. Default is 0;
+
+### *class* ScreenId
+
+### *class* ScreenInfo(left, top, width, height, avail_left, avail_top, avail_width, avail_height, device_pixel_ratio, orientation, color_depth, is_extended, is_internal, is_primary, label, id_)
+
+Screen information similar to the one returned by window.getScreenDetails() method,
+see [https://w3c.github.io/window-management/#screendetailed](https://w3c.github.io/window-management/#screendetailed).
+
+#### left*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+Offset of the left edge of the screen.
+
+#### top*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+Offset of the top edge of the screen.
+
+#### width*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+Width of the screen.
+
+#### height*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+Height of the screen.
+
+#### avail_left*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+Offset of the left edge of the available screen area.
+
+#### avail_top*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+Offset of the top edge of the available screen area.
+
+#### avail_width*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+Width of the available screen area.
+
+#### avail_height*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+Height of the available screen area.
+
+#### device_pixel_ratio*: [`float`](https://docs.python.org/3/library/functions.html#float)*
+
+Specifies the screen’s device pixel ratio.
+
+#### orientation*: [`ScreenOrientation`](#nodriver.cdp.emulation.ScreenOrientation)*
+
+Specifies the screen’s orientation.
+
+#### color_depth*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+Specifies the screen’s color depth in bits.
+
+#### is_extended*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+
+Indicates whether the device has multiple screens.
+
+#### is_internal*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+
+Indicates whether the screen is internal to the device or external, attached to the device.
+
+#### is_primary*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+
+Indicates whether the screen is set as the the operating system primary screen.
+
+#### label*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+Specifies the descriptive label for the screen.
+
+#### id_*: [`ScreenId`](#nodriver.cdp.emulation.ScreenId)*
+
+Specifies the unique identifier of the screen.
+
 ### *class* DisabledImageType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 Enum of image types that can be disabled.
@@ -234,6 +328,27 @@ this library, types `x` and `y` are the same for all
 commands, and `z` is the return type you should pay attention
 to. For more information, see
 [Getting Started: Commands](../../readme.md#getting-started-commands).
+
+### add_screen(left, top, width, height, work_area_insets=None, device_pixel_ratio=None, rotation=None, color_depth=None, label=None, is_internal=None)
+
+Add a new screen to the device. Only supported in headless mode.
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  * **left** ([`int`](https://docs.python.org/3/library/functions.html#int)) – Offset of the left edge of the screen in pixels.
+  * **top** ([`int`](https://docs.python.org/3/library/functions.html#int)) – Offset of the top edge of the screen in pixels.
+  * **width** ([`int`](https://docs.python.org/3/library/functions.html#int)) – The width of the screen in pixels.
+  * **height** ([`int`](https://docs.python.org/3/library/functions.html#int)) – The height of the screen in pixels.
+  * **work_area_insets** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`WorkAreaInsets`](#nodriver.cdp.emulation.WorkAreaInsets)]) – *(Optional)* Specifies the screen’s work area. Default is entire screen.
+  * **device_pixel_ratio** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Specifies the screen’s device pixel ratio. Default is 1.
+  * **rotation** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Specifies the screen’s rotation angle. Available values are 0, 90, 180 and 270. Default is 0.
+  * **color_depth** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Specifies the screen’s color depth in bits. Default is 24.
+  * **label** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)* Specifies the descriptive label for the screen. Default is none.
+  * **is_internal** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Indicates whether the screen is internal to the device or external, attached to the device. Default is false.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`ScreenInfo`](#nodriver.cdp.emulation.ScreenInfo)]
+* **Returns:**
 
 ### can_emulate()
 
@@ -305,6 +420,27 @@ Clears Idle state overrides.
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`float`](https://docs.python.org/3/library/functions.html#float)]
 * **Returns:**
 
+### get_screen_infos()
+
+Returns device’s screen configuration.
+
+**EXPERIMENTAL**
+
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`ScreenInfo`](#nodriver.cdp.emulation.ScreenInfo)]]
+* **Returns:**
+
+### remove_screen(screen_id)
+
+Remove screen from the device. Only supported in headless mode.
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  **screen_id** ([`ScreenId`](#nodriver.cdp.emulation.ScreenId)) – 
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
 ### reset_page_scale_factor()
 
 Requests that page scale factor is reset to initial values.
@@ -342,6 +478,17 @@ Enables CPU throttling to emulate slow CPUs.
 
 * **Parameters:**
   **rate** ([`float`](https://docs.python.org/3/library/functions.html#float)) – Throttling rate as a slowdown factor (1 is no throttle, 2 is 2x slowdown, etc).
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### set_data_saver_override(data_saver_enabled=None)
+
+Override the value of navigator.connection.saveData
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  **data_saver_enabled** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Override value. Omitting the parameter disables the override.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -441,6 +588,15 @@ Emulates the given media type or media feature for CSS media queries.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
+### set_emulated_os_text_scale(scale=None)
+
+Emulates the given OS text scale.
+
+* **Parameters:**
+  **scale** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)*
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
 ### set_emulated_vision_deficiency(type_)
 
 Emulates the given vision deficiency.
@@ -461,15 +617,19 @@ Enables or disables simulating a focused and active page.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
-### set_geolocation_override(latitude=None, longitude=None, accuracy=None)
+### set_geolocation_override(latitude=None, longitude=None, accuracy=None, altitude=None, altitude_accuracy=None, heading=None, speed=None)
 
-Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position
-unavailable.
+Overrides the Geolocation Position or Error. Omitting latitude, longitude or
+accuracy emulates position unavailable.
 
 * **Parameters:**
   * **latitude** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Mock latitude
   * **longitude** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Mock longitude
   * **accuracy** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Mock accuracy
+  * **altitude** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Mock altitude
+  * **altitude_accuracy** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Mock altitudeAccuracy
+  * **heading** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Mock heading
+  * **speed** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)* Mock speed
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -531,6 +691,21 @@ Sets a specified page scale factor.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
+### set_pressure_data_override(source, state, own_contribution_estimate=None)
+
+Provides a given pressure data set that will be processed and eventually be
+delivered to PressureObserver users. `source` must have been previously
+overridden by setPressureSourceOverrideEnabled.
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  * **source** ([`PressureSource`](#nodriver.cdp.emulation.PressureSource)) – 
+  * **state** ([`PressureState`](#nodriver.cdp.emulation.PressureState)) – 
+  * **own_contribution_estimate** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]) – *(Optional)*
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
 ### set_pressure_source_override_enabled(enabled, source, metadata=None)
 
 Overrides a pressure source of a given type, as used by the Compute
@@ -549,6 +724,7 @@ platform-provided telemetry data.
 
 ### set_pressure_state_override(source, state)
 
+TODO: OBSOLETE: To remove when setPressureDataOverride is merged.
 Provides a given pressure state that will be processed and eventually be
 delivered to PressureObserver users. `source` must have been previously
 overridden by setPressureSourceOverrideEnabled.
@@ -618,6 +794,18 @@ by setSensorOverrideEnabled.
 * **Parameters:**
   * **type** – 
   * **reading** ([`SensorReading`](#nodriver.cdp.emulation.SensorReading)) – 
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### set_small_viewport_height_difference_override(difference)
+
+Allows overriding the difference between the small and large viewport sizes, which determine the
+value of the `svh` and `lvh` unit, respectively. Only supported for top-level frames.
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  **difference** ([`int`](https://docs.python.org/3/library/functions.html#int)) – This will cause an element of size 100svh to be ``difference`` pixels smaller than an element of size 100lvh.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 

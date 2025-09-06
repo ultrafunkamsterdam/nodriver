@@ -35,6 +35,36 @@ Indicates the various types of GATT event.
 
 #### DISCOVERY *= 'discovery'*
 
+### *class* CharacteristicWriteType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
+
+Indicates the various types of characteristic write.
+
+#### WRITE_DEFAULT_DEPRECATED *= 'write-default-deprecated'*
+
+#### WRITE_WITH_RESPONSE *= 'write-with-response'*
+
+#### WRITE_WITHOUT_RESPONSE *= 'write-without-response'*
+
+### *class* CharacteristicOperationType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
+
+Indicates the various types of characteristic operation.
+
+#### READ *= 'read'*
+
+#### WRITE *= 'write'*
+
+#### SUBSCRIBE_TO_NOTIFICATIONS *= 'subscribe-to-notifications'*
+
+#### UNSUBSCRIBE_FROM_NOTIFICATIONS *= 'unsubscribe-from-notifications'*
+
+### *class* DescriptorOperationType(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
+
+Indicates the various types of descriptor operation.
+
+#### READ *= 'read'*
+
+#### WRITE *= 'write'*
+
 ### *class* ManufacturerData(key, data)
 
 Stores the manufacturer data
@@ -80,6 +110,27 @@ Stores the advertisement packet information that is sent by a Bluetooth device.
 
 #### scan_record*: [`ScanRecord`](#nodriver.cdp.bluetooth_emulation.ScanRecord)*
 
+### *class* CharacteristicProperties(broadcast=None, read=None, write_without_response=None, write=None, notify=None, indicate=None, authenticated_signed_writes=None, extended_properties=None)
+
+Describes the properties of a characteristic. This follows Bluetooth Core
+Specification BT 4.2 Vol 3 Part G 3.3.1. Characteristic Properties.
+
+#### broadcast*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+#### read*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+#### write_without_response*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+#### write*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+#### notify*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+#### indicate*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+#### authenticated_signed_writes*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+#### extended_properties*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
 ## Commands
 
 Each command is a generator function. The return
@@ -90,6 +141,45 @@ this library, types `x` and `y` are the same for all
 commands, and `z` is the return type you should pay attention
 to. For more information, see
 [Getting Started: Commands](../../readme.md#getting-started-commands).
+
+### add_characteristic(service_id, characteristic_uuid, properties)
+
+Adds a characteristic with `characteristicUuid` and `properties` to the
+service represented by `serviceId`.
+
+* **Parameters:**
+  * **service_id** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **characteristic_uuid** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **properties** ([`CharacteristicProperties`](#nodriver.cdp.bluetooth_emulation.CharacteristicProperties)) – 
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`str`](https://docs.python.org/3/library/stdtypes.html#str)]
+* **Returns:**
+  An identifier that uniquely represents this characteristic.
+
+### add_descriptor(characteristic_id, descriptor_uuid)
+
+Adds a descriptor with `descriptorUuid` to the characteristic respresented
+by `characteristicId`.
+
+* **Parameters:**
+  * **characteristic_id** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **descriptor_uuid** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`str`](https://docs.python.org/3/library/stdtypes.html#str)]
+* **Returns:**
+  An identifier that uniquely represents this descriptor.
+
+### add_service(address, service_uuid)
+
+Adds a service with `serviceUuid` to the peripheral with `address`.
+
+* **Parameters:**
+  * **address** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **service_uuid** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`str`](https://docs.python.org/3/library/stdtypes.html#str)]
+* **Returns:**
+  An identifier that uniquely represents this service.
 
 ### disable()
 
@@ -105,6 +195,34 @@ Enable the BluetoothEmulation domain.
 * **Parameters:**
   * **state** ([`CentralState`](#nodriver.cdp.bluetooth_emulation.CentralState)) – State of the simulated central.
   * **le_supported** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – If the simulated central supports low-energy.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### remove_characteristic(characteristic_id)
+
+Removes the characteristic respresented by `characteristicId` from the
+simulated central.
+
+* **Parameters:**
+  **characteristic_id** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### remove_descriptor(descriptor_id)
+
+Removes the descriptor with `descriptorId` from the simulated central.
+
+* **Parameters:**
+  **descriptor_id** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### remove_service(service_id)
+
+Removes the service respresented by `serviceId` from the simulated central.
+
+* **Parameters:**
+  **service_id** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -124,6 +242,47 @@ the central.
 
 * **Parameters:**
   **entry** ([`ScanEntry`](#nodriver.cdp.bluetooth_emulation.ScanEntry)) – 
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### simulate_characteristic_operation_response(characteristic_id, type_, code, data=None)
+
+Simulates the response from the characteristic with `characteristicId` for a
+characteristic operation of `type`. The `code` value follows the Error
+Codes from Bluetooth Core Specification Vol 3 Part F 3.4.1.1 Error Response.
+The `data` is expected to exist when simulating a successful read operation
+response.
+
+* **Parameters:**
+  * **characteristic_id** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **type** – 
+  * **code** ([`int`](https://docs.python.org/3/library/functions.html#int)) – 
+  * **data** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)*
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### simulate_descriptor_operation_response(descriptor_id, type_, code, data=None)
+
+Simulates the response from the descriptor with `descriptorId` for a
+descriptor operation of `type`. The `code` value follows the Error
+Codes from Bluetooth Core Specification Vol 3 Part F 3.4.1.1 Error Response.
+The `data` is expected to exist when simulating a successful read operation
+response.
+
+* **Parameters:**
+  * **descriptor_id** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
+  * **type** – 
+  * **code** ([`int`](https://docs.python.org/3/library/functions.html#int)) – 
+  * **data** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]) – *(Optional)*
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### simulate_gatt_disconnection(address)
+
+Simulates a GATT disconnection from the peripheral with `address`.
+
+* **Parameters:**
+  **address** ([`str`](https://docs.python.org/3/library/stdtypes.html#str)) – 
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -167,3 +326,29 @@ happened.
 #### address*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
 
 #### type_*: [`GATTOperationType`](#nodriver.cdp.bluetooth_emulation.GATTOperationType)*
+
+### *class* CharacteristicOperationReceived(characteristic_id, type_, data, write_type)
+
+Event for when a characteristic operation of `type` to the characteristic
+respresented by `characteristicId` happened. `data` and `writeType` is
+expected to exist when `type` is write.
+
+#### characteristic_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### type_*: [`CharacteristicOperationType`](#nodriver.cdp.bluetooth_emulation.CharacteristicOperationType)*
+
+#### data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+
+#### write_type*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`CharacteristicWriteType`](#nodriver.cdp.bluetooth_emulation.CharacteristicWriteType)]*
+
+### *class* DescriptorOperationReceived(descriptor_id, type_, data)
+
+Event for when a descriptor operation of `type` to the descriptor
+respresented by `descriptorId` happened. `data` is expected to exist when
+`type` is write.
+
+#### descriptor_id*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### type_*: [`DescriptorOperationType`](#nodriver.cdp.bluetooth_emulation.DescriptorOperationType)*
+
+#### data*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*

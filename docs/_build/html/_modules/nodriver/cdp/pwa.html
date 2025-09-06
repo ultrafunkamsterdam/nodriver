@@ -273,24 +273,22 @@
 <span class="c1"># CDP domain: PWA (experimental)</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
-
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">T_JSON_DICT</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">target</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">T_JSON_DICT</span>
 
 
 <div class="viewcode-block" id="FileHandlerAccept">
 <a class="viewcode-back" href="../../../nodriver/cdp/pwa.html#nodriver.cdp.pwa.FileHandlerAccept">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">FileHandlerAccept</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    The following types are the replica of</span>
 <span class="sd">    https://crsrc.org/c/chrome/browser/web_applications/proto/web_app_os_integration_state.proto;drc=9910d3be894c8f142c977ba1023f30a656bc13fc;l=67</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="c1">#: New name of the mimetype according to</span>
     <span class="c1">#: https://www.iana.org/assignments/media-types/media-types.xhtml</span>
     <span class="n">media_type</span><span class="p">:</span> <span class="nb">str</span>
@@ -299,15 +297,15 @@
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;mediaType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_type</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;fileExtensions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_extensions</span><span class="p">]</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;mediaType&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_type</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;fileExtensions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_extensions</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FileHandlerAccept</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">media_type</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;mediaType&quot;</span><span class="p">]),</span>
-            <span class="n">file_extensions</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;fileExtensions&quot;</span><span class="p">]],</span>
+            <span class="n">media_type</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;mediaType&#39;</span><span class="p">]),</span>
+            <span class="n">file_extensions</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;fileExtensions&#39;</span><span class="p">]],</span>
         <span class="p">)</span></div>
 
 
@@ -324,17 +322,17 @@
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_JSON_DICT</span><span class="p">:</span>
         <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;accepts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">accepts</span><span class="p">]</span>
-        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;displayName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_name</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;accepts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">accepts</span><span class="p">]</span>
+        <span class="n">json</span><span class="p">[</span><span class="s1">&#39;displayName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_name</span>
         <span class="k">return</span> <span class="n">json</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">T_JSON_DICT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FileHandler</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">action</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]),</span>
-            <span class="n">accepts</span><span class="o">=</span><span class="p">[</span><span class="n">FileHandlerAccept</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;accepts&quot;</span><span class="p">]],</span>
-            <span class="n">display_name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;displayName&quot;</span><span class="p">]),</span>
+            <span class="n">action</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]),</span>
+            <span class="n">accepts</span><span class="o">=</span><span class="p">[</span><span class="n">FileHandlerAccept</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;accepts&#39;</span><span class="p">]],</span>
+            <span class="n">display_name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;displayName&#39;</span><span class="p">]),</span>
         <span class="p">)</span></div>
 
 
@@ -342,10 +340,9 @@
 <div class="viewcode-block" id="DisplayMode">
 <a class="viewcode-back" href="../../../nodriver/cdp/pwa.html#nodriver.cdp.pwa.DisplayMode">[docs]</a>
 <span class="k">class</span> <span class="nc">DisplayMode</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    If user prefers opening the app in browser or an app window.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">STANDALONE</span> <span class="o">=</span> <span class="s2">&quot;standalone&quot;</span>
     <span class="n">BROWSER</span> <span class="o">=</span> <span class="s2">&quot;browser&quot;</span>
 
@@ -361,29 +358,27 @@
 <div class="viewcode-block" id="get_os_app_state">
 <a class="viewcode-back" href="../../../nodriver/cdp/pwa.html#nodriver.cdp.pwa.get_os_app_state">[docs]</a>
 <span class="k">def</span> <span class="nf">get_os_app_state</span><span class="p">(</span>
-        <span class="n">manifest_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span>
-    <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">FileHandler</span><span class="p">]]</span>
-<span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">manifest_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">typing</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">FileHandler</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Returns the following OS state for the given manifest id.</span>
 
 <span class="sd">    :param manifest_id: The id from the webapp&#39;s manifest file, commonly it&#39;s the url of the site installing the webapp. See https://web.dev/learn/pwa/web-app-manifest.</span>
 <span class="sd">    :returns: A tuple with the following items:</span>
 
-<span class="sd">        0. **badgeCount** -</span>
-<span class="sd">        1. **fileHandlers** -</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        0. **badgeCount** - </span>
+<span class="sd">        1. **fileHandlers** - </span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;manifestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifest_id</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;manifestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifest_id</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;PWA.getOsAppState&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;PWA.getOsAppState&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span>
     <span class="k">return</span> <span class="p">(</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;badgeCount&quot;</span><span class="p">]),</span>
-        <span class="p">[</span><span class="n">FileHandler</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;fileHandlers&quot;</span><span class="p">]],</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;badgeCount&#39;</span><span class="p">]),</span>
+        <span class="p">[</span><span class="n">FileHandler</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;fileHandlers&#39;</span><span class="p">]]</span>
     <span class="p">)</span></div>
 
 
@@ -391,30 +386,47 @@
 <div class="viewcode-block" id="install">
 <a class="viewcode-back" href="../../../nodriver/cdp/pwa.html#nodriver.cdp.pwa.install">[docs]</a>
 <span class="k">def</span> <span class="nf">install</span><span class="p">(</span>
-        <span class="n">manifest_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">install_url_or_bundle_url</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Installs the given manifest identity, optionally using the given install_url</span>
-<span class="sd">    or IWA bundle location.</span>
+        <span class="n">manifest_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">install_url_or_bundle_url</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Installs the given manifest identity, optionally using the given installUrlOrBundleUrl</span>
 
-<span class="sd">    TODO(crbug.com/337872319) Support IWA to meet the following specific</span>
-<span class="sd">    requirement.</span>
-<span class="sd">    IWA-specific install description: If the manifest_id is isolated-app://,</span>
-<span class="sd">    install_url_or_bundle_url is required, and can be either an http(s) URL or</span>
-<span class="sd">    file:// URL pointing to a signed web bundle (.swbn). The .swbn file&#39;s</span>
-<span class="sd">    signing key must correspond to manifest_id. If Chrome is not in IWA dev</span>
+<span class="sd">    IWA-specific install description:</span>
+<span class="sd">    manifestId corresponds to isolated-app:// + web_package::SignedWebBundleId</span>
+
+<span class="sd">    File installation mode:</span>
+<span class="sd">    The installUrlOrBundleUrl can be either file:// or http(s):// pointing</span>
+<span class="sd">    to a signed web bundle (.swbn). In this case SignedWebBundleId must correspond to</span>
+<span class="sd">    The .swbn file&#39;s signing key.</span>
+
+<span class="sd">    Dev proxy installation mode:</span>
+<span class="sd">    installUrlOrBundleUrl must be http(s):// that serves dev mode IWA.</span>
+<span class="sd">    web_package::SignedWebBundleId must be of type dev proxy.</span>
+
+<span class="sd">    The advantage of dev proxy mode is that all changes to IWA</span>
+<span class="sd">    automatically will be reflected in the running app without</span>
+<span class="sd">    reinstallation.</span>
+
+<span class="sd">    To generate bundle id for proxy mode:</span>
+<span class="sd">    1. Generate 32 random bytes.</span>
+<span class="sd">    2. Add a specific suffix at the end following the documentation</span>
+<span class="sd">       https://github.com/WICG/isolated-web-apps/blob/main/Scheme.md#suffix</span>
+<span class="sd">    3. Encode the entire sequence using Base32 without padding.</span>
+
+<span class="sd">    If Chrome is not in IWA dev</span>
 <span class="sd">    mode, the installation will fail, regardless of the state of the allowlist.</span>
 
 <span class="sd">    :param manifest_id:</span>
 <span class="sd">    :param install_url_or_bundle_url: *(Optional)* The location of the app or bundle overriding the one derived from the manifestId.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;manifestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifest_id</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;manifestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifest_id</span>
     <span class="k">if</span> <span class="n">install_url_or_bundle_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;installUrlOrBundleUrl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">install_url_or_bundle_url</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;installUrlOrBundleUrl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">install_url_or_bundle_url</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;PWA.install&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;PWA.install&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -422,17 +434,19 @@
 
 <div class="viewcode-block" id="uninstall">
 <a class="viewcode-back" href="../../../nodriver/cdp/pwa.html#nodriver.cdp.pwa.uninstall">[docs]</a>
-<span class="k">def</span> <span class="nf">uninstall</span><span class="p">(</span><span class="n">manifest_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">uninstall</span><span class="p">(</span>
+        <span class="n">manifest_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Uninstalls the given manifest_id and closes any opened app windows.</span>
 
 <span class="sd">    :param manifest_id:</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;manifestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifest_id</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;manifestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifest_id</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;PWA.uninstall&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;PWA.uninstall&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -441,9 +455,10 @@
 <div class="viewcode-block" id="launch">
 <a class="viewcode-back" href="../../../nodriver/cdp/pwa.html#nodriver.cdp.pwa.launch">[docs]</a>
 <span class="k">def</span> <span class="nf">launch</span><span class="p">(</span>
-        <span class="n">manifest_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">TargetID</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">manifest_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">target</span><span class="o">.</span><span class="n">TargetID</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Launches the installed web app, or an url in the same web app instead of the</span>
 <span class="sd">    default start url if it is provided. Returns a page Target.TargetID which</span>
 <span class="sd">    can be used to attach to via Target.attachToTarget or similar APIs.</span>
@@ -451,26 +466,27 @@
 <span class="sd">    :param manifest_id:</span>
 <span class="sd">    :param url: *(Optional)*</span>
 <span class="sd">    :returns: ID of the tab target created as a result.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;manifestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifest_id</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;manifestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifest_id</span>
     <span class="k">if</span> <span class="n">url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;PWA.launch&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;PWA.launch&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span>
-    <span class="k">return</span> <span class="n">target</span><span class="o">.</span><span class="n">TargetID</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;targetId&quot;</span><span class="p">])</span></div>
+    <span class="k">return</span> <span class="n">target</span><span class="o">.</span><span class="n">TargetID</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;targetId&#39;</span><span class="p">])</span></div>
 
 
 
 <div class="viewcode-block" id="launch_files_in_app">
 <a class="viewcode-back" href="../../../nodriver/cdp/pwa.html#nodriver.cdp.pwa.launch_files_in_app">[docs]</a>
 <span class="k">def</span> <span class="nf">launch_files_in_app</span><span class="p">(</span>
-        <span class="n">manifest_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">files</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">target</span><span class="o">.</span><span class="n">TargetID</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">manifest_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">files</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">target</span><span class="o">.</span><span class="n">TargetID</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Opens one or more local files from an installed web app identified by its</span>
 <span class="sd">    manifestId. The web app needs to have file handlers registered to process</span>
 <span class="sd">    the files. The API returns one or more page Target.TargetIDs which can be</span>
@@ -488,36 +504,36 @@
 <span class="sd">    :param manifest_id:</span>
 <span class="sd">    :param files:</span>
 <span class="sd">    :returns: IDs of the tab targets created as the result.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;manifestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifest_id</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;files&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">files</span><span class="p">]</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;manifestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifest_id</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">files</span><span class="p">]</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;PWA.launchFilesInApp&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;PWA.launchFilesInApp&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">target</span><span class="o">.</span><span class="n">TargetID</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;targetIds&quot;</span><span class="p">]]</span></div>
+    <span class="k">return</span> <span class="p">[</span><span class="n">target</span><span class="o">.</span><span class="n">TargetID</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;targetIds&#39;</span><span class="p">]]</span></div>
 
 
 
 <div class="viewcode-block" id="open_current_page_in_app">
 <a class="viewcode-back" href="../../../nodriver/cdp/pwa.html#nodriver.cdp.pwa.open_current_page_in_app">[docs]</a>
 <span class="k">def</span> <span class="nf">open_current_page_in_app</span><span class="p">(</span>
-        <span class="n">manifest_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">manifest_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Opens the current page in its web app identified by the manifest id, needs</span>
 <span class="sd">    to be called on a page target. This function returns immediately without</span>
 <span class="sd">    waiting for the app to finish loading.</span>
 
 <span class="sd">    :param manifest_id:</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;manifestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifest_id</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;manifestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifest_id</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;PWA.openCurrentPageInApp&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;PWA.openCurrentPageInApp&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 
@@ -528,9 +544,9 @@
 <span class="k">def</span> <span class="nf">change_app_user_settings</span><span class="p">(</span>
         <span class="n">manifest_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">link_capturing</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">display_mode</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">DisplayMode</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="n">T_JSON_DICT</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">display_mode</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">DisplayMode</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typing</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="n">T_JSON_DICT</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Changes user settings of the web app identified by its manifestId. If the</span>
 <span class="sd">    app was not installed, this command returns an error. Unset parameters will</span>
 <span class="sd">    be ignored; unrecognized values will cause an error.</span>
@@ -544,16 +560,16 @@
 <span class="sd">    :param manifest_id:</span>
 <span class="sd">    :param link_capturing: *(Optional)* If user allows the links clicked on by the user in the app&#39;s scope, or extended scope if the manifest has scope extensions and the flags ```DesktopPWAsLinkCapturingWithScopeExtensions```` and ````WebAppEnableScopeExtensions``` are enabled.  Note, the API does not support resetting the linkCapturing to the initial value, uninstalling and installing the web app again will reset it.  TODO(crbug.com/339453269): Setting this value on ChromeOS is not supported yet.</span>
 <span class="sd">    :param display_mode: *(Optional)*</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;manifestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifest_id</span>
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;manifestId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifest_id</span>
     <span class="k">if</span> <span class="n">link_capturing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;linkCapturing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">link_capturing</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;linkCapturing&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">link_capturing</span>
     <span class="k">if</span> <span class="n">display_mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;displayMode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">display_mode</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;displayMode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">display_mode</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
     <span class="n">cmd_dict</span><span class="p">:</span> <span class="n">T_JSON_DICT</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;PWA.changeAppUserSettings&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;PWA.changeAppUserSettings&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">json</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">cmd_dict</span></div>
 

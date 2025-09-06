@@ -20,7 +20,7 @@ arguments to other commands.
 
 Unique identifier of attached debugging session.
 
-### *class* TargetInfo(target_id, type_, title, url, attached, can_access_opener, opener_id=None, opener_frame_id=None, browser_context_id=None, subtype=None)
+### *class* TargetInfo(target_id, type_, title, url, attached, can_access_opener, opener_id=None, opener_frame_id=None, parent_frame_id=None, browser_context_id=None, subtype=None)
 
 #### target_id*: [`TargetID`](#nodriver.cdp.target.TargetID)*
 
@@ -52,6 +52,10 @@ Opener target Id
 #### opener_frame_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]* *= None*
 
 Frame id of originating window (is only set if target has an opener).
+
+#### parent_frame_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`FrameId`](page.md#nodriver.cdp.page.FrameId)]* *= None*
+
+Id of the parent frame, only present for the “iframe” targets.
 
 #### browser_context_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BrowserContextID`](browser.md#nodriver.cdp.browser.BrowserContextID)]* *= None*
 
@@ -185,7 +189,7 @@ one.
 * **Returns:**
   The id of the context created.
 
-### create_target(url, left=None, top=None, width=None, height=None, window_state=None, browser_context_id=None, enable_begin_frame_control=None, new_window=None, background=None, for_tab=None)
+### create_target(url, left=None, top=None, width=None, height=None, window_state=None, browser_context_id=None, enable_begin_frame_control=None, new_window=None, background=None, for_tab=None, hidden=None)
 
 Creates a new page.
 
@@ -201,6 +205,7 @@ Creates a new page.
   * **new_window** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether to create a new Window or Tab (false by default, not supported by headless shell).
   * **background** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – *(Optional)* Whether to create the target in background or foreground (false by default, not supported by headless shell).
   * **for_tab** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Whether to create the target of type “tab”.
+  * **hidden** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Whether to create a hidden target. The hidden target is observable via protocol, but not present in the tab UI strip. Cannot be created with ``forTab: true```, ```newWindow: true``` or ```background: false``. The life-time of the tab is limited to the life-time of the session.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`TargetID`](#nodriver.cdp.target.TargetID)]
 * **Returns:**
@@ -278,6 +283,19 @@ Retrieves a list of available targets.
 * **Returns:**
   The list of targets.
 
+### open_dev_tools(target_id)
+
+Opens a DevTools window for the target.
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  **target_id** ([`TargetID`](#nodriver.cdp.target.TargetID)) – This can be the page or tab target ID.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`TargetID`](#nodriver.cdp.target.TargetID)]
+* **Returns:**
+  The targetId of DevTools page target.
+
 ### send_message_to_target(message, session_id=None, target_id=None)
 
 Sends protocol message over session with given id.
@@ -299,11 +317,14 @@ Deprecated since version 1.3.
 
 ### set_auto_attach(auto_attach, wait_for_debugger_on_start, flatten=None, filter_=None)
 
-Controls whether to automatically attach to new targets which are considered to be related to
-this one. When turned on, attaches to all existing related targets as well. When turned off,
+Controls whether to automatically attach to new targets which are considered
+to be directly related to this one (for example, iframes or workers).
+When turned on, attaches to all existing related targets as well. When turned off,
 automatically detaches from all currently attached targets.
 This also clears all targets added by `autoAttachRelated` from the list of targets to watch
 for creation of related targets.
+You might want to call this recursively for auto-attached targets to attach
+to all available targets.
 
 * **Parameters:**
   * **auto_attach** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – Whether to auto-attach to related targets.

@@ -53,6 +53,8 @@ Resource type as it was perceived by the rendering engine.
 
 #### PREFLIGHT *= 'Preflight'*
 
+#### FED_CM *= 'FedCM'*
+
 #### OTHER *= 'Other'*
 
 ### *class* LoaderId
@@ -467,6 +469,8 @@ The reason why request was blocked.
 
 #### INSPECTOR *= 'inspector'*
 
+#### INTEGRITY *= 'integrity'*
+
 #### SUBRESOURCE_FILTER *= 'subresource-filter'*
 
 #### CONTENT_TYPE *= 'content-type'*
@@ -486,6 +490,25 @@ The reason why request was blocked.
 #### CORP_NOT_SAME_SITE *= 'corp-not-same-site'*
 
 #### SRI_MESSAGE_SIGNATURE_MISMATCH *= 'sri-message-signature-mismatch'*
+
+### *class* IpProxyStatus(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
+
+Sets Controls for IP Proxy of requests.
+Page reload is required before the new behavior will be observed.
+
+#### AVAILABLE *= 'Available'*
+
+#### FEATURE_NOT_ENABLED *= 'FeatureNotEnabled'*
+
+#### MASKED_DOMAIN_LIST_NOT_ENABLED *= 'MaskedDomainListNotEnabled'*
+
+#### MASKED_DOMAIN_LIST_NOT_POPULATED *= 'MaskedDomainListNotPopulated'*
+
+#### AUTH_TOKENS_UNAVAILABLE *= 'AuthTokensUnavailable'*
+
+#### UNAVAILABLE *= 'Unavailable'*
+
+#### BYPASSED_BY_DEV_TOOLS *= 'BypassedByDevTools'*
 
 ### *class* CorsError(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -637,6 +660,8 @@ Source of service worker router.
 
 #### RACE_NETWORK_AND_FETCH_HANDLER *= 'race-network-and-fetch-handler'*
 
+#### RACE_NETWORK_AND_CACHE *= 'race-network-and-cache'*
+
 ### *class* ServiceWorkerRouterInfo(rule_id_matched=None, matched_source_type=None, actual_source_type=None)
 
 #### rule_id_matched*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
@@ -653,7 +678,7 @@ field will be set, otherwise no value will be set.
 
 The actual router source used.
 
-### *class* Response(url, status, status_text, headers, mime_type, charset, connection_reused, connection_id, encoded_data_length, security_state, headers_text=None, request_headers=None, request_headers_text=None, remote_ip_address=None, remote_port=None, from_disk_cache=None, from_service_worker=None, from_prefetch_cache=None, from_early_hints=None, service_worker_router_info=None, timing=None, service_worker_response_source=None, response_time=None, cache_storage_cache_name=None, protocol=None, alternate_protocol_usage=None, security_details=None)
+### *class* Response(url, status, status_text, headers, mime_type, charset, connection_reused, connection_id, encoded_data_length, security_state, headers_text=None, request_headers=None, request_headers_text=None, remote_ip_address=None, remote_port=None, from_disk_cache=None, from_service_worker=None, from_prefetch_cache=None, from_early_hints=None, service_worker_router_info=None, timing=None, service_worker_response_source=None, response_time=None, cache_storage_cache_name=None, protocol=None, alternate_protocol_usage=None, security_details=None, is_ip_protection_used=None)
 
 HTTP response data.
 
@@ -767,6 +792,11 @@ The reason why Chrome uses a specific transport protocol for HTTP semantics.
 #### security_details*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SecurityDetails`](#nodriver.cdp.network.SecurityDetails)]* *= None*
 
 Security details for the request.
+
+#### is_ip_protection_used*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]* *= None*
+
+Indicates whether the request was sent through IP Protection proxies. If
+set to true, the request used the IP Protection privacy feature.
 
 ### *class* WebSocketRequest(headers)
 
@@ -1044,6 +1074,8 @@ Types of reasons why a cookie may not be sent with a request.
 #### PORT_MISMATCH *= 'PortMismatch'*
 
 #### SCHEME_MISMATCH *= 'SchemeMismatch'*
+
+#### ANONYMOUS_CONTEXT *= 'AnonymousContext'*
 
 ### *class* CookieExemptionReason(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
@@ -1352,13 +1384,18 @@ The index of the signature which caused the error.
 
 The field which caused the error.
 
-### *class* SignedExchangeInfo(outer_response, header=None, security_details=None, errors=None)
+### *class* SignedExchangeInfo(outer_response, has_extra_info, header=None, security_details=None, errors=None)
 
 Information about a signed exchange response.
 
 #### outer_response*: [`Response`](#nodriver.cdp.network.Response)*
 
 The outer response of signed HTTP exchange which was received from network.
+
+#### has_extra_info*: [`bool`](https://docs.python.org/3/library/functions.html#bool)*
+
+Whether network response for the signed exchange was accompanied by
+extra headers.
 
 #### header*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`SignedExchangeHeader`](#nodriver.cdp.network.SignedExchangeHeader)]* *= None*
 
@@ -1410,6 +1447,43 @@ Expected to be unsigned integer.
 
 #### dns_query_type*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`DirectSocketDnsQueryType`](#nodriver.cdp.network.DirectSocketDnsQueryType)]* *= None*
 
+### *class* DirectUDPSocketOptions(remote_addr=None, remote_port=None, local_addr=None, local_port=None, dns_query_type=None, send_buffer_size=None, receive_buffer_size=None)
+
+#### remote_addr*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### remote_port*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+
+Unsigned int 16.
+
+#### local_addr*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+#### local_port*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+
+Unsigned int 16.
+
+#### dns_query_type*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`DirectSocketDnsQueryType`](#nodriver.cdp.network.DirectSocketDnsQueryType)]* *= None*
+
+#### send_buffer_size*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+
+Expected to be unsigned integer.
+
+#### receive_buffer_size*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/library/functions.html#float)]* *= None*
+
+Expected to be unsigned integer.
+
+### *class* DirectUDPMessage(data, remote_addr=None, remote_port=None)
+
+#### data*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### remote_addr*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]* *= None*
+
+Null for connected mode.
+
+#### remote_port*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]* *= None*
+
+Null for connected mode.
+Expected to be unsigned integer.
+
 ### *class* PrivateNetworkRequestPolicy(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
 #### ALLOW *= 'Allow'*
@@ -1428,9 +1502,9 @@ Expected to be unsigned integer.
 
 ### *class* IPAddressSpace(value, names=None, \*, module=None, qualname=None, type=None, start=1, boundary=None)
 
-#### LOCAL *= 'Local'*
+#### LOOPBACK *= 'Loopback'*
 
-#### PRIVATE *= 'Private'*
+#### LOCAL *= 'Local'*
 
 #### PUBLIC *= 'Public'*
 
@@ -1750,7 +1824,7 @@ Activates emulation of network conditions.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
-### enable(max_total_buffer_size=None, max_resource_buffer_size=None, max_post_data_size=None)
+### enable(max_total_buffer_size=None, max_resource_buffer_size=None, max_post_data_size=None, report_direct_socket_traffic=None, enable_durable_messages=None)
 
 Enables network tracking, network events will now be delivered to the client.
 
@@ -1758,6 +1832,8 @@ Enables network tracking, network events will now be delivered to the client.
   * **max_total_buffer_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – **(EXPERIMENTAL)** *(Optional)* Buffer size in bytes to use when preserving network payloads (XHRs, etc).
   * **max_resource_buffer_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – **(EXPERIMENTAL)** *(Optional)* Per-resource buffer size in bytes to use when preserving network payloads (XHRs, etc).
   * **max_post_data_size** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]) – *(Optional)* Longest post body size (in bytes) that would be included in requestWillBeSent notification
+  * **report_direct_socket_traffic** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Whether DirectSocket chunk send/receive events should be reported.
+  * **enable_durable_messages** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/library/functions.html#bool)]) – **(EXPERIMENTAL)** *(Optional)* Enable storing response bodies outside of renderer, so that these survive a cross-process navigation. Requires maxTotalBufferSize to be set. Currently defaults to false.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -1813,6 +1889,18 @@ detailed cookie information in the `cookies` field.
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Cookie`](#nodriver.cdp.network.Cookie)]]
 * **Returns:**
   Array of cookie objects.
+
+### get_ip_protection_proxy_status()
+
+Returns enum representing if IP Proxy of requests is available
+or reason it is not active.
+
+**EXPERIMENTAL**
+
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`IpProxyStatus`](#nodriver.cdp.network.IpProxyStatus)]
+* **Returns:**
+  Whether IP proxy is available
 
 ### get_request_post_data(request_id)
 
@@ -1986,7 +2074,7 @@ Sets a cookie with the given cookie data; may overwrite equivalent cookies if th
 ### set_cookie_controls(enable_third_party_cookie_restriction, disable_third_party_cookie_metadata, disable_third_party_cookie_heuristics)
 
 Sets Controls for third-party cookie access
-Page reload is required before the new cookie bahavior will be observed
+Page reload is required before the new cookie behavior will be observed
 
 **EXPERIMENTAL**
 
@@ -2012,6 +2100,17 @@ Specifies whether to always send extra HTTP headers with the requests from this 
 
 * **Parameters:**
   **headers** ([`Headers`](#nodriver.cdp.network.Headers)) – Map with extra HTTP headers.
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
+
+### set_ip_protection_proxy_bypass_enabled(enabled)
+
+Sets bypass IP Protection Proxy boolean.
+
+**EXPERIMENTAL**
+
+* **Parameters:**
+  **enabled** ([`bool`](https://docs.python.org/3/library/functions.html#bool)) – Whether IP Proxy is being bypassed by devtools; false by default.
 * **Return type:**
   [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/library/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)], [`None`](https://docs.python.org/3/library/constants.html#None)]
 
@@ -2590,6 +2689,112 @@ Fired when direct_socket.TCPSocket is aborted.
 Fired when direct_socket.TCPSocket is closed.
 
 #### identifier*: [`RequestId`](#nodriver.cdp.network.RequestId)*
+
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+
+### *class* DirectTCPSocketChunkSent(identifier, data, timestamp)
+
+**EXPERIMENTAL**
+
+Fired when data is sent to tcp direct socket stream.
+
+#### identifier*: [`RequestId`](#nodriver.cdp.network.RequestId)*
+
+#### data*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+
+### *class* DirectTCPSocketChunkReceived(identifier, data, timestamp)
+
+**EXPERIMENTAL**
+
+Fired when data is received from tcp direct socket stream.
+
+#### identifier*: [`RequestId`](#nodriver.cdp.network.RequestId)*
+
+#### data*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+
+### *class* DirectUDPSocketCreated(identifier, options, timestamp, initiator)
+
+**EXPERIMENTAL**
+
+Fired upon direct_socket.UDPSocket creation.
+
+#### identifier*: [`RequestId`](#nodriver.cdp.network.RequestId)*
+
+#### options*: [`DirectUDPSocketOptions`](#nodriver.cdp.network.DirectUDPSocketOptions)*
+
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+
+#### initiator*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Initiator`](#nodriver.cdp.network.Initiator)]*
+
+### *class* DirectUDPSocketOpened(identifier, local_addr, local_port, timestamp, remote_addr, remote_port)
+
+**EXPERIMENTAL**
+
+Fired when direct_socket.UDPSocket connection is opened.
+
+#### identifier*: [`RequestId`](#nodriver.cdp.network.RequestId)*
+
+#### local_addr*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### local_port*: [`int`](https://docs.python.org/3/library/functions.html#int)*
+
+Expected to be unsigned integer.
+
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+
+#### remote_addr*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/library/stdtypes.html#str)]*
+
+#### remote_port*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`int`](https://docs.python.org/3/library/functions.html#int)]*
+
+Expected to be unsigned integer.
+
+### *class* DirectUDPSocketAborted(identifier, error_message, timestamp)
+
+**EXPERIMENTAL**
+
+Fired when direct_socket.UDPSocket is aborted.
+
+#### identifier*: [`RequestId`](#nodriver.cdp.network.RequestId)*
+
+#### error_message*: [`str`](https://docs.python.org/3/library/stdtypes.html#str)*
+
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+
+### *class* DirectUDPSocketClosed(identifier, timestamp)
+
+**EXPERIMENTAL**
+
+Fired when direct_socket.UDPSocket is closed.
+
+#### identifier*: [`RequestId`](#nodriver.cdp.network.RequestId)*
+
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+
+### *class* DirectUDPSocketChunkSent(identifier, message, timestamp)
+
+**EXPERIMENTAL**
+
+Fired when message is sent to udp direct socket stream.
+
+#### identifier*: [`RequestId`](#nodriver.cdp.network.RequestId)*
+
+#### message*: [`DirectUDPMessage`](#nodriver.cdp.network.DirectUDPMessage)*
+
+#### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
+
+### *class* DirectUDPSocketChunkReceived(identifier, message, timestamp)
+
+**EXPERIMENTAL**
+
+Fired when message is received from udp direct socket stream.
+
+#### identifier*: [`RequestId`](#nodriver.cdp.network.RequestId)*
+
+#### message*: [`DirectUDPMessage`](#nodriver.cdp.network.DirectUDPMessage)*
 
 #### timestamp*: [`MonotonicTime`](#nodriver.cdp.network.MonotonicTime)*
 

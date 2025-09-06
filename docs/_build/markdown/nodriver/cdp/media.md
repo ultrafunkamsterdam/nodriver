@@ -1,6 +1,6 @@
 # Media
 
-This domain allows detailed inspection of media elements
+This domain allows detailed inspection of media elements.
 
 *This CDP domain is experimental.*
 
@@ -90,6 +90,12 @@ caused by an WindowsError
 
 Extra data attached to an error, such as an HRESULT, Video Codec, etc.
 
+### *class* Player(player_id, dom_node_id=None)
+
+#### player_id*: [`PlayerId`](#nodriver.cdp.media.PlayerId)*
+
+#### dom_node_id*: [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BackendNodeId`](dom.md#nodriver.cdp.dom.BackendNodeId)]* *= None*
+
 ## Commands
 
 Each command is a generator function. The return
@@ -155,10 +161,10 @@ Send a list of any errors that need to be delivered.
 
 #### errors*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PlayerError`](#nodriver.cdp.media.PlayerError)]*
 
-### *class* PlayersCreated(players)
+### *class* PlayerCreated(player)
 
 Called whenever a player is created, or when a new agent joins and receives
-a list of active players. If an agent is restored, it will receive the full
-list of player ids and all events again.
+a list of active players. If an agent is restored, it will receive one
+event for each active player.
 
-#### players*: [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`PlayerId`](#nodriver.cdp.media.PlayerId)]*
+#### player*: [`Player`](#nodriver.cdp.media.Player)*

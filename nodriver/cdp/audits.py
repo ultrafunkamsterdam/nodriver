@@ -778,6 +778,20 @@ class SRIMessageSignatureError(enum.Enum):
         return cls(json)
 
 
+class UnencodedDigestError(enum.Enum):
+    MALFORMED_DICTIONARY = "MalformedDictionary"
+    UNKNOWN_ALGORITHM = "UnknownAlgorithm"
+    INCORRECT_DIGEST_TYPE = "IncorrectDigestType"
+    INCORRECT_DIGEST_LENGTH = "IncorrectDigestLength"
+
+    def to_json(self) -> str:
+        return self.value
+
+    @classmethod
+    def from_json(cls, json: str) -> UnencodedDigestError:
+        return cls(json)
+
+
 @dataclass
 class AttributionReportingIssueDetails:
     '''
@@ -916,6 +930,26 @@ class SRIMessageSignatureIssueDetails:
             error=SRIMessageSignatureError.from_json(json['error']),
             signature_base=str(json['signatureBase']),
             integrity_assertions=[str(i) for i in json['integrityAssertions']],
+            request=AffectedRequest.from_json(json['request']),
+        )
+
+
+@dataclass
+class UnencodedDigestIssueDetails:
+    error: UnencodedDigestError
+
+    request: AffectedRequest
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['error'] = self.error.to_json()
+        json['request'] = self.request.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> UnencodedDigestIssueDetails:
+        return cls(
+            error=UnencodedDigestError.from_json(json['error']),
             request=AffectedRequest.from_json(json['request']),
         )
 
@@ -1421,6 +1455,7 @@ class PropertyRuleIssueDetails:
 class UserReidentificationIssueType(enum.Enum):
     BLOCKED_FRAME_NAVIGATION = "BlockedFrameNavigation"
     BLOCKED_SUBRESOURCE = "BlockedSubresource"
+    NOISED_CANVAS_READBACK = "NoisedCanvasReadback"
 
     def to_json(self) -> str:
         return self.value
@@ -1441,11 +1476,16 @@ class UserReidentificationIssueDetails:
     #: Applies to BlockedFrameNavigation and BlockedSubresource issue types.
     request: typing.Optional[AffectedRequest] = None
 
+    #: Applies to NoisedCanvasReadback issue type.
+    source_code_location: typing.Optional[SourceCodeLocation] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json['type'] = self.type_.to_json()
         if self.request is not None:
             json['request'] = self.request.to_json()
+        if self.source_code_location is not None:
+            json['sourceCodeLocation'] = self.source_code_location.to_json()
         return json
 
     @classmethod
@@ -1453,6 +1493,7 @@ class UserReidentificationIssueDetails:
         return cls(
             type_=UserReidentificationIssueType.from_json(json['type']),
             request=AffectedRequest.from_json(json['request']) if json.get('request', None) is not None else None,
+            source_code_location=SourceCodeLocation.from_json(json['sourceCodeLocation']) if json.get('sourceCodeLocation', None) is not None else None,
         )
 
 
@@ -1486,6 +1527,7 @@ class InspectorIssueCode(enum.Enum):
     SHARED_DICTIONARY_ISSUE = "SharedDictionaryIssue"
     ELEMENT_ACCESSIBILITY_ISSUE = "ElementAccessibilityIssue"
     SRI_MESSAGE_SIGNATURE_ISSUE = "SRIMessageSignatureIssue"
+    UNENCODED_DIGEST_ISSUE = "UnencodedDigestIssue"
     USER_REIDENTIFICATION_ISSUE = "UserReidentificationIssue"
 
     def to_json(self) -> str:
@@ -1551,6 +1593,8 @@ class InspectorIssueDetails:
 
     sri_message_signature_issue_details: typing.Optional[SRIMessageSignatureIssueDetails] = None
 
+    unencoded_digest_issue_details: typing.Optional[UnencodedDigestIssueDetails] = None
+
     user_reidentification_issue_details: typing.Optional[UserReidentificationIssueDetails] = None
 
     def to_json(self) -> T_JSON_DICT:
@@ -1603,6 +1647,8 @@ class InspectorIssueDetails:
             json['elementAccessibilityIssueDetails'] = self.element_accessibility_issue_details.to_json()
         if self.sri_message_signature_issue_details is not None:
             json['sriMessageSignatureIssueDetails'] = self.sri_message_signature_issue_details.to_json()
+        if self.unencoded_digest_issue_details is not None:
+            json['unencodedDigestIssueDetails'] = self.unencoded_digest_issue_details.to_json()
         if self.user_reidentification_issue_details is not None:
             json['userReidentificationIssueDetails'] = self.user_reidentification_issue_details.to_json()
         return json
@@ -1634,6 +1680,7 @@ class InspectorIssueDetails:
             shared_dictionary_issue_details=SharedDictionaryIssueDetails.from_json(json['sharedDictionaryIssueDetails']) if json.get('sharedDictionaryIssueDetails', None) is not None else None,
             element_accessibility_issue_details=ElementAccessibilityIssueDetails.from_json(json['elementAccessibilityIssueDetails']) if json.get('elementAccessibilityIssueDetails', None) is not None else None,
             sri_message_signature_issue_details=SRIMessageSignatureIssueDetails.from_json(json['sriMessageSignatureIssueDetails']) if json.get('sriMessageSignatureIssueDetails', None) is not None else None,
+            unencoded_digest_issue_details=UnencodedDigestIssueDetails.from_json(json['unencodedDigestIssueDetails']) if json.get('unencodedDigestIssueDetails', None) is not None else None,
             user_reidentification_issue_details=UserReidentificationIssueDetails.from_json(json['userReidentificationIssueDetails']) if json.get('userReidentificationIssueDetails', None) is not None else None,
         )
 
