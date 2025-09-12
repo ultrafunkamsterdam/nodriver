@@ -86,10 +86,9 @@ class Transaction(asyncio.Future):
         self.__cdp_obj__ = cdp_obj
         self.connection = None
 
-        self.method, *params = next(self.__cdp_obj__).values()
-        if params:
-            params = params.pop()
-        self.params = params
+        cmd = next(self.__cdp_obj__)
+        self.method = cmd["method"]
+        self.params = cmd.get("params", {})
 
     @property
     def message(self):
