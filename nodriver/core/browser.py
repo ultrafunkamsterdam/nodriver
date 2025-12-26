@@ -20,10 +20,10 @@ from collections import defaultdict
 from typing import List, Tuple, Union
 
 from .. import cdp
-from . import tab, util
+from . import tab_flat, tab, util
 from ._contradict import ContraDict
 from .config import Config, PathLike, is_posix
-from .connection import Connection
+from .connection_flat import Connection
 
 logger = logging.getLogger(__name__)
 
@@ -129,12 +129,12 @@ class Browser:
         return self.info.webSocketDebuggerUrl
 
     @property
-    def main_tab(self) -> tab.Tab:
+    def main_tab(self) -> tab_flat.Tab:
         """returns the target which was launched with the browser"""
         return sorted(self.targets, key=lambda x: x.type_ == "page", reverse=True)[0]
 
     @property
-    def tabs(self) -> List[tab.Tab]:
+    def tabs(self) -> List[tab_flat.Tab]:
         """returns the current targets which are of type "page"
         :return:
         """
@@ -174,73 +174,10 @@ class Browser:
     sleep = wait
     """alias for wait"""
 
-    def _handle_target_update(
-        self,
-        event: Union[
-            cdp.target.TargetInfoChanged,
-            cdp.target.TargetDestroyed,
-            cdp.target.TargetCreated,
-            cdp.target.TargetCrashed,
-        ],
-    ):
-        """this is an internal handler which updates the targets when chrome emits the corresponding event"""
-
-        if isinstance(event, cdp.target.TargetInfoChanged):
-            target_info = event.target_info
-
-            current_tab = next(
-                filter(
-                    lambda item: item.target_id == target_info.target_id, self.targets
-                )
-            )
-            current_target = current_tab.target
-
-            if logger.getEffectiveLevel() <= 10:
-                changes = util.compare_target_info(current_target, target_info)
-                changes_string = ""
-                for change in changes:
-                    key, old, new = change
-                    changes_string += f"\n{key}: {old} => {new}\n"
-                logger.debug(
-                    "target #%d has changed: %s"
-                    % (self.targets.index(current_tab), changes_string)
-                )
-
-                current_tab._target = target_info
-
-        elif isinstance(event, cdp.target.TargetCreated):
-            target_info: cdp.target.TargetInfo = event.target_info
-            from .tab import Tab
-
-            new_target = Tab(
-                (
-                    f"ws://{self.config.host}:{self.config.port}"
-                    f"/devtools/{target_info.type_ or 'page'}"  # all types are 'page' internally in chrome apparently
-                    f"/{target_info.target_id}"
-                ),
-                target=target_info,
-                browser=self,
-            )
-
-            self.targets.append(new_target)
-
-            logger.debug("target #%d created => %s", len(self.targets), new_target)
-
-        elif isinstance(event, cdp.target.TargetDestroyed):
-            current_tab = next(
-                filter(lambda item: item.target_id == event.target_id, self.targets)
-            )
-            logger.debug(
-                "target removed. id # %d => %s"
-                % (self.targets.index(current_tab), current_tab)
-            )
-            self.targets.remove(current_tab)
-
-        asyncio.create_task(self.update_targets())
 
     async def get(
         self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
-    ) -> tab.Tab:
+    ) -> tab_flat.Tab:
         """top level get. utilizes the first tab to retrieve given url.
 
         convenience function known from selenium.
@@ -259,21 +196,16 @@ class Browser:
                     url, new_window=new_window, enable_begin_frame_control=True
                 )
             )
-            # get the connection matching the new target_id from our inventory
-            connection: tab.Tab = next(
-                filter(
-                    lambda item: item.type_ == "page" and item.target_id == target_id,
-                    self.targets,
-                )
-            )
-            connection._browser = self
 
+            connection = await tab.Tab.from_tab_target(target=target_id, browser=self)
         else:
             # first tab from browser.tabs
             connection: tab.Tab = next(
-                filter(lambda item: item.type_ == "page", self.targets)
+                filter(lambda item: item.target.type_ == "page", self.targets)
             )
             # use the tab to navigate to new url
+            if not connection.attached:
+                await connection.attach(connection.target)
             frame_id, loader_id, *_ = await connection.send(cdp.page.navigate(url))
             # update the frame_id on the tab
             connection.frame_id = frame_id
@@ -292,7 +224,7 @@ class Browser:
         proxy_bypass_list: List[str] = None,
         origins_with_universal_network_access: List[str] = None,
         proxy_ssl_context=None,
-    ) -> tab.Tab:
+    ) -> tab_flat.Tab:
         """
         creates a new browser context - mostly useful if you want to use proxies for different browser instances
         since chrome usually can only use 1 proxy per browser.
@@ -346,7 +278,7 @@ class Browser:
             )
         )
         await self.sleep(0.5)
-        connection: tab.Tab = next(
+        connection: tab_flat.Tab = next(
             filter(
                 lambda item: item.type_ == "page" and item.target_id == target_id,
                 self.targets,
@@ -448,27 +380,45 @@ class Browser:
                 )
             )
 
-        self.connection = Connection(self.info.webSocketDebuggerUrl, browser=self)
+        self.connection = Connection(websocket_url=self.websocket_url, browser=self)
+        await self.connection._update_targets()
+        sid = await self.connection.send(cdp.target.attach_to_browser_target())
+        self.connection.attached = True
+        self.connection.target = "BROWSER"
 
-        if self.config.autodiscover_targets:
-            logger.info("enabling autodiscover targets")
+        # self.connection.handlers[cdp.target.AttachedToTarget] = [self._handle_attached]
+        # self.connection.handlers[cdp.target.DetachedFromTarget] = [self._handle_detached]
 
-            self.connection.handlers[cdp.target.TargetInfoChanged] = [
-                self._handle_target_update
-            ]
-            self.connection.handlers[cdp.target.TargetCreated] = [
-                self._handle_target_update
-            ]
-            self.connection.handlers[cdp.target.TargetDestroyed] = [
-                self._handle_target_update
-            ]
-            self.connection.handlers[cdp.target.TargetCrashed] = [
-                self._handle_target_update
-            ]
-            await self.connection.send(cdp.target.set_discover_targets(discover=True))
+        # if self.config.autodiscover_targets:
+        #     logger.info("enabling autodiscover targets")
+        #
+        #     self.connection.handlers[cdp.target.TargetInfoChanged] = [
+        #         self._handle_target_update
+        #     ]
+        #     self.connection.handlers[cdp.target.TargetCreated] = [
+        #         self._handle_target_update
+        #     ]
+        #     self.connection.handlers[cdp.target.TargetDestroyed] = [
+        #         self._handle_target_update
+        #     ]
+        #     self.connection.handlers[cdp.target.TargetCrashed] = [
+        #         self._handle_target_update
+        #     ]
+        #     await self.connection.send(cdp.target.set_discover_targets(discover=True))
 
         await self.update_targets()
-        await self
+        # await self
+
+    async def _handle_attached(self, event: cdp.target.AttachedToTarget):
+        t: tab.Tab  = await tab.Tab.from_tab_target(event.target_info, browser=self)
+        t._is_attached = True
+        t._session_id = event.session_id
+        self.tabs.append(t)
+
+    async def _handle_detached(self, event: cdp.target.DetachedFromTarget):
+        t = next(filter( lambda x : x.target_id == event.target_id, self.targets))
+
+        self.tabs.remove(t)
 
     async def grant_all_permissions(self):
         """
@@ -565,32 +515,40 @@ class Browser:
         return grid
 
     async def _get_targets(self) -> List[cdp.target.TargetInfo]:
-        info = await self.connection.send(cdp.target.get_targets(), _is_update=True)
+        info = await self.connection.send(cdp.target.get_targets())
+        print('got targets', info)
         return info
+
 
     async def update_targets(self):
         targets: List[cdp.target.TargetInfo]
-        targets = await self._get_targets()
-        target_ids = [t.target_id for t in targets]
-        existing_target_ids = [t.target_id for t in self.targets]
-        for t in targets:
-            for existing_tab in self.targets:
-                existing_target = existing_tab.target
-                if existing_target.target_id == t.target_id:
-                    existing_tab.target.__dict__.update(t.__dict__)
+
+        await self.connection._update_targets()
+        tabs =[]
+        for t in self.connection.attached_targets + self.connection.other_targets:
+            for ct in self.targets:
+                if ct.target.target_id == t.target_id:
+                    ct.target = t
                     break
             else:
-                self.targets.append(
-                    Connection(
-                        (
-                            f"ws://{self.config.host}:{self.config.port}"
-                            f"/devtools/page"  # all types are 'page' somehow
-                            f"/{t.target_id}"
-                        ),
-                        target=t,
-                        browser=self,
-                    )
-                )
+                self.targets.append(await tab.Tab.from_tab_target(t, browser=self))
+
+        # target_ids = [t.target_id for t in targets]
+        # existing_target_ids = [t.target_id for t in self.targets if t]
+        # for t in targets:
+        #     for existing_tab in self.targets:
+        #         existing_target = existing_tab
+        #         if existing_target.target_id == t.target_id:
+        #             # existing_tab.target.__dict__.update(t.__dict__)
+        #             break
+        #     else:
+        #         print('opening target', t)
+        #         self.targets.append(
+        #             await tab.Tab.from_tab_target(
+        #                 target=t,
+        #                 browser=self,
+        #             )
+        #         )
 
         await asyncio.sleep(0)
 
@@ -600,9 +558,9 @@ class Browser:
 
     def __getitem__(
         self, item: Union[str, int, slice]
-    ) -> Union[tab.Tab, List[tab.Tab]]:
+    ) -> Union[tab_flat.Tab, List[tab_flat.Tab]]:
         """
-        allows to get py:obj:`tab.Tab` instances by using browser[0], browser[1], etc.
+        allows to get py:obj:`tab_flat.Tab` instances by using browser[0], browser[1], etc.
         a string is also allowed. it will then return the first tab where the py:obj:`cdp.target.TargetInfo` object
         (as json string) contains the given key, or the first tab in case no matches are found. eg:
         `browser["google"]` gives the first tab which has "google" in it's serialized target object.
@@ -610,12 +568,12 @@ class Browser:
         :param item:
         :type item:
         :return:
-        :rtype: tab.Tab
+        :rtype: tab_flat.Tab
         """
         if isinstance(item, int):
             return self.tabs[item]
         elif isinstance(item, slice):
-            tabs: List[tab.Tab] = []
+            tabs: List[tab_flat.Tab] = []
             sta, sto, ste = item.start, item.stop, item.step
             if not ste:
                 ste = 1
@@ -631,7 +589,7 @@ class Browser:
             return tabs
         elif isinstance(item, tuple):
             r = range(*item)
-            tabs: List[tab.Tab] = []
+            tabs: List[tab_flat.Tab] = []
             for i in r:
                 try:
                     tabs.append(self.tabs[i])
@@ -668,13 +626,13 @@ class Browser:
         try:
             # asyncio.get_running_loop().create_task(self.connection.send(cdp.browser.close()))
 
-            asyncio.get_event_loop().create_task(self.connection.disconnect())
+            asyncio.get_event_loop().create_task(self.connection.close())
             logger.debug("closed the connection using get_event_loop().create_task()")
         except RuntimeError:
             if self.connection:
                 try:
                     # asyncio.run(self.connection.send(cdp.browser.close()))
-                    asyncio.run(self.connection.disconnect())
+                    asyncio.run(self.connection.close())
                     logger.debug("closed the connection using asyncio.run()")
                 except Exception:
                     pass
