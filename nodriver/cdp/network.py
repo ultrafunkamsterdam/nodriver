@@ -386,6 +386,24 @@ class ResourcePriority(enum.Enum):
         return cls(json)
 
 
+class RenderBlockingBehavior(enum.Enum):
+    '''
+    The render-blocking behavior of a resource request.
+    '''
+    BLOCKING = "Blocking"
+    IN_BODY_PARSER_BLOCKING = "InBodyParserBlocking"
+    NON_BLOCKING = "NonBlocking"
+    NON_BLOCKING_DYNAMIC = "NonBlockingDynamic"
+    POTENTIALLY_BLOCKING = "PotentiallyBlocking"
+
+    def to_json(self) -> str:
+        return self.value
+
+    @classmethod
+    def from_json(cls, json: str) -> RenderBlockingBehavior:
+        return cls(json)
+
+
 @dataclass
 class PostDataEntry:
     '''
@@ -699,27 +717,6 @@ class BlockedReason(enum.Enum):
         return cls(json)
 
 
-class IpProxyStatus(enum.Enum):
-    '''
-    Sets Controls for IP Proxy of requests.
-    Page reload is required before the new behavior will be observed.
-    '''
-    AVAILABLE = "Available"
-    FEATURE_NOT_ENABLED = "FeatureNotEnabled"
-    MASKED_DOMAIN_LIST_NOT_ENABLED = "MaskedDomainListNotEnabled"
-    MASKED_DOMAIN_LIST_NOT_POPULATED = "MaskedDomainListNotPopulated"
-    AUTH_TOKENS_UNAVAILABLE = "AuthTokensUnavailable"
-    UNAVAILABLE = "Unavailable"
-    BYPASSED_BY_DEV_TOOLS = "BypassedByDevTools"
-
-    def to_json(self) -> str:
-        return self.value
-
-    @classmethod
-    def from_json(cls, json: str) -> IpProxyStatus:
-        return cls(json)
-
-
 class CorsError(enum.Enum):
     '''
     The reason why request was blocked.
@@ -743,21 +740,14 @@ class CorsError(enum.Enum):
     PREFLIGHT_INVALID_ALLOW_CREDENTIALS = "PreflightInvalidAllowCredentials"
     PREFLIGHT_MISSING_ALLOW_EXTERNAL = "PreflightMissingAllowExternal"
     PREFLIGHT_INVALID_ALLOW_EXTERNAL = "PreflightInvalidAllowExternal"
-    PREFLIGHT_MISSING_ALLOW_PRIVATE_NETWORK = "PreflightMissingAllowPrivateNetwork"
-    PREFLIGHT_INVALID_ALLOW_PRIVATE_NETWORK = "PreflightInvalidAllowPrivateNetwork"
     INVALID_ALLOW_METHODS_PREFLIGHT_RESPONSE = "InvalidAllowMethodsPreflightResponse"
     INVALID_ALLOW_HEADERS_PREFLIGHT_RESPONSE = "InvalidAllowHeadersPreflightResponse"
     METHOD_DISALLOWED_BY_PREFLIGHT_RESPONSE = "MethodDisallowedByPreflightResponse"
     HEADER_DISALLOWED_BY_PREFLIGHT_RESPONSE = "HeaderDisallowedByPreflightResponse"
     REDIRECT_CONTAINS_CREDENTIALS = "RedirectContainsCredentials"
-    INSECURE_PRIVATE_NETWORK = "InsecurePrivateNetwork"
-    INVALID_PRIVATE_NETWORK_ACCESS = "InvalidPrivateNetworkAccess"
-    UNEXPECTED_PRIVATE_NETWORK_ACCESS = "UnexpectedPrivateNetworkAccess"
+    INSECURE_LOCAL_NETWORK = "InsecureLocalNetwork"
+    INVALID_LOCAL_NETWORK_ACCESS = "InvalidLocalNetworkAccess"
     NO_CORS_REDIRECT_MODE_NOT_FOLLOW = "NoCorsRedirectModeNotFollow"
-    PREFLIGHT_MISSING_PRIVATE_NETWORK_ACCESS_ID = "PreflightMissingPrivateNetworkAccessId"
-    PREFLIGHT_MISSING_PRIVATE_NETWORK_ACCESS_NAME = "PreflightMissingPrivateNetworkAccessName"
-    PRIVATE_NETWORK_ACCESS_PERMISSION_UNAVAILABLE = "PrivateNetworkAccessPermissionUnavailable"
-    PRIVATE_NETWORK_ACCESS_PERMISSION_DENIED = "PrivateNetworkAccessPermissionDenied"
     LOCAL_NETWORK_ACCESS_PERMISSION_DENIED = "LocalNetworkAccessPermissionDenied"
 
     def to_json(self) -> str:
@@ -1012,10 +1002,6 @@ class Response:
     #: Security details for the request.
     security_details: typing.Optional[SecurityDetails] = None
 
-    #: Indicates whether the request was sent through IP Protection proxies. If
-    #: set to true, the request used the IP Protection privacy feature.
-    is_ip_protection_used: typing.Optional[bool] = None
-
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json['url'] = self.url
@@ -1062,8 +1048,6 @@ class Response:
             json['alternateProtocolUsage'] = self.alternate_protocol_usage.to_json()
         if self.security_details is not None:
             json['securityDetails'] = self.security_details.to_json()
-        if self.is_ip_protection_used is not None:
-            json['isIpProtectionUsed'] = self.is_ip_protection_used
         return json
 
     @classmethod
@@ -1096,7 +1080,6 @@ class Response:
             protocol=str(json['protocol']) if json.get('protocol', None) is not None else None,
             alternate_protocol_usage=AlternateProtocolUsage.from_json(json['alternateProtocolUsage']) if json.get('alternateProtocolUsage', None) is not None else None,
             security_details=SecurityDetails.from_json(json['securityDetails']) if json.get('securityDetails', None) is not None else None,
-            is_ip_protection_used=bool(json['isIpProtectionUsed']) if json.get('isIpProtectionUsed', None) is not None else None,
         )
 
 
@@ -1348,9 +1331,6 @@ class Cookie:
     #: Cookie Priority
     priority: CookiePriority
 
-    #: True if cookie is SameParty.
-    same_party: bool
-
     #: Cookie source scheme type.
     source_scheme: CookieSourceScheme
 
@@ -1385,7 +1365,6 @@ class Cookie:
         json['secure'] = self.secure
         json['session'] = self.session
         json['priority'] = self.priority.to_json()
-        json['sameParty'] = self.same_party
         json['sourceScheme'] = self.source_scheme.to_json()
         json['sourcePort'] = self.source_port
         if self.expires is not None:
@@ -1410,7 +1389,6 @@ class Cookie:
             secure=bool(json['secure']),
             session=bool(json['session']),
             priority=CookiePriority.from_json(json['priority']),
-            same_party=bool(json['sameParty']),
             source_scheme=CookieSourceScheme.from_json(json['sourceScheme']),
             source_port=int(json['sourcePort']),
             expires=float(json['expires']) if json.get('expires', None) is not None else None,
@@ -1441,8 +1419,6 @@ class SetCookieBlockedReason(enum.Enum):
     SCHEMEFUL_SAME_SITE_STRICT = "SchemefulSameSiteStrict"
     SCHEMEFUL_SAME_SITE_LAX = "SchemefulSameSiteLax"
     SCHEMEFUL_SAME_SITE_UNSPECIFIED_TREATED_AS_LAX = "SchemefulSameSiteUnspecifiedTreatedAsLax"
-    SAME_PARTY_FROM_CROSS_PARTY_CONTEXT = "SamePartyFromCrossPartyContext"
-    SAME_PARTY_CONFLICTS_WITH_OTHER_ATTRIBUTES = "SamePartyConflictsWithOtherAttributes"
     NAME_VALUE_PAIR_EXCEEDS_MAX_SIZE = "NameValuePairExceedsMaxSize"
     DISALLOWED_CHARACTER = "DisallowedCharacter"
     NO_COOKIE_CONTENT = "NoCookieContent"
@@ -1473,7 +1449,6 @@ class CookieBlockedReason(enum.Enum):
     SCHEMEFUL_SAME_SITE_STRICT = "SchemefulSameSiteStrict"
     SCHEMEFUL_SAME_SITE_LAX = "SchemefulSameSiteLax"
     SCHEMEFUL_SAME_SITE_UNSPECIFIED_TREATED_AS_LAX = "SchemefulSameSiteUnspecifiedTreatedAsLax"
-    SAME_PARTY_FROM_CROSS_PARTY_CONTEXT = "SamePartyFromCrossPartyContext"
     NAME_VALUE_PAIR_EXCEEDS_MAX_SIZE = "NameValuePairExceedsMaxSize"
     PORT_MISMATCH = "PortMismatch"
     SCHEME_MISMATCH = "SchemeMismatch"
@@ -1645,9 +1620,6 @@ class CookieParam:
     #: Cookie Priority.
     priority: typing.Optional[CookiePriority] = None
 
-    #: True if cookie is SameParty.
-    same_party: typing.Optional[bool] = None
-
     #: Cookie source scheme type.
     source_scheme: typing.Optional[CookieSourceScheme] = None
 
@@ -1679,8 +1651,6 @@ class CookieParam:
             json['expires'] = self.expires.to_json()
         if self.priority is not None:
             json['priority'] = self.priority.to_json()
-        if self.same_party is not None:
-            json['sameParty'] = self.same_party
         if self.source_scheme is not None:
             json['sourceScheme'] = self.source_scheme.to_json()
         if self.source_port is not None:
@@ -1702,7 +1672,6 @@ class CookieParam:
             same_site=CookieSameSite.from_json(json['sameSite']) if json.get('sameSite', None) is not None else None,
             expires=TimeSinceEpoch.from_json(json['expires']) if json.get('expires', None) is not None else None,
             priority=CookiePriority.from_json(json['priority']) if json.get('priority', None) is not None else None,
-            same_party=bool(json['sameParty']) if json.get('sameParty', None) is not None else None,
             source_scheme=CookieSourceScheme.from_json(json['sourceScheme']) if json.get('sourceScheme', None) is not None else None,
             source_port=int(json['sourcePort']) if json.get('sourcePort', None) is not None else None,
             partition_key=CookiePartitionKey.from_json(json['partitionKey']) if json.get('partitionKey', None) is not None else None,
@@ -2202,6 +2171,13 @@ class DirectUDPSocketOptions:
     #: Expected to be unsigned integer.
     receive_buffer_size: typing.Optional[float] = None
 
+    multicast_loopback: typing.Optional[bool] = None
+
+    #: Unsigned int 8.
+    multicast_time_to_live: typing.Optional[int] = None
+
+    multicast_allow_address_sharing: typing.Optional[bool] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         if self.remote_addr is not None:
@@ -2218,6 +2194,12 @@ class DirectUDPSocketOptions:
             json['sendBufferSize'] = self.send_buffer_size
         if self.receive_buffer_size is not None:
             json['receiveBufferSize'] = self.receive_buffer_size
+        if self.multicast_loopback is not None:
+            json['multicastLoopback'] = self.multicast_loopback
+        if self.multicast_time_to_live is not None:
+            json['multicastTimeToLive'] = self.multicast_time_to_live
+        if self.multicast_allow_address_sharing is not None:
+            json['multicastAllowAddressSharing'] = self.multicast_allow_address_sharing
         return json
 
     @classmethod
@@ -2230,6 +2212,9 @@ class DirectUDPSocketOptions:
             dns_query_type=DirectSocketDnsQueryType.from_json(json['dnsQueryType']) if json.get('dnsQueryType', None) is not None else None,
             send_buffer_size=float(json['sendBufferSize']) if json.get('sendBufferSize', None) is not None else None,
             receive_buffer_size=float(json['receiveBufferSize']) if json.get('receiveBufferSize', None) is not None else None,
+            multicast_loopback=bool(json['multicastLoopback']) if json.get('multicastLoopback', None) is not None else None,
+            multicast_time_to_live=int(json['multicastTimeToLive']) if json.get('multicastTimeToLive', None) is not None else None,
+            multicast_allow_address_sharing=bool(json['multicastAllowAddressSharing']) if json.get('multicastAllowAddressSharing', None) is not None else None,
         )
 
 
@@ -2262,12 +2247,10 @@ class DirectUDPMessage:
         )
 
 
-class PrivateNetworkRequestPolicy(enum.Enum):
+class LocalNetworkAccessRequestPolicy(enum.Enum):
     ALLOW = "Allow"
     BLOCK_FROM_INSECURE_TO_MORE_PRIVATE = "BlockFromInsecureToMorePrivate"
     WARN_FROM_INSECURE_TO_MORE_PRIVATE = "WarnFromInsecureToMorePrivate"
-    PREFLIGHT_BLOCK = "PreflightBlock"
-    PREFLIGHT_WARN = "PreflightWarn"
     PERMISSION_BLOCK = "PermissionBlock"
     PERMISSION_WARN = "PermissionWarn"
 
@@ -2275,7 +2258,7 @@ class PrivateNetworkRequestPolicy(enum.Enum):
         return self.value
 
     @classmethod
-    def from_json(cls, json: str) -> PrivateNetworkRequestPolicy:
+    def from_json(cls, json: str) -> LocalNetworkAccessRequestPolicy:
         return cls(json)
 
 
@@ -2318,13 +2301,13 @@ class ClientSecurityState:
 
     initiator_ip_address_space: IPAddressSpace
 
-    private_network_request_policy: PrivateNetworkRequestPolicy
+    local_network_access_request_policy: LocalNetworkAccessRequestPolicy
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json['initiatorIsSecureContext'] = self.initiator_is_secure_context
         json['initiatorIPAddressSpace'] = self.initiator_ip_address_space.to_json()
-        json['privateNetworkRequestPolicy'] = self.private_network_request_policy.to_json()
+        json['localNetworkAccessRequestPolicy'] = self.local_network_access_request_policy.to_json()
         return json
 
     @classmethod
@@ -2332,7 +2315,7 @@ class ClientSecurityState:
         return cls(
             initiator_is_secure_context=bool(json['initiatorIsSecureContext']),
             initiator_ip_address_space=IPAddressSpace.from_json(json['initiatorIPAddressSpace']),
-            private_network_request_policy=PrivateNetworkRequestPolicy.from_json(json['privateNetworkRequestPolicy']),
+            local_network_access_request_policy=LocalNetworkAccessRequestPolicy.from_json(json['localNetworkAccessRequestPolicy']),
         )
 
 
@@ -2598,6 +2581,475 @@ class ReportingApiEndpoint:
 
 
 @dataclass
+class DeviceBoundSessionKey:
+    '''
+    Unique identifier for a device bound session.
+    '''
+    #: The site the session is set up for.
+    site: str
+
+    #: The id of the session.
+    id_: str
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['site'] = self.site
+        json['id'] = self.id_
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> DeviceBoundSessionKey:
+        return cls(
+            site=str(json['site']),
+            id_=str(json['id']),
+        )
+
+
+@dataclass
+class DeviceBoundSessionWithUsage:
+    '''
+    How a device bound session was used during a request.
+    '''
+    #: The key for the session.
+    session_key: DeviceBoundSessionKey
+
+    #: How the session was used (or not used).
+    usage: str
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['sessionKey'] = self.session_key.to_json()
+        json['usage'] = self.usage
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> DeviceBoundSessionWithUsage:
+        return cls(
+            session_key=DeviceBoundSessionKey.from_json(json['sessionKey']),
+            usage=str(json['usage']),
+        )
+
+
+@dataclass
+class DeviceBoundSessionCookieCraving:
+    '''
+    A device bound session's cookie craving.
+    '''
+    #: The name of the craving.
+    name: str
+
+    #: The domain of the craving.
+    domain: str
+
+    #: The path of the craving.
+    path: str
+
+    #: The ``Secure`` attribute of the craving attributes.
+    secure: bool
+
+    #: The ``HttpOnly`` attribute of the craving attributes.
+    http_only: bool
+
+    #: The ``SameSite`` attribute of the craving attributes.
+    same_site: typing.Optional[CookieSameSite] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['name'] = self.name
+        json['domain'] = self.domain
+        json['path'] = self.path
+        json['secure'] = self.secure
+        json['httpOnly'] = self.http_only
+        if self.same_site is not None:
+            json['sameSite'] = self.same_site.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> DeviceBoundSessionCookieCraving:
+        return cls(
+            name=str(json['name']),
+            domain=str(json['domain']),
+            path=str(json['path']),
+            secure=bool(json['secure']),
+            http_only=bool(json['httpOnly']),
+            same_site=CookieSameSite.from_json(json['sameSite']) if json.get('sameSite', None) is not None else None,
+        )
+
+
+@dataclass
+class DeviceBoundSessionUrlRule:
+    '''
+    A device bound session's inclusion URL rule.
+    '''
+    #: See comments on ``net::device_bound_sessions::SessionInclusionRules::UrlRule::rule_type``.
+    rule_type: str
+
+    #: See comments on ``net::device_bound_sessions::SessionInclusionRules::UrlRule::host_pattern``.
+    host_pattern: str
+
+    #: See comments on ``net::device_bound_sessions::SessionInclusionRules::UrlRule::path_prefix``.
+    path_prefix: str
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['ruleType'] = self.rule_type
+        json['hostPattern'] = self.host_pattern
+        json['pathPrefix'] = self.path_prefix
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> DeviceBoundSessionUrlRule:
+        return cls(
+            rule_type=str(json['ruleType']),
+            host_pattern=str(json['hostPattern']),
+            path_prefix=str(json['pathPrefix']),
+        )
+
+
+@dataclass
+class DeviceBoundSessionInclusionRules:
+    '''
+    A device bound session's inclusion rules.
+    '''
+    #: See comments on ``net::device_bound_sessions::SessionInclusionRules::origin_``.
+    origin: str
+
+    #: Whether the whole site is included. See comments on
+    #: ``net::device_bound_sessions::SessionInclusionRules::include_site_`` for more
+    #: details; this boolean is true if that value is populated.
+    include_site: bool
+
+    #: See comments on ``net::device_bound_sessions::SessionInclusionRules::url_rules_``.
+    url_rules: typing.List[DeviceBoundSessionUrlRule]
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['origin'] = self.origin
+        json['includeSite'] = self.include_site
+        json['urlRules'] = [i.to_json() for i in self.url_rules]
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> DeviceBoundSessionInclusionRules:
+        return cls(
+            origin=str(json['origin']),
+            include_site=bool(json['includeSite']),
+            url_rules=[DeviceBoundSessionUrlRule.from_json(i) for i in json['urlRules']],
+        )
+
+
+@dataclass
+class DeviceBoundSession:
+    '''
+    A device bound session.
+    '''
+    #: The site and session ID of the session.
+    key: DeviceBoundSessionKey
+
+    #: See comments on ``net::device_bound_sessions::Session::refresh_url_``.
+    refresh_url: str
+
+    #: See comments on ``net::device_bound_sessions::Session::inclusion_rules_``.
+    inclusion_rules: DeviceBoundSessionInclusionRules
+
+    #: See comments on ``net::device_bound_sessions::Session::cookie_cravings_``.
+    cookie_cravings: typing.List[DeviceBoundSessionCookieCraving]
+
+    #: See comments on ``net::device_bound_sessions::Session::expiry_date_``.
+    expiry_date: TimeSinceEpoch
+
+    #: See comments on ``net::device_bound_sessions::Session::allowed_refresh_initiators_``.
+    allowed_refresh_initiators: typing.List[str]
+
+    #: See comments on ``net::device_bound_sessions::Session::cached_challenge__``.
+    cached_challenge: typing.Optional[str] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['key'] = self.key.to_json()
+        json['refreshUrl'] = self.refresh_url
+        json['inclusionRules'] = self.inclusion_rules.to_json()
+        json['cookieCravings'] = [i.to_json() for i in self.cookie_cravings]
+        json['expiryDate'] = self.expiry_date.to_json()
+        json['allowedRefreshInitiators'] = [i for i in self.allowed_refresh_initiators]
+        if self.cached_challenge is not None:
+            json['cachedChallenge'] = self.cached_challenge
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> DeviceBoundSession:
+        return cls(
+            key=DeviceBoundSessionKey.from_json(json['key']),
+            refresh_url=str(json['refreshUrl']),
+            inclusion_rules=DeviceBoundSessionInclusionRules.from_json(json['inclusionRules']),
+            cookie_cravings=[DeviceBoundSessionCookieCraving.from_json(i) for i in json['cookieCravings']],
+            expiry_date=TimeSinceEpoch.from_json(json['expiryDate']),
+            allowed_refresh_initiators=[str(i) for i in json['allowedRefreshInitiators']],
+            cached_challenge=str(json['cachedChallenge']) if json.get('cachedChallenge', None) is not None else None,
+        )
+
+
+class DeviceBoundSessionEventId(str):
+    '''
+    A unique identifier for a device bound session event.
+    '''
+    def to_json(self) -> str:
+        return self
+
+    @classmethod
+    def from_json(cls, json: str) -> DeviceBoundSessionEventId:
+        return cls(json)
+
+    def __repr__(self):
+        return 'DeviceBoundSessionEventId({})'.format(super().__repr__())
+
+
+class DeviceBoundSessionFetchResult(enum.Enum):
+    '''
+    A fetch result for a device bound session creation or refresh.
+    '''
+    SUCCESS = "Success"
+    KEY_ERROR = "KeyError"
+    SIGNING_ERROR = "SigningError"
+    SERVER_REQUESTED_TERMINATION = "ServerRequestedTermination"
+    INVALID_SESSION_ID = "InvalidSessionId"
+    INVALID_CHALLENGE = "InvalidChallenge"
+    TOO_MANY_CHALLENGES = "TooManyChallenges"
+    INVALID_FETCHER_URL = "InvalidFetcherUrl"
+    INVALID_REFRESH_URL = "InvalidRefreshUrl"
+    TRANSIENT_HTTP_ERROR = "TransientHttpError"
+    SCOPE_ORIGIN_SAME_SITE_MISMATCH = "ScopeOriginSameSiteMismatch"
+    REFRESH_URL_SAME_SITE_MISMATCH = "RefreshUrlSameSiteMismatch"
+    MISMATCHED_SESSION_ID = "MismatchedSessionId"
+    MISSING_SCOPE = "MissingScope"
+    NO_CREDENTIALS = "NoCredentials"
+    SUBDOMAIN_REGISTRATION_WELL_KNOWN_UNAVAILABLE = "SubdomainRegistrationWellKnownUnavailable"
+    SUBDOMAIN_REGISTRATION_UNAUTHORIZED = "SubdomainRegistrationUnauthorized"
+    SUBDOMAIN_REGISTRATION_WELL_KNOWN_MALFORMED = "SubdomainRegistrationWellKnownMalformed"
+    SESSION_PROVIDER_WELL_KNOWN_UNAVAILABLE = "SessionProviderWellKnownUnavailable"
+    RELYING_PARTY_WELL_KNOWN_UNAVAILABLE = "RelyingPartyWellKnownUnavailable"
+    FEDERATED_KEY_THUMBPRINT_MISMATCH = "FederatedKeyThumbprintMismatch"
+    INVALID_FEDERATED_SESSION_URL = "InvalidFederatedSessionUrl"
+    INVALID_FEDERATED_KEY = "InvalidFederatedKey"
+    TOO_MANY_RELYING_ORIGIN_LABELS = "TooManyRelyingOriginLabels"
+    BOUND_COOKIE_SET_FORBIDDEN = "BoundCookieSetForbidden"
+    NET_ERROR = "NetError"
+    PROXY_ERROR = "ProxyError"
+    EMPTY_SESSION_CONFIG = "EmptySessionConfig"
+    INVALID_CREDENTIALS_CONFIG = "InvalidCredentialsConfig"
+    INVALID_CREDENTIALS_TYPE = "InvalidCredentialsType"
+    INVALID_CREDENTIALS_EMPTY_NAME = "InvalidCredentialsEmptyName"
+    INVALID_CREDENTIALS_COOKIE = "InvalidCredentialsCookie"
+    PERSISTENT_HTTP_ERROR = "PersistentHttpError"
+    REGISTRATION_ATTEMPTED_CHALLENGE = "RegistrationAttemptedChallenge"
+    INVALID_SCOPE_ORIGIN = "InvalidScopeOrigin"
+    SCOPE_ORIGIN_CONTAINS_PATH = "ScopeOriginContainsPath"
+    REFRESH_INITIATOR_NOT_STRING = "RefreshInitiatorNotString"
+    REFRESH_INITIATOR_INVALID_HOST_PATTERN = "RefreshInitiatorInvalidHostPattern"
+    INVALID_SCOPE_SPECIFICATION = "InvalidScopeSpecification"
+    MISSING_SCOPE_SPECIFICATION_TYPE = "MissingScopeSpecificationType"
+    EMPTY_SCOPE_SPECIFICATION_DOMAIN = "EmptyScopeSpecificationDomain"
+    EMPTY_SCOPE_SPECIFICATION_PATH = "EmptyScopeSpecificationPath"
+    INVALID_SCOPE_SPECIFICATION_TYPE = "InvalidScopeSpecificationType"
+    INVALID_SCOPE_INCLUDE_SITE = "InvalidScopeIncludeSite"
+    MISSING_SCOPE_INCLUDE_SITE = "MissingScopeIncludeSite"
+    FEDERATED_NOT_AUTHORIZED_BY_PROVIDER = "FederatedNotAuthorizedByProvider"
+    FEDERATED_NOT_AUTHORIZED_BY_RELYING_PARTY = "FederatedNotAuthorizedByRelyingParty"
+    SESSION_PROVIDER_WELL_KNOWN_MALFORMED = "SessionProviderWellKnownMalformed"
+    SESSION_PROVIDER_WELL_KNOWN_HAS_PROVIDER_ORIGIN = "SessionProviderWellKnownHasProviderOrigin"
+    RELYING_PARTY_WELL_KNOWN_MALFORMED = "RelyingPartyWellKnownMalformed"
+    RELYING_PARTY_WELL_KNOWN_HAS_RELYING_ORIGINS = "RelyingPartyWellKnownHasRelyingOrigins"
+    INVALID_FEDERATED_SESSION_PROVIDER_SESSION_MISSING = "InvalidFederatedSessionProviderSessionMissing"
+    INVALID_FEDERATED_SESSION_WRONG_PROVIDER_ORIGIN = "InvalidFederatedSessionWrongProviderOrigin"
+    INVALID_CREDENTIALS_COOKIE_CREATION_TIME = "InvalidCredentialsCookieCreationTime"
+    INVALID_CREDENTIALS_COOKIE_NAME = "InvalidCredentialsCookieName"
+    INVALID_CREDENTIALS_COOKIE_PARSING = "InvalidCredentialsCookieParsing"
+    INVALID_CREDENTIALS_COOKIE_UNPERMITTED_ATTRIBUTE = "InvalidCredentialsCookieUnpermittedAttribute"
+    INVALID_CREDENTIALS_COOKIE_INVALID_DOMAIN = "InvalidCredentialsCookieInvalidDomain"
+    INVALID_CREDENTIALS_COOKIE_PREFIX = "InvalidCredentialsCookiePrefix"
+    INVALID_SCOPE_RULE_PATH = "InvalidScopeRulePath"
+    INVALID_SCOPE_RULE_HOST_PATTERN = "InvalidScopeRuleHostPattern"
+    SCOPE_RULE_ORIGIN_SCOPED_HOST_PATTERN_MISMATCH = "ScopeRuleOriginScopedHostPatternMismatch"
+    SCOPE_RULE_SITE_SCOPED_HOST_PATTERN_MISMATCH = "ScopeRuleSiteScopedHostPatternMismatch"
+    SIGNING_QUOTA_EXCEEDED = "SigningQuotaExceeded"
+    INVALID_CONFIG_JSON = "InvalidConfigJson"
+    INVALID_FEDERATED_SESSION_PROVIDER_FAILED_TO_RESTORE_KEY = "InvalidFederatedSessionProviderFailedToRestoreKey"
+    FAILED_TO_UNWRAP_KEY = "FailedToUnwrapKey"
+    SESSION_DELETED_DURING_REFRESH = "SessionDeletedDuringRefresh"
+
+    def to_json(self) -> str:
+        return self.value
+
+    @classmethod
+    def from_json(cls, json: str) -> DeviceBoundSessionFetchResult:
+        return cls(json)
+
+
+@dataclass
+class DeviceBoundSessionFailedRequest:
+    '''
+    Details about a failed device bound session network request.
+    '''
+    #: The failed request URL.
+    request_url: str
+
+    #: The net error of the response if it was not OK.
+    net_error: typing.Optional[str] = None
+
+    #: The response code if the net error was OK and the response code was not
+    #: 200.
+    response_error: typing.Optional[int] = None
+
+    #: The body of the response if the net error was OK, the response code was
+    #: not 200, and the response body was not empty.
+    response_error_body: typing.Optional[str] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['requestUrl'] = self.request_url
+        if self.net_error is not None:
+            json['netError'] = self.net_error
+        if self.response_error is not None:
+            json['responseError'] = self.response_error
+        if self.response_error_body is not None:
+            json['responseErrorBody'] = self.response_error_body
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> DeviceBoundSessionFailedRequest:
+        return cls(
+            request_url=str(json['requestUrl']),
+            net_error=str(json['netError']) if json.get('netError', None) is not None else None,
+            response_error=int(json['responseError']) if json.get('responseError', None) is not None else None,
+            response_error_body=str(json['responseErrorBody']) if json.get('responseErrorBody', None) is not None else None,
+        )
+
+
+@dataclass
+class CreationEventDetails:
+    '''
+    Session event details specific to creation.
+    '''
+    #: The result of the fetch attempt.
+    fetch_result: DeviceBoundSessionFetchResult
+
+    #: The session if there was a newly created session. This is populated for
+    #: all successful creation events.
+    new_session: typing.Optional[DeviceBoundSession] = None
+
+    #: Details about a failed device bound session network request if there was
+    #: one.
+    failed_request: typing.Optional[DeviceBoundSessionFailedRequest] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['fetchResult'] = self.fetch_result.to_json()
+        if self.new_session is not None:
+            json['newSession'] = self.new_session.to_json()
+        if self.failed_request is not None:
+            json['failedRequest'] = self.failed_request.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> CreationEventDetails:
+        return cls(
+            fetch_result=DeviceBoundSessionFetchResult.from_json(json['fetchResult']),
+            new_session=DeviceBoundSession.from_json(json['newSession']) if json.get('newSession', None) is not None else None,
+            failed_request=DeviceBoundSessionFailedRequest.from_json(json['failedRequest']) if json.get('failedRequest', None) is not None else None,
+        )
+
+
+@dataclass
+class RefreshEventDetails:
+    '''
+    Session event details specific to refresh.
+    '''
+    #: The result of a refresh.
+    refresh_result: str
+
+    #: See comments on ``net::device_bound_sessions::RefreshEventResult::was_fully_proactive_refresh``.
+    was_fully_proactive_refresh: bool
+
+    #: If there was a fetch attempt, the result of that.
+    fetch_result: typing.Optional[DeviceBoundSessionFetchResult] = None
+
+    #: The session display if there was a newly created session. This is populated
+    #: for any refresh event that modifies the session config.
+    new_session: typing.Optional[DeviceBoundSession] = None
+
+    #: Details about a failed device bound session network request if there was
+    #: one.
+    failed_request: typing.Optional[DeviceBoundSessionFailedRequest] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['refreshResult'] = self.refresh_result
+        json['wasFullyProactiveRefresh'] = self.was_fully_proactive_refresh
+        if self.fetch_result is not None:
+            json['fetchResult'] = self.fetch_result.to_json()
+        if self.new_session is not None:
+            json['newSession'] = self.new_session.to_json()
+        if self.failed_request is not None:
+            json['failedRequest'] = self.failed_request.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> RefreshEventDetails:
+        return cls(
+            refresh_result=str(json['refreshResult']),
+            was_fully_proactive_refresh=bool(json['wasFullyProactiveRefresh']),
+            fetch_result=DeviceBoundSessionFetchResult.from_json(json['fetchResult']) if json.get('fetchResult', None) is not None else None,
+            new_session=DeviceBoundSession.from_json(json['newSession']) if json.get('newSession', None) is not None else None,
+            failed_request=DeviceBoundSessionFailedRequest.from_json(json['failedRequest']) if json.get('failedRequest', None) is not None else None,
+        )
+
+
+@dataclass
+class TerminationEventDetails:
+    '''
+    Session event details specific to termination.
+    '''
+    #: The reason for a session being deleted.
+    deletion_reason: str
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['deletionReason'] = self.deletion_reason
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> TerminationEventDetails:
+        return cls(
+            deletion_reason=str(json['deletionReason']),
+        )
+
+
+@dataclass
+class ChallengeEventDetails:
+    '''
+    Session event details specific to challenges.
+    '''
+    #: The result of a challenge.
+    challenge_result: str
+
+    #: The challenge set.
+    challenge: str
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['challengeResult'] = self.challenge_result
+        json['challenge'] = self.challenge
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> ChallengeEventDetails:
+        return cls(
+            challenge_result=str(json['challengeResult']),
+            challenge=str(json['challenge']),
+        )
+
+
+@dataclass
 class LoadNetworkResourcePageResult:
     '''
     An object providing the result of a network resource load.
@@ -2666,41 +3118,6 @@ class LoadNetworkResourceOptions:
             disable_cache=bool(json['disableCache']),
             include_credentials=bool(json['includeCredentials']),
         )
-
-
-def get_ip_protection_proxy_status() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,IpProxyStatus]:
-    '''
-    Returns enum representing if IP Proxy of requests is available
-    or reason it is not active.
-
-    **EXPERIMENTAL**
-
-    :returns: Whether IP proxy is available
-    '''
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Network.getIPProtectionProxyStatus',
-    }
-    json = yield cmd_dict
-    return IpProxyStatus.from_json(json['status'])
-
-
-def set_ip_protection_proxy_bypass_enabled(
-        enabled: bool
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-    '''
-    Sets bypass IP Protection Proxy boolean.
-
-    **EXPERIMENTAL**
-
-    :param enabled: Whether IP Proxy is being bypassed by devtools; false by default.
-    '''
-    params: T_JSON_DICT = dict()
-    params['enabled'] = enabled
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Network.setIPProtectionProxyBypassEnabled',
-        'params': params,
-    }
-    json = yield cmd_dict
 
 
 def set_accepted_encodings(
@@ -3013,11 +3430,11 @@ def enable(
     '''
     Enables network tracking, network events will now be delivered to the client.
 
-    :param max_total_buffer_size: **(EXPERIMENTAL)** *(Optional)* Buffer size in bytes to use when preserving network payloads (XHRs, etc).
+    :param max_total_buffer_size: **(EXPERIMENTAL)** *(Optional)* Buffer size in bytes to use when preserving network payloads (XHRs, etc). This is the maximum number of bytes that will be collected by this DevTools session.
     :param max_resource_buffer_size: **(EXPERIMENTAL)** *(Optional)* Per-resource buffer size in bytes to use when preserving network payloads (XHRs, etc).
     :param max_post_data_size: *(Optional)* Longest post body size (in bytes) that would be included in requestWillBeSent notification
     :param report_direct_socket_traffic: **(EXPERIMENTAL)** *(Optional)* Whether DirectSocket chunk send/receive events should be reported.
-    :param enable_durable_messages: **(EXPERIMENTAL)** *(Optional)* Enable storing response bodies outside of renderer, so that these survive a cross-process navigation. Requires maxTotalBufferSize to be set. Currently defaults to false.
+    :param enable_durable_messages: **(EXPERIMENTAL)** *(Optional)* Enable storing response bodies outside of renderer, so that these survive a cross-process navigation. Requires maxTotalBufferSize to be set. Currently defaults to false. This field is being deprecated in favor of the dedicated configureDurableMessages command, due to the possibility of deadlocks when awaiting Network.enable before issuing Runtime.runIfWaitingForDebugger.
     '''
     params: T_JSON_DICT = dict()
     if max_total_buffer_size is not None:
@@ -3032,6 +3449,32 @@ def enable(
         params['enableDurableMessages'] = enable_durable_messages
     cmd_dict: T_JSON_DICT = {
         'method': 'Network.enable',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
+def configure_durable_messages(
+        max_total_buffer_size: typing.Optional[int] = None,
+        max_resource_buffer_size: typing.Optional[int] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Configures storing response bodies outside of renderer, so that these survive
+    a cross-process navigation.
+    If maxTotalBufferSize is not set, durable messages are disabled.
+
+    **EXPERIMENTAL**
+
+    :param max_total_buffer_size: *(Optional)* Buffer size in bytes to use when preserving network payloads (XHRs, etc).
+    :param max_resource_buffer_size: *(Optional)* Per-resource buffer size in bytes to use when preserving network payloads (XHRs, etc).
+    '''
+    params: T_JSON_DICT = dict()
+    if max_total_buffer_size is not None:
+        params['maxTotalBufferSize'] = max_total_buffer_size
+    if max_resource_buffer_size is not None:
+        params['maxResourceBufferSize'] = max_resource_buffer_size
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Network.configureDurableMessages',
         'params': params,
     }
     json = yield cmd_dict
@@ -3124,12 +3567,15 @@ def get_response_body(
 
 def get_request_post_data(
         request_id: RequestId
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,str]:
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[str, bool]]:
     '''
     Returns post data sent with the request. Returns an error when no data was sent with the request.
 
     :param request_id: Identifier of the network request to get content for.
-    :returns: Request body string, omitting files from multipart requests
+    :returns: A tuple with the following items:
+
+        0. **postData** - Request body string, omitting files from multipart requests
+        1. **base64Encoded** - True, if content was sent as base64.
     '''
     params: T_JSON_DICT = dict()
     params['requestId'] = request_id.to_json()
@@ -3138,7 +3584,10 @@ def get_request_post_data(
         'params': params,
     }
     json = yield cmd_dict
-    return str(json['postData'])
+    return (
+        str(json['postData']),
+        bool(json['base64Encoded'])
+    )
 
 
 def get_response_body_for_interception(
@@ -3314,7 +3763,6 @@ def set_cookie(
         same_site: typing.Optional[CookieSameSite] = None,
         expires: typing.Optional[TimeSinceEpoch] = None,
         priority: typing.Optional[CookiePriority] = None,
-        same_party: typing.Optional[bool] = None,
         source_scheme: typing.Optional[CookieSourceScheme] = None,
         source_port: typing.Optional[int] = None,
         partition_key: typing.Optional[CookiePartitionKey] = None
@@ -3332,7 +3780,6 @@ def set_cookie(
     :param same_site: *(Optional)* Cookie SameSite type.
     :param expires: *(Optional)* Cookie expiration date, session cookie if not set
     :param priority: **(EXPERIMENTAL)** *(Optional)* Cookie Priority type.
-    :param same_party: **(EXPERIMENTAL)** *(Optional)* True if cookie is SameParty.
     :param source_scheme: **(EXPERIMENTAL)** *(Optional)* Cookie source scheme type.
     :param source_port: **(EXPERIMENTAL)** *(Optional)* Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port. An unspecified port value allows protocol clients to emulate legacy cookie scope for the port. This is a temporary ability and it will be removed in the future.
     :param partition_key: **(EXPERIMENTAL)** *(Optional)* Cookie partition key. If not set, the cookie will be set as not partitioned.
@@ -3357,8 +3804,6 @@ def set_cookie(
         params['expires'] = expires.to_json()
     if priority is not None:
         params['priority'] = priority.to_json()
-    if same_party is not None:
-        params['sameParty'] = same_party
     if source_scheme is not None:
         params['sourceScheme'] = source_scheme.to_json()
     if source_port is not None:
@@ -3540,6 +3985,46 @@ def enable_reporting_api(
         'params': params,
     }
     json = yield cmd_dict
+
+
+def enable_device_bound_sessions(
+        enable: bool
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Sets up tracking device bound sessions and fetching of initial set of sessions.
+
+    **EXPERIMENTAL**
+
+    :param enable: Whether to enable or disable events.
+    '''
+    params: T_JSON_DICT = dict()
+    params['enable'] = enable
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Network.enableDeviceBoundSessions',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
+def fetch_schemeful_site(
+        origin: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,str]:
+    '''
+    Fetches the schemeful site for a specific origin.
+
+    **EXPERIMENTAL**
+
+    :param origin: The URL origin.
+    :returns: The corresponding schemeful site.
+    '''
+    params: T_JSON_DICT = dict()
+    params['origin'] = origin
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Network.fetchSchemefulSite',
+        'params': params,
+    }
+    json = yield cmd_dict
+    return str(json['schemefulSite'])
 
 
 def load_network_resource(
@@ -3817,6 +4302,8 @@ class RequestWillBeSent:
     frame_id: typing.Optional[page.FrameId]
     #: Whether the request is initiated by a user gesture. Defaults to false.
     has_user_gesture: typing.Optional[bool]
+    #: The render-blocking behavior of the request.
+    render_blocking_behavior: typing.Optional[RenderBlockingBehavior]
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> RequestWillBeSent:
@@ -3832,7 +4319,8 @@ class RequestWillBeSent:
             redirect_response=Response.from_json(json['redirectResponse']) if json.get('redirectResponse', None) is not None else None,
             type_=ResourceType.from_json(json['type']) if json.get('type', None) is not None else None,
             frame_id=page.FrameId.from_json(json['frameId']) if json.get('frameId', None) is not None else None,
-            has_user_gesture=bool(json['hasUserGesture']) if json.get('hasUserGesture', None) is not None else None
+            has_user_gesture=bool(json['hasUserGesture']) if json.get('hasUserGesture', None) is not None else None,
+            render_blocking_behavior=RenderBlockingBehavior.from_json(json['renderBlockingBehavior']) if json.get('renderBlockingBehavior', None) is not None else None
         )
 
 
@@ -4272,6 +4760,44 @@ class DirectTCPSocketChunkReceived:
         )
 
 
+@event_class('Network.directUDPSocketJoinedMulticastGroup')
+@dataclass
+class DirectUDPSocketJoinedMulticastGroup:
+    '''
+    **EXPERIMENTAL**
+
+
+    '''
+    identifier: RequestId
+    ip_address: str
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> DirectUDPSocketJoinedMulticastGroup:
+        return cls(
+            identifier=RequestId.from_json(json['identifier']),
+            ip_address=str(json['IPAddress'])
+        )
+
+
+@event_class('Network.directUDPSocketLeftMulticastGroup')
+@dataclass
+class DirectUDPSocketLeftMulticastGroup:
+    '''
+    **EXPERIMENTAL**
+
+
+    '''
+    identifier: RequestId
+    ip_address: str
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> DirectUDPSocketLeftMulticastGroup:
+        return cls(
+            identifier=RequestId.from_json(json['identifier']),
+            ip_address=str(json['IPAddress'])
+        )
+
+
 @event_class('Network.directUDPSocketCreated')
 @dataclass
 class DirectUDPSocketCreated:
@@ -4426,6 +4952,8 @@ class RequestWillBeSentExtraInfo:
     headers: Headers
     #: Connection timing information for the request.
     connect_timing: ConnectTiming
+    #: How the request site's device bound sessions were used during this request.
+    device_bound_session_usages: typing.Optional[typing.List[DeviceBoundSessionWithUsage]]
     #: The client security state set for the request.
     client_security_state: typing.Optional[ClientSecurityState]
     #: Whether the site has partitioned cookies stored in a partition different than the current one.
@@ -4441,6 +4969,7 @@ class RequestWillBeSentExtraInfo:
             associated_cookies=[AssociatedCookie.from_json(i) for i in json['associatedCookies']],
             headers=Headers.from_json(json['headers']),
             connect_timing=ConnectTiming.from_json(json['connectTiming']),
+            device_bound_session_usages=[DeviceBoundSessionWithUsage.from_json(i) for i in json['deviceBoundSessionUsages']] if json.get('deviceBoundSessionUsages', None) is not None else None,
             client_security_state=ClientSecurityState.from_json(json['clientSecurityState']) if json.get('clientSecurityState', None) is not None else None,
             site_has_cookie_in_other_partition=bool(json['siteHasCookieInOtherPartition']) if json.get('siteHasCookieInOtherPartition', None) is not None else None,
             applied_network_conditions_id=str(json['appliedNetworkConditionsId']) if json.get('appliedNetworkConditionsId', None) is not None else None
@@ -4582,105 +5111,6 @@ class PolicyUpdated:
         )
 
 
-@event_class('Network.subresourceWebBundleMetadataReceived')
-@dataclass
-class SubresourceWebBundleMetadataReceived:
-    '''
-    **EXPERIMENTAL**
-
-    Fired once when parsing the .wbn file has succeeded.
-    The event contains the information about the web bundle contents.
-    '''
-    #: Request identifier. Used to match this information to another event.
-    request_id: RequestId
-    #: A list of URLs of resources in the subresource Web Bundle.
-    urls: typing.List[str]
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> SubresourceWebBundleMetadataReceived:
-        return cls(
-            request_id=RequestId.from_json(json['requestId']),
-            urls=[str(i) for i in json['urls']]
-        )
-
-
-@event_class('Network.subresourceWebBundleMetadataError')
-@dataclass
-class SubresourceWebBundleMetadataError:
-    '''
-    **EXPERIMENTAL**
-
-    Fired once when parsing the .wbn file has failed.
-    '''
-    #: Request identifier. Used to match this information to another event.
-    request_id: RequestId
-    #: Error message
-    error_message: str
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> SubresourceWebBundleMetadataError:
-        return cls(
-            request_id=RequestId.from_json(json['requestId']),
-            error_message=str(json['errorMessage'])
-        )
-
-
-@event_class('Network.subresourceWebBundleInnerResponseParsed')
-@dataclass
-class SubresourceWebBundleInnerResponseParsed:
-    '''
-    **EXPERIMENTAL**
-
-    Fired when handling requests for resources within a .wbn file.
-    Note: this will only be fired for resources that are requested by the webpage.
-    '''
-    #: Request identifier of the subresource request
-    inner_request_id: RequestId
-    #: URL of the subresource resource.
-    inner_request_url: str
-    #: Bundle request identifier. Used to match this information to another event.
-    #: This made be absent in case when the instrumentation was enabled only
-    #: after webbundle was parsed.
-    bundle_request_id: typing.Optional[RequestId]
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> SubresourceWebBundleInnerResponseParsed:
-        return cls(
-            inner_request_id=RequestId.from_json(json['innerRequestId']),
-            inner_request_url=str(json['innerRequestURL']),
-            bundle_request_id=RequestId.from_json(json['bundleRequestId']) if json.get('bundleRequestId', None) is not None else None
-        )
-
-
-@event_class('Network.subresourceWebBundleInnerResponseError')
-@dataclass
-class SubresourceWebBundleInnerResponseError:
-    '''
-    **EXPERIMENTAL**
-
-    Fired when request for resources within a .wbn file failed.
-    '''
-    #: Request identifier of the subresource request
-    inner_request_id: RequestId
-    #: URL of the subresource resource.
-    inner_request_url: str
-    #: Error message
-    error_message: str
-    #: Bundle request identifier. Used to match this information to another event.
-    #: This made be absent in case when the instrumentation was enabled only
-    #: after webbundle was parsed.
-    bundle_request_id: typing.Optional[RequestId]
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> SubresourceWebBundleInnerResponseError:
-        return cls(
-            inner_request_id=RequestId.from_json(json['innerRequestId']),
-            inner_request_url=str(json['innerRequestURL']),
-            error_message=str(json['errorMessage']),
-            bundle_request_id=RequestId.from_json(json['bundleRequestId']) if json.get('bundleRequestId', None) is not None else None
-        )
-
-
 @event_class('Network.reportingApiReportAdded')
 @dataclass
 class ReportingApiReportAdded:
@@ -4733,4 +5163,59 @@ class ReportingApiEndpointsChangedForOrigin:
         return cls(
             origin=str(json['origin']),
             endpoints=[ReportingApiEndpoint.from_json(i) for i in json['endpoints']]
+        )
+
+
+@event_class('Network.deviceBoundSessionsAdded')
+@dataclass
+class DeviceBoundSessionsAdded:
+    '''
+    **EXPERIMENTAL**
+
+    Triggered when the initial set of device bound sessions is added.
+    '''
+    #: The device bound sessions.
+    sessions: typing.List[DeviceBoundSession]
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> DeviceBoundSessionsAdded:
+        return cls(
+            sessions=[DeviceBoundSession.from_json(i) for i in json['sessions']]
+        )
+
+
+@event_class('Network.deviceBoundSessionEventOccurred')
+@dataclass
+class DeviceBoundSessionEventOccurred:
+    '''
+    **EXPERIMENTAL**
+
+    Triggered when a device bound session event occurs.
+    '''
+    #: A unique identifier for this session event.
+    event_id: DeviceBoundSessionEventId
+    #: The site this session event is associated with.
+    site: str
+    #: Whether this event was considered successful.
+    succeeded: bool
+    #: The session ID this event is associated with. May not be populated for
+    #: failed events.
+    session_id: typing.Optional[str]
+    #: The below are the different session event type details. Exactly one is populated.
+    creation_event_details: typing.Optional[CreationEventDetails]
+    refresh_event_details: typing.Optional[RefreshEventDetails]
+    termination_event_details: typing.Optional[TerminationEventDetails]
+    challenge_event_details: typing.Optional[ChallengeEventDetails]
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> DeviceBoundSessionEventOccurred:
+        return cls(
+            event_id=DeviceBoundSessionEventId.from_json(json['eventId']),
+            site=str(json['site']),
+            succeeded=bool(json['succeeded']),
+            session_id=str(json['sessionId']) if json.get('sessionId', None) is not None else None,
+            creation_event_details=CreationEventDetails.from_json(json['creationEventDetails']) if json.get('creationEventDetails', None) is not None else None,
+            refresh_event_details=RefreshEventDetails.from_json(json['refreshEventDetails']) if json.get('refreshEventDetails', None) is not None else None,
+            termination_event_details=TerminationEventDetails.from_json(json['terminationEventDetails']) if json.get('terminationEventDetails', None) is not None else None,
+            challenge_event_details=ChallengeEventDetails.from_json(json['challengeEventDetails']) if json.get('challengeEventDetails', None) is not None else None
         )

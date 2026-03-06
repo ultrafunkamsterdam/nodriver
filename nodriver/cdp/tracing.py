@@ -190,6 +190,21 @@ def get_categories() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[str
     return [str(i) for i in json['categories']]
 
 
+def get_track_event_descriptor() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,str]:
+    '''
+    Return a descriptor for all available tracing categories.
+
+    **EXPERIMENTAL**
+
+    :returns: Base64-encoded serialized perfetto.protos.TrackEventDescriptor protobuf message. (Encoded as a base64 string when passed over JSON)
+    '''
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Tracing.getTrackEventDescriptor',
+    }
+    json = yield cmd_dict
+    return str(json['descriptor'])
+
+
 def record_clock_sync_marker(
         sync_id: str
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:

@@ -762,6 +762,30 @@ class InspectMode(enum.Enum):
         return cls(json)
 
 
+@dataclass
+class InspectedElementAnchorConfig:
+    #: Identifier of the node to highlight.
+    node_id: typing.Optional[dom.NodeId] = None
+
+    #: Identifier of the backend node to highlight.
+    backend_node_id: typing.Optional[dom.BackendNodeId] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        if self.node_id is not None:
+            json['nodeId'] = self.node_id.to_json()
+        if self.backend_node_id is not None:
+            json['backendNodeId'] = self.backend_node_id.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> InspectedElementAnchorConfig:
+        return cls(
+            node_id=dom.NodeId.from_json(json['nodeId']) if json.get('nodeId', None) is not None else None,
+            backend_node_id=dom.BackendNodeId.from_json(json['backendNodeId']) if json.get('backendNodeId', None) is not None else None,
+        )
+
+
 def disable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
     Disables domain notifications.
@@ -1173,6 +1197,21 @@ def set_show_container_query_overlays(
     json = yield cmd_dict
 
 
+def set_show_inspected_element_anchor(
+        inspected_element_anchor_config: InspectedElementAnchorConfig
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    :param inspected_element_anchor_config: Node identifier for which to show an anchor for.
+    '''
+    params: T_JSON_DICT = dict()
+    params['inspectedElementAnchorConfig'] = inspected_element_anchor_config.to_json()
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Overlay.setShowInspectedElementAnchor',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
 def set_show_paint_rects(
         result: bool
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
@@ -1379,6 +1418,38 @@ class ScreenshotRequested:
     def from_json(cls, json: T_JSON_DICT) -> ScreenshotRequested:
         return cls(
             viewport=page.Viewport.from_json(json['viewport'])
+        )
+
+
+@event_class('Overlay.inspectPanelShowRequested')
+@dataclass
+class InspectPanelShowRequested:
+    '''
+    Fired when user asks to show the Inspect panel.
+    '''
+    #: Id of the node to show in the panel.
+    backend_node_id: dom.BackendNodeId
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> InspectPanelShowRequested:
+        return cls(
+            backend_node_id=dom.BackendNodeId.from_json(json['backendNodeId'])
+        )
+
+
+@event_class('Overlay.inspectedElementWindowRestored')
+@dataclass
+class InspectedElementWindowRestored:
+    '''
+    Fired when user asks to restore the Inspected Element floating window.
+    '''
+    #: Id of the node to restore the floating window for.
+    backend_node_id: dom.BackendNodeId
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> InspectedElementWindowRestored:
+        return cls(
+            backend_node_id=dom.BackendNodeId.from_json(json['backendNodeId'])
         )
 
 

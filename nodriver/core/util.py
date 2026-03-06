@@ -12,8 +12,19 @@ import logging
 import shutil
 import types
 from ssl import SSLContext
-from typing import (TYPE_CHECKING, Any, Callable, Generator, List, Optional,
-                    Set, Tuple, TypeVar, Union)
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    Dict,
+    Generator,
+    List,
+    Optional,
+    Set,
+    Tuple,
+    TypeVar,
+    Union,
+)
 
 from .element import Element
 
@@ -166,7 +177,7 @@ def deconstruct_browser(browser: Browser = None):
                 for _ in range(3):
                     try:
                         shutil.rmtree(config.user_data_dir, ignore_errors=False)
-                        print(
+                        logger.info(
                             "successfully removed temp profile %s"
                             % config.user_data_dir
                         )
@@ -183,7 +194,7 @@ def deconstruct_browser(browser: Browser = None):
             try:
                 if _.config and not _.config.uses_custom_data_dir:
                     shutil.rmtree(_.config.user_data_dir, ignore_errors=False)
-                    print(
+                    logger.info(
                         "successfully removed temp profile %s" % _.config.user_data_dir
                     )
             except FileNotFoundError as e:
@@ -409,6 +420,23 @@ def cdp_get_module(domain: Union[str, types.ModuleType]):
                     "could not find cdp module from input '%s'" % domain
                 )
     return domain_mod
+
+
+async def get_browser_version_info(browser: "nodriver.Browser") -> Dict[str, str]:
+
+    tab = await browser.get("chrome://version", new_tab=True)
+    rows = await tab.select_all("tr")
+    data = {}
+
+    for row in rows:
+        try:
+            ch1, ch2, *_ = row.children
+            data[ch1.text] = ch2.text
+        except (Exception,) as e:
+            logger.debug("get_browser_version_info", exc_info=True)
+            continue
+    await tab.close()
+    return data
 
 
 def get_cf_template() -> bytearray:

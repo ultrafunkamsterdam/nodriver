@@ -195,42 +195,6 @@ class ImageType(enum.Enum):
 
 
 @dataclass
-class ImageDecodeAcceleratorCapability:
-    '''
-    Describes a supported image decoding profile with its associated minimum and
-    maximum resolutions and subsampling.
-    '''
-    #: Image coded, e.g. Jpeg.
-    image_type: ImageType
-
-    #: Maximum supported dimensions of the image in pixels.
-    max_dimensions: Size
-
-    #: Minimum supported dimensions of the image in pixels.
-    min_dimensions: Size
-
-    #: Optional array of supported subsampling formats, e.g. 4:2:0, if known.
-    subsamplings: typing.List[SubsamplingFormat]
-
-    def to_json(self) -> T_JSON_DICT:
-        json: T_JSON_DICT = dict()
-        json['imageType'] = self.image_type.to_json()
-        json['maxDimensions'] = self.max_dimensions.to_json()
-        json['minDimensions'] = self.min_dimensions.to_json()
-        json['subsamplings'] = [i.to_json() for i in self.subsamplings]
-        return json
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> ImageDecodeAcceleratorCapability:
-        return cls(
-            image_type=ImageType.from_json(json['imageType']),
-            max_dimensions=Size.from_json(json['maxDimensions']),
-            min_dimensions=Size.from_json(json['minDimensions']),
-            subsamplings=[SubsamplingFormat.from_json(i) for i in json['subsamplings']],
-        )
-
-
-@dataclass
 class GPUInfo:
     '''
     Provides information about the GPU(s) on the system.
@@ -247,9 +211,6 @@ class GPUInfo:
     #: Supported accelerated video encoding capabilities.
     video_encoding: typing.List[VideoEncodeAcceleratorCapability]
 
-    #: Supported accelerated image decoding capabilities.
-    image_decoding: typing.List[ImageDecodeAcceleratorCapability]
-
     #: An optional dictionary of additional GPU related attributes.
     aux_attributes: typing.Optional[dict] = None
 
@@ -262,7 +223,6 @@ class GPUInfo:
         json['driverBugWorkarounds'] = [i for i in self.driver_bug_workarounds]
         json['videoDecoding'] = [i.to_json() for i in self.video_decoding]
         json['videoEncoding'] = [i.to_json() for i in self.video_encoding]
-        json['imageDecoding'] = [i.to_json() for i in self.image_decoding]
         if self.aux_attributes is not None:
             json['auxAttributes'] = self.aux_attributes
         if self.feature_status is not None:
@@ -276,7 +236,6 @@ class GPUInfo:
             driver_bug_workarounds=[str(i) for i in json['driverBugWorkarounds']],
             video_decoding=[VideoDecodeAcceleratorCapability.from_json(i) for i in json['videoDecoding']],
             video_encoding=[VideoEncodeAcceleratorCapability.from_json(i) for i in json['videoEncoding']],
-            image_decoding=[ImageDecodeAcceleratorCapability.from_json(i) for i in json['imageDecoding']],
             aux_attributes=dict(json['auxAttributes']) if json.get('auxAttributes', None) is not None else None,
             feature_status=dict(json['featureStatus']) if json.get('featureStatus', None) is not None else None,
         )

@@ -29,8 +29,71 @@ class StorageArea(enum.Enum):
         return cls(json)
 
 
+@dataclass
+class ExtensionInfo:
+    '''
+    Detailed information about an extension.
+    '''
+    #: Extension id.
+    id_: str
+
+    #: Extension name.
+    name: str
+
+    #: Extension version.
+    version: str
+
+    #: The path from which the extension was loaded.
+    path: str
+
+    #: Extension enabled status.
+    enabled: bool
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['id'] = self.id_
+        json['name'] = self.name
+        json['version'] = self.version
+        json['path'] = self.path
+        json['enabled'] = self.enabled
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> ExtensionInfo:
+        return cls(
+            id_=str(json['id']),
+            name=str(json['name']),
+            version=str(json['version']),
+            path=str(json['path']),
+            enabled=bool(json['enabled']),
+        )
+
+
+def trigger_action(
+        id_: str,
+        target_id: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Runs an extension default action.
+    Available if the client is connected using the --remote-debugging-pipe
+    flag and the --enable-unsafe-extension-debugging flag is set.
+
+    :param id_: Extension id.
+    :param target_id: A tab target ID to trigger the default extension action on.
+    '''
+    params: T_JSON_DICT = dict()
+    params['id'] = id_
+    params['targetId'] = target_id
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Extensions.triggerAction',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
 def load_unpacked(
-        path: str
+        path: str,
+        enable_in_incognito: typing.Optional[bool] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,str]:
     '''
     Installs an unpacked extension from the filesystem similar to
@@ -40,16 +103,34 @@ def load_unpacked(
     flag is set.
 
     :param path: Absolute file path.
+    :param enable_in_incognito: *(Optional)* Enable the extension in incognito
     :returns: Extension id.
     '''
     params: T_JSON_DICT = dict()
     params['path'] = path
+    if enable_in_incognito is not None:
+        params['enableInIncognito'] = enable_in_incognito
     cmd_dict: T_JSON_DICT = {
         'method': 'Extensions.loadUnpacked',
         'params': params,
     }
     json = yield cmd_dict
     return str(json['id'])
+
+
+def get_extensions() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[ExtensionInfo]]:
+    '''
+    Gets a list of all unpacked extensions.
+    Available if the client is connected using the --remote-debugging-pipe flag
+    and the --enable-unsafe-extension-debugging flag is set.
+
+    :returns: 
+    '''
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Extensions.getExtensions',
+    }
+    json = yield cmd_dict
+    return [ExtensionInfo.from_json(i) for i in json['extensions']]
 
 
 def uninstall(
