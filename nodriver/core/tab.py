@@ -2076,3 +2076,4 @@ class IFrame(Tab):
         super().__init__(
             websocket_url=parent.websocket_url, target=target, parent=parent, **kwargs
         )
+

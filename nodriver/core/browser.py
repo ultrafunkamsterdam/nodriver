@@ -111,8 +111,8 @@ class Browser(Connection):
             )
         # weakref.finalize(self, self._quit, self)
         self.config = config
-        self.tabs: List[tab.Tab] = []
-        self.targets: List = []
+
+
         """current targets (all types"""
         self.info = None
         self._target = None
@@ -128,6 +128,14 @@ class Browser(Connection):
     def main_tab(self) -> tab.Tab:
         """returns the target which was launched with the browser"""
         return sorted(self.targets, key=lambda x: x.type_ == "page", reverse=True)[0]
+
+    @property
+    def targets(self) -> List[Connection]:
+        return self._targets
+
+    @property
+    def tabs(self):
+        return [x for x in self._targets if x.target.type_ == "page"]
 
     # @property
     # def tabs(self) -> List[tab.Tab]:
@@ -199,7 +207,7 @@ class Browser(Connection):
         else:
             # first tab from browser.tabs
             connection: tab.Tab = next(
-                filter(lambda item: item.target.type_ == "page", self.children)
+                filter(lambda item: item.target.type_ == "page", self.targets)
             )
             # use the tab to navigate to new url
             # if not connection.attached:
@@ -528,20 +536,20 @@ class Browser(Connection):
 
         targets = await self.send(cdp.target.get_targets())
         #
-        current_tabs_targets = [t.target for t in self.children]
+        # current_tabs_targets = [t.target for t in self.children]
         #
         for t in targets:
-            for ctab in self.children:
+            for ctab in self._targets:
                 if ctab.target.target_id == t.target_id:
                     ctab.target = t
                     break
             else:
                 if t.type_ == "page":
-                    self._children.append()
+                    self._targets.append(tab.Tab(target=t, parent=self, auto_attach=False))
 
-        for ctab in self.children.copy():
+        for ctab in self._targets.copy():
             if ctab.target not in targets:
-                self._children.remove(ctab)
+                self._targets.remove(ctab)
 
         await asyncio.sleep(0)
 

@@ -25,7 +25,7 @@ from typing import (
     TypeVar,
     Union,
 )
-
+import re
 from .element import Element
 
 if TYPE_CHECKING:
@@ -388,6 +388,10 @@ def loop():
     asyncio.set_event_loop(loop)
     return loop
 
+
+def to_camel(s: str):
+    """turn snake-case to camel"""
+    return re.sub("(.*?)_([a-zA-Z])", lambda m: m.group(1) + m.group(2).upper(), s, 0)
 
 def cdp_get_module(domain: Union[str, types.ModuleType]):
     """

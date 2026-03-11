@@ -168,10 +168,6 @@ class Connection:
         """
         return self.transactions[-1]
 
-    @property
-    def children(self):
-        return self._children
-
     def __init__(
         self,
         target: TargetType  = None,
@@ -190,7 +186,8 @@ class Connection:
         self.__count__ = itertools.count(0)
         self._auto_attach = auto_attach
         self._transactions: List[Transaction] = []
-        self._children = []
+        self._targets:  List[Connection] = []
+
     #
     # @classmethod
     # async def from_parent(
@@ -281,7 +278,7 @@ class Connection:
 
     async def detach(self):
 
-        for child in self._children:
+        for child in self._targets:
             await child.detach()
         await self.send(
             cdp.target.detach_from_target(
@@ -292,7 +289,7 @@ class Connection:
         self.session_id = None
         self.target = None
         self.handlers.clear()
-        self._children.clear()
+        self._targets.clear()
 
     async def _attach_handler(
         self,
@@ -314,15 +311,15 @@ class Connection:
                     from nodriver.core.tab import Tab
 
                     new_child = Tab(target=event.target_info, parent=self)
-                    self._children.append(new_child)
+                    self._targets.append(new_child)
                 elif event.target_info.type_ == "iframe":
                     from nodriver.core.tab import IFrame
 
                     new_child = IFrame(target=event.target_info, parent=self)
-                    self._children.append(new_child)
+                    self._targets.append(new_child)
                 else:
                     new_child = Connection(target=event.target_info, parent=self)
-                    self._children.append(new_child)
+                    self._targets.append(new_child)
 
 
         elif isinstance(event, cdp.target.DetachedFromTarget):
@@ -330,18 +327,18 @@ class Connection:
                 self.session_id = None
             removed = [
                 child
-                for child in self._children
+                for child in self._targets
                 if child.session_id == event.session_id
             ]
             for child in removed:
-                self._children.remove(child)
+                self._targets.remove(child)
 
 
         elif isinstance(event, cdp.target.TargetInfoChanged):
             if event.target_info.target_id == self.target.target_id:
                 self.target = event.target_info
             else:
-                for child in self._children:
+                for child in self._targets:
                     if (
                         child.target
                         and child.target.target_id == event.target_info.target_id
@@ -352,9 +349,9 @@ class Connection:
             if event.target_id == self.target.target_id:
                 self.target = None
             else:
-                for child in self._children.copy():
+                for child in self._targets.copy():
                     if child.target.target_id == event.target_id:
-                        self._children.remove(child)
+                        self._targets.remove(child)
 
     async def send(
         self,
@@ -467,10 +464,14 @@ class Connection:
                 )
 
     def __str__(self):
+        name = self.__class__.__name__
+        if self.target and self.target.type_:
+            name = self.target.type_.title()
+        name = util.to_camel(name)
         return (
-            f"{self.__class__.__name__}[{self.target.type_ if type(self.target) is cdp.target.TargetInfo else self.target}][\n"
+            f"<{name}\n"
             f"\turl: {self.target.url if type(self.target) is cdp.target.TargetInfo else ''}\n"
-            f"\tattached: {self.attached}\n"
+            f"\tattached: {self.attached}>\n"
         )
 
     def __repr__(self):
