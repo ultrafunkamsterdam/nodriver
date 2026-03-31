@@ -1362,7 +1362,7 @@ class Cookie:
     #: Cookie expiration date as the number of seconds since the UNIX epoch.
     #: The value is set to -1 if the expiry date is not set.
     #: The value can be null for values that cannot be represented in
-    #: JSON (±Inf).
+    #: JSON (Â±Inf).
     expires: typing.Optional[float] = None
 
     #: Cookie SameSite type.
