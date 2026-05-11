@@ -64,6 +64,9 @@ def change_version():
         find_replace_in_file(
             project_file, "version = [\"']([^\s]+)[\"']", f'version = "{new_version}"'
         )
+        find_replace_in_file(
+            python_init, "__version__ = [\"']([^\s]+)[\"']", f'__version__ = "{new_version}"'
+        )
 
 
 def get_version(project_file: Path):
@@ -72,6 +75,7 @@ def get_version(project_file: Path):
 
 
 project_file = find_file("pyproject.toml")
+python_init = find_file("__init__.py", "nodriver")
 
 subprocess.run("make.bat html", shell=True, cwd="./docs")
 subprocess.run("make.bat markdown", shell=True, cwd="./docs")

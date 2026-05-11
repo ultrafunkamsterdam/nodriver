@@ -60,13 +60,17 @@ class TargetInfo:
     #: Whether the target has access to the originating window.
     can_access_opener: bool
 
+    #: Id of the parent target, if any. For example, "iframe" target may have a "page" parent.
+    parent_id: typing.Optional[TargetID] = None
+
     #: Opener target Id
     opener_id: typing.Optional[TargetID] = None
 
     #: Frame id of originating window (is only set if target has an opener).
     opener_frame_id: typing.Optional[page.FrameId] = None
 
-    #: Id of the parent frame, only present for the "iframe" targets.
+    #: Id of the parent frame, present for "iframe" and "worker" targets. For nested workers,
+    #: this is the "ancestor" frame that created the first worker in the nested chain.
     parent_frame_id: typing.Optional[page.FrameId] = None
 
     browser_context_id: typing.Optional[browser.BrowserContextID] = None
@@ -83,6 +87,8 @@ class TargetInfo:
         json['url'] = self.url
         json['attached'] = self.attached
         json['canAccessOpener'] = self.can_access_opener
+        if self.parent_id is not None:
+            json['parentId'] = self.parent_id.to_json()
         if self.opener_id is not None:
             json['openerId'] = self.opener_id.to_json()
         if self.opener_frame_id is not None:
@@ -104,6 +110,7 @@ class TargetInfo:
             url=str(json['url']),
             attached=bool(json['attached']),
             can_access_opener=bool(json['canAccessOpener']),
+            parent_id=TargetID.from_json(json['parentId']) if json.get('parentId', None) is not None else None,
             opener_id=TargetID.from_json(json['openerId']) if json.get('openerId', None) is not None else None,
             opener_frame_id=page.FrameId.from_json(json['openerFrameId']) if json.get('openerFrameId', None) is not None else None,
             parent_frame_id=page.FrameId.from_json(json['parentFrameId']) if json.get('parentFrameId', None) is not None else None,

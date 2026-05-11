@@ -2045,6 +2045,9 @@ class NetworkConditions:
     #: WebRTC packetReordering feature.
     packet_reordering: typing.Optional[bool] = None
 
+    #: True to emulate internet disconnection.
+    offline: typing.Optional[bool] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json['urlPattern'] = self.url_pattern
@@ -2059,6 +2062,8 @@ class NetworkConditions:
             json['packetQueueLength'] = self.packet_queue_length
         if self.packet_reordering is not None:
             json['packetReordering'] = self.packet_reordering
+        if self.offline is not None:
+            json['offline'] = self.offline
         return json
 
     @classmethod
@@ -2072,6 +2077,7 @@ class NetworkConditions:
             packet_loss=float(json['packetLoss']) if json.get('packetLoss', None) is not None else None,
             packet_queue_length=int(json['packetQueueLength']) if json.get('packetQueueLength', None) is not None else None,
             packet_reordering=bool(json['packetReordering']) if json.get('packetReordering', None) is not None else None,
+            offline=bool(json['offline']) if json.get('offline', None) is not None else None,
         )
 
 
@@ -2316,6 +2322,102 @@ class ClientSecurityState:
             initiator_is_secure_context=bool(json['initiatorIsSecureContext']),
             initiator_ip_address_space=IPAddressSpace.from_json(json['initiatorIPAddressSpace']),
             local_network_access_request_policy=LocalNetworkAccessRequestPolicy.from_json(json['localNetworkAccessRequestPolicy']),
+        )
+
+
+@dataclass
+class AdScriptIdentifier:
+    '''
+    Identifies the script on the stack that caused a resource or element to be
+    labeled as an ad. For resources, this indicates the context that triggered
+    the fetch. For elements, this indicates the context that caused the element
+    to be appended to the DOM.
+    '''
+    #: The script's V8 identifier.
+    script_id: runtime.ScriptId
+
+    #: V8's debugging ID for the v8::Context.
+    debugger_id: runtime.UniqueDebuggerId
+
+    #: The script's url (or generated name based on id if inline script).
+    name: str
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['scriptId'] = self.script_id.to_json()
+        json['debuggerId'] = self.debugger_id.to_json()
+        json['name'] = self.name
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> AdScriptIdentifier:
+        return cls(
+            script_id=runtime.ScriptId.from_json(json['scriptId']),
+            debugger_id=runtime.UniqueDebuggerId.from_json(json['debuggerId']),
+            name=str(json['name']),
+        )
+
+
+@dataclass
+class AdAncestry:
+    '''
+    Encapsulates the script ancestry and the root script filter list rule that
+    caused the resource or element to be labeled as an ad.
+    '''
+    #: A chain of ``AdScriptIdentifier``'s representing the ancestry of an ad
+    #: script that led to the creation of a resource or element. The chain is
+    #: ordered from the script itself (lowest level) up to its root ancestor
+    #: that was flagged by a filter list.
+    ancestry_chain: typing.List[AdScriptIdentifier]
+
+    #: The filter list rule that caused the root (last) script in
+    #: ``ancestryChain`` to be tagged as an ad.
+    root_script_filterlist_rule: typing.Optional[str] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['ancestryChain'] = [i.to_json() for i in self.ancestry_chain]
+        if self.root_script_filterlist_rule is not None:
+            json['rootScriptFilterlistRule'] = self.root_script_filterlist_rule
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> AdAncestry:
+        return cls(
+            ancestry_chain=[AdScriptIdentifier.from_json(i) for i in json['ancestryChain']],
+            root_script_filterlist_rule=str(json['rootScriptFilterlistRule']) if json.get('rootScriptFilterlistRule', None) is not None else None,
+        )
+
+
+@dataclass
+class AdProvenance:
+    '''
+    Represents the provenance of an ad resource or element. Only one of
+    ``filterlistRule`` or ``adScriptAncestry`` can be set. If ``filterlistRule``
+    is provided, the resource URL directly matches a filter list rule. If
+    ``adScriptAncestry`` is provided, an ad script initiated the resource fetch or
+    appended the element to the DOM. If neither is provided, the entity is
+    known to be an ad, but provenance tracking information is unavailable.
+    '''
+    #: The filterlist rule that matched, if any.
+    filterlist_rule: typing.Optional[str] = None
+
+    #: The script ancestry that created the ad, if any.
+    ad_script_ancestry: typing.Optional[AdAncestry] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        if self.filterlist_rule is not None:
+            json['filterlistRule'] = self.filterlist_rule
+        if self.ad_script_ancestry is not None:
+            json['adScriptAncestry'] = self.ad_script_ancestry.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> AdProvenance:
+        return cls(
+            filterlist_rule=str(json['filterlistRule']) if json.get('filterlistRule', None) is not None else None,
+            ad_script_ancestry=AdAncestry.from_json(json['adScriptAncestry']) if json.get('adScriptAncestry', None) is not None else None,
         )
 
 
@@ -2811,6 +2913,7 @@ class DeviceBoundSessionFetchResult(enum.Enum):
     SUCCESS = "Success"
     KEY_ERROR = "KeyError"
     SIGNING_ERROR = "SigningError"
+    TRANSIENT_SIGNING_ERROR = "TransientSigningError"
     SERVER_REQUESTED_TERMINATION = "ServerRequestedTermination"
     INVALID_SESSION_ID = "InvalidSessionId"
     INVALID_CHALLENGE = "InvalidChallenge"
@@ -3363,8 +3466,9 @@ def emulate_network_conditions(
 
 
 def emulate_network_conditions_by_rule(
-        offline: bool,
-        matched_network_conditions: typing.List[NetworkConditions]
+        matched_network_conditions: typing.List[NetworkConditions],
+        offline: typing.Optional[bool] = None,
+        emulate_offline_service_worker: typing.Optional[bool] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[str]]:
     '''
     Activates emulation of network conditions for individual requests using URL match patterns. Unlike the deprecated
@@ -3373,12 +3477,16 @@ def emulate_network_conditions_by_rule(
 
     **EXPERIMENTAL**
 
-    :param offline: True to emulate internet disconnection.
+    :param offline: **(DEPRECATED)** *(Optional)* True to emulate internet disconnection. Deprecated, use the offline property in matchedNetworkConditions or emulateOfflineServiceWorker instead.
+    :param emulate_offline_service_worker: *(Optional)* True to emulate offline service worker.
     :param matched_network_conditions: Configure conditions for matching requests. If multiple entries match a request, the first entry wins.  Global conditions can be configured by leaving the urlPattern for the conditions empty. These global conditions are also applied for throttling of p2p connections.
     :returns: An id for each entry in matchedNetworkConditions. The id will be included in the requestWillBeSentExtraInfo for requests affected by a rule.
     '''
     params: T_JSON_DICT = dict()
-    params['offline'] = offline
+    if offline is not None:
+        params['offline'] = offline
+    if emulate_offline_service_worker is not None:
+        params['emulateOfflineServiceWorker'] = emulate_offline_service_worker
     params['matchedNetworkConditions'] = [i.to_json() for i in matched_network_conditions]
     cmd_dict: T_JSON_DICT = {
         'method': 'Network.emulateNetworkConditionsByRule',
@@ -4006,6 +4114,25 @@ def enable_device_bound_sessions(
     json = yield cmd_dict
 
 
+def delete_device_bound_session(
+        key: DeviceBoundSessionKey
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Deletes a device bound session.
+
+    **EXPERIMENTAL**
+
+    :param key:
+    '''
+    params: T_JSON_DICT = dict()
+    params['key'] = key.to_json()
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Network.deleteDeviceBoundSession',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
 def fetch_schemeful_site(
         origin: str
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,str]:
@@ -4056,9 +4183,7 @@ def load_network_resource(
 
 
 def set_cookie_controls(
-        enable_third_party_cookie_restriction: bool,
-        disable_third_party_cookie_metadata: bool,
-        disable_third_party_cookie_heuristics: bool
+        enable_third_party_cookie_restriction: bool
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
     Sets Controls for third-party cookie access
@@ -4067,13 +4192,9 @@ def set_cookie_controls(
     **EXPERIMENTAL**
 
     :param enable_third_party_cookie_restriction: Whether 3pc restriction is enabled.
-    :param disable_third_party_cookie_metadata: Whether 3pc grace period exception should be enabled; false by default.
-    :param disable_third_party_cookie_heuristics: Whether 3pc heuristics exceptions should be enabled; false by default.
     '''
     params: T_JSON_DICT = dict()
     params['enableThirdPartyCookieRestriction'] = enable_third_party_cookie_restriction
-    params['disableThirdPartyCookieMetadata'] = disable_third_party_cookie_metadata
-    params['disableThirdPartyCookieHeuristics'] = disable_third_party_cookie_heuristics
     cmd_dict: T_JSON_DICT = {
         'method': 'Network.setCookieControls',
         'params': params,

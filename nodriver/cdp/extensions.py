@@ -75,8 +75,6 @@ def trigger_action(
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
     Runs an extension default action.
-    Available if the client is connected using the --remote-debugging-pipe
-    flag and the --enable-unsafe-extension-debugging flag is set.
 
     :param id_: Extension id.
     :param target_id: A tab target ID to trigger the default extension action on.
@@ -98,9 +96,7 @@ def load_unpacked(
     '''
     Installs an unpacked extension from the filesystem similar to
     --load-extension CLI flags. Returns extension ID once the extension
-    has been installed. Available if the client is connected using the
-    --remote-debugging-pipe flag and the --enable-unsafe-extension-debugging
-    flag is set.
+    has been installed.
 
     :param path: Absolute file path.
     :param enable_in_incognito: *(Optional)* Enable the extension in incognito
@@ -121,8 +117,6 @@ def load_unpacked(
 def get_extensions() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[ExtensionInfo]]:
     '''
     Gets a list of all unpacked extensions.
-    Available if the client is connected using the --remote-debugging-pipe flag
-    and the --enable-unsafe-extension-debugging flag is set.
 
     :returns: 
     '''
@@ -138,8 +132,6 @@ def uninstall(
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
     Uninstalls an unpacked extension (others not supported) from the profile.
-    Available if the client is connected using the --remote-debugging-pipe flag
-    and the --enable-unsafe-extension-debugging.
 
     :param id_: Extension id.
     '''

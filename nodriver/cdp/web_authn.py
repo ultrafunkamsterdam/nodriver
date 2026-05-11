@@ -39,6 +39,7 @@ class AuthenticatorProtocol(enum.Enum):
 class Ctap2Version(enum.Enum):
     CTAP2_0 = "ctap2_0"
     CTAP2_1 = "ctap2_1"
+    CTAP2_2 = "ctap2_2"
 
     def to_json(self) -> str:
         return self.value
@@ -98,6 +99,16 @@ class VirtualAuthenticatorOptions:
     #: Defaults to false.
     has_prf: typing.Optional[bool] = None
 
+    #: If set to true, the authenticator will support the hmac-secret extension.
+    #: https://fidoalliance.org/specs/fido-v2.1-ps-20210615/fido-client-to-authenticator-protocol-v2.1-ps-20210615.html#sctn-hmac-secret-extension
+    #: Defaults to false.
+    has_hmac_secret: typing.Optional[bool] = None
+
+    #: If set to true, the authenticator will support the hmac-secret-mc extension.
+    #: https://fidoalliance.org/specs/fido-v2.2-rd-20241003/fido-client-to-authenticator-protocol-v2.2-rd-20241003.html#sctn-hmac-secret-make-cred-extension
+    #: Defaults to false.
+    has_hmac_secret_mc: typing.Optional[bool] = None
+
     #: If set to true, tests of user presence will succeed immediately.
     #: Otherwise, they will not be resolved. Defaults to true.
     automatic_presence_simulation: typing.Optional[bool] = None
@@ -134,6 +145,10 @@ class VirtualAuthenticatorOptions:
             json['hasMinPinLength'] = self.has_min_pin_length
         if self.has_prf is not None:
             json['hasPrf'] = self.has_prf
+        if self.has_hmac_secret is not None:
+            json['hasHmacSecret'] = self.has_hmac_secret
+        if self.has_hmac_secret_mc is not None:
+            json['hasHmacSecretMc'] = self.has_hmac_secret_mc
         if self.automatic_presence_simulation is not None:
             json['automaticPresenceSimulation'] = self.automatic_presence_simulation
         if self.is_user_verified is not None:
@@ -156,6 +171,8 @@ class VirtualAuthenticatorOptions:
             has_cred_blob=bool(json['hasCredBlob']) if json.get('hasCredBlob', None) is not None else None,
             has_min_pin_length=bool(json['hasMinPinLength']) if json.get('hasMinPinLength', None) is not None else None,
             has_prf=bool(json['hasPrf']) if json.get('hasPrf', None) is not None else None,
+            has_hmac_secret=bool(json['hasHmacSecret']) if json.get('hasHmacSecret', None) is not None else None,
+            has_hmac_secret_mc=bool(json['hasHmacSecretMc']) if json.get('hasHmacSecretMc', None) is not None else None,
             automatic_presence_simulation=bool(json['automaticPresenceSimulation']) if json.get('automaticPresenceSimulation', None) is not None else None,
             is_user_verified=bool(json['isUserVerified']) if json.get('isUserVerified', None) is not None else None,
             default_backup_eligibility=bool(json['defaultBackupEligibility']) if json.get('defaultBackupEligibility', None) is not None else None,

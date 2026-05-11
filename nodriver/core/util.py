@@ -9,23 +9,13 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import re
 import shutil
 import types
 from ssl import SSLContext
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Callable,
-    Dict,
-    Generator,
-    List,
-    Optional,
-    Set,
-    Tuple,
-    TypeVar,
-    Union,
-)
-import re
+from typing import (TYPE_CHECKING, Any, Callable, Dict, Generator, List,
+                    Optional, Set, Tuple, TypeVar, Union)
+
 from .element import Element
 
 if TYPE_CHECKING:
@@ -392,6 +382,7 @@ def loop():
 def to_camel(s: str):
     """turn snake-case to camel"""
     return re.sub("(.*?)_([a-zA-Z])", lambda m: m.group(1) + m.group(2).upper(), s, 0)
+
 
 def cdp_get_module(domain: Union[str, types.ModuleType]):
     """

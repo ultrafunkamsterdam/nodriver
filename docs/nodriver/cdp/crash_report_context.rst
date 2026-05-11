@@ -1,11 +1,11 @@
-Extensions
-==========
+CrashReportContext
+==================
 
-Defines commands and events for browser extensions.
+This domain exposes the current state of the CrashReportContext API.
 
 *This CDP domain is experimental.*
 
-.. module:: nodriver.cdp.extensions
+.. module:: nodriver.cdp.crash_report_context
 
 * Types_
 * Commands_
@@ -19,12 +19,7 @@ yourself. Instead, the API creates objects for you as return
 values from commands, and then you can use those objects as
 arguments to other commands.
 
-.. autoclass:: StorageArea
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: ExtensionInfo
+.. autoclass:: CrashReportContextEntry
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -41,21 +36,7 @@ commands, and ``z`` is the return type you should pay attention
 to. For more information, see
 :ref:`Getting Started: Commands <getting-started-commands>`.
 
-.. autofunction:: clear_storage_items
-
-.. autofunction:: get_extensions
-
-.. autofunction:: get_storage_items
-
-.. autofunction:: load_unpacked
-
-.. autofunction:: remove_storage_items
-
-.. autofunction:: set_storage_items
-
-.. autofunction:: trigger_action
-
-.. autofunction:: uninstall
+.. autofunction:: get_entries
 
 Events
 ------

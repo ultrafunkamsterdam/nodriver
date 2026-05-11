@@ -629,46 +629,6 @@ class SharedArrayBufferIssueDetails:
 
 
 @dataclass
-class LowTextContrastIssueDetails:
-    violating_node_id: dom.BackendNodeId
-
-    violating_node_selector: str
-
-    contrast_ratio: float
-
-    threshold_aa: float
-
-    threshold_aaa: float
-
-    font_size: str
-
-    font_weight: str
-
-    def to_json(self) -> T_JSON_DICT:
-        json: T_JSON_DICT = dict()
-        json['violatingNodeId'] = self.violating_node_id.to_json()
-        json['violatingNodeSelector'] = self.violating_node_selector
-        json['contrastRatio'] = self.contrast_ratio
-        json['thresholdAA'] = self.threshold_aa
-        json['thresholdAAA'] = self.threshold_aaa
-        json['fontSize'] = self.font_size
-        json['fontWeight'] = self.font_weight
-        return json
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> LowTextContrastIssueDetails:
-        return cls(
-            violating_node_id=dom.BackendNodeId.from_json(json['violatingNodeId']),
-            violating_node_selector=str(json['violatingNodeSelector']),
-            contrast_ratio=float(json['contrastRatio']),
-            threshold_aa=float(json['thresholdAA']),
-            threshold_aaa=float(json['thresholdAAA']),
-            font_size=str(json['fontSize']),
-            font_weight=str(json['fontWeight']),
-        )
-
-
-@dataclass
 class CorsIssueDetails:
     '''
     Details for a CORS related issue, e.g. a warning or error related to
@@ -1038,10 +998,15 @@ class GenericIssueErrorType(enum.Enum):
     FORM_INPUT_HAS_WRONG_BUT_WELL_INTENDED_AUTOCOMPLETE_VALUE_ERROR = "FormInputHasWrongButWellIntendedAutocompleteValueError"
     RESPONSE_WAS_BLOCKED_BY_ORB = "ResponseWasBlockedByORB"
     NAVIGATION_ENTRY_MARKED_SKIPPABLE = "NavigationEntryMarkedSkippable"
+    BACK_UI_NAVIGATION_WOULD_SKIP_AD = "BackUINavigationWouldSkipAd"
     AUTOFILL_AND_MANUAL_TEXT_POLICY_CONTROLLED_FEATURES_INFO = "AutofillAndManualTextPolicyControlledFeaturesInfo"
     AUTOFILL_POLICY_CONTROLLED_FEATURE_INFO = "AutofillPolicyControlledFeatureInfo"
     MANUAL_TEXT_POLICY_CONTROLLED_FEATURE_INFO = "ManualTextPolicyControlledFeatureInfo"
     FORM_MODEL_CONTEXT_PARAMETER_MISSING_TITLE_AND_DESCRIPTION = "FormModelContextParameterMissingTitleAndDescription"
+    FORM_MODEL_CONTEXT_MISSING_TOOL_NAME = "FormModelContextMissingToolName"
+    FORM_MODEL_CONTEXT_MISSING_TOOL_DESCRIPTION = "FormModelContextMissingToolDescription"
+    FORM_MODEL_CONTEXT_REQUIRED_PARAMETER_MISSING_NAME = "FormModelContextRequiredParameterMissingName"
+    FORM_MODEL_CONTEXT_PARAMETER_MISSING_NAME = "FormModelContextParameterMissingName"
 
     def to_json(self) -> str:
         return self.value
@@ -1661,68 +1626,6 @@ class PermissionElementIssueDetails:
 
 
 @dataclass
-class AdScriptIdentifier:
-    '''
-    Metadata about the ad script that was on the stack that caused the current
-    script in the ``AdAncestry`` to be considered ad related.
-    '''
-    #: The script's v8 identifier.
-    script_id: runtime.ScriptId
-
-    #: v8's debugging id for the v8::Context.
-    debugger_id: runtime.UniqueDebuggerId
-
-    #: The script's url (or generated name based on id if inline script).
-    name: str
-
-    def to_json(self) -> T_JSON_DICT:
-        json: T_JSON_DICT = dict()
-        json['scriptId'] = self.script_id.to_json()
-        json['debuggerId'] = self.debugger_id.to_json()
-        json['name'] = self.name
-        return json
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> AdScriptIdentifier:
-        return cls(
-            script_id=runtime.ScriptId.from_json(json['scriptId']),
-            debugger_id=runtime.UniqueDebuggerId.from_json(json['debuggerId']),
-            name=str(json['name']),
-        )
-
-
-@dataclass
-class AdAncestry:
-    '''
-    Providence about how an ad script was determined to be such. It is an ad
-    because its url matched a filterlist rule, or because some other ad script
-    was on the stack when this script was loaded.
-    '''
-    #: The ad-script in the stack when the offending script was loaded. This is
-    #: recursive down to the root script that was tagged due to the filterlist
-    #: rule.
-    ad_ancestry_chain: typing.List[AdScriptIdentifier]
-
-    #: The filterlist rule that caused the root (last) script in
-    #: ``adAncestry`` to be ad-tagged.
-    root_script_filterlist_rule: typing.Optional[str] = None
-
-    def to_json(self) -> T_JSON_DICT:
-        json: T_JSON_DICT = dict()
-        json['adAncestryChain'] = [i.to_json() for i in self.ad_ancestry_chain]
-        if self.root_script_filterlist_rule is not None:
-            json['rootScriptFilterlistRule'] = self.root_script_filterlist_rule
-        return json
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> AdAncestry:
-        return cls(
-            ad_ancestry_chain=[AdScriptIdentifier.from_json(i) for i in json['adAncestryChain']],
-            root_script_filterlist_rule=str(json['rootScriptFilterlistRule']) if json.get('rootScriptFilterlistRule', None) is not None else None,
-        )
-
-
-@dataclass
 class SelectivePermissionsInterventionIssueDetails:
     '''
     The issue warns about blocked calls to privacy sensitive APIs via the
@@ -1732,7 +1635,7 @@ class SelectivePermissionsInterventionIssueDetails:
     api_name: str
 
     #: Why the ad script using the API is considered an ad.
-    ad_ancestry: AdAncestry
+    ad_ancestry: network.AdAncestry
 
     #: The stack trace at the time of the intervention.
     stack_trace: typing.Optional[runtime.StackTrace] = None
@@ -1749,7 +1652,7 @@ class SelectivePermissionsInterventionIssueDetails:
     def from_json(cls, json: T_JSON_DICT) -> SelectivePermissionsInterventionIssueDetails:
         return cls(
             api_name=str(json['apiName']),
-            ad_ancestry=AdAncestry.from_json(json['adAncestry']),
+            ad_ancestry=network.AdAncestry.from_json(json['adAncestry']),
             stack_trace=runtime.StackTrace.from_json(json['stackTrace']) if json.get('stackTrace', None) is not None else None,
         )
 
@@ -1766,7 +1669,6 @@ class InspectorIssueCode(enum.Enum):
     HEAVY_AD_ISSUE = "HeavyAdIssue"
     CONTENT_SECURITY_POLICY_ISSUE = "ContentSecurityPolicyIssue"
     SHARED_ARRAY_BUFFER_ISSUE = "SharedArrayBufferIssue"
-    LOW_TEXT_CONTRAST_ISSUE = "LowTextContrastIssue"
     CORS_ISSUE = "CorsIssue"
     ATTRIBUTION_REPORTING_ISSUE = "AttributionReportingIssue"
     QUIRKS_MODE_ISSUE = "QuirksModeIssue"
@@ -1817,8 +1719,6 @@ class InspectorIssueDetails:
     content_security_policy_issue_details: typing.Optional[ContentSecurityPolicyIssueDetails] = None
 
     shared_array_buffer_issue_details: typing.Optional[SharedArrayBufferIssueDetails] = None
-
-    low_text_contrast_issue_details: typing.Optional[LowTextContrastIssueDetails] = None
 
     cors_issue_details: typing.Optional[CorsIssueDetails] = None
 
@@ -1880,8 +1780,6 @@ class InspectorIssueDetails:
             json['contentSecurityPolicyIssueDetails'] = self.content_security_policy_issue_details.to_json()
         if self.shared_array_buffer_issue_details is not None:
             json['sharedArrayBufferIssueDetails'] = self.shared_array_buffer_issue_details.to_json()
-        if self.low_text_contrast_issue_details is not None:
-            json['lowTextContrastIssueDetails'] = self.low_text_contrast_issue_details.to_json()
         if self.cors_issue_details is not None:
             json['corsIssueDetails'] = self.cors_issue_details.to_json()
         if self.attribution_reporting_issue_details is not None:
@@ -1939,7 +1837,6 @@ class InspectorIssueDetails:
             heavy_ad_issue_details=HeavyAdIssueDetails.from_json(json['heavyAdIssueDetails']) if json.get('heavyAdIssueDetails', None) is not None else None,
             content_security_policy_issue_details=ContentSecurityPolicyIssueDetails.from_json(json['contentSecurityPolicyIssueDetails']) if json.get('contentSecurityPolicyIssueDetails', None) is not None else None,
             shared_array_buffer_issue_details=SharedArrayBufferIssueDetails.from_json(json['sharedArrayBufferIssueDetails']) if json.get('sharedArrayBufferIssueDetails', None) is not None else None,
-            low_text_contrast_issue_details=LowTextContrastIssueDetails.from_json(json['lowTextContrastIssueDetails']) if json.get('lowTextContrastIssueDetails', None) is not None else None,
             cors_issue_details=CorsIssueDetails.from_json(json['corsIssueDetails']) if json.get('corsIssueDetails', None) is not None else None,
             attribution_reporting_issue_details=AttributionReportingIssueDetails.from_json(json['attributionReportingIssueDetails']) if json.get('attributionReportingIssueDetails', None) is not None else None,
             quirks_mode_issue_details=QuirksModeIssueDetails.from_json(json['quirksModeIssueDetails']) if json.get('quirksModeIssueDetails', None) is not None else None,
@@ -2068,25 +1965,6 @@ def enable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
     cmd_dict: T_JSON_DICT = {
         'method': 'Audits.enable',
-    }
-    json = yield cmd_dict
-
-
-def check_contrast(
-        report_aaa: typing.Optional[bool] = None
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-    '''
-    Runs the contrast check for the target page. Found issues are reported
-    using Audits.issueAdded event.
-
-    :param report_aaa: *(Optional)* Whether to report WCAG AAA level issues. Default is false.
-    '''
-    params: T_JSON_DICT = dict()
-    if report_aaa is not None:
-        params['reportAAA'] = report_aaa
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Audits.checkContrast',
-        'params': params,
     }
     json = yield cmd_dict
 

@@ -24,7 +24,6 @@ from . import element, util
 from .config import PathLike
 from .connection import Connection, ProtocolException
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -188,13 +187,10 @@ class Tab(Connection):
         targets = await self.send(cdp.target.get_targets())
         frame_ids = [
             x.id_
-            for x in util.flatten_frame_tree(
-                await self.send(cdp.page.get_frame_tree())
-            )
+            for x in util.flatten_frame_tree(await self.send(cdp.page.get_frame_tree()))
         ]
         frame_targets = [
-            x for x in targets if
-            str(x.parent_frame_id) in map(str, frame_ids)
+            x for x in targets if str(x.parent_frame_id) in map(str, frame_ids)
         ]
         return [IFrame(target=t, parent=self) for t in frame_targets]
 
@@ -2076,4 +2072,3 @@ class IFrame(Tab):
         super().__init__(
             websocket_url=parent.websocket_url, target=target, parent=parent, **kwargs
         )
-

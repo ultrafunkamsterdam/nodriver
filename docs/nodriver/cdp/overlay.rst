@@ -119,6 +119,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: InspectedElementAnchorConfig
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 Commands
 --------
 
@@ -173,6 +178,8 @@ to. For more information, see
 
 .. autofunction:: set_show_hit_test_borders
 
+.. autofunction:: set_show_inspected_element_anchor
+
 .. autofunction:: set_show_isolated_elements
 
 .. autofunction:: set_show_layout_shift_regions
@@ -207,6 +214,16 @@ you use the event's attributes.
       :exclude-members: from_json, to_json
 
 .. autoclass:: ScreenshotRequested
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: InspectPanelShowRequested
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: InspectedElementWindowRestored
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

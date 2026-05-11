@@ -174,6 +174,8 @@ class PreloadingAttemptKey:
 
     url: str
 
+    form_submission: typing.Optional[bool] = None
+
     target_hint: typing.Optional[SpeculationTargetHint] = None
 
     def to_json(self) -> T_JSON_DICT:
@@ -181,6 +183,8 @@ class PreloadingAttemptKey:
         json['loaderId'] = self.loader_id.to_json()
         json['action'] = self.action.to_json()
         json['url'] = self.url
+        if self.form_submission is not None:
+            json['formSubmission'] = self.form_submission
         if self.target_hint is not None:
             json['targetHint'] = self.target_hint.to_json()
         return json
@@ -191,6 +195,7 @@ class PreloadingAttemptKey:
             loader_id=network.LoaderId.from_json(json['loaderId']),
             action=SpeculationAction.from_json(json['action']),
             url=str(json['url']),
+            form_submission=bool(json['formSubmission']) if json.get('formSubmission', None) is not None else None,
             target_hint=SpeculationTargetHint.from_json(json['targetHint']) if json.get('targetHint', None) is not None else None,
         )
 
@@ -325,6 +330,7 @@ class PrerenderFinalStatus(enum.Enum):
     PRERENDER_FAILED_DURING_PREFETCH = "PrerenderFailedDuringPrefetch"
     BROWSING_DATA_REMOVED = "BrowsingDataRemoved"
     PRERENDER_HOST_REUSED = "PrerenderHostReused"
+    FORM_SUBMIT_WHEN_PRERENDERING = "FormSubmitWhenPrerendering"
 
     def to_json(self) -> str:
         return self.value

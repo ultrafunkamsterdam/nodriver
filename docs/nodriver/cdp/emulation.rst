@@ -204,6 +204,8 @@ to. For more information, see
 
 .. autofunction:: set_pressure_state_override
 
+.. autofunction:: set_primary_screen
+
 .. autofunction:: set_safe_area_insets_override
 
 .. autofunction:: set_script_execution_disabled
@@ -226,6 +228,8 @@ to. For more information, see
 
 .. autofunction:: set_visible_size
 
+.. autofunction:: update_screen
+
 Events
 ------
 
@@ -234,6 +238,11 @@ yourself. Instead, the API creates events for you and then
 you use the event's attributes.
 
 .. autoclass:: VirtualTimeBudgetExpired
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: ScreenOrientationLockChanged
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

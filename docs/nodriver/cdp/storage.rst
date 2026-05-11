@@ -112,141 +112,6 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: AttributionReportingSourceType
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: UnsignedInt64AsBase10
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: UnsignedInt128AsBase16
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: SignedInt64AsBase10
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingFilterDataEntry
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingFilterConfig
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingFilterPair
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingAggregationKeysEntry
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingEventReportWindows
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingTriggerDataMatching
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingAggregatableDebugReportingData
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingAggregatableDebugReportingConfig
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionScopesData
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingNamedBudgetDef
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingSourceRegistration
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingSourceRegistrationResult
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingSourceRegistrationTimeConfig
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingAggregatableValueDictEntry
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingAggregatableValueEntry
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingEventTriggerData
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingAggregatableTriggerData
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingAggregatableDedupKey
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingNamedBudgetCandidate
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingTriggerRegistration
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingEventLevelResult
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingAggregatableResult
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingReportResult
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
 .. autoclass:: RelatedWebsiteSet
       :members:
       :undoc-members:
@@ -278,8 +143,6 @@ to. For more information, see
 
 .. autofunction:: delete_storage_bucket
 
-.. autofunction:: get_affected_urls_for_third_party_cookie_metadata
-
 .. autofunction:: get_cookies
 
 .. autofunction:: get_interest_group_details
@@ -303,12 +166,6 @@ to. For more information, see
 .. autofunction:: reset_shared_storage_budget
 
 .. autofunction:: run_bounce_tracking_mitigations
-
-.. autofunction:: send_pending_attribution_reports
-
-.. autofunction:: set_attribution_reporting_local_testing_mode
-
-.. autofunction:: set_attribution_reporting_tracking
 
 .. autofunction:: set_cookies
 
@@ -398,26 +255,6 @@ you use the event's attributes.
       :exclude-members: from_json, to_json
 
 .. autoclass:: StorageBucketDeleted
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingSourceRegistered
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingTriggerRegistered
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingReportSent
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: AttributionReportingVerboseDebugReportSent
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

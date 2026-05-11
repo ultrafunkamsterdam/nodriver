@@ -170,7 +170,7 @@ class Connection:
 
     def __init__(
         self,
-        target: TargetType  = None,
+        target: TargetType = None,
         parent: Connection = None,
         auto_attach: bool = False,
         **kwargs,
@@ -186,7 +186,7 @@ class Connection:
         self.__count__ = itertools.count(0)
         self._auto_attach = auto_attach
         self._transactions: List[Transaction] = []
-        self._targets:  List[Connection] = []
+        self._targets: List[Connection] = []
 
     #
     # @classmethod
@@ -321,18 +321,14 @@ class Connection:
                     new_child = Connection(target=event.target_info, parent=self)
                     self._targets.append(new_child)
 
-
         elif isinstance(event, cdp.target.DetachedFromTarget):
             if event.target_id == self.target.target_id:
                 self.session_id = None
             removed = [
-                child
-                for child in self._targets
-                if child.session_id == event.session_id
+                child for child in self._targets if child.session_id == event.session_id
             ]
             for child in removed:
                 self._targets.remove(child)
-
 
         elif isinstance(event, cdp.target.TargetInfoChanged):
             if event.target_info.target_id == self.target.target_id:

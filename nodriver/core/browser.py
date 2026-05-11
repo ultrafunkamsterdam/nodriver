@@ -19,11 +19,11 @@ import warnings
 from collections import defaultdict
 from typing import List, Tuple, Union
 
+from .. import cdp
 from . import tab, util
 from ._contradict import ContraDict
 from .config import Config, PathLike, is_posix
 from .connection import Connection
-from .. import cdp
 
 logger = logging.getLogger(__name__)
 
@@ -64,17 +64,17 @@ class Browser(Connection):
 
     @classmethod
     async def create(
-            cls,
-            config: Config = None,
-            *,
-            user_data_dir: PathLike = None,
-            headless: bool = False,
-            browser_executable_path: PathLike = None,
-            browser_args: List[str] = None,
-            sandbox: bool = True,
-            host: str = None,
-            port: int = None,
-            **kwargs,
+        cls,
+        config: Config = None,
+        *,
+        user_data_dir: PathLike = None,
+        headless: bool = False,
+        browser_executable_path: PathLike = None,
+        browser_args: List[str] = None,
+        sandbox: bool = True,
+        host: str = None,
+        port: int = None,
+        **kwargs,
     ) -> Browser:
         """
         entry point for creating an instance
@@ -111,7 +111,6 @@ class Browser(Connection):
             )
         # weakref.finalize(self, self._quit, self)
         self.config = config
-
 
         """current targets (all types"""
         self.info = None
@@ -180,7 +179,7 @@ class Browser(Connection):
     """alias for wait"""
 
     async def get(
-            self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
+        self, url="chrome://welcome", new_tab: bool = False, new_window: bool = False
     ) -> tab.Tab:
         """top level get. utilizes the first tab to retrieve given url.
 
@@ -197,8 +196,7 @@ class Browser(Connection):
             # creat new target using the browser session
             target_id = await self.send(
                 cdp.target.create_target(
-                    url, new_window=new_window,
-                    enable_begin_frame_control=True
+                    url, new_window=new_window, enable_begin_frame_control=True
                 )
             )
             connection = tab.Tab(target=target_id, parent=self, auto_attach=False)
@@ -223,15 +221,15 @@ class Browser(Connection):
         return connection
 
     async def create_context(
-            self,
-            url: str = "chrome://welcome",
-            new_tab: bool = False,
-            new_window: bool = True,
-            dispose_on_detach: bool = True,
-            proxy_server: str = None,
-            proxy_bypass_list: List[str] = None,
-            origins_with_universal_network_access: List[str] = None,
-            proxy_ssl_context=None,
+        self,
+        url: str = "chrome://welcome",
+        new_tab: bool = False,
+        new_window: bool = True,
+        dispose_on_detach: bool = True,
+        proxy_server: str = None,
+        proxy_bypass_list: List[str] = None,
+        origins_with_universal_network_access: List[str] = None,
+        proxy_ssl_context=None,
     ) -> tab.Tab:
         """
         creates a new browser context - mostly useful if you want to use proxies for different browser instances
@@ -288,7 +286,8 @@ class Browser(Connection):
         await self.sleep(0.5)
         connection: tab.Tab = next(
             filter(
-                lambda item: item.type_ == "page" and item.target_id == target_id,
+                lambda item: item.target.type_ == "page"
+                and item.target.target_id == target_id,
                 self.targets,
             )
         )
@@ -545,7 +544,9 @@ class Browser(Connection):
                     break
             else:
                 if t.type_ == "page":
-                    self._targets.append(tab.Tab(target=t, parent=self, auto_attach=False))
+                    self._targets.append(
+                        tab.Tab(target=t, parent=self, auto_attach=False)
+                    )
 
         for ctab in self._targets.copy():
             if ctab.target not in targets:
@@ -558,7 +559,7 @@ class Browser(Connection):
         return self
 
     def __getitem__(
-            self, item: Union[str, int, slice]
+        self, item: Union[str, int, slice]
     ) -> Union[tab.Tab, List[tab.Tab]]:
         """
         allows to get py:obj:`tab.Tab` instances by using browser[0], browser[1], etc.
@@ -691,7 +692,7 @@ class CookieJar:
         # self._connection = connection
 
     async def get_all(
-            self, requests_cookie_format: bool = False
+        self, requests_cookie_format: bool = False
     ) -> List[Union[cdp.network.Cookie, "http.cookiejar.Cookie"]]:
         """
         get all cookies
@@ -896,18 +897,18 @@ class HTTPApi:
 
 class BrowserContext:
     def __init__(
-            self,
-            config: Config = None,
-            *,
-            user_data_dir: PathLike = None,
-            headless: bool = False,
-            browser_executable_path: PathLike = None,
-            browser_args: List[str] = None,
-            sandbox: bool = True,
-            host: str = None,
-            port: int = None,
-            keep_open: bool = False,
-            **kwargs,
+        self,
+        config: Config = None,
+        *,
+        user_data_dir: PathLike = None,
+        headless: bool = False,
+        browser_executable_path: PathLike = None,
+        browser_args: List[str] = None,
+        sandbox: bool = True,
+        host: str = None,
+        port: int = None,
+        keep_open: bool = False,
+        **kwargs,
     ):
         self._config = config
         self._user_data_dir = user_data_dir

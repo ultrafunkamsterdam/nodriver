@@ -11,6 +11,7 @@ import typing
 from dataclasses import dataclass
 from .util import event_class, T_JSON_DICT
 
+from . import network
 from . import page
 from . import runtime
 from deprecated.sphinx import deprecated # type: ignore
@@ -100,8 +101,9 @@ class PseudoType(enum.Enum):
     CHECKMARK = "checkmark"
     BEFORE = "before"
     AFTER = "after"
+    EXPAND_ICON = "expand-icon"
     PICKER_ICON = "picker-icon"
-    INTEREST_HINT = "interest-hint"
+    INTEREST_BUTTON = "interest-button"
     MARKER = "marker"
     BACKDROP = "backdrop"
     COLUMN = "column"
@@ -331,7 +333,7 @@ class Node:
 
     adopted_style_sheets: typing.Optional[typing.List[StyleSheetId]] = None
 
-    is_ad_related: typing.Optional[bool] = None
+    ad_provenance: typing.Optional[network.AdProvenance] = None
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
@@ -397,8 +399,8 @@ class Node:
             json['affectedByStartingStyles'] = self.affected_by_starting_styles
         if self.adopted_style_sheets is not None:
             json['adoptedStyleSheets'] = [i.to_json() for i in self.adopted_style_sheets]
-        if self.is_ad_related is not None:
-            json['isAdRelated'] = self.is_ad_related
+        if self.ad_provenance is not None:
+            json['adProvenance'] = self.ad_provenance.to_json()
         return json
 
     @classmethod
@@ -438,7 +440,7 @@ class Node:
             is_scrollable=bool(json['isScrollable']) if json.get('isScrollable', None) is not None else None,
             affected_by_starting_styles=bool(json['affectedByStartingStyles']) if json.get('affectedByStartingStyles', None) is not None else None,
             adopted_style_sheets=[StyleSheetId.from_json(i) for i in json['adoptedStyleSheets']] if json.get('adoptedStyleSheets', None) is not None else None,
-            is_ad_related=bool(json['isAdRelated']) if json.get('isAdRelated', None) is not None else None,
+            ad_provenance=network.AdProvenance.from_json(json['adProvenance']) if json.get('adProvenance', None) is not None else None,
         )
 
 
@@ -2140,14 +2142,14 @@ class AdRelatedStateUpdated:
     '''
     #: The id of the node.
     node_id: NodeId
-    #: If the node is ad related.
-    is_ad_related: bool
+    #: The provenance of the ad related node, if it is ad related.
+    ad_provenance: typing.Optional[network.AdProvenance]
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> AdRelatedStateUpdated:
         return cls(
             node_id=NodeId.from_json(json['nodeId']),
-            is_ad_related=bool(json['isAdRelated'])
+            ad_provenance=network.AdProvenance.from_json(json['adProvenance']) if json.get('adProvenance', None) is not None else None
         )
 
 

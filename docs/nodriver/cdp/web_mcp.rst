@@ -1,7 +1,9 @@
-Tracing
-=======
+WebMCP
+======
 
-.. module:: nodriver.cdp.tracing
+*This CDP domain is experimental.*
+
+.. module:: nodriver.cdp.web_mcp
 
 * Types_
 * Commands_
@@ -15,32 +17,22 @@ yourself. Instead, the API creates objects for you as return
 values from commands, and then you can use those objects as
 arguments to other commands.
 
-.. autoclass:: MemoryDumpConfig
+.. autoclass:: Annotation
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: TraceConfig
+.. autoclass:: InvocationStatus
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: StreamFormat
+.. autoclass:: Tool
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: StreamCompression
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: MemoryDumpLevelOfDetail
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: TracingBackend
+.. autoclass:: RemovedTool
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -57,17 +49,13 @@ commands, and ``z`` is the return type you should pay attention
 to. For more information, see
 :ref:`Getting Started: Commands <getting-started-commands>`.
 
-.. autofunction:: end
+.. autofunction:: cancel_invocation
 
-.. autofunction:: get_categories
+.. autofunction:: disable
 
-.. autofunction:: get_track_event_descriptor
+.. autofunction:: enable
 
-.. autofunction:: record_clock_sync_marker
-
-.. autofunction:: request_memory_dump
-
-.. autofunction:: start
+.. autofunction:: invoke_tool
 
 Events
 ------
@@ -76,17 +64,22 @@ Generally, you do not need to instantiate CDP events
 yourself. Instead, the API creates events for you and then
 you use the event's attributes.
 
-.. autoclass:: BufferUsage
+.. autoclass:: ToolsAdded
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: DataCollected
+.. autoclass:: ToolsRemoved
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: TracingComplete
+.. autoclass:: ToolInvoked
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: ToolResponded
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

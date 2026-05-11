@@ -64,6 +64,16 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: PerformanceIssueType
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: PerformanceIssueDetails
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: MixedContentResolutionStatus
       :members:
       :undoc-members:
@@ -129,11 +139,6 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: LowTextContrastIssueDetails
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
 .. autoclass:: CorsIssueDetails
       :members:
       :undoc-members:
@@ -155,6 +160,11 @@ arguments to other commands.
       :exclude-members: from_json, to_json
 
 .. autoclass:: UnencodedDigestError
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: ConnectionAllowlistError
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -185,6 +195,11 @@ arguments to other commands.
       :exclude-members: from_json, to_json
 
 .. autoclass:: UnencodedDigestIssueDetails
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: ConnectionAllowlistIssueDetails
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -299,6 +314,21 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: PermissionElementIssueType
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: PermissionElementIssueDetails
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: SelectivePermissionsInterventionIssueDetails
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: InspectorIssueCode
       :members:
       :undoc-members:
@@ -330,8 +360,6 @@ this library, types ``x`` and ``y`` are the same for all
 commands, and ``z`` is the return type you should pay attention
 to. For more information, see
 :ref:`Getting Started: Commands <getting-started-commands>`.
-
-.. autofunction:: check_contrast
 
 .. autofunction:: check_forms_issues
 

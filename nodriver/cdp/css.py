@@ -13,6 +13,7 @@ from .util import event_class, T_JSON_DICT
 
 from . import dom
 from . import page
+from deprecated.sphinx import deprecated # type: ignore
 
 
 class StyleSheetOrigin(enum.Enum):
@@ -898,7 +899,13 @@ class CSSContainerQuery:
     CSS container query rule descriptor.
     '''
     #: Container query text.
+    #: Contains the query part without the container name for a single query.
+    #: Deprecated in favor of conditionText which contains the full prelude
+    #: after @container.
     text: str
+
+    #: CSSContainerRule.conditionText
+    condition_text: str
 
     #: The associated rule header range in the enclosing stylesheet (if
     #: available).
@@ -925,6 +932,7 @@ class CSSContainerQuery:
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json['text'] = self.text
+        json['conditionText'] = self.condition_text
         if self.range_ is not None:
             json['range'] = self.range_.to_json()
         if self.style_sheet_id is not None:
@@ -945,6 +953,7 @@ class CSSContainerQuery:
     def from_json(cls, json: T_JSON_DICT) -> CSSContainerQuery:
         return cls(
             text=str(json['text']),
+            condition_text=str(json['conditionText']),
             range_=SourceRange.from_json(json['range']) if json.get('range', None) is not None else None,
             style_sheet_id=dom.StyleSheetId.from_json(json['styleSheetId']) if json.get('styleSheetId', None) is not None else None,
             name=str(json['name']) if json.get('name', None) is not None else None,
@@ -1639,6 +1648,9 @@ class CSSFunctionRule:
     #: stylesheet rules) this rule came from.
     style_sheet_id: typing.Optional[dom.StyleSheetId] = None
 
+    #: The BackendNodeId of the DOM node that constitutes the origin tree scope of this rule.
+    origin_tree_scope_node_id: typing.Optional[dom.BackendNodeId] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json['name'] = self.name.to_json()
@@ -1647,6 +1659,8 @@ class CSSFunctionRule:
         json['children'] = [i.to_json() for i in self.children]
         if self.style_sheet_id is not None:
             json['styleSheetId'] = self.style_sheet_id.to_json()
+        if self.origin_tree_scope_node_id is not None:
+            json['originTreeScopeNodeId'] = self.origin_tree_scope_node_id.to_json()
         return json
 
     @classmethod
@@ -1657,6 +1671,7 @@ class CSSFunctionRule:
             parameters=[CSSFunctionParameter.from_json(i) for i in json['parameters']],
             children=[CSSFunctionNode.from_json(i) for i in json['children']],
             style_sheet_id=dom.StyleSheetId.from_json(json['styleSheetId']) if json.get('styleSheetId', None) is not None else None,
+            origin_tree_scope_node_id=dom.BackendNodeId.from_json(json['originTreeScopeNodeId']) if json.get('originTreeScopeNodeId', None) is not None else None,
         )
 
 
@@ -2365,6 +2380,7 @@ def set_media_text(
     return CSSMedia.from_json(json['media'])
 
 
+@deprecated(version="1.3")
 def set_container_query_text(
         style_sheet_id: dom.StyleSheetId,
         range_: SourceRange,
@@ -2372,6 +2388,9 @@ def set_container_query_text(
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,CSSContainerQuery]:
     '''
     Modifies the expression of a container query.
+    Deprecated. Use setContainerQueryConditionText instead.
+
+    .. deprecated:: 1.3
 
     **EXPERIMENTAL**
 
@@ -2386,6 +2405,33 @@ def set_container_query_text(
     params['text'] = text
     cmd_dict: T_JSON_DICT = {
         'method': 'CSS.setContainerQueryText',
+        'params': params,
+    }
+    json = yield cmd_dict
+    return CSSContainerQuery.from_json(json['containerQuery'])
+
+
+def set_container_query_condition_text(
+        style_sheet_id: dom.StyleSheetId,
+        range_: SourceRange,
+        text: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,CSSContainerQuery]:
+    '''
+
+
+    **EXPERIMENTAL**
+
+    :param style_sheet_id:
+    :param range_:
+    :param text:
+    :returns: The resulting CSS container query rule after modification.
+    '''
+    params: T_JSON_DICT = dict()
+    params['styleSheetId'] = style_sheet_id.to_json()
+    params['range'] = range_.to_json()
+    params['text'] = text
+    cmd_dict: T_JSON_DICT = {
+        'method': 'CSS.setContainerQueryConditionText',
         'params': params,
     }
     json = yield cmd_dict
