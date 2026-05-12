@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import collections
+import contextlib
 import inspect
 import itertools
 import json
@@ -77,15 +78,11 @@ class ProtocolException(Exception):
 
 
 class Transaction:
-    request: dict = None
-    events: list | None = None
-    id: int | None = None
-
     def __init__(self, request: dict):
-        self.id = request["id"]
-        self.request = request
-        self.result = None
-        self.events = []
+        self.id: int | None = request["id"]
+        self.request: dict = request
+        self.events: list = []
+        self.result: Any = None
 
     def __str__(self):
         return (
@@ -168,6 +165,24 @@ class Connection:
         """
         return self.transactions[-1]
 
+    def add_handler(self, event_type: type, callback: Callable) -> None:
+        """Register an event callback for a parsed CDP event type."""
+        if callback not in self.handlers[event_type]:
+            self.handlers[event_type].append(callback)
+
+    def remove_handler(self, event_type: type, callback: Callable) -> bool:
+        """Remove an event callback; returns True when a handler was removed."""
+        callbacks = self.handlers.get(event_type)
+        if not callbacks:
+            return False
+        try:
+            callbacks.remove(callback)
+        except ValueError:
+            return False
+        if not callbacks:
+            self.handlers.pop(event_type, None)
+        return True
+
     def __init__(
         self,
         target: TargetType = None,
@@ -187,6 +202,9 @@ class Connection:
         self._auto_attach = auto_attach
         self._transactions: List[Transaction] = []
         self._targets: List[Connection] = []
+        self._mapper: dict[int, asyncio.Future] = {}
+        self._tx_by_id: dict[int, Transaction] = {}
+        self._listener_task: asyncio.Task | None = None
 
     #
     # @classmethod
@@ -216,13 +234,29 @@ class Connection:
                 ping_timeout=PING_TIMEOUT,
                 max_size=MAX_SIZE,
             )
+            self._listener_task = asyncio.create_task(self._listener())
 
     async def aclose(self):
         """ """
+        self._fail_pending_futures(ConnectionError("Connection closing"))
+        if self._listener_task is not None:
+            self._listener_task.cancel()
+            with contextlib.suppress(asyncio.CancelledError):
+                await self._listener_task
+            self._listener_task = None
         if self.socket:
             await self.socket.close()
             await self.socket.wait_closed()
         self.socket = None
+
+    def _fail_pending_futures(self, exc: BaseException) -> None:
+        for future in self._mapper.values():
+            if not future.done():
+                if isinstance(exc, asyncio.CancelledError):
+                    future.cancel()
+                else:
+                    future.set_exception(exc)
+        self._mapper.clear()
 
     async def attach(self, target: TargetType = None):
         """ " """
@@ -372,56 +406,100 @@ class Connection:
             message["sessionId"] = self.session_id
         message.update(kwargs)
 
-        self.transactions.append(Transaction(message))
+        tx = Transaction(message)
+        self.transactions.append(tx)
+        self._tx_by_id[_id] = tx
+
+        future = asyncio.get_running_loop().create_future()
+        self._mapper[_id] = future
 
         while len(self.transactions) > 25:
             # clears the oldest request/response pair from transactions
-            self.transactions.pop(0)
+            removed_tx = self.transactions.pop(0)
+            if removed_tx.id is not None:
+                self._tx_by_id.pop(removed_tx.id, None)
+
+        ws = self.socket
+        if ws is None:
+            raise RuntimeError("WebSocket is not connected")
 
         async with self.lock:
-            await self.socket.send(json.dumps(message))
-            while True:
-                raw = await self.socket.recv()
-                response_message = json.loads(raw)
-                if not response_message:
-                    raise RuntimeError("no message from stream: %s" % raw)
-                if "result" not in response_message:
-                    if "error" in response_message:
-                        # set the exception visible in transactions
-                        self.transactions[-1].result = ProtocolException(
-                            response_message["error"]
+            try:
+                await ws.send(json.dumps(message))
+            except Exception:
+                self._mapper.pop(_id, None)
+                if not future.done():
+                    future.cancel()
+                raise
+
+        try:
+            response_message = await future
+        finally:
+            self._mapper.pop(_id, None)
+
+        if "error" in response_message:
+            exception = ProtocolException(response_message["error"])
+            tx.result = exception
+            raise exception
+
+        try:
+            cdp_obj.send(response_message["result"])
+        except StopIteration as e:
+            tx.result = e.value
+            return e.value
+        except (Exception,) as e:
+            tx.result = e
+            raise
+
+    async def _listener(self):
+        ws = self.socket
+        if ws is None:
+            raise RuntimeError("Listener started without an active socket connection.")
+
+        while True:
+            try:
+                raw = await ws.recv()
+                if not raw:
+                    continue
+                message = json.loads(raw)
+
+                if "id" in message:
+                    future = self._mapper.pop(message["id"], None)
+                    if future and not future.done():
+                        future.set_result(message)
+                    elif future and future.done():
+                        logger.warning(
+                            "received response for already-completed future id=%s",
+                            message.get("id"),
                         )
-                        raise self.transactions[-1].result
+                elif "method" in message:
+                    # Unsolicited events are out-of-band unless an explicit tx id is provided.
+                    await self.process_event(message, None)
 
-                    if "method" in response_message:
-                        # event
-                        try:
-                            await self.process_event(response_message, _id)
-                        except (Exception,):
-                            raise RuntimeError(
-                                "error processing event: %s which occurred during processing of event: %s"
-                                % (response_message, message)
-                            )
-                else:
-                    try:
-                        cdp_obj.send(response_message["result"])
-                    except StopIteration as e:
-                        # exception value holds the parsed response
-                        self.transactions[-1].result = e.value
-                        return e.value
-                    except (Exception,) as e:
-                        self.transactions[-1].result = e
-                        raise
-                    finally:
-                        await asyncio.sleep(0)
+            except websockets.exceptions.ConnectionClosed:
+                self._fail_pending_futures(ConnectionError("Connection closed"))
+                break
+            except asyncio.CancelledError as e:
+                self._fail_pending_futures(e)
+                break
+            except Exception as e:
+                logger.error(f"background listener error: {e}", exc_info=True)
 
-    async def process_event(self, message: dict, id: int) -> None:
+    async def process_event(self, message: dict, tx_id: int | None = None) -> None:
         """ """
         event = None
 
         try:
             event = cdp.util.parse_json_event(message)
-            self.transactions[-1].events.append(event)
+            tx = self._tx_by_id.get(tx_id) if tx_id is not None else None
+            if tx_id is not None and tx is None:
+                logger.debug(
+                    "received event for unknown transaction id=%s method=%s",
+                    tx_id,
+                    message.get("method"),
+                )
+            if tx is not None:
+                tx.events.append(event)
         except KeyError as e:
             logger.exception(e)
             return
