@@ -1870,8 +1870,11 @@ class Tab(Connection):
         res = await self.evaluate(
             "document.body.offsetHeight - window.innerHeight == window.scrollY"
         )
+        if isinstance(res, bool):
+            return res
         if res:
             return res[0].value
+        return False
 
     async def mouse_click(
         self,
