@@ -100,10 +100,6 @@ class ServiceWorkerRouterCondition:
 
     running_status: typing.Optional[ServiceWorkerVersionRunningStatus] = None
 
-    or: typing.Optional[typing.List[ServiceWorkerRouterCondition]] = None
-
-    not: typing.Optional[ServiceWorkerRouterCondition] = None
-
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         if self.url_pattern is not None:
@@ -116,10 +112,7 @@ class ServiceWorkerRouterCondition:
             json['requestDestination'] = self.request_destination
         if self.running_status is not None:
             json['runningStatus'] = self.running_status.to_json()
-        if self.or is not None:
-            json['or'] = [i.to_json() for i in self.or]
-        if self.not is not None:
-            json['not'] = self.not.to_json()
+
         return json
 
     @classmethod
@@ -128,10 +121,11 @@ class ServiceWorkerRouterCondition:
             url_pattern=str(json['urlPattern']) if json.get('urlPattern', None) is not None else None,
             request_method=str(json['requestMethod']) if json.get('requestMethod', None) is not None else None,
             request_mode=str(json['requestMode']) if json.get('requestMode', None) is not None else None,
-            request_destination=str(json['requestDestination']) if json.get('requestDestination', None) is not None else None,
-            running_status=ServiceWorkerVersionRunningStatus.from_json(json['runningStatus']) if json.get('runningStatus', None) is not None else None,
-            or=[ServiceWorkerRouterCondition.from_json(i) for i in json['or']] if json.get('or', None) is not None else None,
-            not=ServiceWorkerRouterCondition.from_json(json['not']) if json.get('not', None) is not None else None,
+            request_destination=str(json['requestDestination']) if json.get('requestDestination',
+                                                                            None) is not None else None,
+            running_status=ServiceWorkerVersionRunningStatus.from_json(json['runningStatus']) if json.get(
+                'runningStatus', None) is not None else None,
+
         )
 
 
@@ -194,7 +188,8 @@ class ServiceWorkerRouterSource:
     def from_json(cls, json: T_JSON_DICT) -> ServiceWorkerRouterSource:
         return cls(
             type_=ServiceWorkerRouterSourceType.from_json(json['type']),
-            source_dict=ServiceWorkerRouterSourceDict.from_json(json['sourceDict']) if json.get('sourceDict', None) is not None else None,
+            source_dict=ServiceWorkerRouterSourceDict.from_json(json['sourceDict']) if json.get('sourceDict',
+                                                                                                None) is not None else None,
         )
 
 
@@ -285,12 +280,16 @@ class ServiceWorkerVersion:
             script_url=str(json['scriptURL']),
             running_status=ServiceWorkerVersionRunningStatus.from_json(json['runningStatus']),
             status=ServiceWorkerVersionStatus.from_json(json['status']),
-            script_last_modified=float(json['scriptLastModified']) if json.get('scriptLastModified', None) is not None else None,
-            script_response_time=float(json['scriptResponseTime']) if json.get('scriptResponseTime', None) is not None else None,
-            controlled_clients=[target.TargetID.from_json(i) for i in json['controlledClients']] if json.get('controlledClients', None) is not None else None,
+            script_last_modified=float(json['scriptLastModified']) if json.get('scriptLastModified',
+                                                                               None) is not None else None,
+            script_response_time=float(json['scriptResponseTime']) if json.get('scriptResponseTime',
+                                                                               None) is not None else None,
+            controlled_clients=[target.TargetID.from_json(i) for i in json['controlledClients']] if json.get(
+                'controlledClients', None) is not None else None,
             target_id=target.TargetID.from_json(json['targetId']) if json.get('targetId', None) is not None else None,
             router_rules=str(json['routerRules']) if json.get('routerRules', None) is not None else None,
-            typed_router_rules=[ServiceWorkerRouterRule.from_json(i) for i in json['typedRouterRules']] if json.get('typedRouterRules', None) is not None else None,
+            typed_router_rules=[ServiceWorkerRouterRule.from_json(i) for i in json['typedRouterRules']] if json.get(
+                'typedRouterRules', None) is not None else None,
         )
 
 
@@ -337,7 +336,7 @@ def deliver_push_message(
         origin: str,
         registration_id: RegistrationID,
         data: str
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     '''
     :param origin:
     :param registration_id:
@@ -354,8 +353,7 @@ def deliver_push_message(
     json = yield cmd_dict
 
 
-def disable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-
+def disable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     cmd_dict: T_JSON_DICT = {
         'method': 'ServiceWorker.disable',
     }
@@ -367,7 +365,7 @@ def dispatch_sync_event(
         registration_id: RegistrationID,
         tag: str,
         last_chance: bool
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     '''
     :param origin:
     :param registration_id:
@@ -390,7 +388,7 @@ def dispatch_periodic_sync_event(
         origin: str,
         registration_id: RegistrationID,
         tag: str
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     '''
     :param origin:
     :param registration_id:
@@ -407,8 +405,7 @@ def dispatch_periodic_sync_event(
     json = yield cmd_dict
 
 
-def enable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-
+def enable() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     cmd_dict: T_JSON_DICT = {
         'method': 'ServiceWorker.enable',
     }
@@ -417,7 +414,7 @@ def enable() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
 
 def set_force_update_on_page_load(
         force_update_on_page_load: bool
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     '''
     :param force_update_on_page_load:
     '''
@@ -432,7 +429,7 @@ def set_force_update_on_page_load(
 
 def skip_waiting(
         scope_url: str
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     '''
     :param scope_url:
     '''
@@ -447,7 +444,7 @@ def skip_waiting(
 
 def start_worker(
         scope_url: str
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     '''
     :param scope_url:
     '''
@@ -460,8 +457,7 @@ def start_worker(
     json = yield cmd_dict
 
 
-def stop_all_workers() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-
+def stop_all_workers() -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     cmd_dict: T_JSON_DICT = {
         'method': 'ServiceWorker.stopAllWorkers',
     }
@@ -470,7 +466,7 @@ def stop_all_workers() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
 
 def stop_worker(
         version_id: str
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     '''
     :param version_id:
     '''
@@ -485,7 +481,7 @@ def stop_worker(
 
 def unregister(
         scope_url: str
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     '''
     :param scope_url:
     '''
@@ -500,7 +496,7 @@ def unregister(
 
 def update_registration(
         scope_url: str
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+) -> typing.Generator[T_JSON_DICT, T_JSON_DICT, None]:
     '''
     :param scope_url:
     '''
