@@ -192,6 +192,8 @@ class BaseAudioContext:
     #: Context sample rate.
     sample_rate: float
 
+    render_quantum_size: float
+
     realtime_data: typing.Optional[ContextRealtimeData] = None
 
     def to_json(self) -> T_JSON_DICT:
@@ -202,6 +204,7 @@ class BaseAudioContext:
         json['callbackBufferSize'] = self.callback_buffer_size
         json['maxOutputChannelCount'] = self.max_output_channel_count
         json['sampleRate'] = self.sample_rate
+        json['renderQuantumSize'] = self.render_quantum_size
         if self.realtime_data is not None:
             json['realtimeData'] = self.realtime_data.to_json()
         return json
@@ -215,6 +218,7 @@ class BaseAudioContext:
             callback_buffer_size=float(json['callbackBufferSize']),
             max_output_channel_count=float(json['maxOutputChannelCount']),
             sample_rate=float(json['sampleRate']),
+            render_quantum_size=float(json['renderQuantumSize']),
             realtime_data=ContextRealtimeData.from_json(json['realtimeData']) if json.get('realtimeData', None) is not None else None,
         )
 

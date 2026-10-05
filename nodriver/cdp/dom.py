@@ -135,8 +135,11 @@ class PseudoType(enum.Enum):
     FILE_SELECTOR_BUTTON = "file-selector-button"
     DETAILS_CONTENT = "details-content"
     PICKER = "picker"
+    SELECT_LISTBOX = "select-listbox"
     PERMISSION_ICON = "permission-icon"
     OVERSCROLL_AREA_PARENT = "overscroll-area-parent"
+    OVERSCROLL_BACKDROP = "overscroll-backdrop"
+    SKELETON = "skeleton"
 
     def to_json(self) -> str:
         return self.value
@@ -1855,7 +1858,8 @@ def get_anchor_element(
 
 def force_show_popover(
         node_id: NodeId,
-        enable: bool
+        enable: bool,
+        invoker_node_id: typing.Optional[BackendNodeId] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[NodeId]]:
     '''
     When enabling, this API force-opens the popover identified by nodeId
@@ -1865,17 +1869,118 @@ def force_show_popover(
 
     :param node_id: Id of the popover HTMLElement
     :param enable: If true, opens the popover and keeps it open. If false, closes the popover if it was previously force-opened.
+    :param invoker_node_id: *(Optional)* Optional ID of the element invoking this popover, used to establish the implicit anchor. If not provided, it will fall back to the first invoker in the document, preferring elements with a popovertarget attribute over those with a commandfor attribute. Note that if there are multiple invokers, this is just an estimate.
     :returns: List of popovers that were closed in order to respect popover stacking order.
     '''
     params: T_JSON_DICT = dict()
     params['nodeId'] = node_id.to_json()
     params['enable'] = enable
+    if invoker_node_id is not None:
+        params['invokerNodeId'] = invoker_node_id.to_json()
     cmd_dict: T_JSON_DICT = {
         'method': 'DOM.forceShowPopover',
         'params': params,
     }
     json = yield cmd_dict
     return [NodeId.from_json(i) for i in json['nodeIds']]
+
+
+def get_implicit_anchor_candidates(
+        node_id: NodeId
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[BackendNodeId]]:
+    '''
+    Returns candidate nodes that are configured as triggers for the given popover.
+
+    **EXPERIMENTAL**
+
+    :param node_id: Id of the popover HTMLElement.
+    :returns: Candidate elements that can invoke this popover.
+    '''
+    params: T_JSON_DICT = dict()
+    params['nodeId'] = node_id.to_json()
+    cmd_dict: T_JSON_DICT = {
+        'method': 'DOM.getImplicitAnchorCandidates',
+        'params': params,
+    }
+    json = yield cmd_dict
+    return [BackendNodeId.from_json(i) for i in json['backendNodeIds']]
+
+
+def force_show_interest(
+        node_id: NodeId,
+        enable: bool
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    When enabling, this API forces an element to gain interest in its target,
+    keeping interest active until disabled.
+
+    **EXPERIMENTAL**
+
+    :param node_id: Id of the interest invoker HTMLElement.
+    :param enable: If true, opens and holds interest. If false, releases forced interest.
+    '''
+    params: T_JSON_DICT = dict()
+    params['nodeId'] = node_id.to_json()
+    params['enable'] = enable
+    cmd_dict: T_JSON_DICT = {
+        'method': 'DOM.forceShowInterest',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
+def set_text_marker(
+        type_: str,
+        start: int,
+        end: int,
+        node_id: typing.Optional[NodeId] = None,
+        backend_node_id: typing.Optional[BackendNodeId] = None,
+        object_id: typing.Optional[runtime.RemoteObjectId] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Sets a spelling or grammar error marker on the given range of text.
+    See https://github.com/Igalia/explainers/blob/main/force-spelling-grammar-markers/README.md
+    Note: exactly one between nodeId, backendNodeId and objectId should be passed
+    to identify the node.
+
+    **EXPERIMENTAL**
+
+    :param node_id: *(Optional)* Identifier of the node.
+    :param backend_node_id: *(Optional)* Identifier of the backend node.
+    :param object_id: *(Optional)* JavaScript object id of the node wrapper.
+    :param type_: The type of marker to set on the given range of text.
+    :param start: Start offset into the element's rendered text in UTF-16 code units. For a text control, an offset into the control's value. Offsets count text in DOM order and do not enter shadow trees. To mark text inside a shadow tree, pass the element inside the shadow tree.
+    :param end: End offset (exclusive) in the same units and space as start.
+    '''
+    params: T_JSON_DICT = dict()
+    if node_id is not None:
+        params['nodeId'] = node_id.to_json()
+    if backend_node_id is not None:
+        params['backendNodeId'] = backend_node_id.to_json()
+    if object_id is not None:
+        params['objectId'] = object_id.to_json()
+    params['type'] = type_
+    params['start'] = start
+    params['end'] = end
+    cmd_dict: T_JSON_DICT = {
+        'method': 'DOM.setTextMarker',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
+def clear_text_markers() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Clears the spelling and grammar error text markers overlapping the ranges
+    set by setTextMarker in this session. These markers are also removed when
+    the DOM domain is disabled or the session ends.
+
+    **EXPERIMENTAL**
+    '''
+    cmd_dict: T_JSON_DICT = {
+        'method': 'DOM.clearTextMarkers',
+    }
+    json = yield cmd_dict
 
 
 @event_class('DOM.attributeModified')

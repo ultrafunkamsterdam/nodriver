@@ -54,6 +54,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: ImcbHighlightConfig
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: HighlightConfig
       :members:
       :undoc-members:
@@ -85,6 +90,16 @@ arguments to other commands.
       :exclude-members: from_json, to_json
 
 .. autoclass:: HingeConfig
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: DisplayCutoutShape
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: DisplayCutoutConfig
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -167,6 +182,8 @@ to. For more information, see
 .. autofunction:: set_show_container_query_overlays
 
 .. autofunction:: set_show_debug_borders
+
+.. autofunction:: set_show_display_cutout
 
 .. autofunction:: set_show_flex_overlays
 

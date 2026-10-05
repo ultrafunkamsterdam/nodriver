@@ -125,6 +125,8 @@ commands, and ``z`` is the return type you should pay attention
 to. For more information, see
 :ref:`Getting Started: Commands <getting-started-commands>`.
 
+.. autofunction:: clear_text_markers
+
 .. autofunction:: collect_class_names_from_subtree
 
 .. autofunction:: copy_to
@@ -138,6 +140,8 @@ to. For more information, see
 .. autofunction:: enable
 
 .. autofunction:: focus
+
+.. autofunction:: force_show_interest
 
 .. autofunction:: force_show_popover
 
@@ -162,6 +166,8 @@ to. For more information, see
 .. autofunction:: get_flattened_document
 
 .. autofunction:: get_frame_owner
+
+.. autofunction:: get_implicit_anchor_candidates
 
 .. autofunction:: get_node_for_location
 
@@ -228,6 +234,8 @@ to. For more information, see
 .. autofunction:: set_node_value
 
 .. autofunction:: set_outer_html
+
+.. autofunction:: set_text_marker
 
 .. autofunction:: undo
 

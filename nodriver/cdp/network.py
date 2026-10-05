@@ -84,21 +84,6 @@ class RequestId(str):
         return 'RequestId({})'.format(super().__repr__())
 
 
-class InterceptionId(str):
-    '''
-    Unique intercepted request identifier.
-    '''
-    def to_json(self) -> str:
-        return self
-
-    @classmethod
-    def from_json(cls, json: str) -> InterceptionId:
-        return cls(json)
-
-    def __repr__(self):
-        return 'InterceptionId({})'.format(super().__repr__())
-
-
 class ErrorReason(enum.Enum):
     '''
     Network level fetch failure reason.
@@ -1409,7 +1394,6 @@ class SetCookieBlockedReason(enum.Enum):
     SAME_SITE_NONE_INSECURE = "SameSiteNoneInsecure"
     USER_PREFERENCES = "UserPreferences"
     THIRD_PARTY_PHASEOUT = "ThirdPartyPhaseout"
-    THIRD_PARTY_BLOCKED_IN_FIRST_PARTY_SET = "ThirdPartyBlockedInFirstPartySet"
     SYNTAX_ERROR = "SyntaxError"
     SCHEME_NOT_SUPPORTED = "SchemeNotSupported"
     OVERWRITE_SECURE = "OverwriteSecure"
@@ -1444,7 +1428,6 @@ class CookieBlockedReason(enum.Enum):
     SAME_SITE_NONE_INSECURE = "SameSiteNoneInsecure"
     USER_PREFERENCES = "UserPreferences"
     THIRD_PARTY_PHASEOUT = "ThirdPartyPhaseout"
-    THIRD_PARTY_BLOCKED_IN_FIRST_PARTY_SET = "ThirdPartyBlockedInFirstPartySet"
     UNKNOWN_ERROR = "UnknownError"
     SCHEMEFUL_SAME_SITE_STRICT = "SchemefulSameSiteStrict"
     SCHEMEFUL_SAME_SITE_LAX = "SchemefulSameSiteLax"
@@ -1468,10 +1451,6 @@ class CookieExemptionReason(enum.Enum):
     '''
     NONE = "None"
     USER_SETTING = "UserSetting"
-    TPCD_METADATA = "TPCDMetadata"
-    TPCD_DEPRECATION_TRIAL = "TPCDDeprecationTrial"
-    TOP_LEVEL_TPCD_DEPRECATION_TRIAL = "TopLevelTPCDDeprecationTrial"
-    TPCD_HEURISTICS = "TPCDHeuristics"
     ENTERPRISE_POLICY = "EnterprisePolicy"
     STORAGE_ACCESS = "StorageAccess"
     TOP_LEVEL_STORAGE_ACCESS = "TopLevelStorageAccess"
@@ -1750,56 +1729,6 @@ class AuthChallengeResponse:
         )
 
 
-class InterceptionStage(enum.Enum):
-    '''
-    Stages of the interception to begin intercepting. Request will intercept before the request is
-    sent. Response will intercept after the response is received.
-    '''
-    REQUEST = "Request"
-    HEADERS_RECEIVED = "HeadersReceived"
-
-    def to_json(self) -> str:
-        return self.value
-
-    @classmethod
-    def from_json(cls, json: str) -> InterceptionStage:
-        return cls(json)
-
-
-@dataclass
-class RequestPattern:
-    '''
-    Request pattern for interception.
-    '''
-    #: Wildcards (``'*'`` -> zero or more, ``'?'`` -> exactly one) are allowed. Escape character is
-    #: backslash. Omitting is equivalent to ``"*"``.
-    url_pattern: typing.Optional[str] = None
-
-    #: If set, only requests for matching resource types will be intercepted.
-    resource_type: typing.Optional[ResourceType] = None
-
-    #: Stage at which to begin intercepting requests. Default is Request.
-    interception_stage: typing.Optional[InterceptionStage] = None
-
-    def to_json(self) -> T_JSON_DICT:
-        json: T_JSON_DICT = dict()
-        if self.url_pattern is not None:
-            json['urlPattern'] = self.url_pattern
-        if self.resource_type is not None:
-            json['resourceType'] = self.resource_type.to_json()
-        if self.interception_stage is not None:
-            json['interceptionStage'] = self.interception_stage.to_json()
-        return json
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> RequestPattern:
-        return cls(
-            url_pattern=str(json['urlPattern']) if json.get('urlPattern', None) is not None else None,
-            resource_type=ResourceType.from_json(json['resourceType']) if json.get('resourceType', None) is not None else None,
-            interception_stage=InterceptionStage.from_json(json['interceptionStage']) if json.get('interceptionStage', None) is not None else None,
-        )
-
-
 @dataclass
 class SignedExchangeSignature:
     '''
@@ -1998,23 +1927,6 @@ class SignedExchangeInfo:
             security_details=SecurityDetails.from_json(json['securityDetails']) if json.get('securityDetails', None) is not None else None,
             errors=[SignedExchangeError.from_json(i) for i in json['errors']] if json.get('errors', None) is not None else None,
         )
-
-
-class ContentEncoding(enum.Enum):
-    '''
-    List of content encodings supported by the backend.
-    '''
-    DEFLATE = "deflate"
-    GZIP = "gzip"
-    BR = "br"
-    ZSTD = "zstd"
-
-    def to_json(self) -> str:
-        return self.value
-
-    @classmethod
-    def from_json(cls, json: str) -> ContentEncoding:
-        return cls(json)
 
 
 @dataclass
@@ -2403,6 +2315,9 @@ class AdProvenance:
     filterlist_rule: typing.Optional[str] = None
 
     #: The script ancestry that created the ad, if any.
+    #: Note: depending on the context, this may represent the full ancestry up
+    #: to the root script, or it may contain only one script representing the
+    #: immediate ancestor.
     ad_script_ancestry: typing.Optional[AdAncestry] = None
 
     def to_json(self) -> T_JSON_DICT:
@@ -2909,9 +2824,11 @@ class DeviceBoundSessionEventId(str):
 class DeviceBoundSessionFetchResult(enum.Enum):
     '''
     A fetch result for a device bound session creation or refresh.
+    LINT.IfChange(DeviceBoundSessionFetchResult)
     '''
     SUCCESS = "Success"
-    KEY_ERROR = "KeyError"
+    SIGNING_KEY_GENERATION_ERROR = "SigningKeyGenerationError"
+    ATTESTATION_KEY_GENERATION_ERROR = "AttestationKeyGenerationError"
     SIGNING_ERROR = "SigningError"
     TRANSIENT_SIGNING_ERROR = "TransientSigningError"
     SERVER_REQUESTED_TERMINATION = "ServerRequestedTermination"
@@ -2979,6 +2896,12 @@ class DeviceBoundSessionFetchResult(enum.Enum):
     INVALID_FEDERATED_SESSION_PROVIDER_FAILED_TO_RESTORE_KEY = "InvalidFederatedSessionProviderFailedToRestoreKey"
     FAILED_TO_UNWRAP_KEY = "FailedToUnwrapKey"
     SESSION_DELETED_DURING_REFRESH = "SessionDeletedDuringRefresh"
+    CROSS_ORIGIN_REGISTRATION_SITE_NOT_INCLUDED = "CrossOriginRegistrationSiteNotIncluded"
+    INVALID_PRE_PROVISIONED_KEY_INITIATOR_MISSING = "InvalidPreProvisionedKeyInitiatorMissing"
+    PRE_PROVISIONED_KEY_ACCESS_NOT_GRANTED = "PreProvisionedKeyAccessNotGranted"
+    PRE_PROVISIONED_KEY_NOT_FOUND = "PreProvisionedKeyNotFound"
+    ATTESTATION_CERTIFICATION_ERROR = "AttestationCertificationError"
+    ATTESTATION_SIGNING_ERROR = "AttestationSigningError"
 
     def to_json(self) -> str:
         return self.value
@@ -3068,11 +2991,13 @@ class RefreshEventDetails:
     Session event details specific to refresh.
     '''
     #: The result of a refresh.
+    #: LINT.IfChange(DeviceBoundSessionRefreshResult)
     refresh_result: str
 
     #: See comments on ``net::device_bound_sessions::RefreshEventResult::was_fully_proactive_refresh``.
     was_fully_proactive_refresh: bool
 
+    #: LINT.ThenChange(//net/device_bound_sessions/refresh_result.h:DeviceBoundSessionRefreshResult,//content/browser/devtools/protocol/network_handler.cc:DeviceBoundSessionRefreshResult)
     #: If there was a fetch attempt, the result of that.
     fetch_result: typing.Optional[DeviceBoundSessionFetchResult] = None
 
@@ -3223,37 +3148,6 @@ class LoadNetworkResourceOptions:
         )
 
 
-def set_accepted_encodings(
-        encodings: typing.List[ContentEncoding]
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-    '''
-    Sets a list of content encodings that will be accepted. Empty list means no encoding is accepted.
-
-    **EXPERIMENTAL**
-
-    :param encodings: List of accepted content encodings.
-    '''
-    params: T_JSON_DICT = dict()
-    params['encodings'] = [i.to_json() for i in encodings]
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Network.setAcceptedEncodings',
-        'params': params,
-    }
-    json = yield cmd_dict
-
-
-def clear_accepted_encodings_override() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-    '''
-    Clears accepted encodings set by setAcceptedEncodings
-
-    **EXPERIMENTAL**
-    '''
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Network.clearAcceptedEncodingsOverride',
-    }
-    json = yield cmd_dict
-
-
 @deprecated(version="1.3")
 def can_clear_browser_cache() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,bool]:
     '''
@@ -3318,60 +3212,6 @@ def clear_browser_cookies() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
     cmd_dict: T_JSON_DICT = {
         'method': 'Network.clearBrowserCookies',
-    }
-    json = yield cmd_dict
-
-
-@deprecated(version="1.3")
-def continue_intercepted_request(
-        interception_id: InterceptionId,
-        error_reason: typing.Optional[ErrorReason] = None,
-        raw_response: typing.Optional[str] = None,
-        url: typing.Optional[str] = None,
-        method: typing.Optional[str] = None,
-        post_data: typing.Optional[str] = None,
-        headers: typing.Optional[Headers] = None,
-        auth_challenge_response: typing.Optional[AuthChallengeResponse] = None
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-    '''
-    Response to Network.requestIntercepted which either modifies the request to continue with any
-    modifications, or blocks it, or completes it with the provided response bytes. If a network
-    fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted
-    event will be sent with the same InterceptionId.
-    Deprecated, use Fetch.continueRequest, Fetch.fulfillRequest and Fetch.failRequest instead.
-
-    .. deprecated:: 1.3
-
-    **EXPERIMENTAL**
-
-    :param interception_id:
-    :param error_reason: *(Optional)* If set this causes the request to fail with the given reason. Passing ```Aborted```` for requests marked with ````isNavigationRequest``` also cancels the navigation. Must not be set in response to an authChallenge.
-    :param raw_response: *(Optional)* If set the requests completes using with the provided base64 encoded raw response, including HTTP status line and headers etc... Must not be set in response to an authChallenge. (Encoded as a base64 string when passed over JSON)
-    :param url: *(Optional)* If set the request url will be modified in a way that's not observable by page. Must not be set in response to an authChallenge.
-    :param method: *(Optional)* If set this allows the request method to be overridden. Must not be set in response to an authChallenge.
-    :param post_data: *(Optional)* If set this allows postData to be set. Must not be set in response to an authChallenge.
-    :param headers: *(Optional)* If set this allows the request headers to be changed. Must not be set in response to an authChallenge.
-    :param auth_challenge_response: *(Optional)* Response to a requestIntercepted with an authChallenge. Must not be set otherwise.
-    '''
-    params: T_JSON_DICT = dict()
-    params['interceptionId'] = interception_id.to_json()
-    if error_reason is not None:
-        params['errorReason'] = error_reason.to_json()
-    if raw_response is not None:
-        params['rawResponse'] = raw_response
-    if url is not None:
-        params['url'] = url
-    if method is not None:
-        params['method'] = method
-    if post_data is not None:
-        params['postData'] = post_data
-    if headers is not None:
-        params['headers'] = headers.to_json()
-    if auth_challenge_response is not None:
-        params['authChallengeResponse'] = auth_challenge_response.to_json()
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Network.continueInterceptedRequest',
-        'params': params,
     }
     json = yield cmd_dict
 
@@ -3698,57 +3538,6 @@ def get_request_post_data(
     )
 
 
-def get_response_body_for_interception(
-        interception_id: InterceptionId
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[str, bool]]:
-    '''
-    Returns content served for the given currently intercepted request.
-
-    **EXPERIMENTAL**
-
-    :param interception_id: Identifier for the intercepted request to get body for.
-    :returns: A tuple with the following items:
-
-        0. **body** - Response body.
-        1. **base64Encoded** - True, if content was sent as base64.
-    '''
-    params: T_JSON_DICT = dict()
-    params['interceptionId'] = interception_id.to_json()
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Network.getResponseBodyForInterception',
-        'params': params,
-    }
-    json = yield cmd_dict
-    return (
-        str(json['body']),
-        bool(json['base64Encoded'])
-    )
-
-
-def take_response_body_for_interception_as_stream(
-        interception_id: InterceptionId
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,io.StreamHandle]:
-    '''
-    Returns a handle to the stream representing the response body. Note that after this command,
-    the intercepted request can't be continued as is -- you either need to cancel it or to provide
-    the response body. The stream only supports sequential read, IO.read will fail if the position
-    is specified.
-
-    **EXPERIMENTAL**
-
-    :param interception_id:
-    :returns: 
-    '''
-    params: T_JSON_DICT = dict()
-    params['interceptionId'] = interception_id.to_json()
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Network.takeResponseBodyForInterceptionAsStream',
-        'params': params,
-    }
-    json = yield cmd_dict
-    return io.StreamHandle.from_json(json['stream'])
-
-
 def replay_xhr(
         request_id: RequestId
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
@@ -3974,29 +3763,6 @@ def set_attach_debug_stack(
     params['enabled'] = enabled
     cmd_dict: T_JSON_DICT = {
         'method': 'Network.setAttachDebugStack',
-        'params': params,
-    }
-    json = yield cmd_dict
-
-
-@deprecated(version="1.3")
-def set_request_interception(
-        patterns: typing.List[RequestPattern]
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-    '''
-    Sets the requests to intercept that match the provided patterns and optionally resource types.
-    Deprecated, please use Fetch.enable instead.
-
-    .. deprecated:: 1.3
-
-    **EXPERIMENTAL**
-
-    :param patterns: Requests matching any of these patterns will be forwarded and wait for the corresponding continueInterceptedRequest call.
-    '''
-    params: T_JSON_DICT = dict()
-    params['patterns'] = [i.to_json() for i in patterns]
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Network.setRequestInterception',
         'params': params,
     }
     json = yield cmd_dict
@@ -4311,67 +4077,6 @@ class LoadingFinished:
             request_id=RequestId.from_json(json['requestId']),
             timestamp=MonotonicTime.from_json(json['timestamp']),
             encoded_data_length=float(json['encodedDataLength'])
-        )
-
-
-@deprecated(version="1.3")
-@event_class('Network.requestIntercepted')
-@dataclass
-class RequestIntercepted:
-    '''
-    **EXPERIMENTAL**
-
-    Details of an intercepted HTTP request, which must be either allowed, blocked, modified or
-    mocked.
-    Deprecated, use Fetch.requestPaused instead.
-    '''
-    #: Each request the page makes will have a unique id, however if any redirects are encountered
-    #: while processing that fetch, they will be reported with the same id as the original fetch.
-    #: Likewise if HTTP authentication is needed then the same fetch id will be used.
-    interception_id: InterceptionId
-    request: Request
-    #: The id of the frame that initiated the request.
-    frame_id: page.FrameId
-    #: How the requested resource will be used.
-    resource_type: ResourceType
-    #: Whether this is a navigation request, which can abort the navigation completely.
-    is_navigation_request: bool
-    #: Set if the request is a navigation that will result in a download.
-    #: Only present after response is received from the server (i.e. HeadersReceived stage).
-    is_download: typing.Optional[bool]
-    #: Redirect location, only sent if a redirect was intercepted.
-    redirect_url: typing.Optional[str]
-    #: Details of the Authorization Challenge encountered. If this is set then
-    #: continueInterceptedRequest must contain an authChallengeResponse.
-    auth_challenge: typing.Optional[AuthChallenge]
-    #: Response error if intercepted at response stage or if redirect occurred while intercepting
-    #: request.
-    response_error_reason: typing.Optional[ErrorReason]
-    #: Response code if intercepted at response stage or if redirect occurred while intercepting
-    #: request or auth retry occurred.
-    response_status_code: typing.Optional[int]
-    #: Response headers if intercepted at the response stage or if redirect occurred while
-    #: intercepting request or auth retry occurred.
-    response_headers: typing.Optional[Headers]
-    #: If the intercepted request had a corresponding requestWillBeSent event fired for it, then
-    #: this requestId will be the same as the requestId present in the requestWillBeSent event.
-    request_id: typing.Optional[RequestId]
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> RequestIntercepted:
-        return cls(
-            interception_id=InterceptionId.from_json(json['interceptionId']),
-            request=Request.from_json(json['request']),
-            frame_id=page.FrameId.from_json(json['frameId']),
-            resource_type=ResourceType.from_json(json['resourceType']),
-            is_navigation_request=bool(json['isNavigationRequest']),
-            is_download=bool(json['isDownload']) if json.get('isDownload', None) is not None else None,
-            redirect_url=str(json['redirectUrl']) if json.get('redirectUrl', None) is not None else None,
-            auth_challenge=AuthChallenge.from_json(json['authChallenge']) if json.get('authChallenge', None) is not None else None,
-            response_error_reason=ErrorReason.from_json(json['responseErrorReason']) if json.get('responseErrorReason', None) is not None else None,
-            response_status_code=int(json['responseStatusCode']) if json.get('responseStatusCode', None) is not None else None,
-            response_headers=Headers.from_json(json['responseHeaders']) if json.get('responseHeaders', None) is not None else None,
-            request_id=RequestId.from_json(json['requestId']) if json.get('requestId', None) is not None else None
         )
 
 
@@ -4808,14 +4513,14 @@ class DirectTCPSocketAborted:
     Fired when direct_socket.TCPSocket is aborted.
     '''
     identifier: RequestId
-    error_message: str
+    error_message: ErrorReason
     timestamp: MonotonicTime
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> DirectTCPSocketAborted:
         return cls(
             identifier=RequestId.from_json(json['identifier']),
-            error_message=str(json['errorMessage']),
+            error_message=ErrorReason.from_json(json['errorMessage']),
             timestamp=MonotonicTime.from_json(json['timestamp'])
         )
 
@@ -4980,14 +4685,14 @@ class DirectUDPSocketAborted:
     Fired when direct_socket.UDPSocket is aborted.
     '''
     identifier: RequestId
-    error_message: str
+    error_message: ErrorReason
     timestamp: MonotonicTime
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> DirectUDPSocketAborted:
         return cls(
             identifier=RequestId.from_json(json['identifier']),
-            error_message=str(json['errorMessage']),
+            error_message=ErrorReason.from_json(json['errorMessage']),
             timestamp=MonotonicTime.from_json(json['timestamp'])
         )
 

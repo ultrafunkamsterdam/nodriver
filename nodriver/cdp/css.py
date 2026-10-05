@@ -223,6 +223,41 @@ class Value:
 
 
 @dataclass
+class SpecificityComponent:
+    '''
+    Contribution of an individual simple selector to specificity.
+    '''
+    #: The simple selector text that contributes to specificity.
+    text: str
+
+    #: The a component contribution.
+    a: int
+
+    #: The b component contribution.
+    b: int
+
+    #: The c component contribution.
+    c: int
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['text'] = self.text
+        json['a'] = self.a
+        json['b'] = self.b
+        json['c'] = self.c
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> SpecificityComponent:
+        return cls(
+            text=str(json['text']),
+            a=int(json['a']),
+            b=int(json['b']),
+            c=int(json['c']),
+        )
+
+
+@dataclass
 class Specificity:
     '''
     Specificity:
@@ -238,11 +273,16 @@ class Specificity:
     #: The c component, which represents the number of type selectors and pseudo-elements.
     c: int
 
+    #: Per-simple-selector contributions used to explain this specificity.
+    components: typing.Optional[typing.List[SpecificityComponent]] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json['a'] = self.a
         json['b'] = self.b
         json['c'] = self.c
+        if self.components is not None:
+            json['components'] = [i.to_json() for i in self.components]
         return json
 
     @classmethod
@@ -251,6 +291,7 @@ class Specificity:
             a=int(json['a']),
             b=int(json['b']),
             c=int(json['c']),
+            components=[SpecificityComponent.from_json(i) for i in json['components']] if json.get('components', None) is not None else None,
         )
 
 
@@ -1871,6 +1912,27 @@ def force_starting_style(
     params['forced'] = forced
     cmd_dict: T_JSON_DICT = {
         'method': 'CSS.forceStartingStyle',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
+def force_position_try_option(
+        node_id: dom.NodeId,
+        index: typing.Optional[int] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Forces a position-try option for the given node.
+
+    :param node_id: The element id for which to force the position-try option.
+    :param index: *(Optional)* The 1-based index of the position-try fallback option, 0 for base position (no fallback), or omitted to clear the forced state.
+    '''
+    params: T_JSON_DICT = dict()
+    params['nodeId'] = node_id.to_json()
+    if index is not None:
+        params['index'] = index
+    cmd_dict: T_JSON_DICT = {
+        'method': 'CSS.forcePositionTryOption',
         'params': params,
     }
     json = yield cmd_dict

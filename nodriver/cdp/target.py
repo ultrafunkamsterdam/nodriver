@@ -79,6 +79,10 @@ class TargetInfo:
     #: the type of "page", this may be set to "prerender".
     subtype: typing.Optional[str] = None
 
+    #: Embedder-specific target metadata. This is only set for targets of
+    #: type "tab".
+    embedder_data: typing.Optional[dict] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json['targetId'] = self.target_id.to_json()
@@ -99,6 +103,8 @@ class TargetInfo:
             json['browserContextId'] = self.browser_context_id.to_json()
         if self.subtype is not None:
             json['subtype'] = self.subtype
+        if self.embedder_data is not None:
+            json['embedderData'] = self.embedder_data
         return json
 
     @classmethod
@@ -116,6 +122,7 @@ class TargetInfo:
             parent_frame_id=page.FrameId.from_json(json['parentFrameId']) if json.get('parentFrameId', None) is not None else None,
             browser_context_id=browser.BrowserContextID.from_json(json['browserContextId']) if json.get('browserContextId', None) is not None else None,
             subtype=str(json['subtype']) if json.get('subtype', None) is not None else None,
+            embedder_data=dict(json['embedderData']) if json.get('embedderData', None) is not None else None,
         )
 
 
@@ -392,8 +399,8 @@ def create_target(
     :param new_window: *(Optional)* Whether to create a new Window or Tab (false by default, not supported by headless shell).
     :param background: *(Optional)* Whether to create the target in background or foreground (false by default, not supported by headless shell).
     :param for_tab: **(EXPERIMENTAL)** *(Optional)* Whether to create the target of type "tab".
-    :param hidden: **(EXPERIMENTAL)** *(Optional)* Whether to create a hidden target. The hidden target is observable via protocol, but not present in the tab UI strip. Cannot be created with ```forTab: true````, ````newWindow: true```` or ````background: false```. The life-time of the tab is limited to the life-time of the session.
-    :param focus: **(EXPERIMENTAL)** *(Optional)* If specified, the option is used to determine if the new target should be focused or not. By default, the focus behavior depends on the value of the background field. For example, background=false and focus=false will result in the target tab being opened but the browser window remain unchanged (if it was in the background, it will remain in the background) and background=false with focus=undefined will result in the window being focused. Using background: true and focus: true is not supported and will result in an error.
+    :param hidden: **(EXPERIMENTAL)** *(Optional)* Whether to create a hidden target. The hidden target is observable via protocol, but not present in the tab UI strip. Cannot be created with ```forTab: true````, ````newWindow: true```` or ````background: false````. The life-time of the tab is limited to the life-time of the session.
+    :param focus: **(EXPERIMENTAL)** *(Optional)* If specified, determines whether the new target should be focused. By default, the focus behavior depends on the ````background```` parameter: - If ````background```` is false (default) and ````focus```` is omitted, the new target is focused and the browser window is brought to the foreground. - If ````background```` is false and ````focus```` is false, the target is opened but the browser window's focus remains unchanged (e.g., if the window was in the background, it stays there). - If ````background```` is true, setting ````focus``` to true is not supported and will result in an error.
     :returns: The id of the page opened.
     '''
     params: T_JSON_DICT = dict()
@@ -681,7 +688,7 @@ def open_dev_tools(
     **EXPERIMENTAL**
 
     :param target_id: This can be the page or tab target ID.
-    :param panel_id: *(Optional)* The id of the panel we want DevTools to open initially. Currently supported panels are elements, console, network, sources, resources and performance.
+    :param panel_id: *(Optional)* The id of the panel we want DevTools to open initially. Currently supported panels are elements, console, network, sources, resources, timeline, chrome-recorder, heap-profiler, lighthouse, and security.
     :returns: The targetId of DevTools page target.
     '''
     params: T_JSON_DICT = dict()

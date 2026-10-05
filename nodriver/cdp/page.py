@@ -145,7 +145,6 @@ class PermissionsPolicyFeature(enum.Enum):
     ALL_SCREENS_CAPTURE = "all-screens-capture"
     AMBIENT_LIGHT_SENSOR = "ambient-light-sensor"
     ARIA_NOTIFY = "aria-notify"
-    ATTRIBUTION_REPORTING = "attribution-reporting"
     AUTOFILL = "autofill"
     AUTOPLAY = "autoplay"
     BLUETOOTH = "bluetooth"
@@ -188,7 +187,6 @@ class PermissionsPolicyFeature(enum.Enum):
     DIGITAL_CREDENTIALS_GET = "digital-credentials-get"
     DIRECT_SOCKETS = "direct-sockets"
     DIRECT_SOCKETS_MULTICAST = "direct-sockets-multicast"
-    DIRECT_SOCKETS_PRIVATE = "direct-sockets-private"
     DISPLAY_CAPTURE = "display-capture"
     DOCUMENT_DOMAIN = "document-domain"
     ENCRYPTED_MEDIA = "encrypted-media"
@@ -200,11 +198,11 @@ class PermissionsPolicyFeature(enum.Enum):
     GAMEPAD = "gamepad"
     GEOLOCATION = "geolocation"
     GYROSCOPE = "gyroscope"
+    HAPTICS = "haptics"
     HID = "hid"
     IDENTITY_CREDENTIALS_GET = "identity-credentials-get"
     IDLE_DETECTION = "idle-detection"
     INTEREST_COHORT = "interest-cohort"
-    JOIN_AD_INTEREST_GROUP = "join-ad-interest-group"
     KEYBOARD_MAP = "keyboard-map"
     LANGUAGE_DETECTOR = "language-detector"
     LANGUAGE_MODEL = "language-model"
@@ -221,14 +219,12 @@ class PermissionsPolicyFeature(enum.Enum):
     OTP_CREDENTIALS = "otp-credentials"
     PAYMENT = "payment"
     PICTURE_IN_PICTURE = "picture-in-picture"
-    PRIVATE_AGGREGATION = "private-aggregation"
     PRIVATE_STATE_TOKEN_ISSUANCE = "private-state-token-issuance"
     PRIVATE_STATE_TOKEN_REDEMPTION = "private-state-token-redemption"
     PUBLICKEY_CREDENTIALS_CREATE = "publickey-credentials-create"
     PUBLICKEY_CREDENTIALS_GET = "publickey-credentials-get"
-    RECORD_AD_AUCTION_EVENTS = "record-ad-auction-events"
+    PUBLICKEY_CREDENTIALS_REMOTE_CLIENT_DATA_JSON = "publickey-credentials-remote-client-data-json"
     REWRITER = "rewriter"
-    RUN_AD_AUCTION = "run-ad-auction"
     SCREEN_WAKE_LOCK = "screen-wake-lock"
     SERIAL = "serial"
     SHARED_STORAGE = "shared-storage"
@@ -246,6 +242,7 @@ class PermissionsPolicyFeature(enum.Enum):
     USB_UNRESTRICTED = "usb-unrestricted"
     VERTICAL_SCROLL = "vertical-scroll"
     WEB_APP_INSTALLATION = "web-app-installation"
+    WEBNN = "webnn"
     WEB_PRINTING = "web-printing"
     WEB_SHARE = "web-share"
     WINDOW_MANAGEMENT = "window-management"
@@ -803,6 +800,9 @@ class ScreencastFrameMetadata:
     #: Frame swap timestamp.
     timestamp: typing.Optional[network.TimeSinceEpoch] = None
 
+    #: Frame swap timestamp as monotonic time.
+    monotonic_timestamp: typing.Optional[network.MonotonicTime] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json['offsetTop'] = self.offset_top
@@ -813,6 +813,8 @@ class ScreencastFrameMetadata:
         json['scrollOffsetY'] = self.scroll_offset_y
         if self.timestamp is not None:
             json['timestamp'] = self.timestamp.to_json()
+        if self.monotonic_timestamp is not None:
+            json['monotonicTimestamp'] = self.monotonic_timestamp.to_json()
         return json
 
     @classmethod
@@ -825,6 +827,7 @@ class ScreencastFrameMetadata:
             scroll_offset_x=float(json['scrollOffsetX']),
             scroll_offset_y=float(json['scrollOffsetY']),
             timestamp=network.TimeSinceEpoch.from_json(json['timestamp']) if json.get('timestamp', None) is not None else None,
+            monotonic_timestamp=network.MonotonicTime.from_json(json['monotonicTimestamp']) if json.get('monotonicTimestamp', None) is not None else None,
         )
 
 
@@ -1301,8 +1304,6 @@ class FileHandler:
     #: other enums below.
     launch_type: str
 
-    icons: typing.Optional[typing.List[ImageResource]] = None
-
     #: Mimic a map, name is the key, accepts is the value.
     accepts: typing.Optional[typing.List[FileFilter]] = None
 
@@ -1311,8 +1312,6 @@ class FileHandler:
         json['action'] = self.action
         json['name'] = self.name
         json['launchType'] = self.launch_type
-        if self.icons is not None:
-            json['icons'] = [i.to_json() for i in self.icons]
         if self.accepts is not None:
             json['accepts'] = [i.to_json() for i in self.accepts]
         return json
@@ -1323,7 +1322,6 @@ class FileHandler:
             action=str(json['action']),
             name=str(json['name']),
             launch_type=str(json['launchType']),
-            icons=[ImageResource.from_json(i) for i in json['icons']] if json.get('icons', None) is not None else None,
             accepts=[FileFilter.from_json(i) for i in json['accepts']] if json.get('accepts', None) is not None else None,
         )
 
@@ -1665,6 +1663,38 @@ class WebAppManifest:
         )
 
 
+@dataclass
+class SubApp:
+    #: Display name of the sub-app.
+    name: str
+
+    #: Scope of the sub-app.
+    scope: str
+
+    #: Manifest id of the sub-app.
+    manifest_id: str
+
+    #: Start URL of the sub-app.
+    start_url: str
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['name'] = self.name
+        json['scope'] = self.scope
+        json['manifestId'] = self.manifest_id
+        json['startUrl'] = self.start_url
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> SubApp:
+        return cls(
+            name=str(json['name']),
+            scope=str(json['scope']),
+            manifest_id=str(json['manifestId']),
+            start_url=str(json['startUrl']),
+        )
+
+
 class NavigationType(enum.Enum):
     '''
     The type of a frameNavigated event.
@@ -1827,6 +1857,7 @@ class BackForwardCacheNotRestoredReason(enum.Enum):
     EMBEDDER_EXTENSION_MESSAGING_FOR_OPEN_PORT = "EmbedderExtensionMessagingForOpenPort"
     EMBEDDER_EXTENSION_SENT_MESSAGE_TO_CACHED_FRAME = "EmbedderExtensionSentMessageToCachedFrame"
     EMBEDDER_EXTENSION_FRAME = "EmbedderExtensionFrame"
+    EMBEDDER_PRIVILEGED_WEB_CONTENTS = "EmbedderPrivilegedWebContents"
     REQUESTED_BY_WEB_VIEW_CLIENT = "RequestedByWebViewClient"
     POST_MESSAGE_BY_WEB_VIEW_CLIENT = "PostMessageByWebViewClient"
     CACHE_CONTROL_NO_STORE_DEVICE_BOUND_SESSION_TERMINATED = "CacheControlNoStoreDeviceBoundSessionTerminated"
@@ -2127,7 +2158,8 @@ def clear_geolocation_override() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,Non
 def create_isolated_world(
         frame_id: FrameId,
         world_name: typing.Optional[str] = None,
-        grant_univeral_access: typing.Optional[bool] = None
+        grant_univeral_access: typing.Optional[bool] = None,
+        content_security_policy: typing.Optional[str] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,runtime.ExecutionContextId]:
     '''
     Creates an isolated world for the given frame.
@@ -2135,6 +2167,7 @@ def create_isolated_world(
     :param frame_id: Id of the frame in which the isolated world should be created.
     :param world_name: *(Optional)* An optional name which is reported in the Execution Context.
     :param grant_univeral_access: *(Optional)* Whether or not universal access should be granted to the isolated world. This is a powerful option, use with caution.
+    :param content_security_policy: *(Optional)* An optional content security policy to set for the isolated world. If omitted, any existing CSP for the world will be cleared. Note that clearing or updating the CSP does not immediately affect the active context in the same document because LocalDOMWindow caches the ContentSecurityPolicy object. The change takes effect on subsequent navigations when a new window context is created.
     :returns: Execution context of the isolated world.
     '''
     params: T_JSON_DICT = dict()
@@ -2143,6 +2176,8 @@ def create_isolated_world(
         params['worldName'] = world_name
     if grant_univeral_access is not None:
         params['grantUniveralAccess'] = grant_univeral_access
+    if content_security_policy is not None:
+        params['contentSecurityPolicy'] = content_security_policy
     cmd_dict: T_JSON_DICT = {
         'method': 'Page.createIsolatedWorld',
         'params': params,
@@ -2273,9 +2308,9 @@ def get_manifest_icons() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Opti
     return str(json['primaryIcon']) if json.get('primaryIcon', None) is not None else None
 
 
-def get_app_id() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[typing.Optional[str], typing.Optional[str]]]:
+def get_app_id() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[typing.Optional[str], typing.Optional[str], typing.Optional[str], typing.Optional[str]]]:
     '''
-    Returns the unique (PWA) app id.
+    Returns the unique (PWA) app id, along with IWA bundle ID and parent app info.
     Only returns values if the feature flag 'WebAppEnableManifestId' is enabled
 
     **EXPERIMENTAL**
@@ -2284,6 +2319,8 @@ def get_app_id() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[typing
 
         0. **appId** - *(Optional)* App id, either from manifest's id attribute or computed from start_url
         1. **recommendedId** - *(Optional)* Recommendation for manifest's id attribute to match current id computed from start_url
+        2. **bundleId** - *(Optional)* The bundle ID for an Isolated Web App (IWA)
+        3. **parentAppName** - *(Optional)* The name of the parent app if this app is a Sub-App
     '''
     cmd_dict: T_JSON_DICT = {
         'method': 'Page.getAppId',
@@ -2291,8 +2328,40 @@ def get_app_id() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[typing
     json = yield cmd_dict
     return (
         str(json['appId']) if json.get('appId', None) is not None else None,
-        str(json['recommendedId']) if json.get('recommendedId', None) is not None else None
+        str(json['recommendedId']) if json.get('recommendedId', None) is not None else None,
+        str(json['bundleId']) if json.get('bundleId', None) is not None else None,
+        str(json['parentAppName']) if json.get('parentAppName', None) is not None else None
     )
+
+
+def get_sub_apps() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[SubApp]]:
+    '''
+    Returns the list of installed child Sub-Apps for the inspected parent app.
+
+    **EXPERIMENTAL**
+
+    :returns: 
+    '''
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Page.getSubApps',
+    }
+    json = yield cmd_dict
+    return [SubApp.from_json(i) for i in json['subApps']]
+
+
+def get_sibling_sub_apps() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[SubApp]]:
+    '''
+    Returns the list of sibling Sub-Apps sharing the same parent app if the inspected context is a Sub-App.
+
+    **EXPERIMENTAL**
+
+    :returns: 
+    '''
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Page.getSiblingSubApps',
+    }
+    json = yield cmd_dict
+    return [SubApp.from_json(i) for i in json['subApps']]
 
 
 def get_ad_script_ancestry(
@@ -3059,7 +3128,9 @@ def start_screencast(
         quality: typing.Optional[int] = None,
         max_width: typing.Optional[int] = None,
         max_height: typing.Optional[int] = None,
-        every_nth_frame: typing.Optional[int] = None
+        every_nth_frame: typing.Optional[int] = None,
+        max_frames_in_flight: typing.Optional[int] = None,
+        send_last_frame: typing.Optional[bool] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
     Starts sending each frame using the ``screencastFrame`` event.
@@ -3070,7 +3141,9 @@ def start_screencast(
     :param quality: *(Optional)* Compression quality from range [0..100].
     :param max_width: *(Optional)* Maximum screenshot width.
     :param max_height: *(Optional)* Maximum screenshot height.
-    :param every_nth_frame: *(Optional)* Send every n-th frame.
+    :param every_nth_frame: *(Optional)* Send every n-th frame. Must be a positive integer.
+    :param max_frames_in_flight: *(Optional)* Maximum number of frames sent until screencastFrameAck is required. Defaults to 3. Must be a positive integer.
+    :param send_last_frame: *(Optional)* By default, after screencastFrameAck arrives, the next produced frame is sent. Passing this flag enables storing the last produced frame in memory, which is immediately sent upon screencastFrameAck. This way, overall performance is traded for a better latency.
     '''
     params: T_JSON_DICT = dict()
     if format_ is not None:
@@ -3083,11 +3156,64 @@ def start_screencast(
         params['maxHeight'] = max_height
     if every_nth_frame is not None:
         params['everyNthFrame'] = every_nth_frame
+    if max_frames_in_flight is not None:
+        params['maxFramesInFlight'] = max_frames_in_flight
+    if send_last_frame is not None:
+        params['sendLastFrame'] = send_last_frame
     cmd_dict: T_JSON_DICT = {
         'method': 'Page.startScreencast',
         'params': params,
     }
     json = yield cmd_dict
+
+
+def start_screen_recording(
+        audio: typing.Optional[bool] = None,
+        max_width: typing.Optional[int] = None,
+        max_height: typing.Optional[int] = None,
+        frame_rate: typing.Optional[int] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,io.StreamHandle]:
+    '''
+    Starts screencast video recording.
+
+    **EXPERIMENTAL**
+
+    :param audio: *(Optional)*
+    :param max_width: *(Optional)* Maximum frame width in pixels.
+    :param max_height: *(Optional)* Maximum frame height in pixels.
+    :param frame_rate: *(Optional)* Maximum frame rate in frames per second.
+    :returns: A handle of the stream that holds resulting screencast data.
+    '''
+    params: T_JSON_DICT = dict()
+    if audio is not None:
+        params['audio'] = audio
+    if max_width is not None:
+        params['maxWidth'] = max_width
+    if max_height is not None:
+        params['maxHeight'] = max_height
+    if frame_rate is not None:
+        params['frameRate'] = frame_rate
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Page.startScreenRecording',
+        'params': params,
+    }
+    json = yield cmd_dict
+    return io.StreamHandle.from_json(json['stream'])
+
+
+def stop_screen_recording() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,io.StreamHandle]:
+    '''
+    Stops screencast video recording.
+
+    **EXPERIMENTAL**
+
+    :returns: A handle of the stream that holds resulting screencast data.
+    '''
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Page.stopScreenRecording',
+    }
+    json = yield cmd_dict
+    return io.StreamHandle.from_json(json['stream'])
 
 
 def stop_loading() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:

@@ -14,7 +14,6 @@ from .util import event_class, T_JSON_DICT
 from . import browser
 from . import network
 from . import page
-from . import target
 from deprecated.sphinx import deprecated # type: ignore
 
 
@@ -42,8 +41,6 @@ class StorageType(enum.Enum):
     WEBSQL = "websql"
     SERVICE_WORKERS = "service_workers"
     CACHE_STORAGE = "cache_storage"
-    INTEREST_GROUPS = "interest_groups"
-    SHARED_STORAGE = "shared_storage"
     STORAGE_BUCKETS = "storage_buckets"
     ALL_ = "all"
     OTHER = "other"
@@ -105,414 +102,78 @@ class TrustTokens:
         )
 
 
-class InterestGroupAuctionId(str):
-    '''
-    Protected audience interest group auction identifier.
-    '''
-    def to_json(self) -> str:
-        return self
-
-    @classmethod
-    def from_json(cls, json: str) -> InterestGroupAuctionId:
-        return cls(json)
-
-    def __repr__(self):
-        return 'InterestGroupAuctionId({})'.format(super().__repr__())
-
-
-class InterestGroupAccessType(enum.Enum):
-    '''
-    Enum of interest group access types.
-    '''
-    JOIN = "join"
-    LEAVE = "leave"
-    UPDATE = "update"
-    LOADED = "loaded"
-    BID = "bid"
-    WIN = "win"
-    ADDITIONAL_BID = "additionalBid"
-    ADDITIONAL_BID_WIN = "additionalBidWin"
-    TOP_LEVEL_BID = "topLevelBid"
-    TOP_LEVEL_ADDITIONAL_BID = "topLevelAdditionalBid"
-    CLEAR = "clear"
-
-    def to_json(self) -> str:
-        return self.value
-
-    @classmethod
-    def from_json(cls, json: str) -> InterestGroupAccessType:
-        return cls(json)
-
-
-class InterestGroupAuctionEventType(enum.Enum):
-    '''
-    Enum of auction events.
-    '''
-    STARTED = "started"
-    CONFIG_RESOLVED = "configResolved"
-
-    def to_json(self) -> str:
-        return self.value
-
-    @classmethod
-    def from_json(cls, json: str) -> InterestGroupAuctionEventType:
-        return cls(json)
-
-
-class InterestGroupAuctionFetchType(enum.Enum):
-    '''
-    Enum of network fetches auctions can do.
-    '''
-    BIDDER_JS = "bidderJs"
-    BIDDER_WASM = "bidderWasm"
-    SELLER_JS = "sellerJs"
-    BIDDER_TRUSTED_SIGNALS = "bidderTrustedSignals"
-    SELLER_TRUSTED_SIGNALS = "sellerTrustedSignals"
-
-    def to_json(self) -> str:
-        return self.value
-
-    @classmethod
-    def from_json(cls, json: str) -> InterestGroupAuctionFetchType:
-        return cls(json)
-
-
-class SharedStorageAccessScope(enum.Enum):
-    '''
-    Enum of shared storage access scopes.
-    '''
-    WINDOW = "window"
-    SHARED_STORAGE_WORKLET = "sharedStorageWorklet"
-    PROTECTED_AUDIENCE_WORKLET = "protectedAudienceWorklet"
-    HEADER = "header"
-
-    def to_json(self) -> str:
-        return self.value
-
-    @classmethod
-    def from_json(cls, json: str) -> SharedStorageAccessScope:
-        return cls(json)
-
-
-class SharedStorageAccessMethod(enum.Enum):
-    '''
-    Enum of shared storage access methods.
-    '''
-    ADD_MODULE = "addModule"
-    CREATE_WORKLET = "createWorklet"
-    SELECT_URL = "selectURL"
-    RUN = "run"
-    BATCH_UPDATE = "batchUpdate"
-    SET_ = "set"
-    APPEND = "append"
-    DELETE = "delete"
-    CLEAR = "clear"
-    GET = "get"
-    KEYS = "keys"
-    VALUES = "values"
-    ENTRIES = "entries"
-    LENGTH = "length"
-    REMAINING_BUDGET = "remainingBudget"
-
-    def to_json(self) -> str:
-        return self.value
-
-    @classmethod
-    def from_json(cls, json: str) -> SharedStorageAccessMethod:
-        return cls(json)
-
-
 @dataclass
-class SharedStorageEntry:
+class PrivateVerificationToken:
     '''
-    Struct for a single key-value pair in an origin's shared storage.
+    Details of a stored Private Verification Token.
     '''
-    key: str
+    #: Unique identifier of the token in the database.
+    id_: str
 
-    value: str
+    #: Origin of the token issuer.
+    issuer_origin: str
 
-    def to_json(self) -> T_JSON_DICT:
-        json: T_JSON_DICT = dict()
-        json['key'] = self.key
-        json['value'] = self.value
-        return json
+    #: Public key ID used to issue the token.
+    key_id: int
 
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> SharedStorageEntry:
-        return cls(
-            key=str(json['key']),
-            value=str(json['value']),
-        )
+    #: Expiration timestamp in seconds since the epoch.
+    expiration: network.TimeSinceEpoch
 
-
-@dataclass
-class SharedStorageMetadata:
-    '''
-    Details for an origin's shared storage.
-    '''
-    #: Time when the origin's shared storage was last created.
+    #: Token creation timestamp in seconds since the epoch.
     creation_time: network.TimeSinceEpoch
 
-    #: Number of key-value pairs stored in origin's shared storage.
-    length: int
+    #: Token protocol version.
+    version: int
 
-    #: Current amount of bits of entropy remaining in the navigation budget.
-    remaining_budget: float
-
-    #: Total number of bytes stored as key-value pairs in origin's shared
-    #: storage.
-    bytes_used: int
+    #: Base64-encoded serialized token.
+    token: str
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
+        json['id'] = self.id_
+        json['issuerOrigin'] = self.issuer_origin
+        json['keyId'] = self.key_id
+        json['expiration'] = self.expiration.to_json()
         json['creationTime'] = self.creation_time.to_json()
-        json['length'] = self.length
-        json['remainingBudget'] = self.remaining_budget
-        json['bytesUsed'] = self.bytes_used
+        json['version'] = self.version
+        json['token'] = self.token
         return json
 
     @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> SharedStorageMetadata:
+    def from_json(cls, json: T_JSON_DICT) -> PrivateVerificationToken:
         return cls(
+            id_=str(json['id']),
+            issuer_origin=str(json['issuerOrigin']),
+            key_id=int(json['keyId']),
+            expiration=network.TimeSinceEpoch.from_json(json['expiration']),
             creation_time=network.TimeSinceEpoch.from_json(json['creationTime']),
-            length=int(json['length']),
-            remaining_budget=float(json['remainingBudget']),
-            bytes_used=int(json['bytesUsed']),
+            version=int(json['version']),
+            token=str(json['token']),
         )
 
 
 @dataclass
-class SharedStoragePrivateAggregationConfig:
+class PrivateVerificationTokensIssuerConfig:
     '''
-    Represents a dictionary object passed in as privateAggregationConfig to
-    run or selectURL.
+    Configuration for a Private Verification Tokens issuer.
     '''
-    #: Configures the maximum size allowed for filtering IDs.
-    filtering_id_max_bytes: int
+    #: Origin of the token issuer.
+    issuer_origin: str
 
-    #: The chosen aggregation service deployment.
-    aggregation_coordinator_origin: typing.Optional[str] = None
-
-    #: The context ID provided.
-    context_id: typing.Optional[str] = None
-
-    #: The limit on the number of contributions in the final report.
-    max_contributions: typing.Optional[int] = None
+    #: Origins authorized to redeem tokens from this issuer.
+    redeemer_origins: typing.List[str]
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
-        json['filteringIdMaxBytes'] = self.filtering_id_max_bytes
-        if self.aggregation_coordinator_origin is not None:
-            json['aggregationCoordinatorOrigin'] = self.aggregation_coordinator_origin
-        if self.context_id is not None:
-            json['contextId'] = self.context_id
-        if self.max_contributions is not None:
-            json['maxContributions'] = self.max_contributions
+        json['issuerOrigin'] = self.issuer_origin
+        json['redeemerOrigins'] = [i for i in self.redeemer_origins]
         return json
 
     @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> SharedStoragePrivateAggregationConfig:
+    def from_json(cls, json: T_JSON_DICT) -> PrivateVerificationTokensIssuerConfig:
         return cls(
-            filtering_id_max_bytes=int(json['filteringIdMaxBytes']),
-            aggregation_coordinator_origin=str(json['aggregationCoordinatorOrigin']) if json.get('aggregationCoordinatorOrigin', None) is not None else None,
-            context_id=str(json['contextId']) if json.get('contextId', None) is not None else None,
-            max_contributions=int(json['maxContributions']) if json.get('maxContributions', None) is not None else None,
-        )
-
-
-@dataclass
-class SharedStorageReportingMetadata:
-    '''
-    Pair of reporting metadata details for a candidate URL for ``selectURL()``.
-    '''
-    event_type: str
-
-    reporting_url: str
-
-    def to_json(self) -> T_JSON_DICT:
-        json: T_JSON_DICT = dict()
-        json['eventType'] = self.event_type
-        json['reportingUrl'] = self.reporting_url
-        return json
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> SharedStorageReportingMetadata:
-        return cls(
-            event_type=str(json['eventType']),
-            reporting_url=str(json['reportingUrl']),
-        )
-
-
-@dataclass
-class SharedStorageUrlWithMetadata:
-    '''
-    Bundles a candidate URL with its reporting metadata.
-    '''
-    #: Spec of candidate URL.
-    url: str
-
-    #: Any associated reporting metadata.
-    reporting_metadata: typing.List[SharedStorageReportingMetadata]
-
-    def to_json(self) -> T_JSON_DICT:
-        json: T_JSON_DICT = dict()
-        json['url'] = self.url
-        json['reportingMetadata'] = [i.to_json() for i in self.reporting_metadata]
-        return json
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> SharedStorageUrlWithMetadata:
-        return cls(
-            url=str(json['url']),
-            reporting_metadata=[SharedStorageReportingMetadata.from_json(i) for i in json['reportingMetadata']],
-        )
-
-
-@dataclass
-class SharedStorageAccessParams:
-    '''
-    Bundles the parameters for shared storage access events whose
-    presence/absence can vary according to SharedStorageAccessType.
-    '''
-    #: Spec of the module script URL.
-    #: Present only for SharedStorageAccessMethods: addModule and
-    #: createWorklet.
-    script_source_url: typing.Optional[str] = None
-
-    #: String denoting "context-origin", "script-origin", or a custom
-    #: origin to be used as the worklet's data origin.
-    #: Present only for SharedStorageAccessMethod: createWorklet.
-    data_origin: typing.Optional[str] = None
-
-    #: Name of the registered operation to be run.
-    #: Present only for SharedStorageAccessMethods: run and selectURL.
-    operation_name: typing.Optional[str] = None
-
-    #: ID of the operation call.
-    #: Present only for SharedStorageAccessMethods: run and selectURL.
-    operation_id: typing.Optional[str] = None
-
-    #: Whether or not to keep the worket alive for future run or selectURL
-    #: calls.
-    #: Present only for SharedStorageAccessMethods: run and selectURL.
-    keep_alive: typing.Optional[bool] = None
-
-    #: Configures the private aggregation options.
-    #: Present only for SharedStorageAccessMethods: run and selectURL.
-    private_aggregation_config: typing.Optional[SharedStoragePrivateAggregationConfig] = None
-
-    #: The operation's serialized data in bytes (converted to a string).
-    #: Present only for SharedStorageAccessMethods: run and selectURL.
-    #: TODO(crbug.com/401011862): Consider updating this parameter to binary.
-    serialized_data: typing.Optional[str] = None
-
-    #: Array of candidate URLs' specs, along with any associated metadata.
-    #: Present only for SharedStorageAccessMethod: selectURL.
-    urls_with_metadata: typing.Optional[typing.List[SharedStorageUrlWithMetadata]] = None
-
-    #: Spec of the URN:UUID generated for a selectURL call.
-    #: Present only for SharedStorageAccessMethod: selectURL.
-    urn_uuid: typing.Optional[str] = None
-
-    #: Key for a specific entry in an origin's shared storage.
-    #: Present only for SharedStorageAccessMethods: set, append, delete, and
-    #: get.
-    key: typing.Optional[str] = None
-
-    #: Value for a specific entry in an origin's shared storage.
-    #: Present only for SharedStorageAccessMethods: set and append.
-    value: typing.Optional[str] = None
-
-    #: Whether or not to set an entry for a key if that key is already present.
-    #: Present only for SharedStorageAccessMethod: set.
-    ignore_if_present: typing.Optional[bool] = None
-
-    #: A number denoting the (0-based) order of the worklet's
-    #: creation relative to all other shared storage worklets created by
-    #: documents using the current storage partition.
-    #: Present only for SharedStorageAccessMethods: addModule, createWorklet.
-    worklet_ordinal: typing.Optional[int] = None
-
-    #: Hex representation of the DevTools token used as the TargetID for the
-    #: associated shared storage worklet.
-    #: Present only for SharedStorageAccessMethods: addModule, createWorklet,
-    #: run, selectURL, and any other SharedStorageAccessMethod when the
-    #: SharedStorageAccessScope is sharedStorageWorklet.
-    worklet_target_id: typing.Optional[target.TargetID] = None
-
-    #: Name of the lock to be acquired, if present.
-    #: Optionally present only for SharedStorageAccessMethods: batchUpdate,
-    #: set, append, delete, and clear.
-    with_lock: typing.Optional[str] = None
-
-    #: If the method has been called as part of a batchUpdate, then this
-    #: number identifies the batch to which it belongs.
-    #: Optionally present only for SharedStorageAccessMethods:
-    #: batchUpdate (required), set, append, delete, and clear.
-    batch_update_id: typing.Optional[str] = None
-
-    #: Number of modifier methods sent in batch.
-    #: Present only for SharedStorageAccessMethod: batchUpdate.
-    batch_size: typing.Optional[int] = None
-
-    def to_json(self) -> T_JSON_DICT:
-        json: T_JSON_DICT = dict()
-        if self.script_source_url is not None:
-            json['scriptSourceUrl'] = self.script_source_url
-        if self.data_origin is not None:
-            json['dataOrigin'] = self.data_origin
-        if self.operation_name is not None:
-            json['operationName'] = self.operation_name
-        if self.operation_id is not None:
-            json['operationId'] = self.operation_id
-        if self.keep_alive is not None:
-            json['keepAlive'] = self.keep_alive
-        if self.private_aggregation_config is not None:
-            json['privateAggregationConfig'] = self.private_aggregation_config.to_json()
-        if self.serialized_data is not None:
-            json['serializedData'] = self.serialized_data
-        if self.urls_with_metadata is not None:
-            json['urlsWithMetadata'] = [i.to_json() for i in self.urls_with_metadata]
-        if self.urn_uuid is not None:
-            json['urnUuid'] = self.urn_uuid
-        if self.key is not None:
-            json['key'] = self.key
-        if self.value is not None:
-            json['value'] = self.value
-        if self.ignore_if_present is not None:
-            json['ignoreIfPresent'] = self.ignore_if_present
-        if self.worklet_ordinal is not None:
-            json['workletOrdinal'] = self.worklet_ordinal
-        if self.worklet_target_id is not None:
-            json['workletTargetId'] = self.worklet_target_id.to_json()
-        if self.with_lock is not None:
-            json['withLock'] = self.with_lock
-        if self.batch_update_id is not None:
-            json['batchUpdateId'] = self.batch_update_id
-        if self.batch_size is not None:
-            json['batchSize'] = self.batch_size
-        return json
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> SharedStorageAccessParams:
-        return cls(
-            script_source_url=str(json['scriptSourceUrl']) if json.get('scriptSourceUrl', None) is not None else None,
-            data_origin=str(json['dataOrigin']) if json.get('dataOrigin', None) is not None else None,
-            operation_name=str(json['operationName']) if json.get('operationName', None) is not None else None,
-            operation_id=str(json['operationId']) if json.get('operationId', None) is not None else None,
-            keep_alive=bool(json['keepAlive']) if json.get('keepAlive', None) is not None else None,
-            private_aggregation_config=SharedStoragePrivateAggregationConfig.from_json(json['privateAggregationConfig']) if json.get('privateAggregationConfig', None) is not None else None,
-            serialized_data=str(json['serializedData']) if json.get('serializedData', None) is not None else None,
-            urls_with_metadata=[SharedStorageUrlWithMetadata.from_json(i) for i in json['urlsWithMetadata']] if json.get('urlsWithMetadata', None) is not None else None,
-            urn_uuid=str(json['urnUuid']) if json.get('urnUuid', None) is not None else None,
-            key=str(json['key']) if json.get('key', None) is not None else None,
-            value=str(json['value']) if json.get('value', None) is not None else None,
-            ignore_if_present=bool(json['ignoreIfPresent']) if json.get('ignoreIfPresent', None) is not None else None,
-            worklet_ordinal=int(json['workletOrdinal']) if json.get('workletOrdinal', None) is not None else None,
-            worklet_target_id=target.TargetID.from_json(json['workletTargetId']) if json.get('workletTargetId', None) is not None else None,
-            with_lock=str(json['withLock']) if json.get('withLock', None) is not None else None,
-            batch_update_id=str(json['batchUpdateId']) if json.get('batchUpdateId', None) is not None else None,
-            batch_size=int(json['batchSize']) if json.get('batchSize', None) is not None else None,
+            issuer_origin=str(json['issuerOrigin']),
+            redeemer_origins=[str(i) for i in json['redeemerOrigins']],
         )
 
 
@@ -584,36 +245,6 @@ class StorageBucketInfo:
             quota=float(json['quota']),
             persistent=bool(json['persistent']),
             durability=StorageBucketsDurability.from_json(json['durability']),
-        )
-
-
-@dataclass
-class RelatedWebsiteSet:
-    '''
-    A single Related Website Set object.
-    '''
-    #: The primary site of this set, along with the ccTLDs if there is any.
-    primary_sites: typing.List[str]
-
-    #: The associated sites of this set, along with the ccTLDs if there is any.
-    associated_sites: typing.List[str]
-
-    #: The service sites of this set, along with the ccTLDs if there is any.
-    service_sites: typing.List[str]
-
-    def to_json(self) -> T_JSON_DICT:
-        json: T_JSON_DICT = dict()
-        json['primarySites'] = [i for i in self.primary_sites]
-        json['associatedSites'] = [i for i in self.associated_sites]
-        json['serviceSites'] = [i for i in self.service_sites]
-        return json
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> RelatedWebsiteSet:
-        return cls(
-            primary_sites=[str(i) for i in json['primarySites']],
-            associated_sites=[str(i) for i in json['associatedSites']],
-            service_sites=[str(i) for i in json['serviceSites']],
         )
 
 
@@ -988,205 +619,81 @@ def clear_trust_tokens(
     return bool(json['didDeleteTokens'])
 
 
-def get_interest_group_details(
-        owner_origin: str,
-        name: str
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,dict]:
+def get_private_verification_tokens() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[PrivateVerificationToken]]:
     '''
-    Gets details for a named interest group.
+    Returns all stored Private Verification Tokens for the current browsing
+    context.
 
     **EXPERIMENTAL**
 
-    :param owner_origin:
-    :param name:
-    :returns: This largely corresponds to: https://wicg.github.io/turtledove/#dictdef-generatebidinterestgroup but has absolute expirationTime instead of relative lifetimeMs and also adds joiningOrigin.
-    '''
-    params: T_JSON_DICT = dict()
-    params['ownerOrigin'] = owner_origin
-    params['name'] = name
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Storage.getInterestGroupDetails',
-        'params': params,
-    }
-    json = yield cmd_dict
-    return dict(json['details'])
-
-
-def set_interest_group_tracking(
-        enable: bool
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-    '''
-    Enables/Disables issuing of interestGroupAccessed events.
-
-    **EXPERIMENTAL**
-
-    :param enable:
-    '''
-    params: T_JSON_DICT = dict()
-    params['enable'] = enable
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Storage.setInterestGroupTracking',
-        'params': params,
-    }
-    json = yield cmd_dict
-
-
-def set_interest_group_auction_tracking(
-        enable: bool
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-    '''
-    Enables/Disables issuing of interestGroupAuctionEventOccurred and
-    interestGroupAuctionNetworkRequestCreated.
-
-    **EXPERIMENTAL**
-
-    :param enable:
-    '''
-    params: T_JSON_DICT = dict()
-    params['enable'] = enable
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Storage.setInterestGroupAuctionTracking',
-        'params': params,
-    }
-    json = yield cmd_dict
-
-
-def get_shared_storage_metadata(
-        owner_origin: str
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,SharedStorageMetadata]:
-    '''
-    Gets metadata for an origin's shared storage.
-
-    **EXPERIMENTAL**
-
-    :param owner_origin:
     :returns: 
     '''
-    params: T_JSON_DICT = dict()
-    params['ownerOrigin'] = owner_origin
     cmd_dict: T_JSON_DICT = {
-        'method': 'Storage.getSharedStorageMetadata',
-        'params': params,
+        'method': 'Storage.getPrivateVerificationTokens',
     }
     json = yield cmd_dict
-    return SharedStorageMetadata.from_json(json['metadata'])
+    return [PrivateVerificationToken.from_json(i) for i in json['tokens']]
 
 
-def get_shared_storage_entries(
-        owner_origin: str
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[SharedStorageEntry]]:
+def get_private_verification_tokens_issuer_configs() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[PrivateVerificationTokensIssuerConfig]]:
     '''
-    Gets the entries in an given origin's shared storage.
+    Returns the configured Private Verification Tokens issuers and their redeemer
+    origins.
 
     **EXPERIMENTAL**
 
-    :param owner_origin:
     :returns: 
     '''
-    params: T_JSON_DICT = dict()
-    params['ownerOrigin'] = owner_origin
     cmd_dict: T_JSON_DICT = {
-        'method': 'Storage.getSharedStorageEntries',
-        'params': params,
+        'method': 'Storage.getPrivateVerificationTokensIssuerConfigs',
     }
     json = yield cmd_dict
-    return [SharedStorageEntry.from_json(i) for i in json['entries']]
+    return [PrivateVerificationTokensIssuerConfig.from_json(i) for i in json['configs']]
 
 
-def set_shared_storage_entry(
-        owner_origin: str,
-        key: str,
-        value: str,
-        ignore_if_present: typing.Optional[bool] = None
+def clear_private_verification_tokens(
+        issuer_origin: str
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
-    Sets entry with ``key`` and ``value`` for a given origin's shared storage.
+    Removes all Private Verification Tokens issued by the provided issuerOrigin.
 
     **EXPERIMENTAL**
 
-    :param owner_origin:
-    :param key:
-    :param value:
-    :param ignore_if_present: *(Optional)* If ```ignoreIfPresent```` is included and true, then only sets the entry if ````key``` doesn't already exist.
+    :param issuer_origin:
     '''
     params: T_JSON_DICT = dict()
-    params['ownerOrigin'] = owner_origin
-    params['key'] = key
-    params['value'] = value
-    if ignore_if_present is not None:
-        params['ignoreIfPresent'] = ignore_if_present
+    params['issuerOrigin'] = issuer_origin
     cmd_dict: T_JSON_DICT = {
-        'method': 'Storage.setSharedStorageEntry',
+        'method': 'Storage.clearPrivateVerificationTokens',
         'params': params,
     }
     json = yield cmd_dict
 
 
-def delete_shared_storage_entry(
-        owner_origin: str,
-        key: str
+def delete_private_verification_token(
+        token_id: str
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
-    Deletes entry for ``key`` (if it exists) for a given origin's shared storage.
+    Removes a specific Private Verification Token by its ID.
 
     **EXPERIMENTAL**
 
-    :param owner_origin:
-    :param key:
+    :param token_id:
     '''
     params: T_JSON_DICT = dict()
-    params['ownerOrigin'] = owner_origin
-    params['key'] = key
+    params['tokenId'] = token_id
     cmd_dict: T_JSON_DICT = {
-        'method': 'Storage.deleteSharedStorageEntry',
+        'method': 'Storage.deletePrivateVerificationToken',
         'params': params,
     }
     json = yield cmd_dict
 
 
-def clear_shared_storage_entries(
-        owner_origin: str
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-    '''
-    Clears all entries for a given origin's shared storage.
-
-    **EXPERIMENTAL**
-
-    :param owner_origin:
-    '''
-    params: T_JSON_DICT = dict()
-    params['ownerOrigin'] = owner_origin
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Storage.clearSharedStorageEntries',
-        'params': params,
-    }
-    json = yield cmd_dict
-
-
-def reset_shared_storage_budget(
-        owner_origin: str
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-    '''
-    Resets the budget for ``ownerOrigin`` by clearing all budget withdrawals.
-
-    **EXPERIMENTAL**
-
-    :param owner_origin:
-    '''
-    params: T_JSON_DICT = dict()
-    params['ownerOrigin'] = owner_origin
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Storage.resetSharedStorageBudget',
-        'params': params,
-    }
-    json = yield cmd_dict
-
-
-def set_shared_storage_tracking(
+def set_private_verification_tokens_tracking(
         enable: bool
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
-    Enables/disables issuing of sharedStorageAccessed events.
+    Set tracking for Private Verification Tokens.
 
     **EXPERIMENTAL**
 
@@ -1195,7 +702,7 @@ def set_shared_storage_tracking(
     params: T_JSON_DICT = dict()
     params['enable'] = enable
     cmd_dict: T_JSON_DICT = {
-        'method': 'Storage.setSharedStorageTracking',
+        'method': 'Storage.setPrivateVerificationTokensTracking',
         'params': params,
     }
     json = yield cmd_dict
@@ -1255,43 +762,6 @@ def run_bounce_tracking_mitigations() -> typing.Generator[T_JSON_DICT,T_JSON_DIC
     }
     json = yield cmd_dict
     return [str(i) for i in json['deletedSites']]
-
-
-def get_related_website_sets() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.List[RelatedWebsiteSet]]:
-    '''
-    Returns the effective Related Website Sets in use by this profile for the browser
-    session. The effective Related Website Sets will not change during a browser session.
-
-    **EXPERIMENTAL**
-
-    :returns: 
-    '''
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Storage.getRelatedWebsiteSets',
-    }
-    json = yield cmd_dict
-    return [RelatedWebsiteSet.from_json(i) for i in json['sets']]
-
-
-def set_protected_audience_k_anonymity(
-        owner: str,
-        name: str,
-        hashes: typing.List[str]
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-    '''
-    :param owner:
-    :param name:
-    :param hashes:
-    '''
-    params: T_JSON_DICT = dict()
-    params['owner'] = owner
-    params['name'] = name
-    params['hashes'] = [i for i in hashes]
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Storage.setProtectedAudienceKAnonymity',
-        'params': params,
-    }
-    json = yield cmd_dict
 
 
 @event_class('Storage.cacheStorageContentUpdated')
@@ -1391,164 +861,6 @@ class IndexedDBListUpdated:
         )
 
 
-@event_class('Storage.interestGroupAccessed')
-@dataclass
-class InterestGroupAccessed:
-    '''
-    One of the interest groups was accessed. Note that these events are global
-    to all targets sharing an interest group store.
-    '''
-    access_time: network.TimeSinceEpoch
-    type_: InterestGroupAccessType
-    owner_origin: str
-    name: str
-    #: For topLevelBid/topLevelAdditionalBid, and when appropriate,
-    #: win and additionalBidWin
-    component_seller_origin: typing.Optional[str]
-    #: For bid or somethingBid event, if done locally and not on a server.
-    bid: typing.Optional[float]
-    bid_currency: typing.Optional[str]
-    #: For non-global events --- links to interestGroupAuctionEvent
-    unique_auction_id: typing.Optional[InterestGroupAuctionId]
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> InterestGroupAccessed:
-        return cls(
-            access_time=network.TimeSinceEpoch.from_json(json['accessTime']),
-            type_=InterestGroupAccessType.from_json(json['type']),
-            owner_origin=str(json['ownerOrigin']),
-            name=str(json['name']),
-            component_seller_origin=str(json['componentSellerOrigin']) if json.get('componentSellerOrigin', None) is not None else None,
-            bid=float(json['bid']) if json.get('bid', None) is not None else None,
-            bid_currency=str(json['bidCurrency']) if json.get('bidCurrency', None) is not None else None,
-            unique_auction_id=InterestGroupAuctionId.from_json(json['uniqueAuctionId']) if json.get('uniqueAuctionId', None) is not None else None
-        )
-
-
-@event_class('Storage.interestGroupAuctionEventOccurred')
-@dataclass
-class InterestGroupAuctionEventOccurred:
-    '''
-    An auction involving interest groups is taking place. These events are
-    target-specific.
-    '''
-    event_time: network.TimeSinceEpoch
-    type_: InterestGroupAuctionEventType
-    unique_auction_id: InterestGroupAuctionId
-    #: Set for child auctions.
-    parent_auction_id: typing.Optional[InterestGroupAuctionId]
-    #: Set for started and configResolved
-    auction_config: typing.Optional[dict]
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> InterestGroupAuctionEventOccurred:
-        return cls(
-            event_time=network.TimeSinceEpoch.from_json(json['eventTime']),
-            type_=InterestGroupAuctionEventType.from_json(json['type']),
-            unique_auction_id=InterestGroupAuctionId.from_json(json['uniqueAuctionId']),
-            parent_auction_id=InterestGroupAuctionId.from_json(json['parentAuctionId']) if json.get('parentAuctionId', None) is not None else None,
-            auction_config=dict(json['auctionConfig']) if json.get('auctionConfig', None) is not None else None
-        )
-
-
-@event_class('Storage.interestGroupAuctionNetworkRequestCreated')
-@dataclass
-class InterestGroupAuctionNetworkRequestCreated:
-    '''
-    Specifies which auctions a particular network fetch may be related to, and
-    in what role. Note that it is not ordered with respect to
-    Network.requestWillBeSent (but will happen before loadingFinished
-    loadingFailed).
-    '''
-    type_: InterestGroupAuctionFetchType
-    request_id: network.RequestId
-    #: This is the set of the auctions using the worklet that issued this
-    #: request.  In the case of trusted signals, it's possible that only some of
-    #: them actually care about the keys being queried.
-    auctions: typing.List[InterestGroupAuctionId]
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> InterestGroupAuctionNetworkRequestCreated:
-        return cls(
-            type_=InterestGroupAuctionFetchType.from_json(json['type']),
-            request_id=network.RequestId.from_json(json['requestId']),
-            auctions=[InterestGroupAuctionId.from_json(i) for i in json['auctions']]
-        )
-
-
-@event_class('Storage.sharedStorageAccessed')
-@dataclass
-class SharedStorageAccessed:
-    '''
-    Shared storage was accessed by the associated page.
-    The following parameters are included in all events.
-    '''
-    #: Time of the access.
-    access_time: network.TimeSinceEpoch
-    #: Enum value indicating the access scope.
-    scope: SharedStorageAccessScope
-    #: Enum value indicating the Shared Storage API method invoked.
-    method: SharedStorageAccessMethod
-    #: DevTools Frame Token for the primary frame tree's root.
-    main_frame_id: page.FrameId
-    #: Serialization of the origin owning the Shared Storage data.
-    owner_origin: str
-    #: Serialization of the site owning the Shared Storage data.
-    owner_site: str
-    #: The sub-parameters wrapped by ``params`` are all optional and their
-    #: presence/absence depends on ``type``.
-    params: SharedStorageAccessParams
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> SharedStorageAccessed:
-        return cls(
-            access_time=network.TimeSinceEpoch.from_json(json['accessTime']),
-            scope=SharedStorageAccessScope.from_json(json['scope']),
-            method=SharedStorageAccessMethod.from_json(json['method']),
-            main_frame_id=page.FrameId.from_json(json['mainFrameId']),
-            owner_origin=str(json['ownerOrigin']),
-            owner_site=str(json['ownerSite']),
-            params=SharedStorageAccessParams.from_json(json['params'])
-        )
-
-
-@event_class('Storage.sharedStorageWorkletOperationExecutionFinished')
-@dataclass
-class SharedStorageWorkletOperationExecutionFinished:
-    '''
-    A shared storage run or selectURL operation finished its execution.
-    The following parameters are included in all events.
-    '''
-    #: Time that the operation finished.
-    finished_time: network.TimeSinceEpoch
-    #: Time, in microseconds, from start of shared storage JS API call until
-    #: end of operation execution in the worklet.
-    execution_time: int
-    #: Enum value indicating the Shared Storage API method invoked.
-    method: SharedStorageAccessMethod
-    #: ID of the operation call.
-    operation_id: str
-    #: Hex representation of the DevTools token used as the TargetID for the
-    #: associated shared storage worklet.
-    worklet_target_id: target.TargetID
-    #: DevTools Frame Token for the primary frame tree's root.
-    main_frame_id: page.FrameId
-    #: Serialization of the origin owning the Shared Storage data.
-    owner_origin: str
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> SharedStorageWorkletOperationExecutionFinished:
-        return cls(
-            finished_time=network.TimeSinceEpoch.from_json(json['finishedTime']),
-            execution_time=int(json['executionTime']),
-            method=SharedStorageAccessMethod.from_json(json['method']),
-            operation_id=str(json['operationId']),
-            worklet_target_id=target.TargetID.from_json(json['workletTargetId']),
-            main_frame_id=page.FrameId.from_json(json['mainFrameId']),
-            owner_origin=str(json['ownerOrigin'])
-        )
-
-
 @event_class('Storage.storageBucketCreatedOrUpdated')
 @dataclass
 class StorageBucketCreatedOrUpdated:
@@ -1570,4 +882,21 @@ class StorageBucketDeleted:
     def from_json(cls, json: T_JSON_DICT) -> StorageBucketDeleted:
         return cls(
             bucket_id=str(json['bucketId'])
+        )
+
+
+@event_class('Storage.privateVerificationTokensUpdated')
+@dataclass
+class PrivateVerificationTokensUpdated:
+    '''
+    **EXPERIMENTAL**
+
+    Private Verification Tokens have been stored or deleted.
+    '''
+
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> PrivateVerificationTokensUpdated:
+        return cls(
+
         )

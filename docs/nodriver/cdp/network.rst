@@ -33,11 +33,6 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: InterceptionId
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
 .. autoclass:: ErrorReason
       :members:
       :undoc-members:
@@ -248,16 +243,6 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: InterceptionStage
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: RequestPattern
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
 .. autoclass:: SignedExchangeSignature
       :members:
       :undoc-members:
@@ -279,11 +264,6 @@ arguments to other commands.
       :exclude-members: from_json, to_json
 
 .. autoclass:: SignedExchangeInfo
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: ContentEncoding
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -501,15 +481,11 @@ to. For more information, see
 
 .. autofunction:: can_emulate_network_conditions
 
-.. autofunction:: clear_accepted_encodings_override
-
 .. autofunction:: clear_browser_cache
 
 .. autofunction:: clear_browser_cookies
 
 .. autofunction:: configure_durable_messages
-
-.. autofunction:: continue_intercepted_request
 
 .. autofunction:: delete_cookies
 
@@ -539,8 +515,6 @@ to. For more information, see
 
 .. autofunction:: get_response_body
 
-.. autofunction:: get_response_body_for_interception
-
 .. autofunction:: get_security_isolation_status
 
 .. autofunction:: load_network_resource
@@ -550,8 +524,6 @@ to. For more information, see
 .. autofunction:: replay_xhr
 
 .. autofunction:: search_in_response_body
-
-.. autofunction:: set_accepted_encodings
 
 .. autofunction:: set_attach_debug_stack
 
@@ -569,13 +541,9 @@ to. For more information, see
 
 .. autofunction:: set_extra_http_headers
 
-.. autofunction:: set_request_interception
-
 .. autofunction:: set_user_agent_override
 
 .. autofunction:: stream_resource_content
-
-.. autofunction:: take_response_body_for_interception_as_stream
 
 Events
 ------
@@ -600,11 +568,6 @@ you use the event's attributes.
       :exclude-members: from_json, to_json
 
 .. autoclass:: LoadingFinished
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: RequestIntercepted
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

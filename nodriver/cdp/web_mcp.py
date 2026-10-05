@@ -27,6 +27,12 @@ class Annotation:
     #: A hint indicating that the tool output may contain untrusted content, ex: UGC, 3rd party data.
     untrusted_content: typing.Optional[bool] = None
 
+    #: A hint indicating that executing the tool will result in consequential actions, ex: booking a flight, transferring money.
+    consequential: typing.Optional[bool] = None
+
+    #: If true, indicates that the tool is intended for debugging and developer tooling rather than end-user interactions.
+    debugging: typing.Optional[bool] = None
+
     #: If the declarative tool was declared with the autosubmit attribute.
     autosubmit: typing.Optional[bool] = None
 
@@ -36,6 +42,10 @@ class Annotation:
             json['readOnly'] = self.read_only
         if self.untrusted_content is not None:
             json['untrustedContent'] = self.untrusted_content
+        if self.consequential is not None:
+            json['consequential'] = self.consequential
+        if self.debugging is not None:
+            json['debugging'] = self.debugging
         if self.autosubmit is not None:
             json['autosubmit'] = self.autosubmit
         return json
@@ -45,6 +55,8 @@ class Annotation:
         return cls(
             read_only=bool(json['readOnly']) if json.get('readOnly', None) is not None else None,
             untrusted_content=bool(json['untrustedContent']) if json.get('untrustedContent', None) is not None else None,
+            consequential=bool(json['consequential']) if json.get('consequential', None) is not None else None,
+            debugging=bool(json['debugging']) if json.get('debugging', None) is not None else None,
             autosubmit=bool(json['autosubmit']) if json.get('autosubmit', None) is not None else None,
         )
 

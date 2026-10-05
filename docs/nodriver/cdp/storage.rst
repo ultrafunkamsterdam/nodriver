@@ -37,62 +37,12 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: InterestGroupAuctionId
+.. autoclass:: PrivateVerificationToken
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: InterestGroupAccessType
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: InterestGroupAuctionEventType
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: InterestGroupAuctionFetchType
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: SharedStorageAccessScope
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: SharedStorageAccessMethod
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: SharedStorageEntry
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: SharedStorageMetadata
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: SharedStoragePrivateAggregationConfig
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: SharedStorageReportingMetadata
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: SharedStorageUrlWithMetadata
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: SharedStorageAccessParams
+.. autoclass:: PrivateVerificationTokensIssuerConfig
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -108,11 +58,6 @@ arguments to other commands.
       :exclude-members: from_json, to_json
 
 .. autoclass:: StorageBucketInfo
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: RelatedWebsiteSet
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
@@ -135,23 +80,19 @@ to. For more information, see
 
 .. autofunction:: clear_data_for_storage_key
 
-.. autofunction:: clear_shared_storage_entries
+.. autofunction:: clear_private_verification_tokens
 
 .. autofunction:: clear_trust_tokens
 
-.. autofunction:: delete_shared_storage_entry
+.. autofunction:: delete_private_verification_token
 
 .. autofunction:: delete_storage_bucket
 
 .. autofunction:: get_cookies
 
-.. autofunction:: get_interest_group_details
+.. autofunction:: get_private_verification_tokens
 
-.. autofunction:: get_related_website_sets
-
-.. autofunction:: get_shared_storage_entries
-
-.. autofunction:: get_shared_storage_metadata
+.. autofunction:: get_private_verification_tokens_issuer_configs
 
 .. autofunction:: get_storage_key
 
@@ -163,21 +104,11 @@ to. For more information, see
 
 .. autofunction:: override_quota_for_origin
 
-.. autofunction:: reset_shared_storage_budget
-
 .. autofunction:: run_bounce_tracking_mitigations
 
 .. autofunction:: set_cookies
 
-.. autofunction:: set_interest_group_auction_tracking
-
-.. autofunction:: set_interest_group_tracking
-
-.. autofunction:: set_protected_audience_k_anonymity
-
-.. autofunction:: set_shared_storage_entry
-
-.. autofunction:: set_shared_storage_tracking
+.. autofunction:: set_private_verification_tokens_tracking
 
 .. autofunction:: set_storage_bucket_tracking
 
@@ -224,37 +155,17 @@ you use the event's attributes.
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: InterestGroupAccessed
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: InterestGroupAuctionEventOccurred
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: InterestGroupAuctionNetworkRequestCreated
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: SharedStorageAccessed
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
-.. autoclass:: SharedStorageWorkletOperationExecutionFinished
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
 .. autoclass:: StorageBucketCreatedOrUpdated
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json
 
 .. autoclass:: StorageBucketDeleted
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
+.. autoclass:: PrivateVerificationTokensUpdated
       :members:
       :undoc-members:
       :exclude-members: from_json, to_json

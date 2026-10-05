@@ -341,6 +341,75 @@ class ContrastAlgorithm(enum.Enum):
 
 
 @dataclass
+class ImcbHighlightConfig:
+    '''
+    Configuration for Inset-Modified Containing Block (IMCB) and CSS Anchor Positioning highlight.
+    '''
+    #: Border color for the Inset-Modified Containing Block (default: transparent).
+    imcb_border_color: typing.Optional[dom.RGBA] = None
+
+    #: Background fill color for the Inset-Modified Containing Block (default: transparent).
+    imcb_background_color: typing.Optional[dom.RGBA] = None
+
+    #: Fill color for the inset modifiers area (difference between CB and IMCB).
+    insets_background_color: typing.Optional[dom.RGBA] = None
+
+    #: Hatch color for the inset modifiers area.
+    insets_hatch_color: typing.Optional[dom.RGBA] = None
+
+    #: Border color for the referenced target anchor element(s) (when element is anchor-positioned).
+    anchor_border_color: typing.Optional[dom.RGBA] = None
+
+    #: Background fill color for the referenced target anchor element(s) (when element is anchor-positioned).
+    anchor_background_color: typing.Optional[dom.RGBA] = None
+
+    #: Whether to render the 3x3 position-area grid lines when position-area is used.
+    show_position_area_grid: typing.Optional[bool] = None
+
+    #: Line color for the 3x3 position-area grid lines.
+    position_area_grid_line_color: typing.Optional[dom.RGBA] = None
+
+    #: Fill color for the active region within the position-area grid.
+    position_area_active_region_color: typing.Optional[dom.RGBA] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        if self.imcb_border_color is not None:
+            json['imcbBorderColor'] = self.imcb_border_color.to_json()
+        if self.imcb_background_color is not None:
+            json['imcbBackgroundColor'] = self.imcb_background_color.to_json()
+        if self.insets_background_color is not None:
+            json['insetsBackgroundColor'] = self.insets_background_color.to_json()
+        if self.insets_hatch_color is not None:
+            json['insetsHatchColor'] = self.insets_hatch_color.to_json()
+        if self.anchor_border_color is not None:
+            json['anchorBorderColor'] = self.anchor_border_color.to_json()
+        if self.anchor_background_color is not None:
+            json['anchorBackgroundColor'] = self.anchor_background_color.to_json()
+        if self.show_position_area_grid is not None:
+            json['showPositionAreaGrid'] = self.show_position_area_grid
+        if self.position_area_grid_line_color is not None:
+            json['positionAreaGridLineColor'] = self.position_area_grid_line_color.to_json()
+        if self.position_area_active_region_color is not None:
+            json['positionAreaActiveRegionColor'] = self.position_area_active_region_color.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> ImcbHighlightConfig:
+        return cls(
+            imcb_border_color=dom.RGBA.from_json(json['imcbBorderColor']) if json.get('imcbBorderColor', None) is not None else None,
+            imcb_background_color=dom.RGBA.from_json(json['imcbBackgroundColor']) if json.get('imcbBackgroundColor', None) is not None else None,
+            insets_background_color=dom.RGBA.from_json(json['insetsBackgroundColor']) if json.get('insetsBackgroundColor', None) is not None else None,
+            insets_hatch_color=dom.RGBA.from_json(json['insetsHatchColor']) if json.get('insetsHatchColor', None) is not None else None,
+            anchor_border_color=dom.RGBA.from_json(json['anchorBorderColor']) if json.get('anchorBorderColor', None) is not None else None,
+            anchor_background_color=dom.RGBA.from_json(json['anchorBackgroundColor']) if json.get('anchorBackgroundColor', None) is not None else None,
+            show_position_area_grid=bool(json['showPositionAreaGrid']) if json.get('showPositionAreaGrid', None) is not None else None,
+            position_area_grid_line_color=dom.RGBA.from_json(json['positionAreaGridLineColor']) if json.get('positionAreaGridLineColor', None) is not None else None,
+            position_area_active_region_color=dom.RGBA.from_json(json['positionAreaActiveRegionColor']) if json.get('positionAreaActiveRegionColor', None) is not None else None,
+        )
+
+
+@dataclass
 class HighlightConfig:
     '''
     Configuration data for the highlighting of page elements.
@@ -402,6 +471,9 @@ class HighlightConfig:
     #: The container query container highlight configuration (default: all transparent).
     container_query_container_highlight_config: typing.Optional[ContainerQueryContainerHighlightConfig] = None
 
+    #: The IMCB highlight configuration (default: all transparent).
+    imcb_highlight_config: typing.Optional[ImcbHighlightConfig] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         if self.show_info is not None:
@@ -442,6 +514,8 @@ class HighlightConfig:
             json['contrastAlgorithm'] = self.contrast_algorithm.to_json()
         if self.container_query_container_highlight_config is not None:
             json['containerQueryContainerHighlightConfig'] = self.container_query_container_highlight_config.to_json()
+        if self.imcb_highlight_config is not None:
+            json['imcbHighlightConfig'] = self.imcb_highlight_config.to_json()
         return json
 
     @classmethod
@@ -466,6 +540,7 @@ class HighlightConfig:
             flex_item_highlight_config=FlexItemHighlightConfig.from_json(json['flexItemHighlightConfig']) if json.get('flexItemHighlightConfig', None) is not None else None,
             contrast_algorithm=ContrastAlgorithm.from_json(json['contrastAlgorithm']) if json.get('contrastAlgorithm', None) is not None else None,
             container_query_container_highlight_config=ContainerQueryContainerHighlightConfig.from_json(json['containerQueryContainerHighlightConfig']) if json.get('containerQueryContainerHighlightConfig', None) is not None else None,
+            imcb_highlight_config=ImcbHighlightConfig.from_json(json['imcbHighlightConfig']) if json.get('imcbHighlightConfig', None) is not None else None,
         )
 
 
@@ -617,6 +692,90 @@ class HingeConfig:
             rect=dom.Rect.from_json(json['rect']),
             content_color=dom.RGBA.from_json(json['contentColor']) if json.get('contentColor', None) is not None else None,
             outline_color=dom.RGBA.from_json(json['outlineColor']) if json.get('outlineColor', None) is not None else None,
+        )
+
+
+class DisplayCutoutShape(enum.Enum):
+    '''
+    Supported display cutout shapes.
+    '''
+    PILL = "pill"
+    NOTCH = "notch"
+    CIRCLE = "circle"
+    RECTANGLE = "rectangle"
+
+    def to_json(self) -> str:
+        return self.value
+
+    @classmethod
+    def from_json(cls, json: str) -> DisplayCutoutShape:
+        return cls(json)
+
+
+@dataclass
+class DisplayCutoutConfig:
+    '''
+    Configuration for a display cutout.
+    '''
+    #: A rectangle representing the cutout bounds.
+    rect: dom.Rect
+
+    #: Shape used to draw the cutout.
+    shape: DisplayCutoutShape
+
+    #: Border radius for rounded cutout shapes.
+    border_radius: typing.Optional[int] = None
+
+    #: Upper shoulder radius for notch cutout shapes.
+    upper_radius: typing.Optional[int] = None
+
+    #: Lower transition radius for notch cutout shapes.
+    lower_radius: typing.Optional[int] = None
+
+    #: Center x coordinate for circle cutout shapes.
+    cx: typing.Optional[int] = None
+
+    #: Center y coordinate for circle cutout shapes.
+    cy: typing.Optional[int] = None
+
+    #: Radius for circle cutout shapes.
+    radius: typing.Optional[int] = None
+
+    #: The cutout fill color (default: black).
+    content_color: typing.Optional[dom.RGBA] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['rect'] = self.rect.to_json()
+        json['shape'] = self.shape.to_json()
+        if self.border_radius is not None:
+            json['borderRadius'] = self.border_radius
+        if self.upper_radius is not None:
+            json['upperRadius'] = self.upper_radius
+        if self.lower_radius is not None:
+            json['lowerRadius'] = self.lower_radius
+        if self.cx is not None:
+            json['cx'] = self.cx
+        if self.cy is not None:
+            json['cy'] = self.cy
+        if self.radius is not None:
+            json['radius'] = self.radius
+        if self.content_color is not None:
+            json['contentColor'] = self.content_color.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> DisplayCutoutConfig:
+        return cls(
+            rect=dom.Rect.from_json(json['rect']),
+            shape=DisplayCutoutShape.from_json(json['shape']),
+            border_radius=int(json['borderRadius']) if json.get('borderRadius', None) is not None else None,
+            upper_radius=int(json['upperRadius']) if json.get('upperRadius', None) is not None else None,
+            lower_radius=int(json['lowerRadius']) if json.get('lowerRadius', None) is not None else None,
+            cx=int(json['cx']) if json.get('cx', None) is not None else None,
+            cy=int(json['cy']) if json.get('cy', None) is not None else None,
+            radius=int(json['radius']) if json.get('radius', None) is not None else None,
+            content_color=dom.RGBA.from_json(json['contentColor']) if json.get('contentColor', None) is not None else None,
         )
 
 
@@ -1333,6 +1492,24 @@ def set_show_hinge(
         params['hingeConfig'] = hinge_config.to_json()
     cmd_dict: T_JSON_DICT = {
         'method': 'Overlay.setShowHinge',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
+def set_show_display_cutout(
+        display_cutout_config: typing.Optional[DisplayCutoutConfig] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Add a display cutout overlay.
+
+    :param display_cutout_config: *(Optional)* display cutout data, null means hide display cutout
+    '''
+    params: T_JSON_DICT = dict()
+    if display_cutout_config is not None:
+        params['displayCutoutConfig'] = display_cutout_config.to_json()
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Overlay.setShowDisplayCutout',
         'params': params,
     }
     json = yield cmd_dict

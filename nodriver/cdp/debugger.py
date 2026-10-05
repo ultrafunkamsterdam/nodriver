@@ -215,6 +215,13 @@ class Scope:
     #: Location in the source code where scope ends
     end_location: typing.Optional[Location] = None
 
+    #: Present if the scope has no variable values to show. Absent means that
+    #: the scope declares at least one variable with an available value.
+    #: Empty scopes are retained in the scope chain because
+    #: they can be targeted via ``evaluateOnCallFrame`` (using ``scopeNumber``) or
+    #: matched against scopes in source maps.
+    empty_reason: typing.Optional[str] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         json['type'] = self.type_
@@ -225,6 +232,8 @@ class Scope:
             json['startLocation'] = self.start_location.to_json()
         if self.end_location is not None:
             json['endLocation'] = self.end_location.to_json()
+        if self.empty_reason is not None:
+            json['emptyReason'] = self.empty_reason
         return json
 
     @classmethod
@@ -235,6 +244,7 @@ class Scope:
             name=str(json['name']) if json.get('name', None) is not None else None,
             start_location=Location.from_json(json['startLocation']) if json.get('startLocation', None) is not None else None,
             end_location=Location.from_json(json['endLocation']) if json.get('endLocation', None) is not None else None,
+            empty_reason=str(json['emptyReason']) if json.get('emptyReason', None) is not None else None,
         )
 
 
@@ -442,7 +452,8 @@ def evaluate_on_call_frame(
         return_by_value: typing.Optional[bool] = None,
         generate_preview: typing.Optional[bool] = None,
         throw_on_side_effect: typing.Optional[bool] = None,
-        timeout: typing.Optional[runtime.TimeDelta] = None
+        timeout: typing.Optional[runtime.TimeDelta] = None,
+        scope_number: typing.Optional[int] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[runtime.RemoteObject, typing.Optional[runtime.ExceptionDetails]]]:
     '''
     Evaluates expression on a given call frame.
@@ -456,6 +467,7 @@ def evaluate_on_call_frame(
     :param generate_preview: **(EXPERIMENTAL)** *(Optional)* Whether preview should be generated for the result.
     :param throw_on_side_effect: *(Optional)* Whether to throw an exception if side effect cannot be ruled out during evaluation.
     :param timeout: **(EXPERIMENTAL)** *(Optional)* Terminate execution after timing out (number of milliseconds).
+    :param scope_number: **(EXPERIMENTAL)** *(Optional)* Specifies the scope number to evaluate the expression in (default: 0, innermost scope).
     :returns: A tuple with the following items:
 
         0. **result** - Object wrapper for the evaluation result.
@@ -478,6 +490,8 @@ def evaluate_on_call_frame(
         params['throwOnSideEffect'] = throw_on_side_effect
     if timeout is not None:
         params['timeout'] = timeout.to_json()
+    if scope_number is not None:
+        params['scopeNumber'] = scope_number
     cmd_dict: T_JSON_DICT = {
         'method': 'Debugger.evaluateOnCallFrame',
         'params': params,
@@ -1045,6 +1059,7 @@ def set_return_value(
     json = yield cmd_dict
 
 
+@deprecated(version="1.3")
 def set_script_source(
         script_id: runtime.ScriptId,
         script_source: str,
@@ -1052,13 +1067,9 @@ def set_script_source(
         allow_top_frame_editing: typing.Optional[bool] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typing.Tuple[typing.Optional[typing.List[CallFrame]], typing.Optional[bool], typing.Optional[runtime.StackTrace], typing.Optional[runtime.StackTraceId], str, typing.Optional[runtime.ExceptionDetails]]]:
     '''
-    Edits JavaScript source live.
+    Live edit is no longer supported and this command always fails with a "no longer available" error.
 
-    In general, functions that are currently on the stack can not be edited with
-    a single exception: If the edited function is the top-most stack frame and
-    that is the only activation of that function on the stack. In this case
-    the live edit will be successful and a ``Debugger.restartFrame`` for the
-    top-most function is automatically triggered.
+    .. deprecated:: 1.3
 
     :param script_id: Id of the script to edit.
     :param script_source: New content of the script.

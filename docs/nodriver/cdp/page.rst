@@ -277,6 +277,11 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
+.. autoclass:: SubApp
+      :members:
+      :undoc-members:
+      :exclude-members: from_json, to_json
+
 .. autoclass:: NavigationType
       :members:
       :undoc-members:
@@ -379,6 +384,10 @@ to. For more information, see
 
 .. autofunction:: get_resource_tree
 
+.. autofunction:: get_sibling_sub_apps
+
+.. autofunction:: get_sub_apps
+
 .. autofunction:: handle_java_script_dialog
 
 .. autofunction:: navigate
@@ -433,9 +442,13 @@ to. For more information, see
 
 .. autofunction:: set_web_lifecycle_state
 
+.. autofunction:: start_screen_recording
+
 .. autofunction:: start_screencast
 
 .. autofunction:: stop_loading
+
+.. autofunction:: stop_screen_recording
 
 .. autofunction:: stop_screencast
 

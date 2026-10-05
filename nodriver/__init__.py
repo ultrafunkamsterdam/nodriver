@@ -28,4 +28,4 @@ __all__ = [
     "ProtocolException",
 ]
 
-__version__ = "0.50.3"
+__version__ = "0.50.4"

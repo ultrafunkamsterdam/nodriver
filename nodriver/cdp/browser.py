@@ -298,18 +298,6 @@ class Histogram:
         )
 
 
-class PrivacySandboxAPI(enum.Enum):
-    BIDDING_AND_AUCTION_SERVICES = "BiddingAndAuctionServices"
-    TRUSTED_KEY_VALUE = "TrustedKeyValue"
-
-    def to_json(self) -> str:
-        return self.value
-
-    @classmethod
-    def from_json(cls, json: str) -> PrivacySandboxAPI:
-        return cls(json)
-
-
 def set_permission(
         permission: PermissionDescriptor,
         setting: PermissionSetting,
@@ -522,6 +510,27 @@ def get_browser_command_line() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,typin
     return [str(i) for i in json['arguments']]
 
 
+def add_mock_camera(
+        device_id: str
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Adds or updates a mock camera in the shared video capture device list for
+    test automation. The mock camera is not scoped to a particular page or
+    frame and is removed when the DevTools session that created it disconnects.
+
+    **EXPERIMENTAL**
+
+    :param device_id: Required non-empty identifier for the mock camera. This is mapped to an internal virtual-device identifier and is not the MediaDeviceInfo.deviceId exposed to the page.
+    '''
+    params: T_JSON_DICT = dict()
+    params['deviceId'] = device_id
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Browser.addMockCamera',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
 def get_histograms(
         query: typing.Optional[str] = None,
         delta: typing.Optional[bool] = None
@@ -732,34 +741,42 @@ def add_privacy_sandbox_enrollment_override(
     json = yield cmd_dict
 
 
-def add_privacy_sandbox_coordinator_key_config(
-        api: PrivacySandboxAPI,
-        coordinator_origin: str,
-        key_config: str,
-        browser_context_id: typing.Optional[BrowserContextID] = None
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+def get_global_privacy_control() -> typing.Generator[T_JSON_DICT,T_JSON_DICT,bool]:
     '''
-    Configures encryption keys used with a given privacy sandbox API to talk
-    to a trusted coordinator.  Since this is intended for test automation only,
-    coordinatorOrigin must be a .test domain. No existing coordinator
-    configuration for the origin may exist.
+    Gets the current globally-applied privacy control status
+    See https://www.w3.org/TR/gpc/#get-global-privacy-control
 
-    :param api:
-    :param coordinator_origin:
-    :param key_config:
-    :param browser_context_id: *(Optional)* BrowserContext to perform the action in. When omitted, default browser context is used.
+    **EXPERIMENTAL**
+
+    :returns: 
+    '''
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Browser.getGlobalPrivacyControl',
+    }
+    json = yield cmd_dict
+    return bool(json['gpc'])
+
+
+def set_global_privacy_control(
+        gpc: bool
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,bool]:
+    '''
+    Sets and then gets the current globally-applied privacy control status
+    See https://www.w3.org/TR/gpc/#set-global-privacy-control
+
+    **EXPERIMENTAL**
+
+    :param gpc:
+    :returns: 
     '''
     params: T_JSON_DICT = dict()
-    params['api'] = api.to_json()
-    params['coordinatorOrigin'] = coordinator_origin
-    params['keyConfig'] = key_config
-    if browser_context_id is not None:
-        params['browserContextId'] = browser_context_id.to_json()
+    params['gpc'] = gpc
     cmd_dict: T_JSON_DICT = {
-        'method': 'Browser.addPrivacySandboxCoordinatorKeyConfig',
+        'method': 'Browser.setGlobalPrivacyControl',
         'params': params,
     }
     json = yield cmd_dict
+    return bool(json['gpc'])
 
 
 @event_class('Browser.downloadWillBegin')

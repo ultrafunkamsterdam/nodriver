@@ -770,6 +770,31 @@ def set_safe_area_insets_override(
     json = yield cmd_dict
 
 
+def set_virtual_keyboard_geometry_override(
+        keyboard_rect: typing.Optional[dom.Rect] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Overrides virtual keyboard geometry in CSS pixels, relative to the top-level viewport. The
+    provided rect is used for navigator.virtualKeyboard.boundingRect, geometrychange events, and
+    env(keyboard-inset-*) values on the inspected frame. The override applies independently of
+    navigator.virtualKeyboard.overlaysContent so clients can preview overlay geometry without
+    mutating page state. Values are rounded to the nearest CSS pixel. Omitting the rect clears the
+    override.
+
+    **EXPERIMENTAL**
+
+    :param keyboard_rect: *(Optional)*
+    '''
+    params: T_JSON_DICT = dict()
+    if keyboard_rect is not None:
+        params['keyboardRect'] = keyboard_rect.to_json()
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Emulation.setVirtualKeyboardGeometryOverride',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
 def set_device_metrics_override(
         width: int,
         height: int,
@@ -786,7 +811,9 @@ def set_device_metrics_override(
         display_feature: typing.Optional[DisplayFeature] = None,
         device_posture: typing.Optional[DevicePosture] = None,
         scrollbar_type: typing.Optional[str] = None,
-        screen_orientation_lock_emulation: typing.Optional[bool] = None
+        screen_orientation_lock_emulation: typing.Optional[bool] = None,
+        viewport_meta: typing.Optional[str] = None,
+        text_layout_mode: typing.Optional[str] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
     Overrides the values of device screen dimensions (window.screen.width, window.screen.height,
@@ -807,8 +834,10 @@ def set_device_metrics_override(
     :param viewport: **(EXPERIMENTAL)** *(Optional)* If set, the visible area of the page will be overridden to this viewport. This viewport change is not observed by the page, e.g. viewport-relative elements do not change positions.
     :param display_feature: **(DEPRECATED)** **(EXPERIMENTAL)** *(Optional)* If set, the display feature of a multi-segment screen. If not set, multi-segment support is turned-off. Deprecated, use Emulation.setDisplayFeaturesOverride.
     :param device_posture: **(DEPRECATED)** **(EXPERIMENTAL)** *(Optional)* If set, the posture of a foldable device. If not set the posture is set to continuous. Deprecated, use Emulation.setDevicePostureOverride.
-    :param scrollbar_type: **(EXPERIMENTAL)** *(Optional)* Scrollbar type. Default: ```default```.
+    :param scrollbar_type: **(EXPERIMENTAL)** *(Optional)* Scrollbar type. Default: ```default````.
     :param screen_orientation_lock_emulation: **(EXPERIMENTAL)** *(Optional)* If set to true, enables screen orientation lock emulation, which intercepts screen.orientation.lock() calls from the page and reports orientation changes via screenOrientationLockChanged events. This is useful for emulating mobile device orientation lock behavior in responsive design mode.
+    :param viewport_meta: **(EXPERIMENTAL)** *(Optional)* Viewport meta tag behavior. Default: ````default````. Note: if ````mobile```` is ````true````, the viewport meta tag is always enabled.
+    :param text_layout_mode: **(EXPERIMENTAL)** *(Optional)* Text layout mode. Default: ````default````. Note: if ````mobile```` is ````true```, mobile text layout mode (text autosizing) is always enabled.
     '''
     params: T_JSON_DICT = dict()
     params['width'] = width
@@ -839,6 +868,10 @@ def set_device_metrics_override(
         params['scrollbarType'] = scrollbar_type
     if screen_orientation_lock_emulation is not None:
         params['screenOrientationLockEmulation'] = screen_orientation_lock_emulation
+    if viewport_meta is not None:
+        params['viewportMeta'] = viewport_meta
+    if text_layout_mode is not None:
+        params['textLayoutMode'] = text_layout_mode
     cmd_dict: T_JSON_DICT = {
         'method': 'Emulation.setDeviceMetricsOverride',
         'params': params,
@@ -1185,7 +1218,6 @@ def set_pressure_state_override(
         state: PressureState
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
-    TODO: OBSOLETE: To remove when setPressureDataOverride is merged.
     Provides a given pressure state that will be processed and eventually be
     delivered to PressureObserver users. ``source`` must have been previously
     overridden by setPressureSourceOverrideEnabled.
@@ -1200,34 +1232,6 @@ def set_pressure_state_override(
     params['state'] = state.to_json()
     cmd_dict: T_JSON_DICT = {
         'method': 'Emulation.setPressureStateOverride',
-        'params': params,
-    }
-    json = yield cmd_dict
-
-
-def set_pressure_data_override(
-        source: PressureSource,
-        state: PressureState,
-        own_contribution_estimate: typing.Optional[float] = None
-    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
-    '''
-    Provides a given pressure data set that will be processed and eventually be
-    delivered to PressureObserver users. ``source`` must have been previously
-    overridden by setPressureSourceOverrideEnabled.
-
-    **EXPERIMENTAL**
-
-    :param source:
-    :param state:
-    :param own_contribution_estimate: *(Optional)*
-    '''
-    params: T_JSON_DICT = dict()
-    params['source'] = source.to_json()
-    params['state'] = state.to_json()
-    if own_contribution_estimate is not None:
-        params['ownContributionEstimate'] = own_contribution_estimate
-    cmd_dict: T_JSON_DICT = {
-        'method': 'Emulation.setPressureDataOverride',
         'params': params,
     }
     json = yield cmd_dict
@@ -1493,6 +1497,26 @@ def set_hardware_concurrency_override(
     params['hardwareConcurrency'] = hardware_concurrency
     cmd_dict: T_JSON_DICT = {
         'method': 'Emulation.setHardwareConcurrencyOverride',
+        'params': params,
+    }
+    json = yield cmd_dict
+
+
+def set_cpu_performance_override(
+        performance_tier: typing.Optional[str] = None
+    ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
+    '''
+    Overrides the value of navigator.cpuPerformance
+
+    **EXPERIMENTAL**
+
+    :param performance_tier: *(Optional)* Override value. Omitting the parameter disables the override.
+    '''
+    params: T_JSON_DICT = dict()
+    if performance_tier is not None:
+        params['performanceTier'] = performance_tier
+    cmd_dict: T_JSON_DICT = {
+        'method': 'Emulation.setCPUPerformanceOverride',
         'params': params,
     }
     json = yield cmd_dict

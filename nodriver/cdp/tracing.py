@@ -265,7 +265,9 @@ def start(
         stream_compression: typing.Optional[StreamCompression] = None,
         trace_config: typing.Optional[TraceConfig] = None,
         perfetto_config: typing.Optional[str] = None,
-        tracing_backend: typing.Optional[TracingBackend] = None
+        tracing_backend: typing.Optional[TracingBackend] = None,
+        screenshot_max_size: typing.Optional[int] = None,
+        screenshot_max_count: typing.Optional[int] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
     Start trace events collection.
@@ -278,7 +280,9 @@ def start(
     :param stream_compression: **(EXPERIMENTAL)** *(Optional)* Compression format to use. This only applies when using ````ReturnAsStream```` transfer mode (defaults to ````none````)
     :param trace_config: *(Optional)*
     :param perfetto_config: **(EXPERIMENTAL)** *(Optional)* Base64-encoded serialized perfetto.protos.TraceConfig protobuf message When specified, the parameters ````categories````, ````options````, ````traceConfig```` are ignored. (Encoded as a base64 string when passed over JSON)
-    :param tracing_backend: **(EXPERIMENTAL)** *(Optional)* Backend type (defaults to ````auto```)
+    :param tracing_backend: **(EXPERIMENTAL)** *(Optional)* Backend type (defaults to ````auto````)
+    :param screenshot_max_size: **(EXPERIMENTAL)** *(Optional)* Maximum width and height (in pixels) of each captured screenshot. Only used when the ````disabled-by-default-devtools.screenshot```` category is enabled. Defaults to 500. The combined memory footprint of screenshots (````screenshotMaxSize```` * ````screenshotMaxSize```` * 4 * ````screenshotMaxCount````) is clamped to the existing per-session budget.
+    :param screenshot_max_count: **(EXPERIMENTAL)** *(Optional)* Maximum number of screenshots captured during a single tracing session. Only used when the ````disabled-by-default-devtools.screenshot```` category is enabled. Defaults to 450. Clamped together with ````screenshotMaxSize``` to stay within the per-session screenshot memory budget.
     '''
     params: T_JSON_DICT = dict()
     if categories is not None:
@@ -299,6 +303,10 @@ def start(
         params['perfettoConfig'] = perfetto_config
     if tracing_backend is not None:
         params['tracingBackend'] = tracing_backend.to_json()
+    if screenshot_max_size is not None:
+        params['screenshotMaxSize'] = screenshot_max_size
+    if screenshot_max_count is not None:
+        params['screenshotMaxCount'] = screenshot_max_count
     cmd_dict: T_JSON_DICT = {
         'method': 'Tracing.start',
         'params': params,

@@ -95,7 +95,6 @@ class CookieExclusionReason(enum.Enum):
     EXCLUDE_SAME_SITE_LAX = "ExcludeSameSiteLax"
     EXCLUDE_SAME_SITE_STRICT = "ExcludeSameSiteStrict"
     EXCLUDE_DOMAIN_NON_ASCII = "ExcludeDomainNonASCII"
-    EXCLUDE_THIRD_PARTY_COOKIE_BLOCKED_IN_FIRST_PARTY_SET = "ExcludeThirdPartyCookieBlockedInFirstPartySet"
     EXCLUDE_THIRD_PARTY_PHASEOUT = "ExcludeThirdPartyPhaseout"
     EXCLUDE_PORT_MISMATCH = "ExcludePortMismatch"
     EXCLUDE_SCHEME_MISMATCH = "ExcludeSchemeMismatch"
@@ -300,7 +299,6 @@ class MixedContentResolutionStatus(enum.Enum):
 
 
 class MixedContentResourceType(enum.Enum):
-    ATTRIBUTION_SRC = "AttributionSrc"
     AUDIO = "Audio"
     BEACON = "Beacon"
     CSP_REPORT = "CSPReport"
@@ -676,37 +674,6 @@ class CorsIssueDetails:
         )
 
 
-class AttributionReportingIssueType(enum.Enum):
-    PERMISSION_POLICY_DISABLED = "PermissionPolicyDisabled"
-    UNTRUSTWORTHY_REPORTING_ORIGIN = "UntrustworthyReportingOrigin"
-    INSECURE_CONTEXT = "InsecureContext"
-    INVALID_HEADER = "InvalidHeader"
-    INVALID_REGISTER_TRIGGER_HEADER = "InvalidRegisterTriggerHeader"
-    SOURCE_AND_TRIGGER_HEADERS = "SourceAndTriggerHeaders"
-    SOURCE_IGNORED = "SourceIgnored"
-    TRIGGER_IGNORED = "TriggerIgnored"
-    OS_SOURCE_IGNORED = "OsSourceIgnored"
-    OS_TRIGGER_IGNORED = "OsTriggerIgnored"
-    INVALID_REGISTER_OS_SOURCE_HEADER = "InvalidRegisterOsSourceHeader"
-    INVALID_REGISTER_OS_TRIGGER_HEADER = "InvalidRegisterOsTriggerHeader"
-    WEB_AND_OS_HEADERS = "WebAndOsHeaders"
-    NO_WEB_OR_OS_SUPPORT = "NoWebOrOsSupport"
-    NAVIGATION_REGISTRATION_WITHOUT_TRANSIENT_USER_ACTIVATION = "NavigationRegistrationWithoutTransientUserActivation"
-    INVALID_INFO_HEADER = "InvalidInfoHeader"
-    NO_REGISTER_SOURCE_HEADER = "NoRegisterSourceHeader"
-    NO_REGISTER_TRIGGER_HEADER = "NoRegisterTriggerHeader"
-    NO_REGISTER_OS_SOURCE_HEADER = "NoRegisterOsSourceHeader"
-    NO_REGISTER_OS_TRIGGER_HEADER = "NoRegisterOsTriggerHeader"
-    NAVIGATION_REGISTRATION_UNIQUE_SCOPE_ALREADY_SET = "NavigationRegistrationUniqueScopeAlreadySet"
-
-    def to_json(self) -> str:
-        return self.value
-
-    @classmethod
-    def from_json(cls, json: str) -> AttributionReportingIssueType:
-        return cls(json)
-
-
 class SharedDictionaryError(enum.Enum):
     USE_ERROR_CROSS_ORIGIN_NO_CORS_REQUEST = "UseErrorCrossOriginNoCorsRequest"
     USE_ERROR_DICTIONARY_LOAD_FAILURE = "UseErrorDictionaryLoadFailure"
@@ -727,6 +694,7 @@ class SharedDictionaryError(enum.Enum):
     WRITE_ERROR_NON_SECURE_CONTEXT = "WriteErrorNonSecureContext"
     WRITE_ERROR_NON_STRING_ID_FIELD = "WriteErrorNonStringIdField"
     WRITE_ERROR_NON_STRING_IN_MATCH_DEST_LIST = "WriteErrorNonStringInMatchDestList"
+    WRITE_ERROR_INVALID_MATCH_DEST_LIST = "WriteErrorInvalidMatchDestList"
     WRITE_ERROR_NON_STRING_MATCH_FIELD = "WriteErrorNonStringMatchField"
     WRITE_ERROR_NON_TOKEN_TYPE_FIELD = "WriteErrorNonTokenTypeField"
     WRITE_ERROR_REQUEST_ABORTED = "WriteErrorRequestAborted"
@@ -764,6 +732,10 @@ class SRIMessageSignatureError(enum.Enum):
     VALIDATION_FAILED_INVALID_LENGTH = "ValidationFailedInvalidLength"
     VALIDATION_FAILED_SIGNATURE_MISMATCH = "ValidationFailedSignatureMismatch"
     VALIDATION_FAILED_INTEGRITY_MISMATCH = "ValidationFailedIntegrityMismatch"
+    SIGNATURE_BASE_UNKNOWN_DERIVED_COMPONENT = "SignatureBaseUnknownDerivedComponent"
+    SIGNATURE_BASE_MISSING_HEADER = "SignatureBaseMissingHeader"
+    SIGNATURE_BASE_INVALID_UNENCODED_DIGEST = "SignatureBaseInvalidUnencodedDigest"
+    SIGNATURE_BASE_UNSUPPORTED_COMPONENT = "SignatureBaseUnsupportedComponent"
 
     def to_json(self) -> str:
         return self.value
@@ -794,6 +766,9 @@ class ConnectionAllowlistError(enum.Enum):
     INVALID_ALLOWLIST_ITEM_TYPE = "InvalidAllowlistItemType"
     REPORTING_ENDPOINT_NOT_TOKEN = "ReportingEndpointNotToken"
     INVALID_URL_PATTERN = "InvalidUrlPattern"
+    I_FRAME_ATTRIBUTE_LOOSENS_EMBEDDING_REQUIREMENT = "IFrameAttributeLoosensEmbeddingRequirement"
+    INVALID_ALLOW_CONNECTION_ALLOWLIST_FROM = "InvalidAllowConnectionAllowlistFrom"
+    EMBEDDING_REQUIREMENT_NOT_SATISFIED = "EmbeddingRequirementNotSatisfied"
 
     def to_json(self) -> str:
         return self.value
@@ -801,41 +776,6 @@ class ConnectionAllowlistError(enum.Enum):
     @classmethod
     def from_json(cls, json: str) -> ConnectionAllowlistError:
         return cls(json)
-
-
-@dataclass
-class AttributionReportingIssueDetails:
-    '''
-    Details for issues around "Attribution Reporting API" usage.
-    Explainer: https://github.com/WICG/attribution-reporting-api
-    '''
-    violation_type: AttributionReportingIssueType
-
-    request: typing.Optional[AffectedRequest] = None
-
-    violating_node_id: typing.Optional[dom.BackendNodeId] = None
-
-    invalid_parameter: typing.Optional[str] = None
-
-    def to_json(self) -> T_JSON_DICT:
-        json: T_JSON_DICT = dict()
-        json['violationType'] = self.violation_type.to_json()
-        if self.request is not None:
-            json['request'] = self.request.to_json()
-        if self.violating_node_id is not None:
-            json['violatingNodeId'] = self.violating_node_id.to_json()
-        if self.invalid_parameter is not None:
-            json['invalidParameter'] = self.invalid_parameter
-        return json
-
-    @classmethod
-    def from_json(cls, json: T_JSON_DICT) -> AttributionReportingIssueDetails:
-        return cls(
-            violation_type=AttributionReportingIssueType.from_json(json['violationType']),
-            request=AffectedRequest.from_json(json['request']) if json.get('request', None) is not None else None,
-            violating_node_id=dom.BackendNodeId.from_json(json['violatingNodeId']) if json.get('violatingNodeId', None) is not None else None,
-            invalid_parameter=str(json['invalidParameter']) if json.get('invalidParameter', None) is not None else None,
-        )
 
 
 @dataclass
@@ -1183,6 +1123,7 @@ class FederatedAuthRequestIssueReason(enum.Enum):
     TOO_MANY_REQUESTS = "TooManyRequests"
     WELL_KNOWN_HTTP_NOT_FOUND = "WellKnownHttpNotFound"
     WELL_KNOWN_NO_RESPONSE = "WellKnownNoResponse"
+    WELL_KNOWN_BLOCKED_BY_CONNECTION_ALLOWLIST = "WellKnownBlockedByConnectionAllowlist"
     WELL_KNOWN_INVALID_RESPONSE = "WellKnownInvalidResponse"
     WELL_KNOWN_LIST_EMPTY = "WellKnownListEmpty"
     WELL_KNOWN_INVALID_CONTENT_TYPE = "WellKnownInvalidContentType"
@@ -1190,6 +1131,7 @@ class FederatedAuthRequestIssueReason(enum.Enum):
     WELL_KNOWN_TOO_BIG = "WellKnownTooBig"
     CONFIG_HTTP_NOT_FOUND = "ConfigHttpNotFound"
     CONFIG_NO_RESPONSE = "ConfigNoResponse"
+    CONFIG_BLOCKED_BY_CONNECTION_ALLOWLIST = "ConfigBlockedByConnectionAllowlist"
     CONFIG_INVALID_RESPONSE = "ConfigInvalidResponse"
     CONFIG_INVALID_CONTENT_TYPE = "ConfigInvalidContentType"
     IDP_NOT_POTENTIALLY_TRUSTWORTHY = "IdpNotPotentiallyTrustworthy"
@@ -1199,11 +1141,13 @@ class FederatedAuthRequestIssueReason(enum.Enum):
     INVALID_SIGNIN_RESPONSE = "InvalidSigninResponse"
     ACCOUNTS_HTTP_NOT_FOUND = "AccountsHttpNotFound"
     ACCOUNTS_NO_RESPONSE = "AccountsNoResponse"
+    ACCOUNTS_BLOCKED_BY_CONNECTION_ALLOWLIST = "AccountsBlockedByConnectionAllowlist"
     ACCOUNTS_INVALID_RESPONSE = "AccountsInvalidResponse"
     ACCOUNTS_LIST_EMPTY = "AccountsListEmpty"
     ACCOUNTS_INVALID_CONTENT_TYPE = "AccountsInvalidContentType"
     ID_TOKEN_HTTP_NOT_FOUND = "IdTokenHttpNotFound"
     ID_TOKEN_NO_RESPONSE = "IdTokenNoResponse"
+    ID_TOKEN_BLOCKED_BY_CONNECTION_ALLOWLIST = "IdTokenBlockedByConnectionAllowlist"
     ID_TOKEN_INVALID_RESPONSE = "IdTokenInvalidResponse"
     ID_TOKEN_IDP_ERROR_RESPONSE = "IdTokenIdpErrorResponse"
     ID_TOKEN_CROSS_SITE_IDP_ERROR_RESPONSE = "IdTokenCrossSiteIdpErrorResponse"
@@ -1221,6 +1165,7 @@ class FederatedAuthRequestIssueReason(enum.Enum):
     UI_DISMISSED_NO_EMBARGO = "UiDismissedNoEmbargo"
     CORS_ERROR = "CorsError"
     SUPPRESSED_BY_SEGMENTATION_PLATFORM = "SuppressedBySegmentationPlatform"
+    POPUP_BLOCKED_BY_CONNECTION_ALLOWLIST = "PopupBlockedByConnectionAllowlist"
 
     def to_json(self) -> str:
         return self.value
@@ -1267,6 +1212,95 @@ class FederatedAuthUserInfoRequestIssueReason(enum.Enum):
 
     @classmethod
     def from_json(cls, json: str) -> FederatedAuthUserInfoRequestIssueReason:
+        return cls(json)
+
+
+@dataclass
+class EmailVerificationRequestIssueDetails:
+    email_verification_request_issue_reason: EmailVerificationRequestIssueReason
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['emailVerificationRequestIssueReason'] = self.email_verification_request_issue_reason.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> EmailVerificationRequestIssueDetails:
+        return cls(
+            email_verification_request_issue_reason=EmailVerificationRequestIssueReason.from_json(json['emailVerificationRequestIssueReason']),
+        )
+
+
+class EmailVerificationRequestIssueReason(enum.Enum):
+    '''
+    Represents the failure reason when an email verification request fails.
+    Should be updated alongside EmailVerificationRequestResult in
+    third_party/blink/public/mojom/devtools/inspector_issue.mojom.
+    '''
+    INVALID_EMAIL = "InvalidEmail"
+    DNS_FETCH_FAILED = "DnsFetchFailed"
+    DNS_INVALID_RECORD = "DnsInvalidRecord"
+    WELL_KNOWN_HTTP_NOT_FOUND = "WellKnownHttpNotFound"
+    WELL_KNOWN_NO_RESPONSE = "WellKnownNoResponse"
+    WELL_KNOWN_INVALID_RESPONSE = "WellKnownInvalidResponse"
+    WELL_KNOWN_LIST_EMPTY = "WellKnownListEmpty"
+    WELL_KNOWN_INVALID_CONTENT_TYPE = "WellKnownInvalidContentType"
+    WELL_KNOWN_MISSING_ISSUANCE_ENDPOINT = "WellKnownMissingIssuanceEndpoint"
+    WELL_KNOWN_ISSUANCE_ENDPOINT_CROSS_ORIGIN = "WellKnownIssuanceEndpointCrossOrigin"
+    WELL_KNOWN_UNSUPPORTED_SIGNING_ALGORITHM = "WellKnownUnsupportedSigningAlgorithm"
+    TOKEN_HTTP_NOT_FOUND = "TokenHttpNotFound"
+    TOKEN_NO_RESPONSE = "TokenNoResponse"
+    TOKEN_INVALID_RESPONSE = "TokenInvalidResponse"
+    TOKEN_INVALID_CONTENT_TYPE = "TokenInvalidContentType"
+    TOKEN_MALFORMED_SD_JWT = "TokenMalformedSdJwt"
+    TOKEN_INVALID_SD_JWT = "TokenInvalidSdJwt"
+    KEY_BINDING_SIGNING_FAILED = "KeyBindingSigningFailed"
+    RP_ORIGIN_IS_OPAQUE = "RpOriginIsOpaque"
+    WELL_KNOWN_MISSING_ACCOUNTS_ENDPOINT = "WellKnownMissingAccountsEndpoint"
+    USER_LOGGED_OUT = "UserLoggedOut"
+    WELL_KNOWN_ACCOUNTS_ENDPOINT_CROSS_ORIGIN = "WellKnownAccountsEndpointCrossOrigin"
+    ACCOUNTS_HTTP_NOT_FOUND = "AccountsHttpNotFound"
+    ACCOUNTS_NO_RESPONSE = "AccountsNoResponse"
+    ACCOUNTS_INVALID_RESPONSE = "AccountsInvalidResponse"
+    ACCOUNTS_INVALID_CONTENT_TYPE = "AccountsInvalidContentType"
+    ACCOUNTS_EMPTY_LIST = "AccountsEmptyList"
+    EMAIL_VERIFICATION_WELL_KNOWN_HTTP_NOT_FOUND = "EmailVerificationWellKnownHttpNotFound"
+    EMAIL_VERIFICATION_WELL_KNOWN_NO_RESPONSE = "EmailVerificationWellKnownNoResponse"
+    EMAIL_VERIFICATION_WELL_KNOWN_INVALID_RESPONSE = "EmailVerificationWellKnownInvalidResponse"
+    EMAIL_VERIFICATION_WELL_KNOWN_INVALID_CONTENT_TYPE = "EmailVerificationWellKnownInvalidContentType"
+    JWKS_HTTP_NOT_FOUND = "JwksHttpNotFound"
+    JWKS_INVALID_RESPONSE = "JwksInvalidResponse"
+    TOKEN_VERIFICATION_SD_JWT_UNSUPPORTED_HEADER_ALG = "TokenVerificationSdJwtUnsupportedHeaderAlg"
+    TOKEN_VERIFICATION_SD_JWT_INVALID_TYP = "TokenVerificationSdJwtInvalidTyp"
+    TOKEN_VERIFICATION_SD_JWT_MISSING_ISS = "TokenVerificationSdJwtMissingIss"
+    TOKEN_VERIFICATION_SD_JWT_MISSING_IAT = "TokenVerificationSdJwtMissingIat"
+    TOKEN_VERIFICATION_SD_JWT_MISSING_CNF = "TokenVerificationSdJwtMissingCnf"
+    TOKEN_VERIFICATION_SD_JWT_MISSING_EMAIL = "TokenVerificationSdJwtMissingEmail"
+    TOKEN_VERIFICATION_SD_JWT_INVALID_ISSUED_AT = "TokenVerificationSdJwtInvalidIssuedAt"
+    TOKEN_VERIFICATION_SD_JWT_INVALID_ISSUER = "TokenVerificationSdJwtInvalidIssuer"
+    TOKEN_VERIFICATION_SD_JWT_JWKS_MISSING_KEYS = "TokenVerificationSdJwtJwksMissingKeys"
+    TOKEN_VERIFICATION_SD_JWT_SIGNATURE_FAILED = "TokenVerificationSdJwtSignatureFailed"
+    TOKEN_VERIFICATION_SD_JWT_INVALID_EMAIL_VERIFIED = "TokenVerificationSdJwtInvalidEmailVerified"
+    TOKEN_VERIFICATION_SD_JWT_INVALID_EMAIL = "TokenVerificationSdJwtInvalidEmail"
+    TOKEN_VERIFICATION_SD_JWT_INVALID_HOLDER_KEY = "TokenVerificationSdJwtInvalidHolderKey"
+    TOKEN_VERIFICATION_KB_INVALID_TYP = "TokenVerificationKbInvalidTyp"
+    TOKEN_VERIFICATION_KB_MISSING_AUD = "TokenVerificationKbMissingAud"
+    TOKEN_VERIFICATION_KB_MISSING_NONCE = "TokenVerificationKbMissingNonce"
+    TOKEN_VERIFICATION_KB_MISSING_IAT = "TokenVerificationKbMissingIat"
+    TOKEN_VERIFICATION_KB_MISSING_SD_HASH = "TokenVerificationKbMissingSdHash"
+    TOKEN_VERIFICATION_KB_INVALID_ISSUED_AT = "TokenVerificationKbInvalidIssuedAt"
+    TOKEN_VERIFICATION_KB_INVALID_AUDIENCE = "TokenVerificationKbInvalidAudience"
+    TOKEN_VERIFICATION_KB_INVALID_NONCE = "TokenVerificationKbInvalidNonce"
+    TOKEN_VERIFICATION_KB_INVALID_SD_HASH = "TokenVerificationKbInvalidSdHash"
+    TOKEN_VERIFICATION_KB_MISSING_CNF = "TokenVerificationKbMissingCnf"
+    TOKEN_VERIFICATION_KB_SIGNATURE_FAILED = "TokenVerificationKbSignatureFailed"
+    CROSS_ORIGIN_IFRAME_NOT_SUPPORTED = "CrossOriginIframeNotSupported"
+
+    def to_json(self) -> str:
+        return self.value
+
+    @classmethod
+    def from_json(cls, json: str) -> EmailVerificationRequestIssueReason:
         return cls(json)
 
 
@@ -1554,6 +1588,8 @@ class PermissionElementIssueType(enum.Enum):
     FONT_SIZE_TOO_SMALL = "FontSizeTooSmall"
     FONT_SIZE_TOO_LARGE = "FontSizeTooLarge"
     INVALID_SIZE_VALUE = "InvalidSizeValue"
+    NON_SECURE_CONTEXT = "NonSecureContext"
+    MISSING_TRANSIENT_USER_ACTIVATION = "MissingTransientUserActivation"
 
     def to_json(self) -> str:
         return self.value
@@ -1625,6 +1661,46 @@ class PermissionElementIssueDetails:
         )
 
 
+class WebInstallIssueReason(enum.Enum):
+    MANIFEST_PARSING_OR_NETWORK_ERROR = "ManifestParsingOrNetworkError"
+    START_URL_INVALID = "StartUrlInvalid"
+    MANIFEST_MISSING_NAME_OR_SHORT_NAME = "ManifestMissingNameOrShortName"
+    MANIFEST_MISSING_ID = "ManifestMissingId"
+    NO_MANIFEST = "NoManifest"
+
+    def to_json(self) -> str:
+        return self.value
+
+    @classmethod
+    def from_json(cls, json: str) -> WebInstallIssueReason:
+        return cls(json)
+
+
+@dataclass
+class WebInstallIssueDetails:
+    '''
+    This issue reports a failure involving a web app manifest used by a Web
+    Install operation.
+    '''
+    reason: WebInstallIssueReason
+
+    manifest_url: typing.Optional[str] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['reason'] = self.reason.to_json()
+        if self.manifest_url is not None:
+            json['manifestUrl'] = self.manifest_url
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> WebInstallIssueDetails:
+        return cls(
+            reason=WebInstallIssueReason.from_json(json['reason']),
+            manifest_url=str(json['manifestUrl']) if json.get('manifestUrl', None) is not None else None,
+        )
+
+
 @dataclass
 class SelectivePermissionsInterventionIssueDetails:
     '''
@@ -1657,6 +1733,36 @@ class SelectivePermissionsInterventionIssueDetails:
         )
 
 
+@dataclass
+class LazyLoadImageIssueDetails:
+    '''
+    Details for issues about lazy-loaded images without explicit dimensions.
+    '''
+    #: DOM node of the problematic HTMLImageElement.
+    node_id: dom.BackendNodeId
+
+    #: URL or src attribute of the image.
+    url: str
+
+    #: Frame containing the image.
+    frame_id: page.FrameId
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['nodeId'] = self.node_id.to_json()
+        json['url'] = self.url
+        json['frameId'] = self.frame_id.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> LazyLoadImageIssueDetails:
+        return cls(
+            node_id=dom.BackendNodeId.from_json(json['nodeId']),
+            url=str(json['url']),
+            frame_id=page.FrameId.from_json(json['frameId']),
+        )
+
+
 class InspectorIssueCode(enum.Enum):
     '''
     A unique identifier for the type of issue. Each type may use one of the
@@ -1670,7 +1776,6 @@ class InspectorIssueCode(enum.Enum):
     CONTENT_SECURITY_POLICY_ISSUE = "ContentSecurityPolicyIssue"
     SHARED_ARRAY_BUFFER_ISSUE = "SharedArrayBufferIssue"
     CORS_ISSUE = "CorsIssue"
-    ATTRIBUTION_REPORTING_ISSUE = "AttributionReportingIssue"
     QUIRKS_MODE_ISSUE = "QuirksModeIssue"
     PARTITIONING_BLOB_URL_ISSUE = "PartitioningBlobURLIssue"
     NAVIGATOR_USER_AGENT_ISSUE = "NavigatorUserAgentIssue"
@@ -1692,6 +1797,9 @@ class InspectorIssueCode(enum.Enum):
     PERMISSION_ELEMENT_ISSUE = "PermissionElementIssue"
     PERFORMANCE_ISSUE = "PerformanceIssue"
     SELECTIVE_PERMISSIONS_INTERVENTION_ISSUE = "SelectivePermissionsInterventionIssue"
+    EMAIL_VERIFICATION_REQUEST_ISSUE = "EmailVerificationRequestIssue"
+    LAZY_LOAD_IMAGE_ISSUE = "LazyLoadImageIssue"
+    WEB_INSTALL_ISSUE = "WebInstallIssue"
 
     def to_json(self) -> str:
         return self.value
@@ -1721,8 +1829,6 @@ class InspectorIssueDetails:
     shared_array_buffer_issue_details: typing.Optional[SharedArrayBufferIssueDetails] = None
 
     cors_issue_details: typing.Optional[CorsIssueDetails] = None
-
-    attribution_reporting_issue_details: typing.Optional[AttributionReportingIssueDetails] = None
 
     quirks_mode_issue_details: typing.Optional[QuirksModeIssueDetails] = None
 
@@ -1766,6 +1872,12 @@ class InspectorIssueDetails:
 
     selective_permissions_intervention_issue_details: typing.Optional[SelectivePermissionsInterventionIssueDetails] = None
 
+    email_verification_request_issue_details: typing.Optional[EmailVerificationRequestIssueDetails] = None
+
+    lazy_load_image_issue_details: typing.Optional[LazyLoadImageIssueDetails] = None
+
+    web_install_issue_details: typing.Optional[WebInstallIssueDetails] = None
+
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
         if self.cookie_issue_details is not None:
@@ -1782,8 +1894,6 @@ class InspectorIssueDetails:
             json['sharedArrayBufferIssueDetails'] = self.shared_array_buffer_issue_details.to_json()
         if self.cors_issue_details is not None:
             json['corsIssueDetails'] = self.cors_issue_details.to_json()
-        if self.attribution_reporting_issue_details is not None:
-            json['attributionReportingIssueDetails'] = self.attribution_reporting_issue_details.to_json()
         if self.quirks_mode_issue_details is not None:
             json['quirksModeIssueDetails'] = self.quirks_mode_issue_details.to_json()
         if self.partitioning_blob_url_issue_details is not None:
@@ -1826,6 +1936,12 @@ class InspectorIssueDetails:
             json['performanceIssueDetails'] = self.performance_issue_details.to_json()
         if self.selective_permissions_intervention_issue_details is not None:
             json['selectivePermissionsInterventionIssueDetails'] = self.selective_permissions_intervention_issue_details.to_json()
+        if self.email_verification_request_issue_details is not None:
+            json['emailVerificationRequestIssueDetails'] = self.email_verification_request_issue_details.to_json()
+        if self.lazy_load_image_issue_details is not None:
+            json['lazyLoadImageIssueDetails'] = self.lazy_load_image_issue_details.to_json()
+        if self.web_install_issue_details is not None:
+            json['webInstallIssueDetails'] = self.web_install_issue_details.to_json()
         return json
 
     @classmethod
@@ -1838,7 +1954,6 @@ class InspectorIssueDetails:
             content_security_policy_issue_details=ContentSecurityPolicyIssueDetails.from_json(json['contentSecurityPolicyIssueDetails']) if json.get('contentSecurityPolicyIssueDetails', None) is not None else None,
             shared_array_buffer_issue_details=SharedArrayBufferIssueDetails.from_json(json['sharedArrayBufferIssueDetails']) if json.get('sharedArrayBufferIssueDetails', None) is not None else None,
             cors_issue_details=CorsIssueDetails.from_json(json['corsIssueDetails']) if json.get('corsIssueDetails', None) is not None else None,
-            attribution_reporting_issue_details=AttributionReportingIssueDetails.from_json(json['attributionReportingIssueDetails']) if json.get('attributionReportingIssueDetails', None) is not None else None,
             quirks_mode_issue_details=QuirksModeIssueDetails.from_json(json['quirksModeIssueDetails']) if json.get('quirksModeIssueDetails', None) is not None else None,
             partitioning_blob_url_issue_details=PartitioningBlobURLIssueDetails.from_json(json['partitioningBlobURLIssueDetails']) if json.get('partitioningBlobURLIssueDetails', None) is not None else None,
             navigator_user_agent_issue_details=NavigatorUserAgentIssueDetails.from_json(json['navigatorUserAgentIssueDetails']) if json.get('navigatorUserAgentIssueDetails', None) is not None else None,
@@ -1860,6 +1975,9 @@ class InspectorIssueDetails:
             permission_element_issue_details=PermissionElementIssueDetails.from_json(json['permissionElementIssueDetails']) if json.get('permissionElementIssueDetails', None) is not None else None,
             performance_issue_details=PerformanceIssueDetails.from_json(json['performanceIssueDetails']) if json.get('performanceIssueDetails', None) is not None else None,
             selective_permissions_intervention_issue_details=SelectivePermissionsInterventionIssueDetails.from_json(json['selectivePermissionsInterventionIssueDetails']) if json.get('selectivePermissionsInterventionIssueDetails', None) is not None else None,
+            email_verification_request_issue_details=EmailVerificationRequestIssueDetails.from_json(json['emailVerificationRequestIssueDetails']) if json.get('emailVerificationRequestIssueDetails', None) is not None else None,
+            lazy_load_image_issue_details=LazyLoadImageIssueDetails.from_json(json['lazyLoadImageIssueDetails']) if json.get('lazyLoadImageIssueDetails', None) is not None else None,
+            web_install_issue_details=WebInstallIssueDetails.from_json(json['webInstallIssueDetails']) if json.get('webInstallIssueDetails', None) is not None else None,
         )
 
 

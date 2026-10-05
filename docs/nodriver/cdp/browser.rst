@@ -67,11 +67,6 @@ arguments to other commands.
       :undoc-members:
       :exclude-members: from_json, to_json
 
-.. autoclass:: PrivacySandboxAPI
-      :members:
-      :undoc-members:
-      :exclude-members: from_json, to_json
-
 Commands
 --------
 
@@ -84,7 +79,7 @@ commands, and ``z`` is the return type you should pay attention
 to. For more information, see
 :ref:`Getting Started: Commands <getting-started-commands>`.
 
-.. autofunction:: add_privacy_sandbox_coordinator_key_config
+.. autofunction:: add_mock_camera
 
 .. autofunction:: add_privacy_sandbox_enrollment_override
 
@@ -99,6 +94,8 @@ to. For more information, see
 .. autofunction:: execute_browser_command
 
 .. autofunction:: get_browser_command_line
+
+.. autofunction:: get_global_privacy_control
 
 .. autofunction:: get_histogram
 
@@ -119,6 +116,8 @@ to. For more information, see
 .. autofunction:: set_dock_tile
 
 .. autofunction:: set_download_behavior
+
+.. autofunction:: set_global_privacy_control
 
 .. autofunction:: set_permission
 

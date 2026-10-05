@@ -84,6 +84,146 @@ class ServiceWorkerVersionStatus(enum.Enum):
 
 
 @dataclass
+class ServiceWorkerRouterCondition:
+    '''
+    Mostly corresponds to ``RouterCondition`` in ServiceWorker spec
+    (https://www.w3.org/TR/service-workers/#dictdef-routercondition)
+    '''
+    #: Plain text, or JSON serialization of URLPatternInit or URLPattern
+    url_pattern: typing.Optional[str] = None
+
+    request_method: typing.Optional[str] = None
+
+    request_mode: typing.Optional[str] = None
+
+    request_destination: typing.Optional[str] = None
+
+    running_status: typing.Optional[ServiceWorkerVersionRunningStatus] = None
+
+    or: typing.Optional[typing.List[ServiceWorkerRouterCondition]] = None
+
+    not: typing.Optional[ServiceWorkerRouterCondition] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        if self.url_pattern is not None:
+            json['urlPattern'] = self.url_pattern
+        if self.request_method is not None:
+            json['requestMethod'] = self.request_method
+        if self.request_mode is not None:
+            json['requestMode'] = self.request_mode
+        if self.request_destination is not None:
+            json['requestDestination'] = self.request_destination
+        if self.running_status is not None:
+            json['runningStatus'] = self.running_status.to_json()
+        if self.or is not None:
+            json['or'] = [i.to_json() for i in self.or]
+        if self.not is not None:
+            json['not'] = self.not.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> ServiceWorkerRouterCondition:
+        return cls(
+            url_pattern=str(json['urlPattern']) if json.get('urlPattern', None) is not None else None,
+            request_method=str(json['requestMethod']) if json.get('requestMethod', None) is not None else None,
+            request_mode=str(json['requestMode']) if json.get('requestMode', None) is not None else None,
+            request_destination=str(json['requestDestination']) if json.get('requestDestination', None) is not None else None,
+            running_status=ServiceWorkerVersionRunningStatus.from_json(json['runningStatus']) if json.get('runningStatus', None) is not None else None,
+            or=[ServiceWorkerRouterCondition.from_json(i) for i in json['or']] if json.get('or', None) is not None else None,
+            not=ServiceWorkerRouterCondition.from_json(json['not']) if json.get('not', None) is not None else None,
+        )
+
+
+class ServiceWorkerRouterSourceType(enum.Enum):
+    CACHE = "cache"
+    FETCH_EVENT = "fetchEvent"
+    NETWORK = "network"
+    RACE_NETWORK_AND_FETCH_HANDLER = "raceNetworkAndFetchHandler"
+    RACE_NETWORK_AND_CACHE = "raceNetworkAndCache"
+    SOURCE_DICT = "sourceDict"
+
+    def to_json(self) -> str:
+        return self.value
+
+    @classmethod
+    def from_json(cls, json: str) -> ServiceWorkerRouterSourceType:
+        return cls(json)
+
+
+@dataclass
+class ServiceWorkerRouterSourceDict:
+    '''
+    https://www.w3.org/TR/service-workers/#dictdef-routersourcedict
+    '''
+    cache_name: str
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['cacheName'] = self.cache_name
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> ServiceWorkerRouterSourceDict:
+        return cls(
+            cache_name=str(json['cacheName']),
+        )
+
+
+@dataclass
+class ServiceWorkerRouterSource:
+    '''
+    Corresponds to ``RouterSource`` in the spec while the representation is different as follows.
+    (https://www.w3.org/TR/service-workers/#typedefdef-routersource)
+    - ``RouterSourceEnum``: ``type`` equals ``cache``, ``sourceDict`` is null.
+    - ``RouterSourceDict``: ``type`` equals ``sourceDict``, ``sourceDict`` has valid value.
+    '''
+    type_: ServiceWorkerRouterSourceType
+
+    #: Non-empty iff ``type`` equals "sourceDict".
+    source_dict: typing.Optional[ServiceWorkerRouterSourceDict] = None
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['type'] = self.type_.to_json()
+        if self.source_dict is not None:
+            json['sourceDict'] = self.source_dict.to_json()
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> ServiceWorkerRouterSource:
+        return cls(
+            type_=ServiceWorkerRouterSourceType.from_json(json['type']),
+            source_dict=ServiceWorkerRouterSourceDict.from_json(json['sourceDict']) if json.get('sourceDict', None) is not None else None,
+        )
+
+
+@dataclass
+class ServiceWorkerRouterRule:
+    condition: ServiceWorkerRouterCondition
+
+    source: ServiceWorkerRouterSource
+
+    #: Rule ID assigned by the browser. Unique within each ServiceWorkerVersion.
+    id_: int
+
+    def to_json(self) -> T_JSON_DICT:
+        json: T_JSON_DICT = dict()
+        json['condition'] = self.condition.to_json()
+        json['source'] = self.source.to_json()
+        json['id'] = self.id_
+        return json
+
+    @classmethod
+    def from_json(cls, json: T_JSON_DICT) -> ServiceWorkerRouterRule:
+        return cls(
+            condition=ServiceWorkerRouterCondition.from_json(json['condition']),
+            source=ServiceWorkerRouterSource.from_json(json['source']),
+            id_=int(json['id']),
+        )
+
+
+@dataclass
 class ServiceWorkerVersion:
     '''
     ServiceWorker version.
@@ -109,7 +249,12 @@ class ServiceWorkerVersion:
 
     target_id: typing.Optional[target.TargetID] = None
 
+    #: Migration to ``typedRouterRules`` is in progress. The browser sends either
+    #: ``routerRules`` or ``typedRouterRules``.
+    #: TODO(crbug.com/540469610): Remove ``routerRules`` after the migration.
     router_rules: typing.Optional[str] = None
+
+    typed_router_rules: typing.Optional[typing.List[ServiceWorkerRouterRule]] = None
 
     def to_json(self) -> T_JSON_DICT:
         json: T_JSON_DICT = dict()
@@ -128,6 +273,8 @@ class ServiceWorkerVersion:
             json['targetId'] = self.target_id.to_json()
         if self.router_rules is not None:
             json['routerRules'] = self.router_rules
+        if self.typed_router_rules is not None:
+            json['typedRouterRules'] = [i.to_json() for i in self.typed_router_rules]
         return json
 
     @classmethod
@@ -143,6 +290,7 @@ class ServiceWorkerVersion:
             controlled_clients=[target.TargetID.from_json(i) for i in json['controlledClients']] if json.get('controlledClients', None) is not None else None,
             target_id=target.TargetID.from_json(json['targetId']) if json.get('targetId', None) is not None else None,
             router_rules=str(json['routerRules']) if json.get('routerRules', None) is not None else None,
+            typed_router_rules=[ServiceWorkerRouterRule.from_json(i) for i in json['typedRouterRules']] if json.get('typedRouterRules', None) is not None else None,
         )
 
 

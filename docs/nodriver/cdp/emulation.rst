@@ -160,6 +160,8 @@ to. For more information, see
 
 .. autofunction:: set_automation_override
 
+.. autofunction:: set_cpu_performance_override
+
 .. autofunction:: set_cpu_throttling_rate
 
 .. autofunction:: set_data_saver_override
@@ -198,8 +200,6 @@ to. For more information, see
 
 .. autofunction:: set_page_scale_factor
 
-.. autofunction:: set_pressure_data_override
-
 .. autofunction:: set_pressure_source_override_enabled
 
 .. autofunction:: set_pressure_state_override
@@ -223,6 +223,8 @@ to. For more information, see
 .. autofunction:: set_touch_emulation_enabled
 
 .. autofunction:: set_user_agent_override
+
+.. autofunction:: set_virtual_keyboard_geometry_override
 
 .. autofunction:: set_virtual_time_policy
 

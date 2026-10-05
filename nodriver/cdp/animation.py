@@ -352,17 +352,22 @@ def resolve_animation(
 
 def seek_animations(
         animations: typing.List[str],
-        current_time: float
+        current_time: typing.Optional[float] = None,
+        current_times: typing.Optional[typing.List[float]] = None
     ) -> typing.Generator[T_JSON_DICT,T_JSON_DICT,None]:
     '''
     Seek a set of animations to a particular time within each animation.
 
     :param animations: List of animation ids to seek.
-    :param current_time: Set the current time of each animation.
+    :param current_time: *(Optional)* Set each animation to the same time.
+    :param current_times: *(Optional)* Set each animation to a different time. If set, should have the same length as animations. Exactly one of currentTime or currentTimes should be set.
     '''
     params: T_JSON_DICT = dict()
     params['animations'] = [i for i in animations]
-    params['currentTime'] = current_time
+    if current_time is not None:
+        params['currentTime'] = current_time
+    if current_times is not None:
+        params['currentTimes'] = [i for i in current_times]
     cmd_dict: T_JSON_DICT = {
         'method': 'Animation.seekAnimations',
         'params': params,

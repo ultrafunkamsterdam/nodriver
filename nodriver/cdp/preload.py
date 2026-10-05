@@ -331,6 +331,7 @@ class PrerenderFinalStatus(enum.Enum):
     BROWSING_DATA_REMOVED = "BrowsingDataRemoved"
     PRERENDER_HOST_REUSED = "PrerenderHostReused"
     FORM_SUBMIT_WHEN_PRERENDERING = "FormSubmitWhenPrerendering"
+    CROSS_DOCUMENT_RESTART = "CrossDocumentRestart"
 
     def to_json(self) -> str:
         return self.value
@@ -378,7 +379,9 @@ class PrefetchStatus(enum.Enum):
     PREFETCH_INELIGIBLE_RETRY_AFTER = "PrefetchIneligibleRetryAfter"
     PREFETCH_IS_PRIVACY_DECOY = "PrefetchIsPrivacyDecoy"
     PREFETCH_IS_STALE = "PrefetchIsStale"
+    PREFETCH_NOT_ELIGIBLE_BLOCKED_BY_CONNECTION_ALLOWLIST = "PrefetchNotEligibleBlockedByConnectionAllowlist"
     PREFETCH_NOT_ELIGIBLE_BROWSER_CONTEXT_OFF_THE_RECORD = "PrefetchNotEligibleBrowserContextOffTheRecord"
+    PREFETCH_NOT_ELIGIBLE_CROSS_ORIGIN = "PrefetchNotEligibleCrossOrigin"
     PREFETCH_NOT_ELIGIBLE_DATA_SAVER_ENABLED = "PrefetchNotEligibleDataSaverEnabled"
     PREFETCH_NOT_ELIGIBLE_EXISTING_PROXY = "PrefetchNotEligibleExistingProxy"
     PREFETCH_NOT_ELIGIBLE_HOST_IS_NON_UNIQUE = "PrefetchNotEligibleHostIsNonUnique"
@@ -399,6 +402,7 @@ class PrefetchStatus(enum.Enum):
     PREFETCH_RESPONSE_USED = "PrefetchResponseUsed"
     PREFETCH_SUCCESSFUL_BUT_NOT_USED = "PrefetchSuccessfulButNotUsed"
     PREFETCH_NOT_USED_PROBE_FAILED = "PrefetchNotUsedProbeFailed"
+    PREFETCH_CANCELLED_ON_USER_NAVIGATION = "PrefetchCancelledOnUserNavigation"
 
     def to_json(self) -> str:
         return self.value
@@ -540,6 +544,10 @@ class PrerenderStatusUpdated:
     key: PreloadingAttemptKey
     pipeline_id: PreloadPipelineId
     status: PreloadingStatus
+    #: The action currently performed by this attempt. This differs from
+    #: ``key.action`` after a prerender-until-script attempt is upgraded in place
+    #: to a full prerender.
+    effective_action: typing.Optional[SpeculationAction]
     prerender_status: typing.Optional[PrerenderFinalStatus]
     #: This is used to give users more information about the name of Mojo interface
     #: that is incompatible with prerender and has caused the cancellation of the attempt.
@@ -552,6 +560,7 @@ class PrerenderStatusUpdated:
             key=PreloadingAttemptKey.from_json(json['key']),
             pipeline_id=PreloadPipelineId.from_json(json['pipelineId']),
             status=PreloadingStatus.from_json(json['status']),
+            effective_action=SpeculationAction.from_json(json['effectiveAction']) if json.get('effectiveAction', None) is not None else None,
             prerender_status=PrerenderFinalStatus.from_json(json['prerenderStatus']) if json.get('prerenderStatus', None) is not None else None,
             disallowed_mojo_interface=str(json['disallowedMojoInterface']) if json.get('disallowedMojoInterface', None) is not None else None,
             mismatched_headers=[PrerenderMismatchedHeaders.from_json(i) for i in json['mismatchedHeaders']] if json.get('mismatchedHeaders', None) is not None else None
