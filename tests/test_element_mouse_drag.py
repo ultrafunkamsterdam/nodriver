@@ -46,3 +46,7 @@ class ElementMouseDragTests(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual(events[-1]["type"], "mouseReleased")
                     self.assertEqual((events[-1]["x"], events[-1]["y"]), expected)
                     self.assertEqual((events[-2]["x"], events[-2]["y"]), expected)
+                    for event in events[1:-1]:
+                        self.assertEqual(event["type"], "mouseMoved")
+                        self.assertEqual(event["button"], "left")
+                        self.assertEqual(event["buttons"], 1)

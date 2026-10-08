@@ -1963,7 +1963,11 @@ class Tab(Connection):
         if steps == 1:
             await self.send(
                 cdp.input_.dispatch_mouse_event(
-                    "mouseMoved", x=dest_point[0], y=dest_point[1]
+                    "mouseMoved",
+                    x=dest_point[0],
+                    y=dest_point[1],
+                    button=cdp.input_.MouseButton("left"),
+                    buttons=1,
                 )
             )
         elif steps > 1:
@@ -1980,6 +1984,8 @@ class Tab(Connection):
                         "mouseMoved",
                         x=point[0],
                         y=point[1],
+                        button=cdp.input_.MouseButton("left"),
+                        buttons=1,
                     )
                 )
                 await asyncio.sleep(0)
