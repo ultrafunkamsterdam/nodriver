@@ -640,9 +640,8 @@ class Element:
                 )
             else:
                 end_point = destination
-        await self._tab.mouse_drag(
-            start_point, end_point, relative=relative, steps=steps
-        )
+        # Both coordinate offsets and element targets are now absolute points.
+        await self._tab.mouse_drag(start_point, end_point, relative=False, steps=steps)
         # await self._tab.send(
         #     cdp.input_.dispatch_mouse_event(
         #         "mousePressed",
