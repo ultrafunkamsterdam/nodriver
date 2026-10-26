@@ -22,7 +22,7 @@ import nodriver.core.browser
 from .. import cdp
 from . import element, util
 from .config import PathLike
-from .connection import Connection, ProtocolException
+from .connection import Connection
 
 logger = logging.getLogger(__name__)
 
@@ -492,8 +492,10 @@ class Tab(Connection):
         try:
             try:
                 await self.send(cdp.dom.enable(), True)
-            except ProtocolException:
-                logger.debug("call to dom.enable() failed. but is not critical", exc_info=True)
+            except:
+                logger.debug(
+                    "call to dom.enable() failed. but is not critical", exc_info=True
+                )
             items = await self.find_all(xpath, timeout=0)
             if not items:
                 loop = asyncio.get_running_loop()

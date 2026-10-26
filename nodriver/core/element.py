@@ -12,11 +12,11 @@ import pathlib
 import secrets
 import typing
 
-from .connection import ProtocolException
 from .. import cdp
 from . import util
 from ._contradict import ContraDict
 from .config import PathLike
+
 
 logger = logging.getLogger(__name__)
 
@@ -1015,8 +1015,10 @@ class Element:
             return
         try:
             await self.send(cdp.dom.enable(), True)
-        except ProtocolException:
-            logger.debug("call to dom.enable() failed. but is not critical", exc_info=True)
+        except:
+            logger.debug(
+                "call to dom.enable() failed. but is not critical", exc_info=True
+            )
 
         await self.tab.send(cdp.overlay.enable())
         conf = cdp.overlay.HighlightConfig(
