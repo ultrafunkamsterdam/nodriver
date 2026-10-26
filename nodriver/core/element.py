@@ -12,6 +12,7 @@ import pathlib
 import secrets
 import typing
 
+from .connection import ProtocolException
 from .. import cdp
 from . import util
 from ._contradict import ContraDict
@@ -1012,7 +1013,11 @@ class Element:
             await self.tab.send(cdp.dom.disable())
             await self.tab.send(cdp.overlay.disable())
             return
-        await self.tab.send(cdp.dom.enable())
+        try:
+            await self.send(cdp.dom.enable(), True)
+        except ProtocolException:
+            logger.debug("call to dom.enable() failed. but is not critical", exc_info=True)
+
         await self.tab.send(cdp.overlay.enable())
         conf = cdp.overlay.HighlightConfig(
             show_info=True, show_extension_lines=True, show_styles=True
