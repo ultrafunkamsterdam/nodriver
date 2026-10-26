@@ -1006,7 +1006,7 @@ class Element:
         :return:
         :rtype:
         """
-
+        from .connection import ProtocolException
         if getattr(self, "_is_highlighted", False):
             del self._is_highlighted
             await self.tab.send(cdp.overlay.hide_highlight())
@@ -1015,7 +1015,7 @@ class Element:
             return
         try:
             await self.send(cdp.dom.enable(), True)
-        except:
+        except ProtocolException:
             logger.debug(
                 "call to dom.enable() failed. but is not critical", exc_info=True
             )

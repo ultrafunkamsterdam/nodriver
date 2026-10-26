@@ -22,8 +22,7 @@ import nodriver.core.browser
 from .. import cdp
 from . import element, util
 from .config import PathLike
-from .connection import Connection
-
+from .connection import Connection, ProtocolException
 logger = logging.getLogger(__name__)
 
 
