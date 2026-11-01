@@ -15,7 +15,6 @@ import json
 import logging
 import re
 import types
-from asyncio import iscoroutine, iscoroutinefunction
 from typing import Any, Awaitable, Callable, Generator, List, TypeVar, Union
 
 import websockets.asyncio.client
@@ -104,42 +103,6 @@ class Transaction:
             return f"{string[:max_length]} {'...' if ellipsis else ''}"
         return string
 
-    # class MapperEntry(asyncio.Future):
-
-
-#
-#     def __init__(self,  cdp_obj: Generator, id: int, session_id: str = None):
-#
-#         super().__init__()
-#         self._cdp_obj = cdp_obj
-#
-#         method, *params = next(self._cdp_obj).values()
-#         if params:
-#             params = params.pop()
-#
-#         request = {"method": method, "params": params, "id": id}
-#         if session_id:
-#             request["sessionId"] = session_id
-#
-#         self.request = request
-#         self.response = None
-#         self.events = []
-#
-#     def set_session_id(self, session_id: str):
-#         self.request['sessionId'] = session_id
-#
-#     def __call__(self, response: dict):
-#         self.response = response
-#         if "error" in response:
-#             # set exception and bail out
-#             return self.set_exception(ProtocolException(response["error"], request=self.request))
-#         try:
-#             # try to parse the result according to the py cdp docs.
-#             self._cdp_obj.send(response["result"])
-#         except StopIteration as e:
-#             # exception value holds the parsed response
-#             self.set_result(e.value)
-
 
 class Connection:
     socket: websockets.asyncio.client.ClientConnection | None
@@ -148,6 +111,20 @@ class Connection:
     @property
     def attached(self):
         return bool(self.session_id and self.target)
+
+    @property
+    def closed(self) -> bool:
+        """True if the websocket connection is closed or not established."""
+        if self.socket is None:
+            return True
+        if hasattr(self.socket, "closed") and self.socket.closed:
+            return True
+        return bool(getattr(self.socket, "close_code", None))
+
+    @property
+    def is_closed(self) -> bool:
+        """Alias for closed."""
+        return self.closed
 
     @property
     def transactions(self):
@@ -400,6 +377,10 @@ class Connection:
         method, *params = next(cdp_obj).values()
         if params:
             params = params.pop()
+        else:
+            params = {}
+        if not isinstance(params, dict):
+            params = {}
         _id = next(self.__count__)
         message = {"method": method, "params": params, "id": _id}
         if not _attach:
@@ -487,6 +468,10 @@ class Connection:
 
     async def process_event(self, message: dict, tx_id: int | None = None) -> None:
         """ """
+        msg_session_id = message.get("sessionId")
+        if self.session_id and msg_session_id and msg_session_id != self.session_id:
+            return
+
         event = None
 
         try:
@@ -511,7 +496,7 @@ class Connection:
             return
         for callback in callbacks:
             try:
-                if iscoroutinefunction(callback) or iscoroutine(callback):
+                if inspect.iscoroutinefunction(callback) or inspect.iscoroutine(callback):
                     try:
                         # handler is defined with the second param being the tab instance
                         asyncio.create_task(callback(event, self))

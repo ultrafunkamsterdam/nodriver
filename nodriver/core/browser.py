@@ -427,8 +427,10 @@ class Browser(Connection):
             windowManagement
         """
         permissions = list(cdp.browser.PermissionType)
-        permissions.remove(cdp.browser.PermissionType.FLASH)
-        permissions.remove(cdp.browser.PermissionType.CAPTURED_SURFACE_CONTROL)
+        for perm_name in ("FLASH", "CAPTURED_SURFACE_CONTROL"):
+            perm = getattr(cdp.browser.PermissionType, perm_name, None)
+            if perm and perm in permissions:
+                permissions.remove(perm)
         await self.send(cdp.browser.grant_permissions(permissions))
 
     async def tile_windows(self, windows=None, max_columns: int = 0):
@@ -588,18 +590,22 @@ class Browser(Connection):
 
     def stop(self):
         try:
-            # asyncio.get_running_loop().create_task(self.send(cdp.browser.close()))
-
-            asyncio.get_event_loop().create_task(self.aclose())
-            logger.debug("closed the connection using get_event_loop().create_task()")
+            loop = asyncio.get_running_loop()
+            if not loop.is_closed():
+                loop.create_task(self.aclose())
+                logger.debug("closed the connection using get_running_loop().create_task()")
         except RuntimeError:
-            if self.connection:
+            if not self.closed:
                 try:
-                    # asyncio.run(self.send(cdp.browser.close()))
                     asyncio.run(self.aclose())
                     logger.debug("closed the connection using asyncio.run()")
                 except Exception:
                     pass
+
+        if not self._process:
+            self._process = None
+            self._process_pid = None
+            return
 
         for _ in range(3):
             try:
@@ -617,11 +623,11 @@ class Browser(Connection):
                     break
                 except (Exception,):
                     try:
-                        if hasattr(self, "browser_process_pid"):
+                        if self._process_pid:
                             os.kill(self._process_pid, 15)
                             logger.info(
                                 "killed browser with pid %d using signal 15 successfully"
-                                % self._process.pid
+                                % self._process_pid
                             )
                             break
                     except (TypeError,):
@@ -636,9 +642,9 @@ class Browser(Connection):
                         logger.info("process lookup failure")
                         pass
                     except (Exception,):
-                        raise
-            self._process = None
-            self._process_pid = None
+                        break
+        self._process = None
+        self._process_pid = None
 
     def __await__(self):
         # return ( asyncio.sleep(0)).__await__()

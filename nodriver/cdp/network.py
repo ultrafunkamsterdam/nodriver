@@ -1364,18 +1364,20 @@ class Cookie:
 
     @classmethod
     def from_json(cls, json: T_JSON_DICT) -> Cookie:
+        priority = CookiePriority.from_json(json['priority']) if 'priority' in json else CookiePriority.MEDIUM
+        source_scheme = CookieSourceScheme.from_json(json['sourceScheme']) if 'sourceScheme' in json else CookieSourceScheme.UNSET
         return cls(
-            name=str(json['name']),
-            value=str(json['value']),
-            domain=str(json['domain']),
-            path=str(json['path']),
-            size=int(json['size']),
-            http_only=bool(json['httpOnly']),
-            secure=bool(json['secure']),
-            session=bool(json['session']),
-            priority=CookiePriority.from_json(json['priority']),
-            source_scheme=CookieSourceScheme.from_json(json['sourceScheme']),
-            source_port=int(json['sourcePort']),
+            name=str(json.get('name', '')),
+            value=str(json.get('value', '')),
+            domain=str(json.get('domain', '')),
+            path=str(json.get('path', '/')),
+            size=int(json.get('size', 0)),
+            http_only=bool(json.get('httpOnly', False)),
+            secure=bool(json.get('secure', False)),
+            session=bool(json.get('session', False)),
+            priority=priority,
+            source_scheme=source_scheme,
+            source_port=int(json.get('sourcePort', -1)),
             expires=float(json['expires']) if json.get('expires', None) is not None else None,
             same_site=CookieSameSite.from_json(json['sameSite']) if json.get('sameSite', None) is not None else None,
             partition_key=CookiePartitionKey.from_json(json['partitionKey']) if json.get('partitionKey', None) is not None else None,

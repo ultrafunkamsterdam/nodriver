@@ -173,8 +173,21 @@ class Tab(Connection):
     ):
         self._dom = None
         self._window_id = None
+        self._closed: bool = False
         self.target = target
         super().__init__(target=target, parent=parent, **kwargs)
+
+    @property
+    def closed(self) -> bool:
+        """True if the tab or underlying connection has been closed."""
+        if getattr(self, "_closed", False):
+            return True
+        return super().closed
+
+    @property
+    def is_closed(self) -> bool:
+        """Alias for closed."""
+        return self.closed
 
     async def get_frames(self) -> List[IFrame]:
         """find any 'connectable' frames.
@@ -1095,8 +1108,13 @@ class Tab(Connection):
         :return:
         :rtype:
         """
+        self._closed = True
         if self.target and self.target.target_id:
-            await self.send(cdp.target.close_target(target_id=self.target.target_id))
+            try:
+                await self.send(cdp.target.close_target(target_id=self.target.target_id))
+            except Exception:
+                pass
+        await self.aclose()
 
     async def get_window(self) -> Tuple[cdp.browser.WindowID, cdp.browser.Bounds]:
         """
@@ -1874,8 +1892,14 @@ class Tab(Connection):
         res = await self.evaluate(
             "document.body.offsetHeight - window.innerHeight == window.scrollY"
         )
-        if res:
-            return res[0].value
+        if isinstance(res, bool):
+            return res
+        if hasattr(res, "value"):
+            return bool(res.value)
+        if isinstance(res, (list, tuple)) and len(res) > 0:
+            item = res[0]
+            return bool(item.value if hasattr(item, "value") else item)
+        return bool(res)
 
     async def mouse_click(
         self,
@@ -1998,6 +2022,12 @@ class Tab(Connection):
         )
 
     async def flash_point(self, x, y, duration=0.5, size=10):
+        if x is None or y is None:
+            return
+        try:
+            x, y = float(x), float(y)
+        except (TypeError, ValueError):
+            return
         style = (
             "position:fixed;z-index:99999999;padding:0;margin:0;"
             "left:{:.1f}px; top: {:.1f}px;"
