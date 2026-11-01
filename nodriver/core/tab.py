@@ -2004,6 +2004,12 @@ class Tab(Connection):
         )
 
     async def flash_point(self, x, y, duration=0.5, size=10):
+        if x is None or y is None:
+            return
+        try:
+            x, y = float(x), float(y)
+        except (TypeError, ValueError):
+            return
         style = (
             "position:fixed;z-index:99999999;padding:0;margin:0;"
             "left:{:.1f}px; top: {:.1f}px;"
