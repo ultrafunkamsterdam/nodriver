@@ -469,6 +469,10 @@ class Connection:
 
     async def process_event(self, message: dict, tx_id: int | None = None) -> None:
         """ """
+        msg_session_id = message.get("sessionId")
+        if self.session_id and msg_session_id and msg_session_id != self.session_id:
+            return
+
         event = None
 
         try:

@@ -427,8 +427,10 @@ class Browser(Connection):
             windowManagement
         """
         permissions = list(cdp.browser.PermissionType)
-        permissions.remove(cdp.browser.PermissionType.FLASH)
-        permissions.remove(cdp.browser.PermissionType.CAPTURED_SURFACE_CONTROL)
+        for perm_name in ("FLASH", "CAPTURED_SURFACE_CONTROL"):
+            perm = getattr(cdp.browser.PermissionType, perm_name, None)
+            if perm and perm in permissions:
+                permissions.remove(perm)
         await self.send(cdp.browser.grant_permissions(permissions))
 
     async def tile_windows(self, windows=None, max_columns: int = 0):
