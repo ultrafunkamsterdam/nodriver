@@ -260,8 +260,24 @@ class Connection:
 
     async def attach(self, target: TargetType = None):
         """ " """
-        await self.aopen()
         target = target or self.target
+        target_id = (
+            target.target_id
+            if isinstance(target, cdp.target.TargetInfo)
+            else target
+        )
+        curr_id = (
+            self.target.target_id
+            if isinstance(self.target, cdp.target.TargetInfo)
+            else self.target
+        )
+
+        if self.attached and self.socket and not bool(self.socket.close_code):
+            if not target or target_id == curr_id:
+                return
+            await self.detach()
+
+        await self.aopen()
 
         if not target:
             # is browser target
@@ -487,6 +503,14 @@ class Connection:
 
     async def process_event(self, message: dict, tx_id: int | None = None) -> None:
         """ """
+        msg_session = message.get("sessionId")
+        if self.session_id and msg_session and msg_session != self.session_id:
+            for child in self._targets:
+                if child.session_id == msg_session:
+                    await child.process_event(message, tx_id)
+                    return
+            return
+
         event = None
 
         try:
