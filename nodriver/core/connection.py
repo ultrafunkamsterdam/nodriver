@@ -195,6 +195,7 @@ class Connection:
         self.websocket_url = parent.websocket_url if parent else None
         self.handlers = collections.defaultdict(list)
         self.lock = asyncio.Lock()
+        self._open_lock = asyncio.Lock()
         self.socket = None
         self.target = target
         self.parent = parent
@@ -228,13 +229,16 @@ class Connection:
         if not self.websocket_url:
             raise RuntimeError("having no parent and no websocket url")
 
-        if not self.socket or bool(self.socket.close_code):
-            self.socket = await websockets.connect(
-                self.websocket_url,
-                ping_timeout=PING_TIMEOUT,
-                max_size=MAX_SIZE,
-            )
-            self._listener_task = asyncio.create_task(self._listener())
+        # Hold the lock across the check and the connect: otherwise concurrent
+        # callers each open a socket and start a listener.
+        async with self._open_lock:
+            if not self.socket or bool(self.socket.close_code):
+                self.socket = await websockets.connect(
+                    self.websocket_url,
+                    ping_timeout=PING_TIMEOUT,
+                    max_size=MAX_SIZE,
+                )
+                self._listener_task = asyncio.create_task(self._listener())
 
     async def aclose(self):
         """ """
