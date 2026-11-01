@@ -15,7 +15,6 @@ import json
 import logging
 import re
 import types
-from asyncio import iscoroutine, iscoroutinefunction
 from typing import Any, Awaitable, Callable, Generator, List, TypeVar, Union
 
 import websockets.asyncio.client
@@ -497,7 +496,7 @@ class Connection:
             return
         for callback in callbacks:
             try:
-                if iscoroutinefunction(callback) or iscoroutine(callback):
+                if inspect.iscoroutinefunction(callback) or inspect.iscoroutine(callback):
                     try:
                         # handler is defined with the second param being the tab instance
                         asyncio.create_task(callback(event, self))
