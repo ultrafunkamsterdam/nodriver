@@ -400,6 +400,10 @@ class Connection:
         method, *params = next(cdp_obj).values()
         if params:
             params = params.pop()
+        else:
+            params = {}
+        if not isinstance(params, dict):
+            params = {}
         _id = next(self.__count__)
         message = {"method": method, "params": params, "id": _id}
         if not _attach:
