@@ -104,42 +104,6 @@ class Transaction:
             return f"{string[:max_length]} {'...' if ellipsis else ''}"
         return string
 
-    # class MapperEntry(asyncio.Future):
-
-
-#
-#     def __init__(self,  cdp_obj: Generator, id: int, session_id: str = None):
-#
-#         super().__init__()
-#         self._cdp_obj = cdp_obj
-#
-#         method, *params = next(self._cdp_obj).values()
-#         if params:
-#             params = params.pop()
-#
-#         request = {"method": method, "params": params, "id": id}
-#         if session_id:
-#             request["sessionId"] = session_id
-#
-#         self.request = request
-#         self.response = None
-#         self.events = []
-#
-#     def set_session_id(self, session_id: str):
-#         self.request['sessionId'] = session_id
-#
-#     def __call__(self, response: dict):
-#         self.response = response
-#         if "error" in response:
-#             # set exception and bail out
-#             return self.set_exception(ProtocolException(response["error"], request=self.request))
-#         try:
-#             # try to parse the result according to the py cdp docs.
-#             self._cdp_obj.send(response["result"])
-#         except StopIteration as e:
-#             # exception value holds the parsed response
-#             self.set_result(e.value)
-
 
 class Connection:
     socket: websockets.asyncio.client.ClientConnection | None
