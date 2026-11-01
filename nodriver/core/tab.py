@@ -538,8 +538,23 @@ class Tab(Connection):
             return await self.browser.get(url, new_tab, new_window)
         else:
             frame_id, loader_id, *_ = await self.send(cdp.page.navigate(url))
-            await self.attach()
+            await self.wait()
             return self
+
+    async def handle_dialog(
+        self, accept: bool = True, prompt_text: typing.Optional[str] = None
+    ):
+        """
+        Accepts or dismisses a JavaScript initiated dialog (alert, confirm, prompt).
+
+        :param accept: Whether to accept or dismiss the dialog.
+        :param prompt_text: Optional text to enter into a prompt dialog before accepting.
+        """
+        return await self.send(
+            cdp.page.handle_java_script_dialog(
+                accept=accept, prompt_text=prompt_text
+            )
+        )
 
     async def query_selector_all(
         self,
