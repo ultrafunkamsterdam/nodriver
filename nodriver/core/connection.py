@@ -114,6 +114,20 @@ class Connection:
         return bool(self.session_id and self.target)
 
     @property
+    def closed(self) -> bool:
+        """True if the websocket connection is closed or not established."""
+        if self.socket is None:
+            return True
+        if hasattr(self.socket, "closed") and self.socket.closed:
+            return True
+        return bool(getattr(self.socket, "close_code", None))
+
+    @property
+    def is_closed(self) -> bool:
+        """Alias for closed."""
+        return self.closed
+
+    @property
     def transactions(self):
         """
         simple array that holds recent transactions.
