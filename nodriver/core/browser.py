@@ -396,7 +396,11 @@ class Browser(Connection):
         await self.update_targets()
         # await self
 
-    async def grant_all_permissions(self):
+    async def grant_all_permissions(
+        self,
+        origin: typing.Optional[str] = None,
+        browser_context_id: typing.Optional[cdp.browser.BrowserContextID] = None,
+    ):
         """
         grant permissions for:
             accessibilityEvents
@@ -426,10 +430,17 @@ class Browser(Connection):
             wakeLockSystem
             windowManagement
         """
-        permissions = list(cdp.browser.PermissionType)
-        permissions.remove(cdp.browser.PermissionType.FLASH)
-        permissions.remove(cdp.browser.PermissionType.CAPTURED_SURFACE_CONTROL)
-        await self.send(cdp.browser.grant_permissions(permissions))
+        excluded = {"FLASH", "CAPTURED_SURFACE_CONTROL"}
+        permissions = [
+            perm
+            for perm in cdp.browser.PermissionType
+            if perm.name not in excluded and perm.value not in excluded
+        ]
+        await self.send(
+            cdp.browser.grant_permissions(
+                permissions, origin=origin, browser_context_id=browser_context_id
+            )
+        )
 
     async def tile_windows(self, windows=None, max_columns: int = 0):
         import math
